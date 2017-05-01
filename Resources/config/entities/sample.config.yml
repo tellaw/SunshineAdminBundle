@@ -1,0 +1,35 @@
+# Sample configuration file for demo purpose
+
+#tellaw_sunshine_admin_entities:
+#
+#  - <myEntity> :
+#       configuration:
+#           id: myAutoIncrementId  --> Si absent, par défaut : id
+#           class: \Entity\Price
+#           displayedInMenu: true
+#           ROLE :
+#             - ROLE_DEV... -> Role d'edition, consultation de l'objet
+#
+#       attributes:
+#           - <attribute_name>:
+#               type : <type> -> Si absent, nous récupérons le type de l'ORM.
+#               sortable : true | flase
+#
+#       form:
+#           - <attribute_name>:
+#               label: xxx -> Si absent, nom de l'attribut nettoyé
+#               placeholder : xxx -> Si absent, vide
+#               readOnly : true | false
+#
+#       list:
+#           - <attribute_name>
+#           - <attribute_name>
+#
+#       filters:
+#           - <attribute_name>
+#           - <attribute_name>
+#
+#       search:
+#           - <attribute_name>
+#           - <attribute_name>
+#
