@@ -1,3 +1,7 @@
+# Dev kit for the Sunshine Bundle
+
+## Node Packages configuration
+```
 {
   "name": "reactjs_app",
   "version": "1.0.0",
@@ -19,11 +23,27 @@
     "watchify": "^3.9.0"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.24.1",
-    "babel-core": "^6.24.1",
     "jsx-loader": "^0.13.2",
     "react-hot-loader": "^1.3.1",
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.5"
   }
 }
+```
+
+## Running Dev Server
+
+Dev server include hot and live reload for React source code.
+
+Go to the 'Resources/reactjs_app' :
+```
+./node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --progress --colors
+```
+
+## Configuration parameter to enter 'Dev Mode'
+In order to enable live reload, you must set a config parameter to :
+
+```
+dev_mode: true
+```
+

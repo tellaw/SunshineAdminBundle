@@ -68,4 +68,13 @@ class DefaultController extends Controller
 
     }
 
+    /**
+     * @Route("/test", name="sunshine_test")
+     * @Method({"GET", "POST"})
+     */
+    public function testAction()
+    {
+        return $this->render('TellawSunshineAdminBundle:Default:index.html.twig');
+    }
+
 }
