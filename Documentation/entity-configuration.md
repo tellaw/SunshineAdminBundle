@@ -45,3 +45,7 @@ tellaw_sunshine_admin_entities:
  class | Class path 
  ROLES | list of Roles wich may have full access to the entity 
 
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
