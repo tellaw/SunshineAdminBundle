@@ -15,8 +15,8 @@ Eg :
 
 The available parameters are :
 
-|---------------|---------------|---------------|
 | Parameter     | Type          | Description   |
+|---------------|---------------|---------------|
 | entityName    | String        | Name of the entity in the confiiguration files to use |
 | pageStart     | Integer       | Page to display (pagination) |
 | length        | Integer       | Number of item in the page (default : 10) |
