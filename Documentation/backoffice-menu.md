@@ -7,8 +7,8 @@ The menu of the back-office is fully configurable. It may contain the following 
 |-------------------------|----------------------------------------------------------|-----------------|
 | section                | Represent a section in the menu                          | Yes             |
 | subMenu                | Represent a submenu in the menu                          | Yes             |
-| sunshineCrudList       | Reference to a CRUD list component                       | Not yet         |
-| sunshineCrudEdit       | Reference to a CRUD Edit Component                       | Not yet         |
+| ~~sunshineCrudList~~       | ~~Reference to a CRUD list component~~                       | ~~Not yet~~         |
+| ~~sunshineCrudEdit~~       | ~~Reference to a CRUD Edit Component~~                       | ~~Not yet~~         |
 | sunshinePage           | Reference to a Sunshine configured Page loading widgets  | Yes             |
 | external               | Reference to an External URL                             | Yes             |
 
