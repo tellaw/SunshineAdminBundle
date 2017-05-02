@@ -45,6 +45,8 @@
 /composer.phar
 
 .idea
+node_modules
+Resources/reactjs_app/node_modules
 
 # Backup entities generated with doctrine:generate:entities command
 */Entity/*~
