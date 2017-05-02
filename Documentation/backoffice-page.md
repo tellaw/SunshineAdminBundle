@@ -38,8 +38,8 @@ tellaw_sunshine_admin_entities:
 
 ## Description of Page Elements
 
-|-------------------------------|---------------------------|---------------------------|-----------------------------------|
 | Item                          | Context                   | Description               | Required                          |
+|-------------------------------|---------------------------|---------------------------|-----------------------------------|
 | id                            | Page                      | Identifier or the page, should be the name of the YAML file describing the page located in sunshine/pages/ | Yes |
 | title                         | Page                      | Title of the page                                             | No |
 | parent                        | Page                      | Parent page the configuration is based on                     | No |
