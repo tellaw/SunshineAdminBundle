@@ -39,11 +39,12 @@ tellaw_sunshine_admin_entities:
 
 ## Configuration Section
 
- -- | -- 
- Item  | Description 
- id    | identifier of the entity 
- class | Class path 
- ROLES | list of Roles wich may have full access to the entity 
+ | -- | -- |
+ | Item  | Description |
+ | id    | identifier of the entity |
+ | class | Class path |
+ | ROLES | list of Roles wich may have full access to the entity |
+ 
 
 | First Header  | Second Header |
 | ------------- | ------------- |
