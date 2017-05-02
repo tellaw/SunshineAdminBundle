@@ -35,7 +35,7 @@ tellaw_sunshine_admin_entities:
 
 ```
 
-## Description of Page Elements
+## Description of Page Elements for Page
 
 | Item                          | Context                   | Description               | Required                          |
 |-------------------------------|---------------------------|---------------------------|-----------------------------------|
@@ -45,8 +45,12 @@ tellaw_sunshine_admin_entities:
 | roles                         | Page                      | Array of roles who can access this page                       | No |
 | description                   | Page                      | Description of the page                                       | No |
 | content                       | Page                      | Composition of the page (Array of elements )                  | No |
-| size                          | Row                       | Number of columns used by the row (grid is 12), default : 3   | No |
-| children                      | Row                       | Description of the widgets in the row (Array of widgets)      | Yes |
+
+
+## Description of Page Elements for Widget
+| Item                          | Context                   | Description               | Required                          |
+|-------------------------------|---------------------------|---------------------------|-----------------------------------|
+| size                          | Widget                       | Number of columns used by the row (grid is 12), default : 3   | No |
 | title                         | Widget                    | Title of the widget, may be displayed inside the widget.      | No |
 | type                          | Widget                    | Type of the widget, please read Widget documentation          | Yes |
 | parameters                    | Widget                    | Parameters for the widget                                     | No |
