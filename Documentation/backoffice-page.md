@@ -24,10 +24,9 @@ tellaw_sunshine_admin_entities:
             content :
                 
                 headerrow :                                     // Id of the Row
-                    size: 9
-                    children :
                 
                         widget1:                                // Id of the Widget
+                            size: 9
                             title : Widget Title on the page
                             type : CrudList
                             parameters :
