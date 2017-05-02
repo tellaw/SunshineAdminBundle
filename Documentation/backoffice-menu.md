@@ -5,12 +5,12 @@ The menu of the back-office is fully configurable. It may contain the following 
 
 | Item                    | Description                                              | Implemented     |
 |-------------------------|----------------------------------------------------------|-----------------|
-| @Section                | Represent a section in the menu                          | Yes             |
-| @SubMenu                | Represent a submenu in the menu                          | Yes             |
-| @SunshineCrudList       | Reference to a CRUD list component                       | Not yet         |
-| @SunshineCrudEdit       | Reference to a CRUD Edit Component                       | Not yet         |
-| @SunshinePage           | Reference to a Sunshine configured Page loading widgets  | Yes             |
-| @external               | Reference to an External URL                             | Yes             |
+| section                | Represent a section in the menu                          | Yes             |
+| subMenu                | Represent a submenu in the menu                          | Yes             |
+| sunshineCrudList       | Reference to a CRUD list component                       | Not yet         |
+| sunshineCrudEdit       | Reference to a CRUD Edit Component                       | Not yet         |
+| sunshinePage           | Reference to a Sunshine configured Page loading widgets  | Yes             |
+| external               | Reference to an External URL                             | Yes             |
 
 The order of elements described in the application configuration may be thee exact order of items in the menu
 
@@ -21,7 +21,7 @@ tellaw_sunshine_admin_entities:
     menu :
         -
             identifier : myPageId
-            type : @SunshinePage
+            type : sunshinePage
             parameters : 
                 myparameter : myvalue            
 
@@ -34,7 +34,7 @@ The menu is a list of pages. Each page is defined by its type and a uniq Id in t
 ## @Section
 
 ```
-    type : @Section
+    type : section
     children :
         -
             // Any Menu element
@@ -44,7 +44,7 @@ The menu is a list of pages. Each page is defined by its type and a uniq Id in t
 ## @SubMenu
 
 ```
-    type : @SubMenu
+    type : subMenu
     children :
         -
         // Any Menu element
@@ -56,7 +56,7 @@ The menu is a list of pages. Each page is defined by its type and a uniq Id in t
 
 ```
         identifier : myPageId
-        type : @SunshineCrudList
+        type : sunshineCrudList
         parameters : 
             entity : myEntity
             searchKey : defaultSearchKey
@@ -66,7 +66,7 @@ The menu is a list of pages. Each page is defined by its type and a uniq Id in t
 ## @SunshineCrudEdit
 ```
         identifier : myPageId
-        type : @SunshineCrudList
+        type : sunshineCrudList
         parameters : {
             entity : myEntity
             targetId : myObjectId
@@ -76,7 +76,7 @@ The menu is a list of pages. Each page is defined by its type and a uniq Id in t
 ## @SunshinePage
 ```
         identifier: myPageId
-        type: @SunshinePageId
+        type: sunshinePageId
 
 ```
 
@@ -85,7 +85,7 @@ Where myPageConfigurationName stands for the configuration name in the applicati
 ## @External
 ```
         identifier: myPageId
-        type: @External
+        type: external
         parameters :
             targetUrl : http://www.google.fr
             target : _blank
