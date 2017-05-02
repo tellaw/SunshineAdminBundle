@@ -2,8 +2,9 @@
 
 The menu of the back-office is fully configurable. It may contain the following items :
 
-|-------------------------|----------------------------------------------------------|-----------------|
+
 | Item                    | Description                                              | Implemented     |
+|-------------------------|----------------------------------------------------------|-----------------|
 | @Section                | Represent a section in the menu                          | Yes             |
 | @SubMenu                | Represent a submenu in the menu                          | Yes             |
 | @SunshineCrudList       | Reference to a CRUD list component                       | Not yet         |
