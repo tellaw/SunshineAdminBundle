@@ -31,6 +31,18 @@
 }
 ```
 
+## Global dependencies
+
+The serveur must have the following elements installed :
+
+1. Webpack
+2. Webpack-Dev-Server
+
+```
+npm install -g webpack
+npm install -g webpack-dev-server
+```
+
 ## Host Configuration
 The server must respond to 'local.dev' url. Add it to your host configuration file if needed.
 
