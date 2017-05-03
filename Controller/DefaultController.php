@@ -27,14 +27,20 @@ class DefaultController extends Controller
 //dump($pageConfiguration["tellaw_sunshine_admin_entities"]["Page"]);
 
         // Read Parent
-        if ( array_key_exists('parent', $pageConfiguration["tellaw_sunshine_admin_entities"]["Page"]) ) {
+        if ( array_key_exists('parent', $pageConfiguration["tellaw_sunshine_admin_entities"]["page"]) ) {
 
             // Merge Parent and Child
 
-            $parentPageConfiguration = $configurationReaderService->getPageConfiguration( $pageConfiguration["tellaw_sunshine_admin_entities"]["Page"]["parent"] );
+            $parentPageConfiguration = $configurationReaderService->getPageConfiguration( $pageConfiguration["tellaw_sunshine_admin_entities"]["page"]["parent"] );
 
             $pageConfiguration = array_merge($parentPageConfiguration, $pageConfiguration);
 
+        }
+
+        if (array_key_exists('tellaw_sunshine_admin_entities',$pageConfiguration)) {
+            $pageConfiguration= $pageConfiguration["tellaw_sunshine_admin_entities"]["page"];
+        } else {
+            $pageConfiguration = null;
         }
 
         // Return them with the JSON Response Serialized
@@ -58,6 +64,12 @@ class DefaultController extends Controller
 
         // This method intends to return the configuration of the menu
          $menuConfiguration = $configurationReaderService->getMenuConfiguration( $menuId );
+
+        if (array_key_exists('tellaw_sunshine_admin_entities',$menuConfiguration)) {
+            $menuConfiguration= $menuConfiguration["tellaw_sunshine_admin_entities"]["menu"];
+        } else {
+            $menuConfiguration = null;
+        }
 
         // Return them with the JSON Response Serialized
         $serializedEntity = $this->container->get('serializer')->serialize($menuConfiguration, 'json');
