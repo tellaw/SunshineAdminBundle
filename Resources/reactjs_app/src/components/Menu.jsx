@@ -2,6 +2,19 @@ import React from 'react';
 import MenuApi from '../api/MenuApi.jsx';
 
 export default class Menu extends React.Component {
+
+    getInitialState() {
+        return {
+            menu: '',
+        };
+    };
+
+    componentWillMount() {
+        MenuApi.get().then(function(data){
+            this.setState({menu:data});
+        }.bind(this));
+    }
+
     render() {
         return (
             <div className="page-sidebar-wrapper">
