@@ -31,13 +31,20 @@
 }
 ```
 
+## Host Configuration
+The server must respond to 'local.dev' url. Add it to your host configuration file if needed.
+
+```
+local.dev   127.0.0.1
+```
+
 ## Running Dev Server
 
 Dev server include hot and live reload for React source code.
 
 Go to the 'Resources/reactjs_app' :
 ```
-./node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --progress --colors
+webpack-dev-server --open --hot --inline
 ```
 
 ## Configuration parameter to enter 'Dev Mode'

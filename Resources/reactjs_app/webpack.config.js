@@ -1,12 +1,17 @@
 
 function getEntrySources(sources) {
     if (process.env.NODE_ENV !== 'production') {
-     //   sources.push('webpack-dev-server/client?http://local.dev:8082');
-       // sources.push('webpack/hot/only-dev-server');
+        sources.push('webpack-dev-server/client?http://local.dev:8080');
+        sources.push('webpack/hot/only-dev-server');
     }
 
     return sources;
 }
+
+const defaultEnv = {
+    dev: true,
+    production: false,
+};
 
 module.exports = {
     entry: {
@@ -15,8 +20,8 @@ module.exports = {
         ])
     },
     output: {
-        publicPath: 'http://local.dev:8082/',
-        filename: '../public/js/[name].js'
+        publicPath: "http://local.dev:8080/",
+        filename: 'public/js/[name].js'
     },
     module: {
         rules: [
@@ -37,5 +42,11 @@ module.exports = {
                 ]
             },
         ]
+    },
+    devServer: {
+        hot: true,
+        host: '0.0.0.0',
+        disableHostCheck: true,
+        headers: { "Access-Control-Allow-Origin": "*" }
     }
 };

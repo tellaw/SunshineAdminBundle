@@ -13,17 +13,18 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-router": "^4.1.1",
-    "reactify": "^1.1.1",
-    "reflux": "^6.4.1",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.9.0"
+    "reflux": "^6.4.1"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.24.1",
     "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.4.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.24.1",
     "jsx-loader": "^0.13.2",
-    "react-hot-loader": "^1.3.1",
     "webpack": "^2.4.1",
-    "webpack-dev-server": "^2.4.5"
+    "webpack-dev-server": "^2.4.5",
+    "whatwg-fetch": "^2.0.3"
   }
 }

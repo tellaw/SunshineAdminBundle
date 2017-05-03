@@ -1,7 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import HomeComponent from './HomeComponent.jsx';
+import MenuApi from './api/MenuApi.jsx';
 
+import Base from './components/Base.jsx';
 
-ReactDOM.render(<HomeComponent />, document.querySelector('#reactContent'));
+ReactDOM.render(
+    <Base />,
+    document.querySelector('#react-app')
+);
