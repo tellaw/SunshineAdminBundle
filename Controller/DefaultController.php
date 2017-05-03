@@ -24,8 +24,6 @@ class DefaultController extends Controller
 
         $pageConfiguration = $configurationReaderService->getPageConfiguration( $pageId );
 
-//dump($pageConfiguration["tellaw_sunshine_admin_entities"]["Page"]);
-
         // Read Parent
         if ( array_key_exists('parent', $pageConfiguration["tellaw_sunshine_admin_entities"]["page"]) ) {
 
