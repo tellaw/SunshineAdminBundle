@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/page/{pageId}", name="sunshine_page")
+     * @Route("/page/{pageId}", name="sunshine_page",requirements={"pageId"=".+"})
      * @Method({"GET", "POST"})
      */
     public function indexAction( $pageId )
@@ -79,7 +79,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/test", name="sunshine_test")
+     * @Route("/test/{pageId}", name="sunshine_test",requirements={"pageId"=".+"})
      * @Method({"GET", "POST"})
      */
     public function testAction()
