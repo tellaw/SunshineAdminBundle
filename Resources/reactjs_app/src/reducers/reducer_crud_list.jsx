@@ -1,11 +1,9 @@
-import { FETCH_PAGE } from '../actions/action_page.jsx';
+import { FETCH_CRUD_LIST } from '../actions/action_crud_list.jsx';
 
 export default function(state = null, action) {
 
-    console.log (action);
-
     switch (action.type) {
-        case FETCH_PAGE:
+        case FETCH_CRUD_LIST:
             return action.payload.data;
     }
     return state;

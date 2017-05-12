@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import Row from './../components/page/Row.jsx';
 
-import { fetchPage } from '../actions/index.jsx';
+import { fetchPage } from '../actions/action_page.jsx';
 
 class Page extends React.Component {
 
@@ -15,12 +15,7 @@ class Page extends React.Component {
 
     render() {
 
-        if (this.props.currentPage == null) {
-            console.log ("page is null");
-            return (<div></div>);
-        } else {
-            console.log ("page is not null anymore", this.props.currentPage);
-        }
+        if (this.props.currentPage == null) {return (<div></div>);}
 
         return (
             <div className="page-content-wrapper">

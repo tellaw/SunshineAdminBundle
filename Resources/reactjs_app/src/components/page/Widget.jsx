@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import DemoWidget from '../widgets/DemoWidget.jsx';
-import CrudList from '../widgets/CrudList.jsx';
+import CrudList from '../../containers/CrudList.jsx';
 
 export default class Widget extends React.Component {
 
@@ -23,6 +23,8 @@ export default class Widget extends React.Component {
     getWidgetByType () {
 
         var widgetType = this.props.widget.type;
+
+
 
         if ( widgetType == "demo") {
             return <DemoWidget index={this.props.index} widget={this.props.widget} />
