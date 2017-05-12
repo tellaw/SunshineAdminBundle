@@ -5,7 +5,7 @@ const history = createBrowserHistory();
 
 import Header from './Header.jsx';
 import Menu from './Menu.jsx';
-import Page from './Page.jsx';
+import Page from './../containers/Page.jsx';
 
 export default class Base extends React.Component {
     render() {
@@ -17,7 +17,7 @@ export default class Base extends React.Component {
                     <Menu/>
 
                     <Router history={history}>
-                        <Route path="*/test/mypage/:pageId" component={Page}/>
+                        <Route path="*/app/page/:pageId" component={Page}/>
                     </Router>
 
                 </div>

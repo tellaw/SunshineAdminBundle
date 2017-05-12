@@ -29,7 +29,7 @@ class ContextService implements ContextServiceInterface {
 
     private function getYmlContextEntity ( Context $context ) {
 
-        $configuration = Yaml::parse(file_get_contents('../app/config/crud_entities/'.$context->getEntityName().'.yml'));
+        $configuration = Yaml::parse(file_get_contents('../app/config/sunshine/crud_entities/'.$context->getEntityName().'.yml'));
         $ymlConfiguration = $configuration["tellaw_sunshine_admin_entities"][$context->getEntityName()][ConfigurationReaderService::$_VIEW_CONTEXT_CONFIGURATION];
 
         if (array_key_exists( 'id',$ymlConfiguration  )) {

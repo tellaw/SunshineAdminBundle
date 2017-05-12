@@ -79,7 +79,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/test/{pageId}", name="sunshine_test",requirements={"pageId"=".+"})
+     * @Route("/app/page/{pageId}", name="sunshine_test",requirements={"pageId"=".+"})
      * @Method({"GET", "POST"})
      */
     public function testAction()

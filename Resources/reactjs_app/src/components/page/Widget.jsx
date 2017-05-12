@@ -1,6 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import DemoWidget from '../widgets/DemoWidget.jsx';
+import CrudList from '../widgets/CrudList.jsx';
+
 export default class Widget extends React.Component {
 
     getClasses () {
@@ -12,12 +15,19 @@ export default class Widget extends React.Component {
             "col-sm-"+size,
             "col-xs-"+size
         ];
+
         return classNames(classnames);
     }
 
+    // This method is the Widget Factory
     getWidgetByType () {
-        if (this.props.widget.type == "html") {
-            // Render HTML Widget
+
+        var widgetType = this.props.widget.type;
+
+        if ( widgetType == "demo") {
+            return <DemoWidget index={this.props.index} widget={this.props.widget} />
+        } else if ( widgetType == "crudList") {
+            return <CrudList index={this.props.index} widget={this.props.widget} />
         }
     }
 
@@ -25,7 +35,6 @@ export default class Widget extends React.Component {
         return (
             <div className={this.getClasses()}>
                 {this.getWidgetByType()}
-                <p>This is a widget</p>
             </div>
         );
     }
