@@ -99,7 +99,7 @@ class CrudController extends Controller
     }
 
     /**
-     * @Route("/crud/edit/{entityName}/{targetId}", name="sunshine_crud_edit")
+     * @Route("/crud/delete/{entityName}/{targetId}", name="sunshine_crud_delete")
      * @Method({"GET", "POST"})
      */
     public function deleteAction( $targetId ) {

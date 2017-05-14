@@ -1,8 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
+import QueryString from 'query-string';
 
 import DemoWidget from '../widgets/DemoWidget.jsx';
 import CrudList from '../../containers/CrudList.jsx';
+import CrudEdit from '../../containers/CrudEdit.jsx';
 
 export default class Widget extends React.Component {
 
@@ -24,12 +26,18 @@ export default class Widget extends React.Component {
 
         var widgetType = this.props.widget.type;
 
-
+        // Get Query String parameter for entity
+        var queryString = QueryString.parse(location.search) ;
 
         if ( widgetType == "demo") {
             return <DemoWidget index={this.props.index} widget={this.props.widget} />
         } else if ( widgetType == "crudList") {
-            return <CrudList index={this.props.index} widget={this.props.widget} />
+            if (queryString.editMode != undefined) {
+                return <CrudEdit index={this.props.index} widget={this.props.widget} />
+            } else {
+                return <CrudList index={this.props.index} widget={this.props.widget} />
+            }
+
         }
     }
 

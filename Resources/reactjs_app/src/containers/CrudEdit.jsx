@@ -3,30 +3,21 @@ import QueryString from 'query-string';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchList } from '../actions/action_crud_list.jsx';
-
-import CrudListHead from '../components/crud_list/CrudListHead.jsx';
-import CrudListBody from '../components/crud_list/CrudListBody.jsx';
-
-class CrudList extends React.Component {
+class CrudEdit extends React.Component {
 
     componentWillMount() {
 
         // Get Query String parameter for entity
         var queryString = QueryString.parse(location.search) ;
 
-        this.props.fetchList(queryString.entity)
-
+        if ( queryString.targetId != undefined ) {
+            // Run Ajax request
+        }
 
     }
 
     render()
     {
-
-        //console.log (QueryString.parse(location.search));
-
-        if (this.props.crudList == null) {return (<div></div>);}
-
 
         return (
             <div>Edit Mode!</div>
@@ -35,12 +26,5 @@ class CrudList extends React.Component {
 
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchList }, dispatch);
-}
 
-function mapStateToProps({ crudList }) {
-    return { crudList };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CrudList);
+export default connect(null, null)(CrudEdit);
