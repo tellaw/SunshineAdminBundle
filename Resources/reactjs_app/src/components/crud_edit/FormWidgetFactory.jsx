@@ -2,35 +2,33 @@ import React from 'react';
 import classNames from 'classnames';
 import QueryString from 'query-string';
 
+import StringField from '../data_types/string/StringField.jsx';
 
 export default class FormWidgetFactory extends React.Component {
 
     // This method is the Widget Factory
-    getWidgetByType () {
-
-        var widgetType = this.props.widget.type;
+    getWidgetByType ( element ) {
 
         // Get Query String parameter for entity
         var queryString = QueryString.parse(location.search) ;
 
-        if ( widgetType == "demo") {
-            return <DemoWidget index={this.props.index} widget={this.props.widget} />
-        } else if ( widgetType == "crudList") {
-            if (queryString.editMode != undefined) {
-                return <CrudEdit index={this.props.index} widget={this.props.widget} />
-            } else {
-                return <CrudList index={this.props.index} widget={this.props.widget} />
-            }
-
+        if (element[1].type == "string") {
+            return <StringField element={element[1]} name={element[0]} data={this.props.data} />
         }
+
     }
 
     render() {
         return (
-            <div className="row">
-                {this.getWidgetByType()}
+            <div>
+                <label className="col-md-2 control-label" >{this.props.item[1].label}</label>
+                <div className="col-md-10">
+                    {this.getWidgetByType( this.props.item )}
+                    <div className="form-control-focus"> </div>
+                </div>
             </div>
         );
+
     }
 
 }
