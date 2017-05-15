@@ -5,6 +5,8 @@ import { bindActionCreators } from 'redux';
 
 import { fetchId } from '../actions/action_crud_edit.jsx';
 
+import { FormWidgetFactory } from '../components/crud_edit/FormWidgetFactory.jsx';
+
 class CrudEdit extends React.Component {
 
     componentWillMount() {
