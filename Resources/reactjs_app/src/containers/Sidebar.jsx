@@ -17,6 +17,8 @@ class Sidebar extends React.Component {
             return (<div><MenuSunshinePage element={element} /></div>);
         } else if ( element.type == "externalPage" ) {
             return (<div>externalPage</div>);
+        } else if ( element.type == "subMenu" ) {
+            return (<div>Sous menu</div>);
         } else if ( element.type == "section" ) {
             return (<div>section</div>);
         }
