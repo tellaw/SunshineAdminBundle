@@ -23,10 +23,7 @@ class CrudList extends React.Component {
     render()
     {
 
-        //console.log (QueryString.parse(location.search));
-
         if (this.props.crudList == null) {return (<div></div>);}
-
 
         return (
             <div className="portlet box red">
