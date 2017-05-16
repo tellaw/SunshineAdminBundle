@@ -13,9 +13,7 @@ export default class StringView extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
     }
-
-
-
+    
     handleChange ( event ) {
         //this.props.data[this.props.name]=value;
         this.setState({value: event.target.value});

@@ -23,5 +23,16 @@ For Developpement platofmr, [read this](Documentation/dev.md)
 ## Webservices
 1. [Crud : List Entity](Documentation/webservices/listEntity.md)
 
+## Fields
+1. [String : Text Field](Documentation/data-types/string.md)
+2. Email
+3. Date
+4. Link
+5. Integer
+6. List
+7. Related Object
+8. Text Area
+9. Json Field
+10. Html Field
 
 

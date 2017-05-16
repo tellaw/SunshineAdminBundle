@@ -38,6 +38,15 @@ class CrudEdit extends React.Component {
                                 </div>
                             )
                         })}
+
+                        <div className="form-actions">
+                            <div className="row">
+                                <div className="col-md-offset-2 col-md-10">
+                                    <button type="submit" className="btn blue">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
             </div>
