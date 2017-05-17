@@ -59,21 +59,46 @@ class CrudService implements CrudServiceInterface
 
     }
 
+    /**
+     * Method used to Load an entity
+     * @param Context $context
+     * @return mixed
+     */
     public function getEntity(Context $context)
     {
-
-        $repo = $this->em->getRepository ("AppBundle\Entity\Project");
+        $repo = $this->em->getRepository ( $context->getClassName() );
         $object = $repo->find( $context->getTargetId() );
+        return $object;
+    }
+
+    /**
+     * Method used to return a new instance of an entity managed by Sunshine
+     *
+     * @param Context $context
+     * @return mixed
+     */
+    public function getNewEntity ( Context $context ) {
+        return new $context->getClassName();
+    }
+
+    /**
+     * Method used to populate an object from JSon data received by React Frontend
+     *
+     * @param Content $context
+     * @param $data
+     */
+    public function hydrateEntity ( Context $context, $object, $data ) {
+
+        foreach ($data as $key => $value) {
+            $method = "set".ucfirst ($key);
+            $object->{$method}($value);
+        }
 
         return $object;
 
     }
 
     public function deleteEntity ( Context $context ){
-
-    }
-
-    public function saveEntity ( Context $context, $formPost ){
 
     }
 

@@ -598,7 +598,7 @@ var Layout = function () {
         },
 
         init: function () {
-            alert ("Toto"); 
+            alert ("Toto");
             this.initHeader();
             this.initSidebar(null);
             this.initContent();

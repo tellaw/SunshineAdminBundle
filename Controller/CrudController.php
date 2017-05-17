@@ -121,9 +121,68 @@ class CrudController extends Controller
     public function postAction ( $entityName, $targetId, Request $request ) {
 
         $data = $request->getContent();
-        var_dump($data);
+        if ($data != "") {
+            $jsonData = json_decode( $data );
+        } else {
+            throw new \Exception ("Form content is empty, this is impossible");
+        }
 
-        return new Response("ok");
+        // Retrieve context for entity
+        /* @var $contextService ContextServiceInterface */
+        $contextService = $this->get("sunshine.context_service");
+
+        /* @var $context ContextInterface */
+        $context = $contextService->getContext( $entityName );
+        $context->setTargetId( $targetId );
+
+        $crudService = $this->get("sunshine.crud_service");
+
+        // Get or Create the object
+        if ($context->getTargetId()) {
+            $object = $crudService->getEntity( $context );
+        } else {
+            $object = $crudService->getNewEntity ($context);
+        }
+
+        // Populate the Object from React JSON
+        $object = $crudService->hydrateEntity ( $context, $object, $jsonData);
+
+        // Validate Object
+        // cf : http://symfony.com/doc/current/validation.html
+        $validator = $this->get('validator');
+        $errors = $validator->validate($object);
+
+
+
+        // Return response and / or errors
+        $response = array();
+
+        if (count($errors) > 0) {
+            /*
+             * Uses a __toString method on the $errors variable which is a
+             * ConstraintViolationList object. This gives us a nice string
+             * for debugging.
+             */
+            $response["errors"] = $errors;
+            $response["status"] = "nok";
+        } else {
+
+            // Save the Entity
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($object);
+            $em->flush();
+
+            $response["status"] = "ok";
+        }
+
+        $response["object"] = $object;
+
+        // Return them with the JSON Response Serialized
+        $serializedEntity = $this->container->get('serializer')->serialize($response, 'json');
+        $response = new Response();
+        $response->setContent($serializedEntity);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
 
     }
 
