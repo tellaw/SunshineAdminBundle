@@ -12,6 +12,11 @@ class Sidebar extends React.Component {
         this.props.fetchMenu();
     }
 
+    componentDidMount() {
+        Layout.init();
+        console.log (Layout);
+        console.log ("My Fucking layout has been loaded!!!!");
+    }
     render() {
 
         if (this.props.menu == null) {console.log ('pas de menu');return (<div></div>)}

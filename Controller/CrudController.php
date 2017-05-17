@@ -10,6 +10,7 @@ use Tellaw\SunshineAdminBundle\Interfaces\ContextInterface;
 use Tellaw\SunshineAdminBundle\Interfaces\ContextServiceInterface;
 use Tellaw\SunshineAdminBundle\Interfaces\CrudServiceInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 use Tellaw\SunshineAdminBundle\Services\ConfigurationReaderService;
 
@@ -110,6 +111,19 @@ class CrudController extends Controller
     }
 
     public function viewAction() {
+
+    }
+
+    /**
+     * @Route("/crud/post/{entityName}/{targetId}", name="sunshine_crud_post")
+     * @Method({"GET", "POST"})
+     */
+    public function postAction ( $entityName, $targetId, Request $request ) {
+
+        $data = $request->getContent();
+        var_dump($data);
+
+        return new Response("ok");
 
     }
 

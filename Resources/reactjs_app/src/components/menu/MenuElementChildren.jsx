@@ -13,6 +13,9 @@ export default class MenuElementChildren extends React.Component {
                 {this.props.element.children.map((child, index) => { return <MenuElement key={index} element={child} />})}
             </ul>
         );
+
+
+
     }
 
 }

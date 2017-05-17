@@ -13,14 +13,23 @@ export default class StringView extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
     }
-    
+
     handleChange ( event ) {
         //this.props.data[this.props.name]=value;
         this.setState({value: event.target.value});
     }
 
     render() {
-        return (<input type="text" className="form-control" id="form_control_1" placeholder="Enter your name" value={this.state.value} onChange={this.handleChange} />);
+        return (
+                <input
+                    type="text"
+                    className="form-control"
+                    name={this.props.name}
+                    id={this.props.name}
+                    placeholder="Enter your name"
+                    value={this.state.value}
+                    onChange={this.handleChange} />
+        );
     }
 
 }

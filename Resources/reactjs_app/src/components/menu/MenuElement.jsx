@@ -29,10 +29,22 @@ export default class MenuElement extends React.Component {
             return (
                 <li className="heading">
                     <h3>{this.props.element.label}</h3>
-                    <MenuElementChildren element={this.props.element} />
                 </li>
             )
-        } else {
+        } else if (element.type == "subMenu") {
+            return (
+                <li className="nav-item">
+                    <a href="javascript:;" className="nav-link nav-toggle">
+                        <i className="icon-puzzle"></i>
+                        <span className="title">{this.props.element.label}</span>
+                        <span className="arrow"></span>
+                    </a>
+
+                    <MenuElementChildren element={this.props.element}/>
+                </li>
+            )
+        }
+        else {
             return (
                 <li className="nav-item">
                     <a href={this.getHref(element)} className="nav-link nav-toggle">
