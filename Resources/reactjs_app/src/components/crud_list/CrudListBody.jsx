@@ -8,6 +8,8 @@ export default class CrudListBody extends React.Component {
         switch (type) {
             case "string":
                 return <StringView data={data} />;
+            case "integer":
+                return <StringView data={data} />;
         }
 
     }

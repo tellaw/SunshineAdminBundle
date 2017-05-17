@@ -4,7 +4,8 @@ import createBrowserHistory  from 'history/createBrowserHistory'
 const history = createBrowserHistory();
 
 import Header from './Header.jsx';
-import Menu from './Menu.jsx';
+import Sidebar from '../containers/Sidebar.jsx';
+
 import Page from './../containers/Page.jsx';
 
 export default class Base extends React.Component {
@@ -14,8 +15,7 @@ export default class Base extends React.Component {
                 <div className="page-header navbar navbar-fixed-top"><Header/></div>
                 <div className="clearfix"> </div>
                 <div className="page-container">
-                    <Menu/>
-
+                    <Sidebar/>
                     <Router history={history}>
                         <Route path="*/app/page/:pageId" component={Page}/>
                     </Router>

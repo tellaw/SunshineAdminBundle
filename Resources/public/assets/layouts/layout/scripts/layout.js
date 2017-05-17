@@ -597,7 +597,8 @@ var Layout = function () {
             handleGoTop(); //handles scroll to top functionality in the footer
         },
 
-        init: function () {            
+        init: function () {
+            alert ("Toto"); 
             this.initHeader();
             this.initSidebar(null);
             this.initContent();

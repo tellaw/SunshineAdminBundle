@@ -15,18 +15,15 @@ class CrudList extends React.Component {
         // Get Query String parameter for entity
         var queryString = QueryString.parse(location.search) ;
 
+        // Fteching dataList
         this.props.fetchList(queryString.entity)
-
 
     }
 
     render()
     {
 
-        //console.log (QueryString.parse(location.search));
-
         if (this.props.crudList == null) {return (<div></div>);}
-
 
         return (
             <div className="portlet box red">
@@ -41,6 +38,11 @@ class CrudList extends React.Component {
                     </div>
                 </div>
                 <div className="portlet-body">
+
+                    <div className="row">
+                        <div className="col-md-6"><input className="form-control spinner" type="text" placeholder="Process something"/></div>
+                    </div>
+
                     <div className="table-scrollable">
                         <table className="table table-condensed table-hover">
                             <CrudListHead headers={this.props.crudList.headers} />
