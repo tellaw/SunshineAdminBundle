@@ -1,19 +1,6 @@
 import React from 'react';
-import MenuApi from '../api/MenuApi.jsx';
 
 export default class Menu extends React.Component {
-
-    getInitialState() {
-        return {
-            menu: '',
-        };
-    };
-
-    componentWillMount() {
-        MenuApi.get().then(function(data){
-            this.setState({menu:data});
-        }.bind(this));
-    }
 
     render() {
         return (
@@ -39,7 +26,7 @@ export default class Menu extends React.Component {
                                         </span>
                                 </div>
                             </form>
-                            
+
                         </li>
                         <li className="nav-item start active open">
                             <a href="javascript:;" className="nav-link nav-toggle">
@@ -1177,12 +1164,12 @@ export default class Menu extends React.Component {
                             </ul>
                         </li>
                     </ul>
-                    
-                    
+
+
                 </div>
-                
+
             </div>
-        
+
         );
     }
 }
