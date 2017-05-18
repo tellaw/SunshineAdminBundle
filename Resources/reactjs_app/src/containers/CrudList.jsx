@@ -1,5 +1,6 @@
 import React from 'react';
 import QueryString from 'query-string';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 

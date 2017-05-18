@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom'
 
 import Row from './../components/page/Row.jsx';
 
@@ -16,7 +17,8 @@ class Page extends React.Component {
     render() {
 
         if (this.props.currentPage == null) {return (<div></div>);}
-
+        let currentLocation = location.pathname + "2" ;
+        console.log (currentLocation);
         return (
             <div className="page-content-wrapper">
                 <div className="page-content">
@@ -24,6 +26,10 @@ class Page extends React.Component {
                     <h1 className="page-title" id="reactContent"> {this.props.currentPage.title}
                         <small>{this.props.currentPage.description}</small>
                     </h1>
+
+                    <div>
+                        <Link to={currentLocation}>My Link</Link>
+                        </div>
 
                     {this.props.currentPage.rows.map((row, index) => {
                         return <Row key={index} row={row} />

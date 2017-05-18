@@ -10,6 +10,6 @@ interface CrudServiceInterface {
     public function getEntity ( Context $context );
 
     public function deleteEntity ( Context $context );
-    
+
 
 }
