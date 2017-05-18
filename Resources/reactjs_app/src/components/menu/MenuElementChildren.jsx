@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MenuElement from './MenuElement.jsx';
+import MenuElement from '../../containers/menu/MenuElement.jsx';
 
 export default class MenuElementChildren extends React.Component {
 

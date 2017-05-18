@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom'
 
 import Row from './../components/page/Row.jsx';
+import Sidebar from '../containers/Sidebar.jsx';
 
 import { fetchPage } from '../actions/action_page.jsx';
 
@@ -17,24 +18,23 @@ class Page extends React.Component {
     render() {
 
         if (this.props.currentPage == null) {return (<div></div>);}
-        let currentLocation = location.pathname + "2" ;
-        console.log (currentLocation);
+
         return (
-            <div className="page-content-wrapper">
-                <div className="page-content">
+            <div>
+                <Sidebar/>
+                <div className="page-content-wrapper">
 
-                    <h1 className="page-title" id="reactContent"> {this.props.currentPage.title}
-                        <small>{this.props.currentPage.description}</small>
-                    </h1>
+                    <div className="page-content">
 
-                    <div>
-                        <Link to={currentLocation}>My Link</Link>
-                        </div>
+                        <h1 className="page-title" id="reactContent"> {this.props.currentPage.title}
+                            <small>{this.props.currentPage.description}</small>
+                        </h1>
 
-                    {this.props.currentPage.rows.map((row, index) => {
-                        return <Row key={index} row={row} />
-                    })}
+                        {this.props.currentPage.rows.map((row, index) => {
+                            return <Row key={index} row={row} />
+                        })}
 
+                    </div>
                 </div>
             </div>
         );

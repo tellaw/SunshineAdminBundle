@@ -28,7 +28,7 @@
     "jsx-loader": "^0.13.2",
     "query-string": "^4.3.4",
     "react-redux": "^5.0.4",
-    "react-router-dom": "^4.1.1",
+    "react-router-dom": "^4.1.0",
     "redux": "^3.6.0",
     "redux-promise": "^0.5.3",
     "webpack": "^2.4.1",

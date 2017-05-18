@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import { fetchMenu } from '../actions/action_menu.jsx';
 
-import MenuElement from '../components/menu/MenuElement.jsx';
+import MenuElement from '../containers/menu/MenuElement.jsx';
 
 class Sidebar extends React.Component {
 

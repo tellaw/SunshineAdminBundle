@@ -1,8 +1,18 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Link, Redirect } from 'react-router-dom';
 
-import MenuElementChildren from './MenuElementChildren.jsx';
+import MenuElementChildren from '../../components/menu/MenuElementChildren.jsx';
+import { fetchPage } from '../../actions/action_page.jsx';
+import { fetchList } from '../../actions/action_crud_list.jsx';
 
-export default class MenuElement extends React.Component {
+class MenuElement extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
 
     /**
      * Valeur de l'attribut href
@@ -16,6 +26,13 @@ export default class MenuElement extends React.Component {
         }
 
         return "javascript:;"
+    }
+
+    handleClick(e) {
+        var element = this.props.element;
+        this.props.fetchPage( element.parameters.id );
+        this.props.fetchList(element.parameters.entity)
+        console.log(basePath + element.parameters.id + '?entity=' + element.parameters.entity);
     }
 
     /**
@@ -47,7 +64,7 @@ export default class MenuElement extends React.Component {
         else {
             return (
                 <li className="nav-item">
-                    <a href={this.getHref(element)} className="nav-link nav-toggle">
+                    <a href="#" className="nav-link nav-toggle" onClick={this.handleClick}>
                         <i className="icon-home"></i>
                         <span className="title">{this.props.element.label}</span>
                         <span className="arrow"></span>
@@ -65,3 +82,9 @@ export default class MenuElement extends React.Component {
     };
 
 }
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ fetchPage, fetchList }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(MenuElement);
