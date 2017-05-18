@@ -12,11 +12,13 @@ class Page extends React.Component {
 
     componentWillMount() {
         var pageId = this.props.match.params.pageId;
+        console.log('fetch page 2');
         this.props.fetchPage( pageId );
     }
 
     render() {
-
+        console.log('render');
+        console.log(this.props.currentPage);
         if (this.props.currentPage == null) {return (<div></div>);}
 
         return (

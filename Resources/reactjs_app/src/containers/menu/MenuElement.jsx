@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link, Redirect } from 'react-router-dom';
+import QueryString from 'query-string';
+import createBrowserHistory  from 'history/createBrowserHistory'
+const history = createBrowserHistory();
 
 import MenuElementChildren from '../../components/menu/MenuElementChildren.jsx';
 import { fetchPage } from '../../actions/action_page.jsx';
@@ -30,9 +33,15 @@ class MenuElement extends React.Component {
 
     handleClick(e) {
         var element = this.props.element;
+        console.log('sidebar fetch page');
         this.props.fetchPage( element.parameters.id );
-        this.props.fetchList(element.parameters.entity)
-        console.log(basePath + element.parameters.id + '?entity=' + element.parameters.entity);
+        console.log('sidebar fetch list');
+        // Get Query String parameter for entity
+        var queryString = QueryString.parse(location.search) ;
+        // Fteching dataList
+        this.props.fetchList(queryString.entity);
+        
+        history.push(basePath + element.parameters.id + '?entity=' + element.parameters.entity);
     }
 
     /**
