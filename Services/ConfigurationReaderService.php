@@ -11,6 +11,13 @@ use Symfony\Component\Yaml\Yaml;
 // TODO : Add the reading of ORM types to override configuration with implicit values
 class ConfigurationReaderService implements ConfigurationReaderServiceInterface {
 
+    const ENTITIES_PATH = "AppBundle\\Entity\\";
+    
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+    
     private $entityConfigurations = array();
 
     public static $_VIEW_CONTEXT_CONFIGURATION  = "configuration";
@@ -19,6 +26,15 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface 
     public static $_VIEW_CONTEXT_FORM           = "form";
     public static $_VIEW_CONTEXT_SEARCH         = "search";
     public static $_VIEW_CONTEXT_FILTERS        = "filters";
+
+    /**
+     * ConfigurationReaderService constructor.
+     * @param EntityManagerInterface $em
+     */
+    public function __construct($em)
+    {
+        $this->em = $em;
+    }
 
     /**
      * Method used to read Yml configuration file
@@ -53,11 +69,19 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface 
     /**
      * Method used to read Yml configuration file
      *
-     * @param ContextInterface $context
+     * @param string $menuId
+     * 
      * @return mixed
      */
-    public function getMenuConfiguration ( $menuId = 'default' ) {
-        return Yaml::parse(file_get_contents('../app/config/sunshine/menu/'. $menuId .'.yml'));
+    public function getMenuConfiguration ( $menuId = 'default' )
+    {
+        $file = '../app/config/sunshine/menu/'. $menuId .'.yml';
+
+        if (file_exists($file)) {
+            return Yaml::parse(file_get_contents($file));
+        } else {
+            return $this->buildDefaultMenuConfig();
+        }
     }
 
 
@@ -123,6 +147,45 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface 
 
         return $resultData;
 
+    }
+
+    /**
+     * Retourne les entités de l'application (situées dans le rep self::ENTITIES_PATH)
+     *
+     * @return array
+     */
+    protected function getAppEntities()
+    {
+        $entities = array();
+        $meta = $this->em->getMetadataFactory()->getAllMetadata();
+        foreach ($meta as $m) {
+            $entities[] = str_replace(self::ENTITIES_PATH, '', $m->getName());
+        }
+        
+        return $entities;
+    }
+
+    /**
+     * Build default Menu base on existing app entities
+     *
+     * @return mixed
+     */
+    protected function buildDefaultMenuConfig()
+    {
+        $menuConfig['tellaw_sunshine_admin_entities']['menu'] = [];
+        foreach ($this->getAppEntities() as $entity) {
+            $menuConfig['tellaw_sunshine_admin_entities']['menu'][] = [
+                'identifier' => strtolower($entity),
+                'label' => $entity,
+                'type' => 'sunshinePage',
+                'parameters' => [
+                    'id' => 'demoPage',
+                    'entity' => strtolower($entity)
+                ]
+            ];
+        }
+        
+        return $menuConfig;
     }
 
 }

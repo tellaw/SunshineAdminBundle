@@ -32,15 +32,17 @@ class MenuElement extends React.Component {
     }
 
     handleClick(e) {
+        e.preventDefault();
         var element = this.props.element;
         console.log('sidebar fetch page');
+        console.log(element.parameters.id);
         this.props.fetchPage( element.parameters.id );
         console.log('sidebar fetch list');
         // Get Query String parameter for entity
         var queryString = QueryString.parse(location.search) ;
         // Fteching dataList
         this.props.fetchList(queryString.entity);
-        
+        console.log('query string : ' + queryString.entity);
         history.push(basePath + element.parameters.id + '?entity=' + element.parameters.entity);
     }
 
@@ -60,7 +62,7 @@ class MenuElement extends React.Component {
         } else if (element.type == "subMenu") {
             return (
                 <li className="nav-item">
-                    <a href="javascript:;" className="nav-link nav-toggle">
+                    <a href="javascript:" className="nav-link nav-toggle">
                         <i className="icon-puzzle"></i>
                         <span className="title">{this.props.element.label}</span>
                         <span className="arrow"></span>
@@ -73,7 +75,7 @@ class MenuElement extends React.Component {
         else {
             return (
                 <li className="nav-item">
-                    <a href="#" className="nav-link nav-toggle" onClick={this.handleClick}>
+                    <a className="nav-link nav-toggle" onClick={this.handleClick}>
                         <i className="icon-home"></i>
                         <span className="title">{this.props.element.label}</span>
                         <span className="arrow"></span>
