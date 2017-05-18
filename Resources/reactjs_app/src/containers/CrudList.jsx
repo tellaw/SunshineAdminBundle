@@ -39,11 +39,6 @@ class CrudList extends React.Component {
                     </div>
                 </div>
                 <div className="portlet-body">
-
-                    <div className="row">
-                        <div className="col-md-6"><input className="form-control spinner" type="text" placeholder="Process something"/></div>
-                    </div>
-
                     <div className="table-scrollable">
                         <table className="table table-condensed table-hover">
                             <CrudListHead headers={this.props.crudList.headers} />
