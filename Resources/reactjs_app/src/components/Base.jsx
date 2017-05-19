@@ -5,11 +5,11 @@ const history = createBrowserHistory();
 
 import Header from './Header.jsx';
 
-
 import Page from './../containers/Page.jsx';
 import NotFound from './../components/NotFound.jsx';
 
 export default class Base extends React.Component {
+
     render() {
         return (
             <div>
@@ -19,7 +19,7 @@ export default class Base extends React.Component {
                     <Router history={history}>
                         <div>
                             <Route path="*/app/page/demoPageX" component={NotFound}/>
-                        <Route path="*/app/page/:pageId" component={Page}/>
+                            <Route path="*/app/page/:pageId/:entity?/:editMode?/:targetId?" component={Page}/>
                         </div>
                     </Router>
 

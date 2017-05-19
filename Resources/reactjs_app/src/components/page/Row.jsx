@@ -1,5 +1,5 @@
 import React from 'react';
-import Widget from './Widget.jsx';
+import Widget from './../../containers/page/Widget.jsx';
 
 export default class Row extends React.Component {
 
@@ -7,7 +7,7 @@ export default class Row extends React.Component {
         return (
             <div className="row">
                 {this.props.row.widgets.map((widget, index) => {
-                    return <Widget key={index} widget={widget} />
+                    return <Widget key={index} widget={widget} query={this.props.query} />
                 })}
             </div>
         );

@@ -38,9 +38,9 @@
 
     <script type="text/javascript">
         // Url  : {{ app.request.getBaseURL() }} - {{ app.request.getSchemeAndHttpHost() }} - {{ app.request.getBasePath() }} - {{ bundlePrefix }}
-        var basePath = '{{ app.request.getBasePath() }}/app.php/{{ bundlePrefix }}/app/page/';
+        var basePath = '{{ app.request.getBasePath() }}/app_dev.php/{{ bundlePrefix }}/app/page/';
         var baseUrl = "{{ app.request.getSchemeAndHttpHost() }}{{ app.request.getBasePath() }}/";
-        var baseApp = baseUrl + "app.php/{{ bundlePrefix }}/";
+        var baseApp = baseUrl + "app_dev.php/{{ bundlePrefix }}/";
     </script>
 
     <link rel="shortcut icon" href="favicon.ico" /> </head>

@@ -7,17 +7,14 @@ import { bindActionCreators } from 'redux';
 import { fetchList } from '../actions/action_crud_list.jsx';
 
 import CrudListHead from '../components/crud_list/CrudListHead.jsx';
-import CrudListBody from '../components/crud_list/CrudListBody.jsx';
+import CrudListBody from './crud_list/CrudListBody.jsx';
 
 class CrudList extends React.Component {
 
     componentWillMount() {
 
-        // Get Query String parameter for entity
-        var queryString = QueryString.parse(location.search) ;
-
         // Fteching dataList
-        this.props.fetchList(queryString.entity)
+        this.props.fetchList(this.props.query.entity)
 
     }
 
@@ -41,8 +38,8 @@ class CrudList extends React.Component {
                 <div className="portlet-body">
                     <div className="table-scrollable">
                         <table className="table table-condensed table-hover">
-                            <CrudListHead headers={this.props.crudList.headers} />
-                            <CrudListBody headers={this.props.crudList.headers} list={this.props.crudList.list} />
+                            <CrudListHead headers={this.props.crudList.headers} query={this.props.query} />
+                            <CrudListBody headers={this.props.crudList.headers} list={this.props.crudList.list} query={this.props.query} />
                         </table>
                     </div>
                 </div>
