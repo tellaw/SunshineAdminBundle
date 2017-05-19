@@ -48,6 +48,7 @@ class MenuElement extends React.Component {
 
         var currentLocation = basePath + pageId +"/" + entityName +"/0/" + targetId;
         history.push(currentLocation);
+
     }
 
     /**
@@ -66,7 +67,7 @@ class MenuElement extends React.Component {
         } else if (element.type == "subMenu") {
             return (
                 <li className="nav-item">
-                    <a href="javascript:;" className="nav-link nav-toggle">
+                    <a href="javascript:" className="nav-link nav-toggle">
                         <i className="icon-puzzle"></i>
                         <span className="title">{this.props.element.label}</span>
                         <span className="arrow"></span>
@@ -79,7 +80,7 @@ class MenuElement extends React.Component {
         else {
             return (
                 <li className="nav-item">
-                    <a href="#" className="nav-link nav-toggle" onClick={this.handleClick}>
+                    <a className="nav-link nav-toggle" onClick={this.handleClick}>
                         <i className="icon-home"></i>
                         <span className="title">{this.props.element.label}</span>
                         <span className="arrow"></span>
