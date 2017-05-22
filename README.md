@@ -29,25 +29,16 @@ varchar
 2. ReadOnly String : Text Field
 3. Hidden Field
 4. Email
-varchar
 5. Date
-date
-Datetime
-datetime
-6. Link
-varchar
-7. Integer
-integer
-Float
-float
-8. List
-Relation 1-N
-9. Related Object
-10. Text Area
-Longtext
-11. Json Field
-Longtext
-12. Html Field
-Longtext
+6. Datetime
+7. Link
+8. Integer
+9. Float
+10. List (Object relation 1 to N)
+11. Related Object
+12. Text Area
+13. Json Field
+14. Html Field
+
 
 
