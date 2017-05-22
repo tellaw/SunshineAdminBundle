@@ -25,16 +25,29 @@ For Developpement platofmr, [read this](Documentation/dev.md)
 
 ## Fields
 1. [String : Text Field](Documentation/data-types/string.md)
+varchar
 2. ReadOnly String : Text Field
 3. Hidden Field
 4. Email
+varchar
 5. Date
+date
+Datetime
+datetime
 6. Link
+varchar
 7. Integer
+integer
+Float
+float
 8. List
+Relation 1-N
 9. Related Object
 10. Text Area
+Longtext
 11. Json Field
+Longtext
 12. Html Field
+Longtext
 
 
