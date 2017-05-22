@@ -1,18 +1,18 @@
 import React from 'react';
 import serialize from 'form-serialize';
-import QueryString from 'query-string';
-import { connect } from 'react-redux';
 
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+import MDSpinner from "react-md-spinner";
+
 import createBrowserHistory  from 'history/createBrowserHistory'
 const history = createBrowserHistory();
 
-
-import { fetchId } from '../actions/action_crud_edit.jsx';
 import { postForm } from '../actions/action_crud_edit.jsx';
 import { contextUpdate } from '../actions/action_context.jsx';
 
-import FormWidgetFactory from '../components/crud_edit/FormWidgetFactory.jsx';
+import FormWidgetFactory from './crud_edit/FormWidgetFactory.jsx';
 
 class CrudEdit extends React.Component {
 
@@ -56,7 +56,7 @@ class CrudEdit extends React.Component {
     render()
     {
 
-        if (this.props.crudEdit == null) { return (<div></div>) }
+        if (this.props.crudEdit == null || this.props.crudEdit.object == null) { return (<div><MDSpinner /></div>) }
         console.log ( "Rendering", this.props.crudEdit.object );
 
         return (
@@ -65,11 +65,12 @@ class CrudEdit extends React.Component {
 
                 <div className="portlet light bordered">
                     <form id="formCrudObj" className="form-horizontal">
+
                         {Object.entries(this.props.crudEdit.headers).map((item, index) => {
+                            var uniqId = this.props.context.targetId + "-" + item[0];
                             return (
-                                <div className="form-group form-md-line-input" key={index}>
-                                    <div>{this.props.crudEdit.object.name}</div>
-                                    <FormWidgetFactory headers={this.props.crudEdit.headers} data={this.props.crudEdit.object} index={index} item={item} />
+                                <div className="form-group form-md-line-input" key={uniqId}>
+                                    <FormWidgetFactory uniqKey={uniqId} itemName={item[0]} />
                                 </div>
                             )
                         })}
@@ -97,7 +98,7 @@ class CrudEdit extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchId, postForm, contextUpdate }, dispatch);
+    return bindActionCreators({ postForm, contextUpdate }, dispatch);
 }
 
 function mapStateToProps({ crudEdit, context }) {

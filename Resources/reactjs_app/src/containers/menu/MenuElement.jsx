@@ -8,6 +8,7 @@ const history = createBrowserHistory();
 
 import MenuElementChildren from '../../components/menu/MenuElementChildren.jsx';
 import { fetchPage } from '../../actions/action_page.jsx';
+import { resetCrudList } from '../../actions/action_crud_list.jsx';
 import { fetchList } from '../../actions/action_crud_list.jsx';
 import { contextUpdate } from '../../actions/action_context.jsx';
 
@@ -41,6 +42,7 @@ class MenuElement extends React.Component {
         var editMode    = "0";
 
         this.props.contextUpdate ( entityName, targetId, editMode, pageId );
+        this.props.resetCrudList();
         this.props.fetchPage( pageId );
 
         // Fteching dataList
@@ -100,7 +102,7 @@ class MenuElement extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchPage, fetchList, contextUpdate }, dispatch);
+    return bindActionCreators({ fetchPage, fetchList, resetCrudList, contextUpdate }, dispatch);
 }
 
 function mapStateToProps({ context }) {

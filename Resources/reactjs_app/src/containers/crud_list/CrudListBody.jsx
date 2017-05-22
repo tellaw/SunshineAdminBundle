@@ -7,10 +7,11 @@ const history = createBrowserHistory();
 
 import QueryString from 'query-string';
 
-import { fetchId } from '../../actions/action_crud_edit.jsx';
+import { fetchCrudEdit } from '../../actions/action_crud_edit.jsx';
+import { resetCrudEdit } from '../../actions/action_crud_edit.jsx';
 import { contextUpdate } from '../../actions/action_context.jsx';
 
-import StringView from '../../components/data_types/string/StringView.jsx';
+import StringView from '../../components/string/StringView.jsx';
 
 class CrudListBody extends React.Component {
 
@@ -19,12 +20,12 @@ class CrudListBody extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    getItemRenderByType ( type, data ) {
+    getItemRenderByType ( type, fieldData ) {
         switch (type) {
             case "string":
-                return <StringView data={data} />;
+                return <StringView data={fieldData} />;
             case "integer":
-                return <StringView data={data} />;
+                return <StringView data={fieldData} />;
         }
 
     }
@@ -37,7 +38,11 @@ class CrudListBody extends React.Component {
         var pageId      = this.props.context.pageId;
         var editMode    = "1";
 
-        this.props.fetchId(entityName, targetId);
+        // Fetch content for editing
+        this.props.resetCrudEdit();
+        this.props.fetchCrudEdit(entityName, targetId);
+
+        // Update Context
         this.props.contextUpdate ( entityName, targetId, editMode, pageId );
 
         var currentLocation = basePath + pageId +"/" + entityName + "/1/" + targetId;
@@ -45,18 +50,28 @@ class CrudListBody extends React.Component {
     }
 
     render() {
+
+        if (this.props.crudList == null) {return (<tbody><tr><td></td></tr></tbody>)}
+
         return (
             <tbody>
-            {this.props.list.map((item, index) => {
+            {this.props.crudList.list.map((item, index) => {
                 return (<tr key={index}>
                     {Object.entries(item).map((item, index) => {
+
+
+
                         if (index != 0) {
                             return  (
-                                        <td key={index}>{this.getItemRenderByType( this.props.headers[item[0]].type, item[1]  )}</td>
+                                <td key={index}>{this.getItemRenderByType( this.props.crudList.headers[item[0]].type, item[1]  )}</td>
                                     )
                         } else {
                             return  (
-                                <td key={index}><a onClick={this.handleClick.bind(this, item[1])}>{this.getItemRenderByType( this.props.headers[item[0]].type, item[1]  )}</a></td>
+                                <td key={index}>
+                                    <a onClick={this.handleClick.bind(this, item[1])}>
+                                        {this.getItemRenderByType( this.props.crudList.headers[item[0]].type, item[1]  )}
+                                    </a>
+                                </td>
                             )
                         }
                     })}
@@ -69,11 +84,11 @@ class CrudListBody extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchId, contextUpdate }, dispatch);
+    return bindActionCreators({ fetchCrudEdit, contextUpdate, resetCrudEdit }, dispatch);
 }
 
-function mapStateToProps({ context }) {
-    return { context };
+function mapStateToProps({ context, crudList }) {
+    return { context, crudList };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CrudListBody);

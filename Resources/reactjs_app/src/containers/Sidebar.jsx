@@ -14,12 +14,10 @@ class Sidebar extends React.Component {
 
     componentDidMount() {
         Layout.init();
-        console.log (Layout);
-        console.log ("My Fucking layout has been loaded!!!!");
     }
     render() {
 
-        if (this.props.menu == null) {console.log ('pas de menu');return (<div></div>)}
+        if (this.props.menu == null) {return (<div></div>)}
 
         return (
             <div className="page-sidebar-wrapper">

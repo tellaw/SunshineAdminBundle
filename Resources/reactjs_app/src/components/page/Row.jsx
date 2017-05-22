@@ -7,7 +7,7 @@ export default class Row extends React.Component {
         return (
             <div className="row">
                 {this.props.row.widgets.map((widget, index) => {
-                    return <Widget key={index} widget={widget} query={this.props.query} />
+                    return <Widget key={this.props.uniqKey +"-" + index} widget={widget}/>
                 })}
             </div>
         );
