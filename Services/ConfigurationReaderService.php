@@ -7,6 +7,7 @@ use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
 use Tellaw\SunshineAdminBundle\Interfaces\ContextInterface;
 use Tellaw\SunshineAdminBundle\Interfaces\ContextServiceInterface;
 use Symfony\Component\Yaml\Yaml;
+use Doctrine\Common\Annotations\AnnotationReader;
 
 // TODO : Add the reading of ORM types to override configuration with implicit values
 class ConfigurationReaderService implements ConfigurationReaderServiceInterface {
@@ -139,10 +140,70 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface 
             // A field cannot be copyied if it is not declared in detailed configuration
             if ( array_key_exists( $fieldName, $globalConfiguration ) ) {
                 $fieldGlobalConfiguration = $globalConfiguration[$fieldName];
+
+                if ( !is_array(  $fieldDetailedConfiguration ) ) $fieldDetailedConfiguration = array();
+                if ( !is_array(  $fieldGlobalConfiguration ) ) $fieldGlobalConfiguration = array();
+
                 $resultData[$fieldName] = array_merge($fieldGlobalConfiguration, $fieldDetailedConfiguration);
             } else {
                 $resultData[$fieldName] = $fieldDetailedConfiguration;
             }
+        }
+
+        $resultData = $this->getDoctrineEntityTypeAnnotation( $context, $resultData );
+
+        return $resultData;
+
+    }
+
+
+    /**
+     * Search in fields which doesn't have type to fill it from datas, coming from Doctrine or ASSERT
+     * @param Context $context
+     * @param $resultData
+     */
+    protected function getDoctrineEntityTypeAnnotation ( Context $context, $resultData ) {
+
+        foreach ( $resultData as $property => $datas ) {
+
+            if (!array_key_exists( 'type', $datas )) {
+
+                $annotationReader = new AnnotationReader();
+
+                $type = null;
+
+                $typeDoctrine = null;
+                $typeAssert = null;
+
+                // If the type attribute doesn't exists in YML
+                // the application will look for informations in
+                // the doctrine annotations and ASSERT annotations
+
+                // Get Annotations for attribute
+                $reflectionProperty = new \ReflectionProperty($context->getClassName(), $property);
+                $propertyAnnotations = $annotationReader->getPropertyAnnotations($reflectionProperty);
+
+                foreach ($propertyAnnotations AS $annot) {
+
+                    if ( get_class($annot) == "Symfony\Component\Validator\Constraints\Type" ) {
+                        $typeAssert = $annot->type;
+                    } else if (get_class($annot) == "Doctrine\ORM\Mapping\Column") {
+                        $typeDoctrine = $annot->type;
+                    }
+
+                }
+
+                // first look in asserts
+                if ( $typeAssert ) {
+                    $resultData[$property]['type'] = $typeAssert;
+
+                // secondly look in Doctrine annotations
+                } else if ( $typeDoctrine ) {
+                    $resultData[$property]['type'] = $typeDoctrine;
+                }
+
+            }
+
         }
 
         return $resultData;

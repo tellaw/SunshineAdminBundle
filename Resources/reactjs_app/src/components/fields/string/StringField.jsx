@@ -1,9 +1,6 @@
 import React from 'react';
 
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
-export default class StringView extends React.Component {
+export default class StringField extends React.Component {
 
     // This class receive tow parameters :
     // 1 : element -> Json Item as Element

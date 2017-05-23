@@ -25,7 +25,6 @@ For Developpement platofmr, [read this](Documentation/dev.md)
 
 ## Fields
 1. [String : Text Field](Documentation/data-types/string.md)
-varchar
 2. ReadOnly String : Text Field
 3. Hidden Field
 4. Email
@@ -39,6 +38,7 @@ varchar
 12. Text Area
 13. Json Field
 14. Html Field
-
+15. List
+16. Filtered List
 
 
