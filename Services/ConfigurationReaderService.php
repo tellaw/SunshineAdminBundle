@@ -2,6 +2,7 @@
 
 namespace Tellaw\SunshineAdminBundle\Services;
 
+use Doctrine\ORM\EntityManager;
 use Tellaw\SunshineAdminBundle\Entity\Context;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
 use Tellaw\SunshineAdminBundle\Interfaces\ContextInterface;
@@ -14,7 +15,7 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface
 {
     /**
      * Gestionnaire d'entités
-     * @var EntityManagerInterface
+     * @var EntityManager
      */
     private $em;
 

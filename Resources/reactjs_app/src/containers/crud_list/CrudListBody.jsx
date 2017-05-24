@@ -12,6 +12,7 @@ import { resetCrudEdit } from '../../actions/action_crud_edit.jsx';
 import { contextUpdate } from '../../actions/action_context.jsx';
 
 import StringView from '../../components/fields/string/StringView.jsx';
+import ObjectView from '../../components/fields/object/ObjectView.jsx'
 import ReadonlyView from '../../components/fields/readonly/ReadonlyView.jsx';
 import HiddenView from '../../components/fields/hidden/HiddenView.jsx';
 import DatetimeView from '../../components/fields/datetime/DatetimeView.jsx';
@@ -35,6 +36,8 @@ class CrudListBody extends React.Component {
                 return <StringView data={fieldData} />;
             case "datetime":
                 return <StringView data={fieldData} />;
+            case "object":
+                return <ObjectView data={fieldData}/>
         }
 
     }
