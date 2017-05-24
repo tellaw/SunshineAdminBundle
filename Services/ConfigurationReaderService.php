@@ -2,18 +2,16 @@
 
 namespace Tellaw\SunshineAdminBundle\Services;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Yaml\Yaml;
 use Tellaw\SunshineAdminBundle\Entity\Context;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
+use Tellaw\SunshineAdminBundle\Interfaces\ContextInterface;
+use Tellaw\SunshineAdminBundle\Interfaces\ContextServiceInterface;
+use Symfony\Component\Yaml\Yaml;
+use Doctrine\Common\Annotations\AnnotationReader;
 
 // TODO : Add the reading of ORM types to override configuration with implicit values
 class ConfigurationReaderService implements ConfigurationReaderServiceInterface
 {
-
-
     /**
      * Gestionnaire d'entités
      * @var EntityManagerInterface
@@ -27,6 +25,11 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface
     private $rootDir;
 
     /**
+     * @var string
+     */
+    private $entityConfigPath;
+
+    /**
      * Configurations
      * @var array
      */
@@ -36,6 +39,7 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface
 
     // CONST LIST
     const ENTITIES_PATH = "AppBundle\\Entity\\";
+    const SUNSHINE_ENTITIES_CONFIG_PATH = "config/sunshine/crud_entities";
     const VIEW_CONTEXT_CONFIGURATION = "configuration";
     const VIEW_CONTEXT_DEFAULT = "attributes";
     const VIEW_CONTEXT_LIST = "list";
@@ -50,6 +54,7 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface
      */
     public function __construct(EntityManager $em, $root_dir)
     {
+        $this->entityConfigPath = self::SUNSHINE_ENTITIES_CONFIG_PATH;
         $this->rootDir = $root_dir.'/';
         $this->em = $em;
     }
@@ -228,23 +233,19 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface
 
                     if (get_class($annot) == "Symfony\\Component\\Validator\\Constraints\\Type") {
                         $typeAssert = $annot->type;
-                    } else {
-                        if (get_class($annot) == "Doctrine\\ORM\\Mapping\\Column") {
+                    } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\Column") {
                             $typeDoctrine = $annot->type;
-                        }
                     }
 
                 }
 
                 // first look in asserts
-                if ($typeAssert) {
+                if ( $typeAssert ) {
                     $resultData[$property]['type'] = $typeAssert;
 
-                    // secondly look in Doctrine annotations
-                } else {
-                    if ($typeDoctrine) {
-                        $resultData[$property]['type'] = $typeDoctrine;
-                    }
+                // secondly look in Doctrine annotations
+                } else if ( $typeDoctrine ) {
+                    $resultData[$property]['type'] = $typeDoctrine;
                 }
 
             }
@@ -272,14 +273,40 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface
     }
 
     /**
-     * Build default Menu base on existing app entities
+     * Return Sunshine available entities
+     *
+     * @return array
+     */
+    protected function getSunshineEntities()
+    {
+        $entities = [];
+        if (is_dir($this->entityConfigPath)) {
+            foreach (new DirectoryIterator($this->entityConfigPath) as $file) {
+                if($file->isDot()) continue;
+                $config  = Yaml::parse(file_get_contents($this->entityConfigPath. '/' . $file));
+                $baseName = $file->getBasename('.yml');
+                if (isset($config['tellaw_sunshine_admin_entities'][$baseName]['configuration']['class'])) {
+                    $class = $config['tellaw_sunshine_admin_entities'][$baseName]['configuration']['class'];
+                    if (class_exists($class)) {
+                        $entity = str_replace(self::ENTITIES_PATH, '', $class);
+                        $entities[] = $entity;
+                    }
+                }
+            }
+        }
+
+        return $entities;
+    }
+
+    /**
+     * Build default Menu based on configured app entities
      *
      * @return mixed
      */
     protected function buildDefaultMenuConfig()
     {
         $menuConfig['tellaw_sunshine_admin_entities']['menu'] = [];
-        foreach ($this->getAppEntities() as $entity) {
+        foreach ($this->getSunshineEntities() as $entity) {
             $menuConfig['tellaw_sunshine_admin_entities']['menu'][] = [
                 'identifier' => strtolower($entity),
                 'label' => $entity,
