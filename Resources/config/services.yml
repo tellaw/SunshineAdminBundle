@@ -7,7 +7,7 @@ services:
 
   sunshine.configuration-reader_service:
     class: Tellaw\SunshineAdminBundle\Services\ConfigurationReaderService
-    arguments: ["@doctrine.orm.entity_manager"]
+    arguments: ["@doctrine.orm.entity_manager", "%sunshine_entities_config_path%"]
 
   sunshine.crud_service:
     class: Tellaw\SunshineAdminBundle\Services\CrudService

@@ -2,6 +2,7 @@
 
 namespace Tellaw\SunshineAdminBundle\Services;
 
+use DirectoryIterator;
 use Tellaw\SunshineAdminBundle\Entity\Context;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
 use Tellaw\SunshineAdminBundle\Interfaces\ContextInterface;
@@ -12,11 +13,17 @@ use Symfony\Component\Yaml\Yaml;
 class ConfigurationReaderService implements ConfigurationReaderServiceInterface {
 
     const ENTITIES_PATH = "AppBundle\\Entity\\";
+    const SUNSHINE_ENTITIES_CONFIG_PATH = "config/sunshine/crud_entities";
     
     /**
      * @var EntityManagerInterface
      */
     private $em;
+
+    /**
+     * @var string
+     */
+    private $entityConfigPath;
     
     private $entityConfigurations = array();
 
@@ -31,9 +38,10 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface 
      * ConfigurationReaderService constructor.
      * @param EntityManagerInterface $em
      */
-    public function __construct($em)
+    public function __construct($em, $entityConfigPath)
     {
         $this->em = $em;
+        $this->entityConfigPath = $entityConfigPath;
     }
 
     /**
@@ -166,14 +174,40 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface 
     }
 
     /**
-     * Build default Menu base on existing app entities
+     * Return Sunshine available entities
+     *
+     * @return array
+     */
+    protected function getSunshineEntities()
+    {
+        $entities = [];
+        if (is_dir($this->entityConfigPath)) {
+            foreach (new DirectoryIterator($this->entityConfigPath) as $file) {
+                if($file->isDot()) continue;
+                $config  = Yaml::parse(file_get_contents($this->entityConfigPath. '/' . $file));
+                $baseName = $file->getBasename('.yml');
+                if (isset($config['tellaw_sunshine_admin_entities'][$baseName]['configuration']['class'])) {
+                    $class = $config['tellaw_sunshine_admin_entities'][$baseName]['configuration']['class'];
+                    if (class_exists($class)) {
+                        $entity = str_replace(self::ENTITIES_PATH, '', $class);
+                        $entities[] = $entity;
+                    }
+                }
+            }
+        }
+
+        return $entities;
+    }
+
+    /**
+     * Build default Menu based on configured app entities
      *
      * @return mixed
      */
     protected function buildDefaultMenuConfig()
     {
         $menuConfig['tellaw_sunshine_admin_entities']['menu'] = [];
-        foreach ($this->getAppEntities() as $entity) {
+        foreach ($this->getSunshineEntities() as $entity) {
             $menuConfig['tellaw_sunshine_admin_entities']['menu'][] = [
                 'identifier' => strtolower($entity),
                 'label' => $entity,
@@ -184,8 +218,7 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface 
                 ]
             ];
         }
-        
+
         return $menuConfig;
     }
-
 }
