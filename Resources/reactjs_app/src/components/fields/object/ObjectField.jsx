@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export default class StringField extends React.Component {
 
@@ -6,23 +6,27 @@ export default class StringField extends React.Component {
         super(props);
 
         this.state = {value: this.props.value};
-
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange ( event ) {
+    handleChange(event) {
         this.setState({value: event.target.value});
     }
 
-    render() {
+    componentDidMount() {
+        this.$node = $(this.refs.selectpicker);
+        this.$node.selectpicker({
+            size: 10
+        });
+    }
 
+
+    render() {
         return (
-            <select className="selectpicker">
-                <option>Mustard</option>
-                <option>Ketchup</option>
-                <option>Relish</option>
+            <select ref="selectpicker" className="selectpicker" data-live-search="true">
+                <option value={this.props.name}>{this.props.name}</option>
+                <option value="None">None</option>
             </select>
         );
     }
-
 }
