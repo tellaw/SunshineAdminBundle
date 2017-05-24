@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link, Redirect } from 'react-router-dom';
-import QueryString from 'query-string';
 import createBrowserHistory  from 'history/createBrowserHistory'
 const history = createBrowserHistory();
 
@@ -69,7 +68,7 @@ class MenuElement extends React.Component {
         } else if (element.type == "subMenu") {
             return (
                 <li className="nav-item">
-                    <a href="javascript:" className="nav-link nav-toggle">
+                    <a href="javascript:;" className="nav-link nav-toggle">
                         <i className="icon-puzzle"></i>
                         <span className="title">{this.props.element.label}</span>
                         <span className="arrow"></span>

@@ -11,6 +11,8 @@
   "dependencies": {
     "babel-loader": "^7.0.0",
     "react": "^15.5.4",
+    "react-bootstrap": "^0.31.0",
+    "react-bootstrap-select": "latest",
     "react-dom": "^15.5.4",
     "react-md-spinner": "^0.2.3",
     "redux-combine-actions": "^0.1.2",

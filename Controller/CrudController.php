@@ -17,6 +17,7 @@ use Tellaw\SunshineAdminBundle\Services\ConfigurationReaderService;
 class CrudController extends Controller
 {
     /**
+     * @Route("/crud/list/{entityName}/", name="sunshine_crud_list_default")
      * @Route("/crud/list/{entityName}/{pageStart}/{length}/{searchKey}/{filters}/{orderBy}/{orderWay}", name="sunshine_crud_list")
      * @Method({"GET", "POST"})
      */
@@ -81,7 +82,7 @@ class CrudController extends Controller
 
         /* @var $configurationReaderService ConfigurationReaderServiceInterface */
         $configurationReaderService = $this->get("sunshine.configuration-reader_service");
-        $headers = $configurationReaderService->getFinalConfigurationForAViewContext( $context, ConfigurationReaderService::$_VIEW_CONTEXT_FORM );
+        $headers = $configurationReaderService->getFinalConfigurationForAViewContext( $context, ConfigurationReaderService::VIEW_CONTEXT_FORM );
 
         /* @var $crudService CrudServiceInterface */
         if ( $targetId != null ) {
