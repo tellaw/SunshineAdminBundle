@@ -8,7 +8,25 @@ use Symfony\Component\Yaml\Yaml;
 
 class ContextService implements ContextServiceInterface {
 
+    /**
+     * @var array
+     */
     private $contexts = array();
+
+    /**
+     * @var string
+     */
+    private $rootDir;
+
+    /**
+     * ContextService constructor.
+     * @param $root_dir
+     */
+    public function __construct($root_dir)
+    {
+        $this->rootDir =  $root_dir.'/';
+    }
+
 
     public function getContext ( $contextEntity ) {
 
@@ -29,8 +47,8 @@ class ContextService implements ContextServiceInterface {
 
     private function getYmlContextEntity ( Context $context ) {
 
-        $configuration = Yaml::parse(file_get_contents('../app/config/sunshine/crud_entities/'.$context->getEntityName().'.yml'));
-        $ymlConfiguration = $configuration["tellaw_sunshine_admin_entities"][$context->getEntityName()][ConfigurationReaderService::$_VIEW_CONTEXT_CONFIGURATION];
+        $configuration = Yaml::parse(file_get_contents($this->rootDir.'../app/config/sunshine/crud_entities/'.$context->getEntityName().'.yml'));
+        $ymlConfiguration = $configuration["tellaw_sunshine_admin_entities"][$context->getEntityName()][ConfigurationReaderService::VIEW_CONTEXT_CONFIGURATION];
 
         if (array_key_exists( 'id',$ymlConfiguration  )) {
             $context->setIdentifier( $ymlConfiguration["id"] );

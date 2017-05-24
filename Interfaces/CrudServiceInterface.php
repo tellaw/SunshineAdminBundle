@@ -11,6 +11,5 @@ interface CrudServiceInterface {
 
     public function deleteEntity ( Context $context );
 
-    public function saveEntity ( Context $context, $formPost );
 
 }

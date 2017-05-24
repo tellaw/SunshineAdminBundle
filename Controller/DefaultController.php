@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
@@ -79,12 +80,25 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/app/page/{pageId}", name="sunshine_test",requirements={"pageId"=".+"})
+     * @Route("/app/{pageId}", name="sunshine_test",requirements={"pageId"=".+"})
      * @Method({"GET", "POST"})
      */
-    public function testAction()
+    public function reactAppAction( Request $request )
     {
-        return $this->render('TellawSunshineAdminBundle:Default:index.html.twig');
+
+        $path = $request->getUri();
+        $routingItems = explode("/", $path);
+
+        $valueOfBundleRoutingIs = "";
+
+        foreach ( $routingItems as $routingItem ) {
+            if ( $routingItem == "app" ) break;
+            $valueOfBundleRoutingIs = $routingItem;
+        }
+
+        return $this->render('TellawSunshineAdminBundle:Default:index.html.twig', array(
+            "bundlePrefix" => $valueOfBundleRoutingIs
+        ));
     }
 
 }

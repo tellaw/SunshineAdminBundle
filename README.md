@@ -25,14 +25,20 @@ For Developpement platofmr, [read this](Documentation/dev.md)
 
 ## Fields
 1. [String : Text Field](Documentation/data-types/string.md)
-2. Email
-3. Date
-4. Link
-5. Integer
-6. List
-7. Related Object
-8. Text Area
-9. Json Field
-10. Html Field
+2. ReadOnly String : Text Field
+3. Hidden Field
+4. Email
+5. Date
+6. Datetime
+7. Link
+8. Integer
+9. Float
+10. List (Object relation 1 to N)
+11. Related Object
+12. Text Area
+13. Json Field
+14. Html Field
+15. List
+16. Filtered List
 
 

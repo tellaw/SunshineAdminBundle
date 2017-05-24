@@ -37,8 +37,10 @@
     <!-- END THEME LAYOUT STYLES -->
 
     <script type="text/javascript">
-        var baseUrl = "http://local.dev/web/";
-        var baseApp = baseUrl + "app.php/admin/";
+        // Url  : {{ app.request.getBaseURL() }} - {{ app.request.getSchemeAndHttpHost() }} - {{ app.request.getBasePath() }} - {{ bundlePrefix }}
+        var basePath = '{{ app.request.getBasePath() }}/app_dev.php/{{ bundlePrefix }}/app/page/';
+        var baseUrl = "{{ app.request.getSchemeAndHttpHost() }}{{ app.request.getBasePath() }}/";
+        var baseApp = baseUrl + "app_dev.php/{{ bundlePrefix }}/";
     </script>
 
     <link rel="shortcut icon" href="favicon.ico" /> </head>
