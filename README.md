@@ -29,12 +29,16 @@ For Developpement platofmr, [read this](Documentation/dev.md)
 3. Hidden Field
 4. Email
 5. Date
-6. Link
-7. Integer
-8. List
-9. Related Object
-10. Text Area
-11. Json Field
-12. Html Field
+6. Datetime
+7. Link
+8. Integer
+9. Float
+10. List (Object relation 1 to N)
+11. Related Object
+12. Text Area
+13. Json Field
+14. Html Field
+15. List
+16. Filtered List
 
 

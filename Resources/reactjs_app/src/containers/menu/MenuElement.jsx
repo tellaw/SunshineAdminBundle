@@ -8,7 +8,9 @@ const history = createBrowserHistory();
 
 import MenuElementChildren from '../../components/menu/MenuElementChildren.jsx';
 import { fetchPage } from '../../actions/action_page.jsx';
+import { resetCrudList } from '../../actions/action_crud_list.jsx';
 import { fetchList } from '../../actions/action_crud_list.jsx';
+import { contextUpdate } from '../../actions/action_context.jsx';
 
 class MenuElement extends React.Component {
 
@@ -32,18 +34,23 @@ class MenuElement extends React.Component {
     }
 
     handleClick(e) {
-        e.preventDefault();
-        var element = this.props.element;
-        console.log('sidebar fetch page');
-        console.log(element.parameters.id);
-        this.props.fetchPage( element.parameters.id );
-        console.log('sidebar fetch list');
-        // Get Query String parameter for entity
-        var queryString = QueryString.parse(location.search) ;
+
+        //entityName, targetId, mode, pageId
+        var entityName  = this.props.element.parameters.entity;
+        var targetId    = "0";
+        var pageId      = this.props.element.parameters.id;
+        var editMode    = "0";
+
+        this.props.contextUpdate ( entityName, targetId, editMode, pageId );
+        this.props.resetCrudList();
+        this.props.fetchPage( pageId );
+
         // Fteching dataList
-        this.props.fetchList(queryString.entity);
-        console.log('query string : ' + queryString.entity);
-        history.push(basePath + element.parameters.id + '?entity=' + element.parameters.entity);
+        this.props.fetchList(entityName);
+
+        var currentLocation = basePath + pageId +"/" + entityName +"/0/" + targetId;
+        history.push(currentLocation);
+
     }
 
     /**
@@ -95,7 +102,11 @@ class MenuElement extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchPage, fetchList }, dispatch);
+    return bindActionCreators({ fetchPage, fetchList, resetCrudList, contextUpdate }, dispatch);
+}
+
+function mapStateToProps({ context }) {
+    return { context };
 }
 
 export default connect(null, mapDispatchToProps)(MenuElement);

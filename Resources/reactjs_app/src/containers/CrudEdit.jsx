@@ -1,45 +1,36 @@
 import React from 'react';
 import serialize from 'form-serialize';
-import QueryString from 'query-string';
+
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux';
 
-import { fetchId } from '../actions/action_crud_edit.jsx';
-import { postForm } from '../actions/action_crud_edit.jsx';
+import MDSpinner from "react-md-spinner";
 
-import FormWidgetFactory from '../components/crud_edit/FormWidgetFactory.jsx';
+import createBrowserHistory  from 'history/createBrowserHistory'
+const history = createBrowserHistory();
+
+import { postForm } from '../actions/action_crud_edit.jsx';
+import { contextUpdate } from '../actions/action_context.jsx';
+
+import FormWidgetFactory from './crud_edit/FormWidgetFactory.jsx';
 
 class CrudEdit extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {isToggleOn: true};
 
         // This binding is necessary to make `this` work in the callback
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    }
-
-    componentWillMount() {
-        // Get Query String parameter for entity
-        var queryString = QueryString.parse(location.search) ;
-
-        if ( queryString.targetId != undefined ) {
-            // Run Ajax request
-            this.props.fetchId(queryString.entity, queryString.targetId);
-        }
-
+        this.handlerReturnToList = this.handlerReturnToList.bind(this);
     }
 
     handleFormSubmit (event) {
         event.preventDefault();
 
-        var queryString = QueryString.parse(location.search) ;
-
         var form = document.querySelector('#formCrudObj');
         var obj = serialize(form, { hash: true });
 
-        this.props.postForm( queryString.entity, queryString.targetId, obj )
+        this.props.postForm( this.props.query.entity, this.props.query.targetId, obj )
         .then(function(response) {
             console.log("Response axios : ",response);
 
@@ -47,18 +38,26 @@ class CrudEdit extends React.Component {
             console.log(error);
         });
 
-        //this.context.router.push('http://www.google.fr');
+    }
 
-        //console.log (response);
+    handlerReturnToList ( e ) {
+
+        //entityName, targetId, mode, pageId
+        var entityName  = this.props.context.entityName;
+        var targetId    = this.props.context.targetId;
+        var pageId      = this.props.context.pageId;
+
+        this.props.contextUpdate ( entityName, targetId, "0", pageId );
+
+        var currentLocation = basePath + pageId +"/" +entityName+"/0/"+targetId;
+        history.push(currentLocation);
     }
 
     render()
     {
 
-        if (this.props.crudEdit == undefined) { return <div></div> }
-
-        var queryString = QueryString.parse(location.search) ;
-        let currentLocation = location.pathname + "?entity="+queryString.entity;
+        if (this.props.crudEdit == null || this.props.crudEdit.object == null) { return (<div><MDSpinner /></div>) }
+        console.log ( "Rendering", this.props.crudEdit.object );
 
         return (
 
@@ -66,10 +65,12 @@ class CrudEdit extends React.Component {
 
                 <div className="portlet light bordered">
                     <form id="formCrudObj" className="form-horizontal">
+
                         {Object.entries(this.props.crudEdit.headers).map((item, index) => {
+                            var uniqId = this.props.context.targetId + "-" + item[0];
                             return (
-                                <div className="form-group form-md-line-input" key={index}>
-                                    <FormWidgetFactory headers={this.props.crudEdit.headers} data={this.props.crudEdit.object} index={index} item={item} />
+                                <div className="form-group form-md-line-input" key={uniqId}>
+                                    <FormWidgetFactory uniqKey={uniqId} itemName={item[0]} />
                                 </div>
                             )
                         })}
@@ -81,7 +82,7 @@ class CrudEdit extends React.Component {
                                         <span className="ladda-label">
                                         <i className="icon-magnifier"></i> Enregistrer</span>
                                         <span className="ladda-spinner"></span></button>
-                                        <span style={{ marginLeft: '15px' }}><Link to={currentLocation}>Retour à la liste</Link></span>
+                                        <span style={{ marginLeft: '15px' }}><a onClick={this.handlerReturnToList}>Retour à la liste</a></span>
                                 </div>
                             </div>
                         </div>
@@ -96,13 +97,12 @@ class CrudEdit extends React.Component {
 
 }
 
-
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchId, postForm }, dispatch);
+    return bindActionCreators({ postForm, contextUpdate }, dispatch);
 }
 
-function mapStateToProps({ crudEdit }) {
-    return { crudEdit };
+function mapStateToProps({ crudEdit, context }) {
+    return { crudEdit, context };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CrudEdit);

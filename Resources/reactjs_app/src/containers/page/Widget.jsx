@@ -1,12 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
-import QueryString from 'query-string';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import DemoWidget from '../widgets/DemoWidget.jsx';
-import CrudList from '../../containers/CrudList.jsx';
-import CrudEdit from '../../containers/CrudEdit.jsx';
+import DemoWidget from '../../components/widgets/DemoWidget.jsx';
+import CrudList from '../CrudList.jsx';
+import CrudEdit from '../CrudEdit.jsx';
 
-export default class Widget extends React.Component {
+class Widget extends React.Component {
 
     getClasses () {
         var size = this.props.widget.columns;
@@ -26,16 +27,13 @@ export default class Widget extends React.Component {
 
         var widgetType = this.props.widget.type;
 
-        // Get Query String parameter for entity
-        var queryString = QueryString.parse(location.search) ;
-
         if ( widgetType == "demo") {
             return <DemoWidget index={this.props.index} widget={this.props.widget} />
         } else if ( widgetType == "crudList") {
-            if (queryString.editMode != undefined) {
-                return <CrudEdit index={this.props.index} widget={this.props.widget} />
+            if (this.props.context.mode == "1") {
+                return <CrudEdit index={this.props.index} widget={this.props.widget} query={this.props.query} />
             } else {
-                return <CrudList index={this.props.index} widget={this.props.widget} />
+                return <CrudList index={this.props.index} widget={this.props.widget} query={this.props.query} />
             }
 
         }
@@ -50,3 +48,9 @@ export default class Widget extends React.Component {
     }
 
 }
+
+function mapStateToProps({ context }) {
+    return { context };
+}
+
+export default connect(mapStateToProps, null)(Widget);
