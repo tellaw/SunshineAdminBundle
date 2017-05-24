@@ -8,16 +8,28 @@ export default class DatetimeField extends React.Component {
         this.state = {value: this.props.value};
     }
 
+    componentDidMount() {
+        console.log ("DateTimePicker",$(this.refs.datetimepicker));
+        this.$node = $(this.refs.datetimepicker);
+
+        this.$node.datetimepicker(
+
+        );
+
+    }
+
+    componentWillUnmount() {
+        // Clean up the mess when the component unmounts
+        this.$node.datetimepicker('destroy');
+    }
+
     render() {
 
         return (
-            <div className="input-group" id="defaultrange">
-                <input type="text" className="form-control" name={this.props.name} id={this.props.name} value={this.state.value} />
-                <span className="input-group-btn">
-                    <button className="btn default date-range-toggle" type="button">
-                        <i className="fa fa-calendar"></i>
-                    </button>
-                </span>
+            <div className="col-md-10" id="defaultrange">
+                <div className="input-group date form_datetime bs-datetime">
+                    <input type="text" ref="datetimepicker" readOnly="true" className="form-control" name={this.props.name} id={this.props.name} value="15/05/2017"/>
+                </div>
             </div>
 
         );

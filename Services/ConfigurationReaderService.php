@@ -150,7 +150,7 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface 
             }
         }
 
-        $resultData = $this->getDoctrineEntityTypeAnnotation( $context, $resultData );
+        $resultData = $this->getEntityTypeAnnotation( $context, $resultData );
 
         return $resultData;
 
@@ -162,7 +162,7 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface 
      * @param Context $context
      * @param $resultData
      */
-    protected function getDoctrineEntityTypeAnnotation ( Context $context, $resultData ) {
+    protected function getEntityTypeAnnotation ( Context $context, $resultData ) {
 
         foreach ( $resultData as $property => $datas ) {
 

@@ -20,7 +20,13 @@ class CrudController extends Controller
      * @Route("/crud/list/{entityName}/{pageStart}/{length}/{searchKey}/{filters}/{orderBy}/{orderWay}", name="sunshine_crud_list")
      * @Method({"GET", "POST"})
      */
-    public function listAction( $entityName, $pageStart = 0, $length = 30, $searchKey = '', $filters = '', $orderBy = '', $orderWay = 'ASC')
+    public function listAction( $entityName,
+                                $pageStart = 0,
+                                $length = 30,
+                                $searchKey = '',
+                                $filters = '',
+                                $orderBy = '',
+                                $orderWay = 'ASC' )
     {
 
         // Retrieve context for entity
