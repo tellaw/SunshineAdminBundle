@@ -12,9 +12,6 @@ class Sidebar extends React.Component {
         this.props.fetchMenu();
     }
 
-    componentDidMount() {
-        Layout.init();
-    }
     render() {
 
         if (this.props.menu == null) {return (<div></div>)}
