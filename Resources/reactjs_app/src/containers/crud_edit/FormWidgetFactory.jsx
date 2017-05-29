@@ -5,9 +5,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import StringField from '../../components/fields/string/StringField.jsx';
+import FloatField from '../../components/fields/float/FloatField.jsx';
+import IntegerField from '../../components/fields/integer/IntegerField.jsx';
 import ReadonlyField from '../../components/fields/readonly/ReadonlyField.jsx';
 import HiddenField from '../../components/fields/hidden/HiddenField.jsx';
 import DatetimeField from '../../components/fields/datetime/DatetimeField.jsx';
+import ObjectField from '../../components/fields/object/ObjectField.jsx';
 
 class FormWidgetFactory extends React.Component {
 
@@ -52,12 +55,19 @@ class FormWidgetFactory extends React.Component {
 
             case "datetime":
                 return (<DatetimeField name={itemName} value={this.props.crudEdit.object[itemName]}/>);
+
+            case "float":
+                return (<FloatField name={itemName} value={this.props.crudEdit.object[itemName]}/>);
+
+            case "object":
+                return (<ObjectField name={itemName} value={this.props.crudEdit.object[itemName]}/>);
+
         }
 
     }
 
     getPlaceHolder ( element ) {
-        
+
     }
 
     render() {

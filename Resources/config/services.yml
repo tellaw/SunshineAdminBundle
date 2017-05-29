@@ -4,10 +4,11 @@ services:
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
   sunshine.context_service:
     class: Tellaw\SunshineAdminBundle\Services\ContextService
+    arguments: ["%kernel.root_dir%"]
 
   sunshine.configuration-reader_service:
     class: Tellaw\SunshineAdminBundle\Services\ConfigurationReaderService
-    arguments: ["@doctrine.orm.entity_manager", "%sunshine_entities_config_path%"]
+    arguments: ["@doctrine.orm.entity_manager", "%kernel.root_dir%"]
 
   sunshine.crud_service:
     class: Tellaw\SunshineAdminBundle\Services\CrudService

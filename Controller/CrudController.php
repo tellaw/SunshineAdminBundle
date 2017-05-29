@@ -17,10 +17,17 @@ use Tellaw\SunshineAdminBundle\Services\ConfigurationReaderService;
 class CrudController extends Controller
 {
     /**
+     * @Route("/crud/list/{entityName}/", name="sunshine_crud_list_default")
      * @Route("/crud/list/{entityName}/{pageStart}/{length}/{searchKey}/{filters}/{orderBy}/{orderWay}", name="sunshine_crud_list")
      * @Method({"GET", "POST"})
      */
-    public function listAction( $entityName, $pageStart = 0, $length = 30, $searchKey = '', $filters = '', $orderBy = '', $orderWay = 'ASC')
+    public function listAction( $entityName,
+                                $pageStart = 0,
+                                $length = 30,
+                                $searchKey = '',
+                                $filters = '',
+                                $orderBy = '',
+                                $orderWay = 'ASC' )
     {
 
         // Retrieve context for entity
@@ -75,7 +82,7 @@ class CrudController extends Controller
 
         /* @var $configurationReaderService ConfigurationReaderServiceInterface */
         $configurationReaderService = $this->get("sunshine.configuration-reader_service");
-        $headers = $configurationReaderService->getFinalConfigurationForAViewContext( $context, ConfigurationReaderService::$_VIEW_CONTEXT_FORM );
+        $headers = $configurationReaderService->getFinalConfigurationForAViewContext( $context, ConfigurationReaderService::VIEW_CONTEXT_FORM );
 
         /* @var $crudService CrudServiceInterface */
         if ( $targetId != null ) {
