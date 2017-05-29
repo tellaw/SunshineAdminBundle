@@ -13,21 +13,59 @@ class CrudList extends React.Component {
     render()
     {
 
-        return (
-            <div className="portlet box red">
+        return(
+            <div className="portlet light portlet-fit portlet-datatable bordered">
                 <div className="portlet-title">
                     <div className="caption">
-                        <i className="fa fa-picture"></i>{this.props.widget.title}</div>
-                    <div className="tools">
-                        <a href="javascript:;" className="collapse" data-original-title="" title=""> </a>
-                        <a href="#portlet-config" data-toggle="modal" className="config" data-original-title="" title=""> </a>
-                        <a href="javascript:;" className="reload" data-original-title="" title=""> </a>
-                        <a href="javascript:;" className="remove" data-original-title="" title=""> </a>
+                        <i className="icon-settings font-dark"></i>
+                        <span className="caption-subject font-dark sbold uppercase">Ajax Datatable</span>
+                    </div>
+                    <div className="actions">
+                        <div className="btn-group btn-group-devided" data-toggle="buttons">
+                            <label className="btn btn-transparent grey-salsa btn-outline btn-circle btn-sm active">
+                                <input type="radio" name="options" className="toggle" id="option1" />Actions</label>
+                            <label className="btn btn-transparent grey-salsa btn-outline btn-circle btn-sm">
+                                <input type="radio" name="options" className="toggle" id="option2" />Settings</label>
+                        </div>
+                        <div className="btn-group">
+                            <a className="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
+                                <i className="fa fa-share"></i>
+                                <span className="hidden-xs"> Tools </span>
+                                <i className="fa fa-angle-down"></i>
+                            </a>
+                            <ul className="dropdown-menu pull-right">
+                                <li>
+                                    <a href="javascript:;"> Export to Excel </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;"> Export to CSV </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;"> Export to XML </a>
+                                </li>
+                                <li className="divider"> </li>
+                                <li>
+                                    <a href="javascript:;"> Print Invoices </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div className="portlet-body">
-                    <div className="table-scrollable">
-                        <table className="table table-condensed table-hover">
+                    <div className="table-container">
+                        <div className="table-actions-wrapper">
+                            <span> </span>
+                            <select className="table-group-action-input form-control input-inline input-small input-sm">
+                                <option value="">Select...</option>
+                                <option value="Cancel">Cancel</option>
+                                <option value="Cancel">Hold</option>
+                                <option value="Cancel">On Hold</option>
+                                <option value="Close">Close</option>
+                            </select>
+                            <button className="btn btn-sm green table-group-action-submit">
+                                <i className="fa fa-check"></i> Submit</button>
+                        </div>
+                        <table className="table table-striped table-bordered table-hover table-checkable" id="datatable_ajax">
                             <CrudListHead />
                             <CrudListBody />
                         </table>

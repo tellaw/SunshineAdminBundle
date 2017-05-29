@@ -71,31 +71,24 @@ class CrudListBody extends React.Component {
 
         if (this.props.crudList == null) {return (<tbody><tr><td></td></tr></tbody>)}
 
-        return (
+        return(
             <tbody>
-            {this.props.crudList.list.map((item, index) => {
-                return (<tr key={index}>
-                    {Object.entries(item).map((item, index) => {
-
-
-
-                        if (index != 0) {
-                            return  (
-                                <td key={index}>{this.getItemRenderByType( this.props.crudList.headers[item[0]].type, item[1]  )}</td>
-                                    )
-                        } else {
-                            return  (
-                                <td key={index}>
-                                    <a onClick={this.handleClick.bind(this, item[1])}>
-                                        {this.getItemRenderByType( this.props.crudList.headers[item[0]].type, item[1]  )}
-                                    </a>
-                                </td>
-                            )
-                        }
-                    })}
-                </tr>)
-            })}
-            </tbody>
+                {this.props.crudList.list.map((item, index) => {
+                    return(
+                        <tr key={index} role="row" className="odd">
+                            <td><label className="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                <input name="id[]" type="checkbox" className="checkboxes" value="1" /><span></span></label>
+                            </td>
+                            {Object.entries(item).map((item, index) => {
+                                return  (
+                                    <td key={index}>{this.getItemRenderByType( this.props.crudList.headers[item[0]].type, item[1]  )}</td>
+                                )
+                            })}
+                            <td><a onClick={this.handleClick.bind(this, item.id)} className="btn btn-sm btn-outline grey-salsa"><i className="fa fa-search"></i> View</a></td>
+                        </tr>
+                    )
+                })}
+            </tbody>    
         );
     }
 
