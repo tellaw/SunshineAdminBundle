@@ -8,6 +8,7 @@ import { fetchList } from '../actions/action_crud_list.jsx';
 import CrudListHead from './crud_list/CrudListHead.jsx';
 import CrudListBody from './crud_list/CrudListBody.jsx';
 import CrudListSearch from './crud_list/CrudListSearch.jsx';
+import CrudListPagination from './crud_list/CrudListPagination.jsx';
 
 class CrudList extends React.Component {
 
@@ -54,19 +55,7 @@ class CrudList extends React.Component {
                 <div className="portlet-body">
                     <div className="table-container">
                         <div className="col-md-8 col-sm-12">
-                            <div className="dataTables_paginate paging_bootstrap_extended" id="datatable_ajax_paginate">
-                                <div className="pagination-panel"> Page <a href="#" className="btn btn-sm default prev">
-                                    <i className="fa fa-angle-left"></i></a>
-                                    <input type="text" className="pagination-panel-input form-control input-sm input-inline input-mini" maxLength="5" style={{textAlign:"center", margin: "0 5px"}} />
-                                        <a href="#" className="btn btn-sm default next disabled"><i className="fa fa-angle-right"></i></a> of <span className="pagination-panel-total">2</span>
-                                </div>
-                            </div>
-                            <div className="dataTables_length" id="datatable_ajax_length">
-                                <label><span className="seperator">|</span>View <select name="datatable_ajax_length" aria-controls="datatable_ajax" className="form-control input-xs input-sm input-inline"><option value="10">10</option><option value="20">20</option><option value="50">50</option><option value="100">100</option><option value="150">150</option><option value="-1">All</option></select> records</label>
-                            </div>
-                            <div className="dataTables_info" id="datatable_ajax_info" role="status" aria-live="polite">
-                                <span className="seperator">|</span>Found total 178 records
-                            </div>
+                            <CrudListPagination context={this.props.crudList} />
                         </div>
                         <CrudListSearch />
                         <div className="table-actions-wrapper">

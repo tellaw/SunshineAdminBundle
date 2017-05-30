@@ -3,6 +3,7 @@
 namespace Tellaw\SunshineAdminBundle\Services;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Tellaw\SunshineAdminBundle\Entity\Context;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
 use Tellaw\SunshineAdminBundle\Interfaces\CrudServiceInterface;
@@ -43,7 +44,7 @@ class CrudService implements CrudServiceInterface
      * @param $configuration
      * @return array
      */
-    public function getEntityList(Context $context, $configuration)
+    public function getEntityList(Context $context, $configuration, $paginate = true)
     {
         $fields = [];
         $joins = [];
@@ -88,10 +89,12 @@ class CrudService implements CrudServiceInterface
         }
 
         // PREPARE QUERY FOR PAGINATION AND ORDER
-        $qb->setFirstResult($offset);
-        $qb->setMaxResults($limit);
-        if ($context->getOrderBy()) {
+        if ($paginate) {
+            $qb->setFirstResult($offset);
+            $qb->setMaxResults($limit);
+        }
 
+        if ($context->getOrderBy()) {
             $qb->orderBy($context->getOrderBy(), $context->getOrderWay());
         }
 
@@ -128,7 +131,19 @@ class CrudService implements CrudServiceInterface
         $result = $qb->getQuery()->getResult();
 
         return $result;
+    }
 
+    /**
+     * Nombre d'éléments total (hors paginaton)
+     *
+     * @param Context $context
+     * @param array $configuration
+     * 
+     * @return int
+     */
+    public function getEntityListTotalCount(Context $context, $configuration)
+    {
+        return count($this->getEntityList($context, $configuration, false));
     }
 
     /**

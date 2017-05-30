@@ -16,6 +16,12 @@ class Context {
     private $entityName;
     private $startPage;
     private $nbItemPerPage;
+
+    /**
+     * @var int
+     */
+    private $totalCount;
+
     private $identifier;
     private $className;
     private $searchKey;
@@ -216,6 +222,22 @@ class Context {
     public function setTargetId($targetId)
     {
         $this->targetId = $targetId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalCount()
+    {
+        return $this->totalCount;
+    }
+
+    /**
+     * @param int $totalCount
+     */
+    public function setTotalCount($totalCount)
+    {
+        $this->totalCount = $totalCount;
     }
 
 }

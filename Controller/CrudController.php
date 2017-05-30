@@ -58,7 +58,9 @@ class CrudController extends Controller
         // get using the service the list of items
         /* @var $crudService CrudServiceInterface */
         $crudService = $this->get("sunshine.crud_service");
-        $entityList = $crudService->getEntityList( $context, $headers );
+        $entityList = $crudService->getEntityList($context, $headers);
+        $totalCount = count($entityList) < $length ? count($entityList) : $crudService->getEntityListTotalCount($context, $headers);
+        $context->setTotalCount($totalCount);
 
         // Initiate Response
         $response = array ( "headers" => $headers, "context" => $context, "list" => $entityList);

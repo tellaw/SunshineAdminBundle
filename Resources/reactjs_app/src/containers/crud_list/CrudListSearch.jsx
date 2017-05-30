@@ -14,7 +14,6 @@ class CrudListSearch extends React.Component {
     }
 
     handleSearch() {
-        //this.props.fetchList()
         console.log(this.props.context);
         console.log(this.props.crudList.context);
         var entityName = this.props.crudList.context.entityName;
