@@ -10,9 +10,13 @@ export function resetCrudList(  ) {
     };
 }
 
-export function fetchList( entityName, pageStart, length, searchKey, filters, orderBy, orderWay ) {
-    const url = baseApp + 'crud/list/'+entityName;
-    const request = axios.get(url);
+export function fetchList( entityName, pageStart=0, length=10, searchKey='', filters=null, orderBy, orderWay ) {
+    var url = baseApp + 'crud/list/'+entityName+'/'+pageStart+'/'+length+'?searchKey='+searchKey;
+    if (filters != null) {
+        url += '&'+filters;
+    }
+
+    const request = axios.get(encodeURI(url));
 
     return {
         type: FETCH_CRUD_LIST,

@@ -18,17 +18,24 @@ class CrudController extends Controller
 {
     /**
      * @Route("/crud/list/{entityName}/", name="sunshine_crud_list_default")
-     * @Route("/crud/list/{entityName}/{pageStart}/{length}/{searchKey}/{filters}/{orderBy}/{orderWay}", name="sunshine_crud_list")
+     * @Route("/crud/list/{entityName}/{pageStart}/{length}", name="sunshine_crud_list")
      * @Method({"GET", "POST"})
+     *
+     * @param string $entityName
+     * @param int $pageStart
+     * @param int $length
+     * @param Request $request
+     * 
+     * @return Response
+     *
      */
-    public function listAction( $entityName,
-                                $pageStart = 0,
-                                $length = 30,
-                                $searchKey = '',
-                                $filters = '',
-                                $orderBy = '',
-                                $orderWay = 'ASC' )
+    public function listAction( $entityName, $pageStart = 0, $length = 30, Request $request)
     {
+        
+        $searchKey = $request->query->get('searchKey', '');
+        $filters = $request->query->get('filters', []);
+        $orderBy = $request->query->get('orderBy');
+        $orderWay = $request->query->get('orderWay', 'ASC');
 
         // Retrieve context for entity
         /* @var $contextService ContextServiceInterface */

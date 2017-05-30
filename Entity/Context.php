@@ -157,27 +157,11 @@ class Context {
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     public function getFilters()
     {
-
-        $filters = array();
-        // filters may have the following pattern :
-        // field1$test|field2$test2
-
-        if ($this->filters != "") {
-            $filtersStr = explode ("|", $this->filters);
-
-            foreach ($filtersStr as $str) {
-                $value = explode ("$",$str);
-                $filter = new Filter();
-                $filter->setKey($value[0]);
-                $filter->setValue($value[1]);
-                $filters[]=$filter;
-            }
-        }
-        return $filters;
+        return $this->filters;
     }
 
     /**

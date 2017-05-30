@@ -113,6 +113,15 @@ class CrudService implements CrudServiceInterface
             $qb->setParameter('search', "%{$context->getSearchKey()}%");
         }
 
+        // Filters
+        $filters = $context->getFilters();
+        if (!empty($filters)) {
+            foreach ($filters as $key => $value) {
+                $qb->andWhere($alias . '.' . $key . ' LIKE :filterValue');
+                $qb->setParameter('filterValue', "%{$value}%");
+            }
+        }
+
         $context->setDql($qb->getDQL());
 
         // GET RESULT

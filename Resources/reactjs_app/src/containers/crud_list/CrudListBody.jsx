@@ -5,8 +5,6 @@ import { bindActionCreators } from 'redux';
 import createBrowserHistory  from 'history/createBrowserHistory'
 const history = createBrowserHistory();
 
-import QueryString from 'query-string';
-
 import { fetchCrudEdit } from '../../actions/action_crud_edit.jsx';
 import { resetCrudEdit } from '../../actions/action_crud_edit.jsx';
 import { contextUpdate } from '../../actions/action_context.jsx';
@@ -81,14 +79,14 @@ class CrudListBody extends React.Component {
                             </td>
                             {Object.entries(item).map((item, index) => {
                                 return  (
-                                    <td key={index}>{this.getItemRenderByType( this.props.crudList.headers[item[0]].type, item[1]  )}</td>
+                                    <td key={index}>{this.getItemRenderByType(this.props.crudList.headers[item[0]].type, item[1])}</td>
                                 )
                             })}
                             <td><a onClick={this.handleClick.bind(this, item.id)} className="btn btn-sm btn-outline grey-salsa"><i className="fa fa-search"></i> View</a></td>
                         </tr>
                     )
                 })}
-            </tbody>    
+            </tbody>
         );
     }
 
