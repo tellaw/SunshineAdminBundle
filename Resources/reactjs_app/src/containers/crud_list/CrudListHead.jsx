@@ -37,7 +37,6 @@ class CrudListHead extends React.Component {
             </thead>
         );
     }
-
 }
 
 function mapStateToProps({ crudList }) {

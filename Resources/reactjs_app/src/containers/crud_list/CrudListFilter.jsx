@@ -18,7 +18,7 @@ class CrudListFilter extends React.Component {
         console.log(this.props.crudList.context);
         var entityName = this.props.crudList.context.entityName;
         var filterParam = 'filters['+this.props.item[0]+']='+this.state.value;
-        this.props.fetchList(entityName, 0, 10, '', filterParam);
+        this.props.fetchList(entityName, 1, 1, '', filterParam);
     }
 
     handleChange ( event ) {

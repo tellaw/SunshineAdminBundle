@@ -18,7 +18,7 @@ class CrudListSearch extends React.Component {
         console.log(this.props.crudList.context);
         var entityName = this.props.crudList.context.entityName;
         var keyword = this.state.value;
-        this.props.fetchList(entityName, 0, 10, keyword);
+        this.props.fetchList(entityName, 1, 1, keyword);
     }
 
     handleChange ( event ) {

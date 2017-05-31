@@ -50,13 +50,12 @@ class CrudService implements CrudServiceInterface
         $joins = [];
         $qb = $this->em->createQueryBuilder();
 
-
         // ALIAS OF SEARCHED ENTITY
         $alias = 'l';
 
         // PAGINATION INFOS
-        $offset = $context->getStartPage() * $context->getNbItemPerPage();
-        $limit = $context->getNbItemPerPage();
+        $limit = $context->getPagination()['limit'];
+        $offset = ($context->getPagination()['page']-1) * $limit;
 
         // GET COLUMNS AS FIELDS
         foreach ($configuration as $key => $item) {

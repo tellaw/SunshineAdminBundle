@@ -29,7 +29,7 @@ class CrudController extends Controller
      * @return Response
      *
      */
-    public function listAction( $entityName, $pageStart = 0, $length = 30, Request $request)
+    public function listAction( $entityName, $pageStart = 1, $length = 30, Request $request)
     {
         
         $searchKey = $request->query->get('searchKey', '');
@@ -41,26 +41,19 @@ class CrudController extends Controller
         /* @var $contextService ContextServiceInterface */
         $contextService = $this->get("sunshine.context_service");
         /* @var $context ContextInterface */
-        $context = $contextService->getContext( $entityName );
-
-        /** Fill context with datas */
-        $context->setNbItemPerPage( $length );
-        $context->setStartPage( $pageStart );
-        $context->setSearchKey( $searchKey );
-        $context->setFilters( $filters );
-        $context->setOrderBy( $orderBy );
-        $context->setOrderWay( $orderWay );
+        $context = $contextService->buildEntityListContext($entityName, $length, $pageStart, $searchKey, $filters, $orderBy, $orderWay);
 
         /* @var $configurationReaderService ConfigurationReaderServiceInterface */
         $configurationReaderService = $this->get("sunshine.configuration-reader_service");
-        $headers = $configurationReaderService->getHeaderForLists( $context );
+        $headers = $configurationReaderService->getHeaderForLists($context);
 
         // get using the service the list of items
         /* @var $crudService CrudServiceInterface */
         $crudService = $this->get("sunshine.crud_service");
         $entityList = $crudService->getEntityList($context, $headers);
         $totalCount = count($entityList) < $length ? count($entityList) : $crudService->getEntityListTotalCount($context, $headers);
-        $context->setTotalCount($totalCount);
+        //$context->setTotalCount($totalCount);
+        $context->setPagination($pageStart, $length, $totalCount);
 
         // Initiate Response
         $response = array ( "headers" => $headers, "context" => $context, "list" => $entityList);

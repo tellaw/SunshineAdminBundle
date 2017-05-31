@@ -52,11 +52,9 @@ class CrudList extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="portlet-body">
+                <div className="portlet-body dataTables_wrapper dataTables_extended_wrapper">
                     <div className="table-container">
-                        <div className="col-md-8 col-sm-12">
-                            <CrudListPagination context={this.props.crudList} />
-                        </div>
+                        <CrudListPagination context={this.props.crudList} />
                         <CrudListSearch />
                         <div className="table-actions-wrapper">
                             <span> </span>

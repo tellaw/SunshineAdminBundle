@@ -18,6 +18,11 @@ class Context {
     private $nbItemPerPage;
 
     /**
+     * @var array
+     */
+    private $pagination;
+
+    /**
      * @var int
      */
     private $totalCount;
@@ -117,38 +122,6 @@ class Context {
     /**
      * @return mixed
      */
-    public function getStartPage()
-    {
-        return $this->startPage;
-    }
-
-    /**
-     * @param mixed $startPage
-     */
-    public function setStartPage($startPage)
-    {
-        $this->startPage = $startPage;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNbItemPerPage()
-    {
-        return $this->nbItemPerPage;
-    }
-
-    /**
-     * @param mixed $nbItemPerPage
-     */
-    public function setNbItemPerPage($nbItemPerPage)
-    {
-        $this->nbItemPerPage = $nbItemPerPage;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getSearchKey()
     {
         return $this->searchKey;
@@ -225,19 +198,28 @@ class Context {
     }
 
     /**
-     * @return int
+     * @param $page
+     * @param $limit
+     * @param $totalCount
      */
-    public function getTotalCount()
+    public function setPagination($page, $limit, $totalCount=null)
     {
-        return $this->totalCount;
+        $this->pagination = [
+            'page' => $page,
+            'limit' => $limit
+        ];
+        
+        if (!is_null($totalCount)) {
+            $this->pagination['totalCount'] = $totalCount;
+            $this->pagination['totalPages'] = $totalCount <= $limit ? 1 : $totalCount/$limit;
+        }
     }
 
     /**
-     * @param int $totalCount
+     * @return array
      */
-    public function setTotalCount($totalCount)
+    public function getPagination()
     {
-        $this->totalCount = $totalCount;
+        return $this->pagination;
     }
-
 }
