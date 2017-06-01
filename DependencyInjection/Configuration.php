@@ -20,10 +20,189 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('tellaw_sunshine_admin');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->append($this->addEntitiesNode())
+                ->append($this->addMenuNode())
+                ->append($this->addPagesNode())
+            ->end();
 
         return $treeBuilder;
+    }
+
+    /**
+     * Définition du bloc de configuration "Entities"
+     * @return \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition|\Symfony\Component\Config\Definition\Builder\NodeDefinition
+     */
+    public function addEntitiesNode()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('entities');
+
+        $node
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+                ->children()
+                    ->arrayNode('configuration')
+                        ->children()
+                            ->scalarNode('id')
+                                ->defaultValue('id')
+                            ->end()
+                            ->scalarNode('class')
+                                ->isRequired()
+                                ->cannotBeEmpty()
+                            ->end()
+                            ->booleanNode('displayedInMenu')
+                                ->defaultFalse()
+                            ->end()
+                            ->arrayNode('link')
+                                ->prototype('scalar')->end()
+                                ->defaultValue([])
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('attributes')
+                        ->useAttributeAsKey('name')
+                        ->prototype('array')
+                            ->children()
+                                ->scalarNode('label')
+                                    ->isRequired()
+                                    ->cannotBeEmpty()
+                                ->end()
+                                ->enumNode('type')
+                                    ->defaultNull()
+                                    ->values(array('string', 'integer'))
+                                ->end()
+                                ->booleanNode('sortable')
+                                    ->defaultFalse()
+                                ->end()
+                                ->booleanNode('readonly')
+                                    ->defaultFalse()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('form')
+                        ->children()
+                            ->arrayNode('fields')
+                                ->useAttributeAsKey('name')
+                                ->prototype('array')
+                                    ->children()
+                                        ->scalarNode('label')
+                                            ->defaultNull()
+                                        ->end()
+                                        ->scalarNode('placeholder')
+                                            ->defaultNull()
+                                        ->end()
+                                        ->booleanNode('readonly')
+                                            ->defaultFalse()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            ->scalarNode('class')
+                                ->defaultNull()
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('list')
+                        ->children()
+                            ->arrayNode('fields')
+                                ->useAttributeAsKey('name')
+                                ->prototype('array')
+                                    ->children()
+                                        ->scalarNode('label')
+                                            ->defaultNull()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            ->arrayNode('filters')
+                                ->useAttributeAsKey('name')
+                                ->prototype('array')
+                                    ->children()
+                                        ->scalarNode('label')
+                                            ->defaultNull()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            ->arrayNode('search')
+                                ->useAttributeAsKey('name')
+                                ->prototype('array')
+                                    ->children()
+                                        ->scalarNode('label')
+                                            ->defaultNull()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+
+        return $node;
+    }
+
+    /**
+     * Définition du bloc de configuration "Menu"
+     * @return \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition|\Symfony\Component\Config\Definition\Builder\NodeDefinition
+     */
+    public function addMenuNode()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('menu');
+
+        $node
+            ->prototype('array')
+                ->children()
+                    ->scalarNode('label')
+                        ->isRequired()
+                        ->cannotBeEmpty()
+                    ->end()
+                    ->enumNode('type')
+                        ->isRequired()
+                        ->cannotBeEmpty()
+                        ->values(array('sunshinePage', 'external', 'section', 'subMenu'))
+                    ->end()
+                    ->variableNode('parameters')->end()
+                    ->variableNode('children')->end()
+                ->end()
+            ->end();
+
+        return $node;
+    }
+
+
+
+    /**
+     * Définition du bloc de configuration "Pages"
+     * @return \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition|\Symfony\Component\Config\Definition\Builder\NodeDefinition
+     */
+    public function addPagesNode()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('pages');
+
+        $node
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+                ->children()
+                    ->scalarNode('title')
+                        ->isRequired()
+                        ->cannotBeEmpty()
+                    ->end()
+                    ->scalarNode('parent')
+                        ->defaultNull()
+                    ->end()
+                    ->scalarNode('description')
+                        ->defaultNull()
+                    ->end()
+                    ->variableNode('rows')->end()
+                    ->variableNode('content')->end()
+                ->end();
+
+        return $node;
     }
 }

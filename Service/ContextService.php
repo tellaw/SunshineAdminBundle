@@ -1,6 +1,6 @@
 <?php
 
-namespace Tellaw\SunshineAdminBundle\Services;
+namespace Tellaw\SunshineAdminBundle\Service;
 
 use Tellaw\SunshineAdminBundle\Entity\Context;
 use Tellaw\SunshineAdminBundle\Interfaces\ContextServiceInterface;
@@ -37,7 +37,7 @@ class ContextService implements ContextServiceInterface {
      * @param array $filters
      * @param $orderBy
      * @param string $orderSort
-     * 
+     *
      * @return array
      */
     public function buildEntityListContext($entityName, $limit, $page, $searchKeyword, $filters, $orderBy, $orderSort)
@@ -48,7 +48,7 @@ class ContextService implements ContextServiceInterface {
         $context->setOrderBy($orderBy);
         $context->setOrderWay($orderSort);
         $context->setPagination($page, $limit);
-        
+
         return $context;
     }
 
