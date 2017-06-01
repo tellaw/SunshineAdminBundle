@@ -36,8 +36,6 @@ class ConfigurationReaderService implements ConfigurationReaderServiceInterface
      */
     private $entityConfigurations = array();
 
-
-
     // CONST LIST
     const ENTITIES_PATH = "AppBundle\\Entity\\";
     const SUNSHINE_ENTITIES_CONFIG_PATH = "config/sunshine/crud_entities";

@@ -24,12 +24,20 @@ For Developpement platofmr, [read this](Documentation/dev.md)
 1. [Crud : List Entity](Documentation/webservices/listEntity.md)
 
 ## Fields
-1. [String : Text Field](Documentation/data-types/string.md)
+| Type     | Description          | Status   |
+|---------------|---------------|---------------|
+| String        | Chaine de caractères simple           | Ok |
+| Hidden Field  | Champs caché                          | Ok |
+| Email         | Chaîne de caractère avec validation email           | NOK |
+| Date          | DatePicker Bootstrap           | OK |
+| DateTime         | DateTimePicker bootstrap           | OK |
+| Integer         | Champs texte simple, validation Integer           | OK |
+| Float         | Champs texte simple validation float           | OK |
+
+
+
+A ajouter : 
 2. ReadOnly String : Text Field
-3. Hidden Field
-4. Email
-5. Date
-6. Datetime
 7. Link
 8. Integer
 9. Float
@@ -40,5 +48,3 @@ For Developpement platofmr, [read this](Documentation/dev.md)
 14. Html Field
 15. List
 16. Filtered List
-
-

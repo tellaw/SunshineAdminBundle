@@ -10,6 +10,7 @@ import IntegerField from '../../components/fields/integer/IntegerField.jsx';
 import ReadonlyField from '../../components/fields/readonly/ReadonlyField.jsx';
 import HiddenField from '../../components/fields/hidden/HiddenField.jsx';
 import DatetimeField from '../../components/fields/datetime/DatetimeField.jsx';
+import DateField from '../../components/fields/date/DateField.jsx';
 import ObjectField from '../../components/fields/object/ObjectField.jsx';
 
 class FormWidgetFactory extends React.Component {
@@ -37,8 +38,6 @@ class FormWidgetFactory extends React.Component {
     // This method is the Widget Factory
     getWidgetByType ( itemName, item ) {
 
-        console.log ("Field Type :", item.type);
-
         switch (item.type) {
 
             case "string":
@@ -62,6 +61,8 @@ class FormWidgetFactory extends React.Component {
             case "object":
                 return (<ObjectField name={itemName} value={this.props.crudEdit.object[itemName]}/>);
 
+            case "date":
+                return (<DateField name={itemName} value={this.props.crudEdit.object[itemName]}/>);
         }
 
     }
