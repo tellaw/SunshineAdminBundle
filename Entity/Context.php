@@ -16,6 +16,17 @@ class Context {
     private $entityName;
     private $startPage;
     private $nbItemPerPage;
+
+    /**
+     * @var array
+     */
+    private $pagination;
+
+    /**
+     * @var int
+     */
+    private $totalCount;
+
     private $identifier;
     private $className;
     private $searchKey;
@@ -111,38 +122,6 @@ class Context {
     /**
      * @return mixed
      */
-    public function getStartPage()
-    {
-        return $this->startPage;
-    }
-
-    /**
-     * @param mixed $startPage
-     */
-    public function setStartPage($startPage)
-    {
-        $this->startPage = $startPage;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNbItemPerPage()
-    {
-        return $this->nbItemPerPage;
-    }
-
-    /**
-     * @param mixed $nbItemPerPage
-     */
-    public function setNbItemPerPage($nbItemPerPage)
-    {
-        $this->nbItemPerPage = $nbItemPerPage;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getSearchKey()
     {
         return $this->searchKey;
@@ -157,27 +136,11 @@ class Context {
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     public function getFilters()
     {
-
-        $filters = array();
-        // filters may have the following pattern :
-        // field1$test|field2$test2
-
-        if ($this->filters != "") {
-            $filtersStr = explode ("|", $this->filters);
-
-            foreach ($filtersStr as $str) {
-                $value = explode ("$",$str);
-                $filter = new Filter();
-                $filter->setKey($value[0]);
-                $filter->setValue($value[1]);
-                $filters[]=$filter;
-            }
-        }
-        return $filters;
+        return $this->filters;
     }
 
     /**
@@ -234,4 +197,29 @@ class Context {
         $this->targetId = $targetId;
     }
 
+    /**
+     * @param $page
+     * @param $limit
+     * @param $totalCount
+     */
+    public function setPagination($page, $limit, $totalCount=null)
+    {
+        $this->pagination = [
+            'page' => $page,
+            'limit' => $limit
+        ];
+        
+        if (!is_null($totalCount)) {
+            $this->pagination['totalCount'] = $totalCount;
+            $this->pagination['totalPages'] = $totalCount <= $limit ? 1 : $totalCount/$limit;
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getPagination()
+    {
+        return $this->pagination;
+    }
 }

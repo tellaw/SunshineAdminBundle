@@ -27,6 +27,31 @@ class ContextService implements ContextServiceInterface {
         $this->rootDir =  $root_dir.'/';
     }
 
+    /**
+     * Retourne le contexte d'une liste d'entités (pagination, etc...)
+     *
+     * @param string $entityName
+     * @param int $limit
+     * @param int $page
+     * @param string $searchKeyword
+     * @param array $filters
+     * @param $orderBy
+     * @param string $orderSort
+     * 
+     * @return array
+     */
+    public function buildEntityListContext($entityName, $limit, $page, $searchKeyword, $filters, $orderBy, $orderSort)
+    {
+        $context = $this->getContext($entityName);
+        $context->setSearchKey($searchKeyword);
+        $context->setFilters($filters);
+        $context->setOrderBy($orderBy);
+        $context->setOrderWay($orderSort);
+        $context->setPagination($page, $limit);
+        
+        return $context;
+    }
+
 
     public function getContext ( $contextEntity ) {
 

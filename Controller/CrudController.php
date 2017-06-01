@@ -18,40 +18,42 @@ class CrudController extends Controller
 {
     /**
      * @Route("/crud/list/{entityName}/", name="sunshine_crud_list_default")
-     * @Route("/crud/list/{entityName}/{pageStart}/{length}/{searchKey}/{filters}/{orderBy}/{orderWay}", name="sunshine_crud_list")
+     * @Route("/crud/list/{entityName}/{pageStart}/{length}", name="sunshine_crud_list")
      * @Method({"GET", "POST"})
+     *
+     * @param string $entityName
+     * @param int $pageStart
+     * @param int $length
+     * @param Request $request
+     * 
+     * @return Response
+     *
      */
-    public function listAction( $entityName,
-                                $pageStart = 0,
-                                $length = 30,
-                                $searchKey = '',
-                                $filters = '',
-                                $orderBy = '',
-                                $orderWay = 'ASC' )
+    public function listAction( $entityName, $pageStart = 1, $length = 30, Request $request)
     {
+        
+        $searchKey = $request->query->get('searchKey', '');
+        $filters = $request->query->get('filters', []);
+        $orderBy = $request->query->get('orderBy');
+        $orderWay = $request->query->get('orderWay', 'ASC');
 
         // Retrieve context for entity
         /* @var $contextService ContextServiceInterface */
         $contextService = $this->get("sunshine.context_service");
         /* @var $context ContextInterface */
-        $context = $contextService->getContext( $entityName );
-
-        /** Fill context with datas */
-        $context->setNbItemPerPage( $length );
-        $context->setStartPage( $pageStart );
-        $context->setSearchKey( $searchKey );
-        $context->setFilters( $filters );
-        $context->setOrderBy( $orderBy );
-        $context->setOrderWay( $orderWay );
+        $context = $contextService->buildEntityListContext($entityName, $length, $pageStart, $searchKey, $filters, $orderBy, $orderWay);
 
         /* @var $configurationReaderService ConfigurationReaderServiceInterface */
         $configurationReaderService = $this->get("sunshine.configuration-reader_service");
-        $headers = $configurationReaderService->getHeaderForLists( $context );
+        $headers = $configurationReaderService->getHeaderForLists($context);
 
         // get using the service the list of items
         /* @var $crudService CrudServiceInterface */
         $crudService = $this->get("sunshine.crud_service");
-        $entityList = $crudService->getEntityList( $context, $headers );
+        $entityList = $crudService->getEntityList($context, $headers);
+        $totalCount = count($entityList) < $length ? count($entityList) : $crudService->getEntityListTotalCount($context, $headers);
+        //$context->setTotalCount($totalCount);
+        $context->setPagination($pageStart, $length, $totalCount);
 
         // Initiate Response
         $response = array ( "headers" => $headers, "context" => $context, "list" => $entityList);
