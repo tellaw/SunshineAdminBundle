@@ -1,6 +1,6 @@
 <?php
 
-namespace Tellaw\SunshineAdminBundle\Services;
+namespace Tellaw\SunshineAdminBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -137,7 +137,7 @@ class CrudService implements CrudServiceInterface
      *
      * @param Context $context
      * @param array $configuration
-     * 
+     *
      * @return int
      */
     public function getEntityListTotalCount(Context $context, $configuration)

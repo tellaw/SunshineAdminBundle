@@ -1,16 +1,25 @@
 services:
-#    tellaw_sunshine_admin.example:
-#        class: Tellaw\SunshineAdminBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
   sunshine.context_service:
-    class: Tellaw\SunshineAdminBundle\Services\ContextService
+    class: Tellaw\SunshineAdminBundle\Service\ContextService
     arguments: ["%kernel.root_dir%"]
 
   sunshine.configuration-reader_service:
-    class: Tellaw\SunshineAdminBundle\Services\ConfigurationReaderService
+    class: Tellaw\SunshineAdminBundle\Service\ConfigurationReaderService
     arguments: ["@doctrine.orm.entity_manager", "%kernel.root_dir%"]
 
   sunshine.crud_service:
-    class: Tellaw\SunshineAdminBundle\Services\CrudService
+    class: Tellaw\SunshineAdminBundle\Service\CrudService
     arguments: ["@doctrine.orm.entity_manager", "@sunshine.configuration-reader_service"]
+
+  sunshine.menu:
+      class: Tellaw\SunshineAdminBundle\Service\MenuService
+      arguments: ["%tellaw_sunshine_admin.menu%"]
+
+  sunshine.pages:
+      class: Tellaw\SunshineAdminBundle\Service\PageService
+      arguments: ["%tellaw_sunshine_admin.pages%"]
+
+  sunshine.entities:
+      class: Tellaw\SunshineAdminBundle\Service\EntityService
+      arguments: ["%tellaw_sunshine_admin.entities%"]
 
