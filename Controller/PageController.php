@@ -24,11 +24,9 @@ class PageController extends AbstractController
     {
 
         /** @var array $page */
-        $page = $this->get("sunshine.pages")->getPageConfiguration ($pageId);
+        $page = $this->get("sunshine.pages")->getPageConfiguration($pageId);
 
         //$configuration = $this->get("sunshine.menu")->getConfiguration();
-
-        dump ($page);
 
         return $this->renderWithTheme( "Page:index", ["page" => $page, "pageId" => $pageId] );
     }

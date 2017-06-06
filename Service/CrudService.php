@@ -27,7 +27,7 @@ class CrudService
     /**
      * CrudService constructor.
      * @param EntityManagerInterface $em
-     * @param ConfigurationReaderServiceInterface $configurationReaderService
+     * @param EntityService $entityService
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -37,11 +37,42 @@ class CrudService
         $this->entityService = $entityService;
     }
 
+
+    /**
+     * Get single Entity
+     *
+     * @param $entityName
+     * @param $entityId
+     * @return array
+     */
+    public function getEntity($entityName, $entityId)
+    {
+        $baseConfiguration = $this->entityService->getConfiguration( $entityName );
+        $repository = $this->em->getRepository($baseConfiguration["configuration"]["class"]);
+
+        $result = $repository->findOneById($entityId);
+
+//        $qb = $this->em->createQueryBuilder();
+//
+//        // ALIAS OF SEARCHED ENTITY
+//        $alias = 'e';
+//
+//        $qb->select($alias);
+//        $qb->from($baseConfiguration["configuration"]["class"], $alias);
+//        $qb->where($alias.'.id = '.$entityId);
+//
+//        // GET RESULT
+//        $result = $qb->getQuery()->getResult();
+
+        return $result;
+    }
+
     /**
      * Get an entity list
-     * @param Context $context
-     * @param $configuration
+     * @param $entityName
      * @return array
+     * @internal param Context $context
+     * @internal param $configuration
      */
     public function getEntityList( $entityName )
     {

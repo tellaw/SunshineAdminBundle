@@ -105,9 +105,14 @@ class EntityService
             }
         }
 
-        foreach ($resultData as $fieldName => &$fieldConfiguration) {
-            if (!isset($fieldConfiguration['type']) || empty($fieldConfiguration['type'])) {
-                $fieldConfiguration['type'] = $this->guessEntityFieldType($configuration['configuration']['class'], $fieldName);
+        foreach ($resultData as $fieldName => $fieldConfiguration) {
+            if (!$fieldConfiguration['type'] || empty($fieldConfiguration['type'])) {
+                 $type = $this->guessEntityFieldType($configuration['configuration']['class'], $fieldName);
+                $resultData[$fieldName]['type'] = $type;
+            }
+
+            if (!$fieldConfiguration['label'] || empty($fieldConfiguration['label'])) {
+                $resultData[$fieldName]['label'] = $fieldName;
             }
         }
 
@@ -148,10 +153,10 @@ class EntityService
         }
 
         // first look in asserts
-        if ($typeAssert) {
+        if ($typeAssert != null) {
             return $typeAssert;
             // secondly look in Doctrine annotations
-        } else if ($typeDoctrine) {
+        } else if ($typeDoctrine != null) {
             return $typeDoctrine;
         }
 
