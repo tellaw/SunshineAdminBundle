@@ -54,7 +54,7 @@ class EntityService
      * @param string $entityName
      * @return array
      */
-    protected function getConfiguration($entityName)
+    public function getConfiguration($entityName)
     {
         // On vérifie que l'entité existe
         if (!isset($this->configuration[$entityName])) {
@@ -80,7 +80,7 @@ class EntityService
         }
 
         $globalConfiguration = $configuration['attributes'];
-        $detailedConfiguration = $configuration[$viewType];
+        $detailedConfiguration = $configuration[$viewType]['fields'];
 
         $resultData = array();
 

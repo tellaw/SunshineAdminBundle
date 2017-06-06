@@ -8,7 +8,7 @@ use Tellaw\SunshineAdminBundle\Entity\Context;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
 use Tellaw\SunshineAdminBundle\Interfaces\CrudServiceInterface;
 
-class CrudService implements CrudServiceInterface
+class CrudService
 {
 
     /**
@@ -19,11 +19,10 @@ class CrudService implements CrudServiceInterface
     private $em;
 
     /**
-     * Entity manager
-     *
-     * @var ConfigurationReaderServiceInterface
+     * Entity Service
+     * @var EntityService
      */
-    private $configurationService;
+    private $entityService;
 
     /**
      * CrudService constructor.
@@ -32,10 +31,10 @@ class CrudService implements CrudServiceInterface
      */
     public function __construct(
         EntityManagerInterface $em,
-        ConfigurationReaderServiceInterface $configurationReaderService
+        EntityService $entityService
     ) {
         $this->em = $em;
-        $this->configurationService = $configurationReaderService;
+        $this->entityService = $entityService;
     }
 
     /**
@@ -44,8 +43,12 @@ class CrudService implements CrudServiceInterface
      * @param $configuration
      * @return array
      */
-    public function getEntityList(Context $context, $configuration, $paginate = true)
+    public function getEntityList( $entityName )
     {
+
+        $listConfiguration = $this->entityService->getListConfiguration( $entityName );
+        $baseConfiguration = $this->entityService->getConfiguration( $entityName );
+
         $fields = [];
         $joins = [];
         $qb = $this->em->createQueryBuilder();
@@ -54,11 +57,11 @@ class CrudService implements CrudServiceInterface
         $alias = 'l';
 
         // PAGINATION INFOS
-        $limit = $context->getPagination()['limit'];
-        $offset = ($context->getPagination()['Page']-1) * $limit;
+//        $limit = $context->getPagination()['limit'];
+//        $offset = ($context->getPagination()['Page']-1) * $limit;
 
         // GET COLUMNS AS FIELDS
-        foreach ($configuration as $key => $item) {
+        foreach ($listConfiguration as $key => $item) {
             if (key_exists('class', $item)) {
                 $joinField = ['class' => $item['class'], 'name' => $key];
 
@@ -75,7 +78,7 @@ class CrudService implements CrudServiceInterface
         // PREPARE QUERY WITH FIELDS
         $fieldsLine = implode(',', $fields);
         $qb->select($fieldsLine ? $fieldsLine : $alias);
-        $qb->from($context->getClassName(), $alias);
+        $qb->from($baseConfiguration["configuration"]["class"], $alias);
 
         // PREPARE QUERY WITH JOINED FIELDS
         foreach ($joins as $k => $join) {
@@ -88,16 +91,18 @@ class CrudService implements CrudServiceInterface
         }
 
         // PREPARE QUERY FOR PAGINATION AND ORDER
+        /*
         if ($paginate) {
             $qb->setFirstResult($offset);
             $qb->setMaxResults($limit);
-        }
-
+        }*/
+/*
         if ($context->getOrderBy()) {
             $qb->orderBy($context->getOrderBy(), $context->getOrderWay());
         }
-
+*/
         // PREPARE QUERY FOR PARAM SEARCH
+       /*
         if ($context->getSearchKey() != "") {
 
             $searchConfig = $this->configurationService->
@@ -114,7 +119,8 @@ class CrudService implements CrudServiceInterface
 
             $qb->setParameter('search', "%{$context->getSearchKey()}%");
         }
-
+*/
+       /*
         // Filters
         $filters = $context->getFilters();
         if (!empty($filters)) {
@@ -123,74 +129,12 @@ class CrudService implements CrudServiceInterface
                 $qb->setParameter('filterValue', "%{$value}%");
             }
         }
-
-        $context->setDql($qb->getDQL());
+*/
 
         // GET RESULT
         $result = $qb->getQuery()->getResult();
 
         return $result;
-    }
-
-    /**
-     * Nombre d'éléments total (hors paginaton)
-     *
-     * @param Context $context
-     * @param array $configuration
-     *
-     * @return int
-     */
-    public function getEntityListTotalCount(Context $context, $configuration)
-    {
-        return count($this->getEntityList($context, $configuration, false));
-    }
-
-    /**
-     * Method used to Load an entity
-     * @param Context $context
-     * @return mixed
-     */
-    public function getEntity(Context $context)
-    {
-        $repo = $this->em->getRepository($context->getClassName());
-        $object = $repo->find($context->getTargetId());
-
-        return $object;
-    }
-
-    /**
-     * Method used to return a new instance of an entity managed by Sunshine
-     *
-     * @param Context $context
-     * @return mixed
-     */
-    public function getNewEntity(Context $context)
-    {
-        return new $context->getClassName();
-    }
-
-    /**
-     * Method used to populate an object from JSon data received by React Frontend
-     *
-     * @param Context $context
-     * @param $object
-     * @param $data
-     * @return
-     */
-    public function hydrateEntity(Context $context, $object, $data)
-    {
-
-        foreach ($data as $key => $value) {
-            $method = "set".ucfirst($key);
-            $object->{$method}($value);
-        }
-
-        return $object;
-    }
-
-    public function deleteEntity(Context $context)
-    {
-
     }
 
 }

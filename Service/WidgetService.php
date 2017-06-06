@@ -25,7 +25,7 @@ class WidgetService
         $this->router = $router;
     }
 
-    public function getUrlOfWidget ( array $widget, $widgetName, $pageName )
+    public function getUrlOfWidget ( array $widget, $widgetName, $pageName, $row )
     {
 
         /**
@@ -58,7 +58,7 @@ class WidgetService
 
         $dataUrl = $this->router->generate(
             $route,
-            array( "pageName" => $pageName, "widgetName" => $widgetName ),
+            array( "pageName" => $pageName, "widgetName" => $widgetName, "row" => $row ),
             UrlGeneratorInterface::ABSOLUTE_URL // This guy right here
         );
 

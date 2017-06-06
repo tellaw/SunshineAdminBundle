@@ -17,7 +17,7 @@ use Tellaw\SunshineAdminBundle\Services\ConfigurationReaderService;
 class CrudController extends AbstractController
 {
     /**
-     * @Route("/crud/list/{entityName}/", name="sunshine_crud_list_default")
+     * @Route("/crud/list/{entityName}", name="sunshine_crud_list_default")
      * @Route("/crud/list/{entityName}/{pageStart}/{length}", name="sunshine_crud_list")
      * @Method({"GET", "POST"})
      *

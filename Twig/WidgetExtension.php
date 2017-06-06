@@ -37,9 +37,9 @@ class WidgetExtension extends \Twig_Extension
         );
     }
 
-    public function getWidgetUrl($widget, $widgetName, $pageId)
+    public function getWidgetUrl($widget, $widgetName, $pageId, $row)
     {
-        return $this->widgetService->getUrlOfWidget( $widget, $widgetName, $pageId );
+        return $this->widgetService->getUrlOfWidget( $widget, $widgetName, $pageId, $row );
     }
 
 }

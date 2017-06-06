@@ -18,33 +18,33 @@
 
 {% block body %}
 
-    {% for row in page.rows %}
+    {% for rowKey, row in page.rows %}
         <div class="row">
 
             {% for name, widget in row %}
 
                 {% if (widget.preload is defined) and (widget.preload == 'true')%}
                     <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
-                         data-route="{{ getWidgetUrl( widget, name, pageId ) }}"
+                         data-route="{{ getWidgetUrl( widget, name, pageId, rowKey ) }}"
                          data-type="widget.preloaded"
                          id="widget-{{ name }}" >
 
                         {% if (widget.type is defined) and (widget.type == 'list')%}
                             {{ render(controller(
                                 'TellawSunshineAdminBundle:Widget:widgetCrudList',
-                                { 'pageName': pageId, 'widgetName': name }
+                                { 'pageName': pageId, 'widgetName': name, 'row': rowKey }
                             )) }}
                         {% else %}
                             {{ render(controller(
                                 widget.route,
-                                { 'pageName': pageId, 'widgetName': name }
+                                { 'pageName': pageId, 'widgetName': name, 'row': rowKey }
                             )) }}
                         {% endif %}
 
                     </div>
                 {% else %}
                     <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
-                         data-route="{{ getWidgetUrl( widget, name, pageId ) }}"
+                         data-route="{{ getWidgetUrl( widget, name, pageId, rowKey ) }}"
                          data-type="widget.ajax"
                          id="widget-{{ name }}" >
                     </div>
