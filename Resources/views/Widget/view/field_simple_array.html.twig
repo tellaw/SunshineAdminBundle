@@ -1,0 +1,11 @@
+{% if view == 'show' %}
+    {% if value|length > 0 %}
+        <ul>
+            {% for element in value %}
+                <li>{{ element }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% else %}
+    {{ value|join(', ')|truncate }}
+{% endif %}
