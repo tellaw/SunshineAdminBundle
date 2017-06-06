@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 use Tellaw\SunshineAdminBundle\Services\ConfigurationReaderService;
 
-class CrudController extends Controller
+class CrudController extends AbstractController
 {
     /**
      * @Route("/crud/list/{entityName}/", name="sunshine_crud_list_default")

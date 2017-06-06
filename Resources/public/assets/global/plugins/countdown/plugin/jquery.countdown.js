@@ -41,7 +41,7 @@ function Countdown() {
 		compact: false, // True to display in a compact format, false for an expanded one
 		significant: 0, // The number of periods with values to show, zero for all
 		description: '', // The description displayed for the countdown
-		expiryUrl: '', // A URL to load upon expiry, replacing the current page
+		expiryUrl: '', // A URL to load upon expiry, replacing the current Page
 		expiryText: '', // Text to display upon expiry, replacing the countdown
 		alwaysExpire: false, // True to trigger onExpiry even if never counted down
 		onExpiry: null, // Callback when the countdown expires -

@@ -106,7 +106,7 @@
 			keys  : {
 				next : {
 					13 : 'left', // enter
-					34 : 'up',   // page down
+					34 : 'up',   // Page down
 					39 : 'left', // right arrow
 					40 : 'up'    // down arrow
 				},

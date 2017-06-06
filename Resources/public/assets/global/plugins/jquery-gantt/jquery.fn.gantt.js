@@ -18,9 +18,9 @@ jQuery.fn.gantt = function (options) {
 	};
 	var options = jQuery.extend(defaults, options);	
 	var data = null;        // Recived data
-	var pageNum = 0;        // Current page number
+	var pageNum = 0;        // Current Page number
 	var pageCount = 0;      // Aviable pages count
-	var rowsOnLastPage = 0; // How many rows on last page
+	var rowsOnLastPage = 0; // How many rows on last Page
 	var rowsNum = 0;        //
 	var hPosition = 0;      // Current position on diagram (Horizontal)
 	var dateStart = null;
@@ -74,15 +74,15 @@ jQuery.fn.gantt = function (options) {
 
 			/* Navigation panel */
 			var ganttNavigate = jQuery('<div class="navigate" />')
-				.append(jQuery('<a href="javascript:///" class="nav-link nav-page-back"/>')
+				.append(jQuery('<a href="javascript:///" class="nav-link nav-Page-back"/>')
 					.html('&lt;')
 					.click( function () {
 						navigatePage(-1);
 					}))
-				.append(jQuery('<div class="page-number"/>')
+				.append(jQuery('<div class="Page-number"/>')
 						.append(jQuery('<span/>')
 							.html(pageNum+1 + ' of ' + pageCount)))
-				.append(jQuery('<a href="javascript:///" class="nav-link nav-page-next"/>')
+				.append(jQuery('<a href="javascript:///" class="nav-link nav-Page-next"/>')
 					.html('&gt;')
 					.click( function () {
 						navigatePage(1);

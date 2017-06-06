@@ -31,7 +31,7 @@ var EcommerceProducts = function () {
                     [10, 20, 50, 100, 150],
                     [10, 20, 50, 100, 150] // change per page values here 
                 ],
-                "pageLength": 10, // default record count per page
+                "pageLength": 10, // default record count per Page
                 "ajax": {
                     "url": "../demo/ecommerce_products.php", // ajax source
                 },

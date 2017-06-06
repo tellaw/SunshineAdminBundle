@@ -9,7 +9,7 @@ var Demo = function () {
 
         var panel = $('.theme-panel');
 
-        if ($('.page-head > .container-fluid').size() === 1) {
+        if ($('.Page-head > .container-fluid').size() === 1) {
             $('.theme-setting-layout', panel).val("fluid");
         } else {
             $('.theme-setting-layout', panel).val("boxed");
@@ -21,7 +21,7 @@ var Demo = function () {
             $('.theme-setting-top-menu-style', panel).val("light");
         }
 
-        if ($('body').hasClass("page-header-top-fixed")) {
+        if ($('body').hasClass("Page-header-top-fixed")) {
             $('.theme-setting-top-menu-mode', panel).val("fixed");
         } else {
             $('.theme-setting-top-menu-mode', panel).val("not-fixed");
@@ -33,7 +33,7 @@ var Demo = function () {
             $('.theme-setting-mega-menu-style', panel).val("dark");
         }
 
-        if ($('body').hasClass("page-header-menu-fixed")) {
+        if ($('body').hasClass("Page-header-menu-fixed")) {
             $('.theme-setting-mega-menu-mode', panel).val("fixed");
         } else {
             $('.theme-setting-mega-menu-mode', panel).val("not-fixed");
@@ -42,15 +42,15 @@ var Demo = function () {
         //handle theme layout
         var resetLayout = function () {
             $("body").
-            removeClass("page-header-top-fixed").
-            removeClass("page-header-menu-fixed");
+            removeClass("Page-header-top-fixed").
+            removeClass("Page-header-menu-fixed");
 
-            $('.page-header-top > .container-fluid').removeClass("container-fluid").addClass('container');
-            $('.page-header-menu > .container-fluid').removeClass("container-fluid").addClass('container');
-            $('.page-head > .container-fluid').removeClass("container-fluid").addClass('container');
-            $('.page-content > .container-fluid').removeClass("container-fluid").addClass('container');
-            $('.page-prefooter > .container-fluid').removeClass("container-fluid").addClass('container');
-            $('.page-footer > .container-fluid').removeClass("container-fluid").addClass('container');              
+            $('.Page-header-top > .container-fluid').removeClass("container-fluid").addClass('container');
+            $('.Page-header-menu > .container-fluid').removeClass("container-fluid").addClass('container');
+            $('.Page-head > .container-fluid').removeClass("container-fluid").addClass('container');
+            $('.Page-content > .container-fluid').removeClass("container-fluid").addClass('container');
+            $('.Page-prefooter > .container-fluid').removeClass("container-fluid").addClass('container');
+            $('.Page-footer > .container-fluid').removeClass("container-fluid").addClass('container');
         };
 
         var setLayout = function () {
@@ -64,12 +64,12 @@ var Demo = function () {
             resetLayout(); // reset layout to default state
 
             if (layoutMode === "fluid") {
-                $('.page-header-top > .container').removeClass("container").addClass('container-fluid');
-                $('.page-header-menu > .container').removeClass("container").addClass('container-fluid');
-                $('.page-head > .container').removeClass("container").addClass('container-fluid');
-                $('.page-content > .container').removeClass("container").addClass('container-fluid');
-                $('.page-prefooter > .container').removeClass("container").addClass('container-fluid');
-                $('.page-footer > .container').removeClass("container").addClass('container-fluid');
+                $('.Page-header-top > .container').removeClass("container").addClass('container-fluid');
+                $('.Page-header-menu > .container').removeClass("container").addClass('container-fluid');
+                $('.Page-head > .container').removeClass("container").addClass('container-fluid');
+                $('.Page-content > .container').removeClass("container").addClass('container-fluid');
+                $('.Page-prefooter > .container').removeClass("container").addClass('container-fluid');
+                $('.Page-footer > .container').removeClass("container").addClass('container-fluid');
 
                 //App.runResizeHandlers();
             }
@@ -81,9 +81,9 @@ var Demo = function () {
             }
 
             if (headerTopMenuMode === 'fixed') {
-                $("body").addClass("page-header-top-fixed");
+                $("body").addClass("Page-header-top-fixed");
             } else {
-                $("body").removeClass("page-header-top-fixed");
+                $("body").removeClass("Page-header-top-fixed");
             }
 
             if (headerMegaMenuStyle === 'light') {
@@ -93,9 +93,9 @@ var Demo = function () {
             }
 
             if (headerMegaMenuMode === 'fixed') {
-                $("body").addClass("page-header-menu-fixed");
+                $("body").addClass("Page-header-menu-fixed");
             } else {
-                $("body").removeClass("page-header-menu-fixed");
+                $("body").removeClass("Page-header-menu-fixed");
             }          
         };
 
@@ -103,7 +103,7 @@ var Demo = function () {
         var setColor = function (color) {
             var color_ = (App.isRTL() ? color + '-rtl' : color);
             $('#style_color').attr("href", Layout.getLayoutCssPath() + 'themes/' + color_ + ".min.css");
-            $('.page-logo img').attr("src", Layout.getLayoutImgPath() + 'logo-' + color + '.png');
+            $('.Page-logo img').attr("src", Layout.getLayoutImgPath() + 'logo-' + color + '.png');
         };
 
         $('.theme-colors > li', panel).click(function () {

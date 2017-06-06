@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Menu management
  */
-class MenuController extends Controller
+class MenuController extends AbstractController
 {
     /**
      * Expose menu configuration

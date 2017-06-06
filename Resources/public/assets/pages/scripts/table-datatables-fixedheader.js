@@ -5,15 +5,15 @@ var TableDatatablesFixedHeader = function () {
 
         var fixedHeaderOffset = 0;
         if (App.getViewPort().width < App.getResponsiveBreakpoint('md')) {
-            if ($('.page-header').hasClass('page-header-fixed-mobile')) {
-                fixedHeaderOffset = $('.page-header').outerHeight(true);
+            if ($('.Page-header').hasClass('page-header-fixed-mobile')) {
+                fixedHeaderOffset = $('.Page-header').outerHeight(true);
             } 
-        } else if ($('body').hasClass('page-header-menu-fixed')) { // admin 3 fixed header menu mode
-            fixedHeaderOffset = $('.page-header-menu').outerHeight(true);
-        } else if ($('body').hasClass('page-header-top-fixed')) { // admin 3 fixed header top mode
-            fixedHeaderOffset = $('.page-header-top').outerHeight(true);
-        } else if ($('.page-header').hasClass('navbar-fixed-top')) {
-            fixedHeaderOffset = $('.page-header').outerHeight(true);
+        } else if ($('body').hasClass('Page-header-menu-fixed')) { // admin 3 fixed header menu mode
+            fixedHeaderOffset = $('.Page-header-menu').outerHeight(true);
+        } else if ($('body').hasClass('Page-header-top-fixed')) { // admin 3 fixed header top mode
+            fixedHeaderOffset = $('.Page-header-top').outerHeight(true);
+        } else if ($('.Page-header').hasClass('navbar-fixed-top')) {
+            fixedHeaderOffset = $('.Page-header').outerHeight(true);
         } else if ($('body').hasClass('page-header-fixed')) {
             fixedHeaderOffset = 64; // admin 5 fixed height
         }
@@ -52,7 +52,7 @@ var TableDatatablesFixedHeader = function () {
             
             "lengthMenu": [
                 [5, 10, 15, 20, -1],
-                [5, 10, 15, 20, "All"] // change per page values here
+                [5, 10, 15, 20, "All"] // change per Page values here
             ],
             // set the initial value
             "pageLength": 20,
@@ -69,11 +69,11 @@ var TableDatatablesFixedHeader = function () {
 
         var fixedHeaderOffset = 0;
         if (App.getViewPort().width < App.getResponsiveBreakpoint('md')) {
-            if ($('.page-header').hasClass('page-header-fixed-mobile')) {
-                fixedHeaderOffset = $('.page-header').outerHeight(true);
+            if ($('.Page-header').hasClass('page-header-fixed-mobile')) {
+                fixedHeaderOffset = $('.Page-header').outerHeight(true);
             } 
-        } else if ($('.page-header').hasClass('navbar-fixed-top')) {
-            fixedHeaderOffset = $('.page-header').outerHeight(true);
+        } else if ($('.Page-header').hasClass('navbar-fixed-top')) {
+            fixedHeaderOffset = $('.Page-header').outerHeight(true);
         } else if ($('body').hasClass('page-header-fixed')) {
             fixedHeaderOffset = 64; // admin 5 fixed height
         }
@@ -113,7 +113,7 @@ var TableDatatablesFixedHeader = function () {
             
             "lengthMenu": [
                 [5, 10, 15, 30, -1],
-                [5, 10, 15, 30, "All"] // change per page values here
+                [5, 10, 15, 30, "All"] // change per Page values here
             ],
             // set the initial value
             "pageLength": 30,

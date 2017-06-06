@@ -42,7 +42,7 @@ var TableDatatablesManaged = function () {
 
             "lengthMenu": [
                 [5, 15, 20, -1],
-                [5, 15, 20, "All"] // change per page values here
+                [5, 15, 20, "All"] // change per Page values here
             ],
             // set the initial value
             "pageLength": 5,            
@@ -129,7 +129,7 @@ var TableDatatablesManaged = function () {
 
             "lengthMenu": [
                 [5, 15, 20, -1],
-                [5, 15, 20, "All"] // change per page values here
+                [5, 15, 20, "All"] // change per Page values here
             ],
 
             // set the initial value
@@ -236,7 +236,7 @@ var TableDatatablesManaged = function () {
 
             "lengthMenu": [
                 [5, 15, 20, -1],
-                [5, 15, 20, "All"] // change per page values here
+                [5, 15, 20, "All"] // change per Page values here
             ],
             // set the initial value
             "pageLength": 5,
@@ -304,7 +304,7 @@ var TableDatatablesManaged = function () {
             
             "lengthMenu": [
                 [6, 15, 20, -1],
-                [6, 15, 20, "All"] // change per page values here
+                [6, 15, 20, "All"] // change per Page values here
             ],
             // set the initial value
             "pageLength": 6,
@@ -373,7 +373,7 @@ var TableDatatablesManaged = function () {
             
             "lengthMenu": [
                 [6, 15, 20, -1],
-                [6, 15, 20, "All"] // change per page values here
+                [6, 15, 20, "All"] // change per Page values here
             ],
             // set the initial value
             "pageLength": 6,
@@ -451,7 +451,7 @@ var TableDatatablesManaged = function () {
                         return intVal(a) + intVal(b);
                     }, 0 );
      
-                // Total over this page
+                // Total over this Page
                 pageTotal = api
                     .column( 3, { page: 'current'} )
                     .data()
@@ -474,7 +474,7 @@ var TableDatatablesManaged = function () {
             
             "lengthMenu": [
                 [6, 15, 20, -1],
-                [6, 15, 20, "All"] // change per page values here
+                [6, 15, 20, "All"] // change per Page values here
             ],
             // set the initial value
             "pageLength": 6,

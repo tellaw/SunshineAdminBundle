@@ -55,7 +55,7 @@ class CrudService implements CrudServiceInterface
 
         // PAGINATION INFOS
         $limit = $context->getPagination()['limit'];
-        $offset = ($context->getPagination()['page']-1) * $limit;
+        $offset = ($context->getPagination()['Page']-1) * $limit;
 
         // GET COLUMNS AS FIELDS
         foreach ($configuration as $key => $item) {

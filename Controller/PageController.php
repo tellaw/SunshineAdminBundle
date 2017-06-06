@@ -10,21 +10,26 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Content pages management
  */
-class PageController extends Controller
+class PageController extends AbstractController
 {
     /**
-     * Expose page configuration
+     * Expose Page
      *
-     * @Route("/page/{id}", name="sunshine_page", requirements={"id"=".+"})
+     * @Route("/page/{pageId}", name="sunshine_page")
      * @Method({"GET"})
      *
-     * @param string $id Identifier of the required page
      * @return JsonResponse
      */
-    public function showAction($id)
+    public function listAction( $pageId )
     {
-        $configuration = $this->get("sunshine.pages")->getPageConfiguration($id);
 
-        return new JsonResponse($configuration);
+        /** @var array $page */
+        $page = $this->get("sunshine.pages")->getPageConfiguration ($pageId);
+
+        //$configuration = $this->get("sunshine.menu")->getConfiguration();
+
+        dump ($page);
+
+        return $this->renderWithTheme( "Page:index", ["page" => $page, "pageId" => $pageId] );
     }
 }

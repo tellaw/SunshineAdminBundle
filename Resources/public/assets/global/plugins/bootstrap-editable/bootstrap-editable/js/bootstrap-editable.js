@@ -1442,7 +1442,7 @@ Applied as jQuery method.
 
 }(window.jQuery));
 /**
-Makes editable any HTML element on the page. Applied as jQuery method.
+Makes editable any HTML element on the Page. Applied as jQuery method.
 
 @class editable
 @uses editableContainer
@@ -3553,10 +3553,10 @@ $(function(){
             ajax: {
                 url: '/getCountries',
                 dataType: 'json',
-                data: function (term, page) {
+                data: function (term, Page) {
                     return { query: term };
                 },
-                results: function (data, page) {
+                results: function (data, Page) {
                     return { results: data };
                 }
             },
@@ -3842,7 +3842,7 @@ $(function(){
 * 
 * 
 * Author: Vitaliy Potapov
-* Project page: http://github.com/vitalets/combodate
+* Project Page: http://github.com/vitalets/combodate
 * Copyright (c) 2012 Vitaliy Potapov. Released under MIT License.
 **/
 (function ($) {

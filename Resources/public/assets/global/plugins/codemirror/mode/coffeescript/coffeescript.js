@@ -2,7 +2,7 @@
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
 /**
- * Link to the project's GitHub page:
+ * Link to the project's GitHub Page:
  * https://github.com/pickhardt/coffeescript-codemirror-mode
  */
 (function(mod) {

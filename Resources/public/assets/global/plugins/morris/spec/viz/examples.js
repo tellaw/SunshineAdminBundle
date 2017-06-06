@@ -28,7 +28,7 @@ function run_example(example_index) {
 
   page.open(html_path, function (status) {
     if (status == "fail") {
-      console.log("Failed to load test page: " + example.name);
+      console.log("Failed to load test Page: " + example.name);
       phantom.exit(1);
     } else {
       page.evaluate(example.runner);

@@ -56,7 +56,7 @@ var TableDatatablesEditable = function () {
 
             "lengthMenu": [
                 [5, 15, 20, -1],
-                [5, 15, 20, "All"] // change per page values here
+                [5, 15, 20, "All"] // change per Page values here
             ],
 
             // Or you can use remote translation file

@@ -108,8 +108,8 @@ var ComponentsDropdowns = function () {
                     });
                 }
             },
-            formatResult: movieFormatResult, // omitted for brevity, see the source of this page
-            formatSelection: movieFormatSelection, // omitted for brevity, see the source of this page
+            formatResult: movieFormatResult, // omitted for brevity, see the source of this Page
+            formatSelection: movieFormatSelection, // omitted for brevity, see the source of this Page
             dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
             escapeMarkup: function (m) {
                 return m;
@@ -223,8 +223,8 @@ var ComponentsDropdowns = function () {
                     });
                 }
             },
-            formatResult: movieFormatResult, // omitted for brevity, see the source of this page
-            formatSelection: movieFormatSelection, // omitted for brevity, see the source of this page
+            formatResult: movieFormatResult, // omitted for brevity, see the source of this Page
+            formatSelection: movieFormatSelection, // omitted for brevity, see the source of this Page
             dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
             escapeMarkup: function (m) {
                 return m;

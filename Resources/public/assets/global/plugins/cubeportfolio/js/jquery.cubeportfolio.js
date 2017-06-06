@@ -1369,7 +1369,7 @@ jQuery.fn.cubeportfolio.options = {
 
     /**
      *  How the loadMore functionality should behave. Load on click on the button or
-     *  automatically when you scroll the page
+     *  automatically when you scroll the Page
      *  Values: - click
      *          - auto
      */
@@ -1445,7 +1445,7 @@ jQuery.fn.cubeportfolio.options = {
     rewindNav: true,
 
     /**
-     *  Scroll by page and not by item. This option affect next/prev buttons and drag support
+     *  Scroll by Page and not by item. This option affect next/prev buttons and drag support
      *  Option available only for `layoutMode: 'slider'`
      *  Values: true or false
      */

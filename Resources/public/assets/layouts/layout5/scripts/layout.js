@@ -11,16 +11,16 @@ var Layout = function() {
 
     // Set proper height for sidebar and content. The content and sidebar height must be synced always.
     var handleContentHeight = function () {
-        var content = $('.page-content');
+        var content = $('.Page-content');
         var copyright = $('.copyright');
         var body = $('body');
         var height;
 
-        var available_height = App.getViewPort().height - $('.copyright').outerHeight() - $('.page-header').outerHeight() - 50;
+        var available_height = App.getViewPort().height - $('.copyright').outerHeight() - $('.Page-header').outerHeight() - 50;
         content.css('min-height', available_height);
     };
 
-    // handle on page scroll
+    // handle on Page scroll
     var handleHeaderOnScroll = function() {
         if ($(window).scrollTop() > 60) {
             $("body").addClass("page-on-scroll");
@@ -42,7 +42,7 @@ var Layout = function() {
             }
         };
 
-        Go2TopOperation();// call headerFix() when the page was loaded
+        Go2TopOperation();// call headerFix() when the Page was loaded
         if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
             $(window).bind("touchend touchcancel touchleave", function(e){
                 Go2TopOperation();
@@ -60,7 +60,7 @@ var Layout = function() {
     };
 
     var handleHeaderMenu = function() {
-        $('.page-header .navbar-nav > .dropdown-fw, .page-header .navbar-nav > .more-dropdown, .page-header .navbar-nav > .dropdown > .dropdown-menu  > .dropdown').click(function(e) {
+        $('.Page-header .navbar-nav > .dropdown-fw, .Page-header .navbar-nav > .more-dropdown, .Page-header .navbar-nav > .dropdown > .dropdown-menu  > .dropdown').click(function(e) {
             
             if (App.getViewPort().width > resBreakpointMd) {
                 if ($(this).hasClass('more-dropdown') || $(this).hasClass('more-dropdown-sub')) {
@@ -92,7 +92,7 @@ var Layout = function() {
             }
         });
 
-        $('.page-header .navbar-nav .more-dropdown-sub .dropdown-menu, .page-header .navbar-nav .dropdown-sub .dropdown-menu').click(function(){
+        $('.Page-header .navbar-nav .more-dropdown-sub .dropdown-menu, .Page-header .navbar-nav .dropdown-sub .dropdown-menu').click(function(){
 
         });
     };
@@ -101,7 +101,7 @@ var Layout = function() {
     var handleMainMenuOnResize = function() {
         // handle hover dropdown menu for desktop devices only
         var width = App.getViewPort().width;
-        var menu = $(".page-header .navbar-nav");
+        var menu = $(".Page-header .navbar-nav");
         if (width >= resBreakpointMd && menu.data('breakpoint') !== 'desktop') { 
             menu.data('breakpoint', 'desktop');
             $('[data-hover="extended-dropdown"]', menu).not('.hover-initialized').each(function() { 
@@ -133,7 +133,7 @@ var Layout = function() {
             handleMainMenuOnResize();
             App.addResizeHandler(handleMainMenuOnResize); // handle main menu on window resize
 
-            // handle minimized header on page scroll
+            // handle minimized header on Page scroll
             $(window).scroll(function() {
                 handleHeaderOnScroll();
             });

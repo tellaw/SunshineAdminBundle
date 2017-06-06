@@ -12,14 +12,24 @@ services:
     arguments: ["@doctrine.orm.entity_manager", "@sunshine.configuration-reader_service"]
 
   sunshine.menu:
-      class: Tellaw\SunshineAdminBundle\Service\MenuService
-      arguments: ["%tellaw_sunshine_admin.menu%"]
+    class: Tellaw\SunshineAdminBundle\Service\MenuService
+    arguments: ["%tellaw_sunshine_admin.menu%"]
 
   sunshine.pages:
-      class: Tellaw\SunshineAdminBundle\Service\PageService
-      arguments: ["%tellaw_sunshine_admin.pages%"]
+    class: Tellaw\SunshineAdminBundle\Service\PageService
+    arguments: ["%tellaw_sunshine_admin.pages%"]
 
   sunshine.entities:
-      class: Tellaw\SunshineAdminBundle\Service\EntityService
-      arguments: ["%tellaw_sunshine_admin.entities%"]
+    class: Tellaw\SunshineAdminBundle\Service\EntityService
+    arguments: ["%tellaw_sunshine_admin.entities%"]
 
+  sunshine.widgets:
+    class: Tellaw\SunshineAdminBundle\Service\WidgetService
+    arguments: [ '@router' ]
+    scope: request_stack
+
+  sunshine.widget_twig_extension:
+    class: Tellaw\SunshineAdminBundle\Twig\WidgetExtension
+    arguments: ["%tellaw_sunshine_admin.pages%", "@sunshine.widgets"]
+    tags:
+      - { name: twig.extension }

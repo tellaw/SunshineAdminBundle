@@ -1,6 +1,6 @@
 /* Cubic Bezier Transition */
 /***
-Login page
+Login Page
 ***/
 /* bg color */
 .login {
@@ -190,7 +190,7 @@ Login page
 
 @media (max-width: 480px) {
   /***
-  Login page
+  Login Page
   ***/
   .login .logo {
     margin-top: 30px;

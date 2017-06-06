@@ -60,9 +60,9 @@ var TableDatatablesAjax = function () {
 
                 "lengthMenu": [
                     [10, 20, 50, 100, 150, -1],
-                    [10, 20, 50, 100, 150, "All"] // change per page values here
+                    [10, 20, 50, 100, 150, "All"] // change per Page values here
                 ],
-                "pageLength": 50, // default record count per page
+                "pageLength": 50, // default record count per Page
                 "ajax": {
                     "url": "../demo/table_ajax.php", // ajax source
                 },
@@ -159,7 +159,7 @@ var TableDatatablesAjax = function () {
                     return true;
                 },
 
-                "pageLength": 10, // default record count per page
+                "pageLength": 10, // default record count per Page
 
                 "ajax": {
                     "url": "../demo/table_ajax.php", // ajax source

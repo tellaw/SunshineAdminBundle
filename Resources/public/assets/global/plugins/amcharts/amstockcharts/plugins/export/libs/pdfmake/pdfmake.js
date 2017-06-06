@@ -2042,10 +2042,10 @@
 	 * @param {Object} docDefinition.content an array describing the pdf structure (for more information take a look at the examples in the /examples folder)
 	 * @param {Object} [docDefinition.defaultStyle] default (implicit) style definition
 	 * @param {Object} [docDefinition.styles] dictionary defining all styles which can be used in the document
-	 * @param {Object} [docDefinition.pageSize] page size (pdfkit units, A4 dimensions by default)
+	 * @param {Object} [docDefinition.pageSize] Page size (pdfkit units, A4 dimensions by default)
 	 * @param {Number} docDefinition.pageSize.width width
 	 * @param {Number} docDefinition.pageSize.height height
-	 * @param {Object} [docDefinition.pageMargins] page margins (pdfkit units)
+	 * @param {Object} [docDefinition.pageMargins] Page margins (pdfkit units)
 	 *
 	 * @example
 	 *
@@ -16223,11 +16223,11 @@
 	/**
 	* Creates an instance of PageElementWriter - an extended ElementWriter
 	* which can handle:
-	* - page-breaks (it adds new pages when there's not enough space left),
+	* - Page-breaks (it adds new pages when there's not enough space left),
 	* - repeatable fragments (like table-headers, which are repeated everytime
-	*                         a page-break occurs)
+	*                         a Page-break occurs)
 	* - transactions (used for unbreakable-blocks when we want to make sure
-	*                 whole block will be rendered on the same page)
+	*                 whole block will be rendered on the same Page)
 	*/
 	function PageElementWriter(context, tracker) {
 		this.transactionLevel = 0;

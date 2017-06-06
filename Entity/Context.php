@@ -205,7 +205,7 @@ class Context {
     public function setPagination($page, $limit, $totalCount=null)
     {
         $this->pagination = [
-            'page' => $page,
+            'Page' => $page,
             'limit' => $limit
         ];
         

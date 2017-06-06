@@ -2300,7 +2300,7 @@ ZipEntries.prototype = {
         this.zipCommentLength = this.reader.readInt(2);
         // warning : the encoding depends of the system locale
         // On a linux machine with LANG=en_US.utf8, this field is utf8 encoded.
-        // On a windows machine, this field is encoded with the localized windows code page.
+        // On a windows machine, this field is encoded with the localized windows code Page.
         this.zipComment = this.reader.readString(this.zipCommentLength);
         // To get consistent behavior with the generation part, we will assume that
         // this is utf8 encoded.

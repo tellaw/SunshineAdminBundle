@@ -57,7 +57,7 @@
                     t.updateSinglePage(result);
                 })
                 .fail(function() {
-                    t.updateSinglePage('AJAX Error! Please refresh the page!');
+                    t.updateSinglePage('AJAX Error! Please refresh the Page!');
                 });
         },
     });

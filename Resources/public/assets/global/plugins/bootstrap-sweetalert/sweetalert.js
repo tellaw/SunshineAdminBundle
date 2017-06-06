@@ -1098,7 +1098,7 @@ sweetAlert.close = _swal.close = function () {
   // Make page scrollable again
   (0, _handleDom.removeClass)(document.body, 'stop-scrolling');
 
-  // Reset the page to its previous state
+  // Reset the Page to its previous state
   window.onkeydown = previousWindowKeyDown;
   if (window.previousActiveElement) {
     window.previousActiveElement.focus();

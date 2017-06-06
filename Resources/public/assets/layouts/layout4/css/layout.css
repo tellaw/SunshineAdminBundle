@@ -444,7 +444,7 @@ Page Header
     /* Page logo */ }
     .page-sidebar-closed.page-sidebar-closed-hide-logo.page-boxed .page-header.navbar .page-logo {
       width: 54px; }
-  /* Boxed layout & page sidebar fixed layout */
+  /* Boxed layout & Page sidebar fixed layout */
   .page-boxed.page-sidebar-fixed .page-header.navbar {
     /* Page logo */ }
     .page-boxed.page-sidebar-fixed .page-header.navbar .page-logo {
@@ -1173,7 +1173,7 @@ Page content
 
 @media (max-width: 991px) {
   /* 991px */
-  /* Boxed page container  */
+  /* Boxed Page container  */
   .page-boxed > .container {
     width: 100%;
     max-width: none !important;
@@ -1187,7 +1187,7 @@ Page content
 
 @media (min-width: 768px) and (max-width: 991px) {
   /*  768px & 991px */
-  /* Boxed page container */
+  /* Boxed Page container */
   .page-boxed > .container {
     margin: auto !important; } }
 
@@ -1273,7 +1273,7 @@ Page footer
   .page-sidebar-fixed .page-footer {
     margin-left: 255px;
     padding: 10px 20px 10px 20px; }
-  /* Boxed page */
+  /* Boxed Page */
   .page-boxed .page-footer {
     padding: 8px 0 5px 0; }
   .page-boxed.page-sidebar-fixed .page-footer {

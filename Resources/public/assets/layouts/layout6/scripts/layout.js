@@ -12,18 +12,18 @@ var Layout = function() {
 
     var handleQuickSearch = function() {
         // handle search box expand/collapse        
-        $('.page-header').on('click', '.search-form', function(e) {
+        $('.Page-header').on('click', '.search-form', function(e) {
             $(this).addClass("open");
             $(this).find('.form-control').focus();
 
-            $('.page-header .search-form .form-control').on('blur', function(e) {
+            $('.Page-header .search-form .form-control').on('blur', function(e) {
                 $(this).closest('.search-form').removeClass("open");
                 $(this).unbind("blur");
             });
         });
 
         // handle hor menu search form on enter press
-        $('.page-header').on('keypress', '.hor-menu .search-form .form-control', function(e) {
+        $('.Page-header').on('keypress', '.hor-menu .search-form .form-control', function(e) {
             if (e.which == 13) {
                 $(this).closest('.search-form').submit();
                 return false;
@@ -31,7 +31,7 @@ var Layout = function() {
         });
 
         // handle header search button click
-        $('.page-header').on('mousedown', '.search-form.open .submit', function(e) {
+        $('.Page-header').on('mousedown', '.search-form.open .submit', function(e) {
             e.preventDefault();
             e.stopPropagation();
             $(this).closest('.search-form').submit();
@@ -49,7 +49,7 @@ var Layout = function() {
             }
         };
 
-        Go2TopOperation();// call headerFix() when the page was loaded
+        Go2TopOperation();// call headerFix() when the Page was loaded
         if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
             $(window).bind("touchend touchcancel touchleave", function(e){
                 Go2TopOperation();
@@ -68,22 +68,22 @@ var Layout = function() {
 
     // Handle sidebar menu
     var handleSidebarMenu = function() {
-        $('.page-sidebar').on('click', 'li > a', function(e) {
+        $('.Page-sidebar').on('click', 'li > a', function(e) {
 
-            if (App.getViewPort().width >= resBreakpointMd && $(this).parents('.page-sidebar-menu-hover-submenu').size() === 1) { // exit of hover sidebar menu
+            if (App.getViewPort().width >= resBreakpointMd && $(this).parents('.Page-sidebar-menu-hover-submenu').size() === 1) { // exit of hover sidebar menu
                 return;
             }
 
             if ($(this).next().hasClass('sub-menu') === false) {
-                if (App.getViewPort().width < resBreakpointMd && $('.page-sidebar').hasClass("in")) { // close the menu on mobile view while laoding a page 
-                    $('.page-header .responsive-toggler').click();
+                if (App.getViewPort().width < resBreakpointMd && $('.Page-sidebar').hasClass("in")) { // close the menu on mobile view while laoding a Page 
+                    $('.Page-header .responsive-toggler').click();
                 }
                 return;
             }
 
             var parent = $(this).parent().parent();
             var the = $(this);
-            var menu = $('.page-sidebar-menu');
+            var menu = $('.Page-sidebar-menu');
             var sub = $(this).next();
 
             var autoScroll = menu.data("auto-scroll");
@@ -132,14 +132,14 @@ var Layout = function() {
         });
 
         // handle ajax links within sidebar menu
-        $('.page-sidebar').on('click', ' li > a.ajaxify', function(e) {
+        $('.Page-sidebar').on('click', ' li > a.ajaxify', function(e) {
             e.preventDefault();
             App.scrollTop();
 
             var url = $(this).attr("href");
-            var menuContainer = $('.page-sidebar ul');
-            var pageContent = $('.page-content');
-            var pageContentBody = $('.page-content .page-content-body');
+            var menuContainer = $('.Page-sidebar ul');
+            var pageContent = $('.Page-content');
+            var pageContentBody = $('.Page-content .Page-content-body');
 
             menuContainer.children('li.active').removeClass('active');
             menuContainer.children('arrow.open').removeClass('open');
@@ -150,8 +150,8 @@ var Layout = function() {
             });
             $(this).parents('li').addClass('active');
 
-            if (App.getViewPort().width < resBreakpointMd && $('.page-sidebar').hasClass("in")) { // close the menu on mobile view while laoding a page 
-                $('.page-header .responsive-toggler').click();
+            if (App.getViewPort().width < resBreakpointMd && $('.Page-sidebar').hasClass("in")) { // close the menu on mobile view while laoding a Page 
+                $('.Page-header .responsive-toggler').click();
             }
 
             App.startPageLoading();
@@ -166,7 +166,7 @@ var Layout = function() {
                 success: function(res) {
 
                     if (the.parents('li.open').size() === 0) {
-                        $('.page-sidebar-menu > li.open > a').click();
+                        $('.Page-sidebar-menu > li.open > a').click();
                     }
 
                     App.stopPageLoading();
@@ -182,18 +182,18 @@ var Layout = function() {
         });
 
         // handle ajax link within main content
-        $('.page-content').on('click', '.ajaxify', function(e) {
+        $('.Page-content').on('click', '.ajaxify', function(e) {
             e.preventDefault();
             App.scrollTop();
 
             var url = $(this).attr("href");
-            var pageContent = $('.page-content');
-            var pageContentBody = $('.page-content .page-content-body');
+            var pageContent = $('.Page-content');
+            var pageContentBody = $('.Page-content .Page-content-body');
 
             App.startPageLoading();
 
-            if (App.getViewPort().width < resBreakpointMd && $('.page-sidebar').hasClass("in")) { // close the menu on mobile view while laoding a page 
-                $('.page-header .responsive-toggler').click();
+            if (App.getViewPort().width < resBreakpointMd && $('.Page-sidebar').hasClass("in")) { // close the menu on mobile view while laoding a Page 
+                $('.Page-header .responsive-toggler').click();
             }
 
             $.ajax({
@@ -215,7 +215,7 @@ var Layout = function() {
         });
 
         // handle scrolling to top on responsive menu toggler click when header is fixed for mobile view
-        $(document).on('click', '.page-header-fixed-mobile .responsive-toggler', function(){
+        $(document).on('click', '.Page-header-fixed-mobile .responsive-toggler', function(){
             App.scrollTop();
         });      
     };

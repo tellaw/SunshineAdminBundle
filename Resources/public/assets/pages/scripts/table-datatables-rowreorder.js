@@ -41,7 +41,7 @@ var TableDatatablesRowreorder = function () {
             
             "lengthMenu": [
                 [5, 10, 15, 20, -1],
-                [5, 10, 15, 20, "All"] // change per page values here
+                [5, 10, 15, 20, "All"] // change per Page values here
             ],
             // set the initial value
             "pageLength": 10,
@@ -104,7 +104,7 @@ var TableDatatablesRowreorder = function () {
             
             "lengthMenu": [
                 [5, 10, 15, 20, -1],
-                [5, 10, 15, 20, "All"] // change per page values here
+                [5, 10, 15, 20, "All"] // change per Page values here
             ],
             // set the initial value
             "pageLength": 10,

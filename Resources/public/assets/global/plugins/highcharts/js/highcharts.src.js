@@ -1067,7 +1067,7 @@ pathAnim = {
 		},
 	
 		/**
-		 * Get the position of an element relative to the top left of the page
+		 * Get the position of an element relative to the top left of the Page
 		 */
 		offset: function (el) {
 			return $(el).offset();
@@ -10358,7 +10358,7 @@ extend(Highcharts.Pointer.prototype, {
 			clip = {};
 
 		// Don't initiate panning until the user has pinched. This prevents us from 
-		// blocking page scrolling as users scroll down a long page (#4210).
+		// blocking Page scrolling as users scroll down a long Page (#4210).
 		if (touchesLength > 1) {
 			self.initiated = true;
 		}

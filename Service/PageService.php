@@ -26,24 +26,25 @@ class PageService
     /**
      * Provide the menu configuration
      *
-     * @param string $id Id of the page
+     * @param string $id Id of the Page
      * @return array|false
      * @throws \Exception
      */
     public function getPageConfiguration($id)
     {
-        // On vérifie que la page existe
+
+        // On vérifie que la Page existe
         if (!isset($this->configuration[$id])) {
             return false;
         }
 
         $page = $this->configuration[$id];
 
-        // Si la page possède un parent, on charge le parent également
+        // Si la Page possède un parent, on charge le parent également
         if (isset($page['parent']) && !empty($page['parent'])) {
             $page['parent'] = $this->getPageConfiguration($page['parent']);
             if ($page['parent'] === false) {
-                throw new \Exception("The page " . $id . " registers a unknown parent page");
+                throw new \Exception("The Page " . $id . " registers a unknown parent Page");
             }
         }
 

@@ -183,7 +183,7 @@ var App = function() {
             }
         });
 
-        // load ajax data on page init
+        // load ajax data on Page init
         $('.portlet .portlet-title a.reload[data-load="true"]').click();
 
         $('body').on('click', '.portlet > .portlet-title > .tools > .collapse, .portlet .portlet-title > .tools > .expand', function(e) {
@@ -208,7 +208,7 @@ var App = function() {
             // find the first span which is our circle/bubble
             var el = $(this).children('span:first-child');
               
-            // add the bubble class (we do this so it doesnt show on page load)
+            // add the bubble class (we do this so it doesnt show on Page load)
             el.addClass('inc');
               
             // clone it
@@ -352,14 +352,14 @@ var App = function() {
             }
         });
 
-        // fix page scrollbars issue
+        // fix Page scrollbars issue
         $('body').on('show.bs.modal', '.modal', function() {
             if ($(this).hasClass("modal-scroll")) {
                 $('body').addClass("modal-open-noscroll");
             }
         });
 
-        // fix page scrollbars issue
+        // fix Page scrollbars issue
         $('body').on('hidden.bs.modal', '.modal', function() {
             $('body').removeClass("modal-open-noscroll");
         });
@@ -649,11 +649,11 @@ var App = function() {
 
             if (el) {
                 if ($('body').hasClass('page-header-fixed')) {
-                    pos = pos - $('.page-header').height();
-                } else if ($('body').hasClass('page-header-top-fixed')) {
-                    pos = pos - $('.page-header-top').height();
-                } else if ($('body').hasClass('page-header-menu-fixed')) {
-                    pos = pos - $('.page-header-menu').height();
+                    pos = pos - $('.Page-header').height();
+                } else if ($('body').hasClass('Page-header-top-fixed')) {
+                    pos = pos - $('.Page-header-top').height();
+                } else if ($('body').hasClass('Page-header-menu-fixed')) {
+                    pos = pos - $('.Page-header-menu').height();
                 }
                 pos = pos + (offeset ? offeset : -1 * el.height());
             }
@@ -682,7 +682,7 @@ var App = function() {
                 }
 
                 $(this).slimScroll({
-                    allowPageScroll: true, // allow page scroll when the element scroll is ended
+                    allowPageScroll: true, // allow Page scroll when the element scroll is ended
                     size: '7px',
                     color: ($(this).attr("data-handle-color") ? $(this).attr("data-handle-color") : '#bbb'),
                     wrapperClass: ($(this).attr("data-wrapper-class") ? $(this).attr("data-wrapper-class") : 'slimScrollDiv'),
@@ -783,7 +783,7 @@ var App = function() {
                         cursor: 'wait'
                     }
                 });
-            } else { // page blocking
+            } else { // Page blocking
                 $.blockUI({
                     message: html,
                     baseZ: options.zIndex ? options.zIndex : 1000,
@@ -817,22 +817,22 @@ var App = function() {
 
         startPageLoading: function(options) {
             if (options && options.animate) {
-                $('.page-spinner-bar').remove();
-                $('body').append('<div class="page-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>');
+                $('.Page-spinner-bar').remove();
+                $('body').append('<div class="Page-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>');
             } else {
-                $('.page-loading').remove();
-                $('body').append('<div class="page-loading"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif"/>&nbsp;&nbsp;<span>' + (options && options.message ? options.message : 'Loading...') + '</span></div>');
+                $('.Page-loading').remove();
+                $('body').append('<div class="Page-loading"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif"/>&nbsp;&nbsp;<span>' + (options && options.message ? options.message : 'Loading...') + '</span></div>');
             }
         },
 
         stopPageLoading: function() {
-            $('.page-loading, .page-spinner-bar').remove();
+            $('.Page-loading, .Page-spinner-bar').remove();
         },
 
         alert: function(options) {
 
             options = $.extend(true, {
-                container: "", // alerts parent container(by default placed after the page breadcrumbs)
+                container: "", // alerts parent container(by default placed after the Page breadcrumbs)
                 place: "append", // "append" or "prepend" in container 
                 type: 'success', // alert's type
                 message: "", // alert's message
@@ -852,15 +852,15 @@ var App = function() {
             }
 
             if (!options.container) {
-                if ($('.page-fixed-main-content').size() === 1) {
-                    $('.page-fixed-main-content').prepend(html);
-                } else if (($('body').hasClass("page-container-bg-solid") || $('body').hasClass("page-content-white")) && $('.page-head').size() === 0) {
-                    $('.page-title').after(html);
+                if ($('.Page-fixed-main-content').size() === 1) {
+                    $('.Page-fixed-main-content').prepend(html);
+                } else if (($('body').hasClass("page-container-bg-solid") || $('body').hasClass("page-content-white")) && $('.Page-head').size() === 0) {
+                    $('.Page-title').after(html);
                 } else {
-                    if ($('.page-bar').size() > 0) {
-                        $('.page-bar').after(html);
+                    if ($('.Page-bar').size() > 0) {
+                        $('.Page-bar').after(html);
                     } else {
-                        $('.page-breadcrumb, .breadcrumbs').after(html);
+                        $('.Page-breadcrumb, .breadcrumbs').after(html);
                     }
                 }
             } else {

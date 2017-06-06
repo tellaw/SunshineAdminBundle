@@ -23,9 +23,9 @@ var EcommerceOrdersView = function () {
 
                 "lengthMenu": [
                     [10, 20, 50, 100, 150, -1],
-                    [19, 20, 50, 100, 150, "All"] // change per page values here
+                    [19, 20, 50, 100, 150, "All"] // change per Page values here
                 ],
-                "pageLength": 10, // default record count per page
+                "pageLength": 10, // default record count per Page
                 "ajax": {
                     "url": "../demo/ecommerce_order_invoices.php", // ajax source
                 },
@@ -87,9 +87,9 @@ var EcommerceOrdersView = function () {
 
                 "lengthMenu": [
                     [10, 20, 50, 100, 150, -1],
-                    [10, 20, 50, 100, 150, "All"] // change per page values here
+                    [10, 20, 50, 100, 150, "All"] // change per Page values here
                 ],
-                "pageLength": 10, // default record count per page
+                "pageLength": 10, // default record count per Page
                 "ajax": {
                     "url": "../demo/ecommerce_order_credit_memos.php", // ajax source
                 },
@@ -121,9 +121,9 @@ var EcommerceOrdersView = function () {
             dataTable: { // here you can define a typical datatable settings from http://datatables.net/usage/options 
                 "lengthMenu": [
                     [10, 20, 50, 100, 150, -1],
-                    [10, 20, 50, 100, 150, "All"] // change per page values here
+                    [10, 20, 50, 100, 150, "All"] // change per Page values here
                 ],
-                "pageLength": 10, // default record count per page
+                "pageLength": 10, // default record count per Page
                 "ajax": {
                     "url": "../demo/ecommerce_order_shipment.php", // ajax source
                 },
@@ -154,9 +154,9 @@ var EcommerceOrdersView = function () {
             dataTable: { // here you can define a typical datatable settings from http://datatables.net/usage/options 
                 "lengthMenu": [
                     [10, 20, 50, 100, 150, -1],
-                    [10, 20, 50, 100, 150, "All"] // change per page values here
+                    [10, 20, 50, 100, 150, "All"] // change per Page values here
                 ],
-                "pageLength": 10, // default record count per page
+                "pageLength": 10, // default record count per Page
                 "ajax": {
                     "url": "../demo/ecommerce_order_history.php", // ajax source
                 },

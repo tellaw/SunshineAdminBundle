@@ -113,7 +113,7 @@ var FormImageCrop = function () {
           });
         }).attr('checked', false);
 
-        // Define page sections
+        // Define Page sections
         var sections = {
           bgc_buttons: 'Change bgColor',
           bgo_buttons: 'Change bgOpacity',

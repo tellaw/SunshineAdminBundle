@@ -315,7 +315,7 @@ if(!Array.prototype.indexOf){
 
 (function(){
 	// canvg(target, s)
-	// empty parameters: replace all 'svg' elements on page with 'canvas' elements
+	// empty parameters: replace all 'svg' elements on Page with 'canvas' elements
 	// target: canvas element or the id of a canvas element
 	// s: svg string, url to svg file, or xml document
 	// opts: optional hash of options
@@ -2969,7 +2969,7 @@ if (CanvasRenderingContext2D) {
 			this.canvas = canvas;
 
 			// Create the tooltip line and div, they are placed as siblings to
-			// the container (and as direct childs to the div specified in the html page)
+			// the container (and as direct childs to the div specified in the html Page)
 			this.ttLine = createElement(DIV, null, initialHiddenStyle, containerParent);
 			this.ttDiv = createElement(DIV, null, initialHiddenStyle, containerParent);
 			this.ttTimer = UNDEFINED;

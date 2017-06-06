@@ -6,18 +6,18 @@ var QuickSidebar = function () {
     // Handles quick sidebar toggler
     var handleQuickSidebarToggler = function () {
         // quick sidebar toggler
-        $('.dropdown-quick-sidebar-toggler a, .page-quick-sidebar-toggler, .quick-sidebar-toggler').click(function (e) {
+        $('.dropdown-quick-sidebar-toggler a, .Page-quick-sidebar-toggler, .quick-sidebar-toggler').click(function (e) {
             $('body').toggleClass('page-quick-sidebar-open'); 
         });
     };
 
     // Handles quick sidebar chats
     var handleQuickSidebarChat = function () {
-        var wrapper = $('.page-quick-sidebar-wrapper');
-        var wrapperChat = wrapper.find('.page-quick-sidebar-chat');
+        var wrapper = $('.Page-quick-sidebar-wrapper');
+        var wrapperChat = wrapper.find('.Page-quick-sidebar-chat');
 
         var initChatSlimScroll = function () {
-            var chatUsers = wrapper.find('.page-quick-sidebar-chat-users');
+            var chatUsers = wrapper.find('.Page-quick-sidebar-chat-users');
             var chatUsersHeight;
 
             chatUsersHeight = wrapper.height() - wrapper.find('.nav-tabs').outerHeight(true);
@@ -27,9 +27,9 @@ var QuickSidebar = function () {
             chatUsers.attr("data-height", chatUsersHeight);
             App.initSlimScroll(chatUsers);
 
-            var chatMessages = wrapperChat.find('.page-quick-sidebar-chat-user-messages');
-            var chatMessagesHeight = chatUsersHeight - wrapperChat.find('.page-quick-sidebar-chat-user-form').outerHeight(true);
-            chatMessagesHeight = chatMessagesHeight - wrapperChat.find('.page-quick-sidebar-nav').outerHeight(true);
+            var chatMessages = wrapperChat.find('.Page-quick-sidebar-chat-user-messages');
+            var chatMessagesHeight = chatUsersHeight - wrapperChat.find('.Page-quick-sidebar-chat-user-form').outerHeight(true);
+            chatMessagesHeight = chatMessagesHeight - wrapperChat.find('.Page-quick-sidebar-nav').outerHeight(true);
 
             // user chat messages 
             App.destroySlimScroll(chatMessages);
@@ -40,19 +40,19 @@ var QuickSidebar = function () {
         initChatSlimScroll();
         App.addResizeHandler(initChatSlimScroll); // reinitialize on window resize
 
-        wrapper.find('.page-quick-sidebar-chat-users .media-list > .media').click(function () {
-            wrapperChat.addClass("page-quick-sidebar-content-item-shown");
+        wrapper.find('.Page-quick-sidebar-chat-users .media-list > .media').click(function () {
+            wrapperChat.addClass("Page-quick-sidebar-content-item-shown");
         });
 
-        wrapper.find('.page-quick-sidebar-chat-user .page-quick-sidebar-back-to-list').click(function () {
-            wrapperChat.removeClass("page-quick-sidebar-content-item-shown");
+        wrapper.find('.Page-quick-sidebar-chat-user .Page-quick-sidebar-back-to-list').click(function () {
+            wrapperChat.removeClass("Page-quick-sidebar-content-item-shown");
         });
 
         var handleChatMessagePost = function (e) {
             e.preventDefault();
 
-            var chatContainer = wrapperChat.find(".page-quick-sidebar-chat-user-messages");
-            var input = wrapperChat.find('.page-quick-sidebar-chat-user-form .form-control');
+            var chatContainer = wrapperChat.find(".Page-quick-sidebar-chat-user-messages");
+            var input = wrapperChat.find('.Page-quick-sidebar-chat-user-form .form-control');
 
             var text = input.val();
             if (text.length === 0) {
@@ -101,8 +101,8 @@ var QuickSidebar = function () {
             }, 3000);
         };
 
-        wrapperChat.find('.page-quick-sidebar-chat-user-form .btn').click(handleChatMessagePost);
-        wrapperChat.find('.page-quick-sidebar-chat-user-form .form-control').keypress(function (e) {
+        wrapperChat.find('.Page-quick-sidebar-chat-user-form .btn').click(handleChatMessagePost);
+        wrapperChat.find('.Page-quick-sidebar-chat-user-form .form-control').keypress(function (e) {
             if (e.which == 13) {
                 handleChatMessagePost(e);
                 return false;
@@ -112,10 +112,10 @@ var QuickSidebar = function () {
 
     // Handles quick sidebar tasks
     var handleQuickSidebarAlerts = function () {
-        var wrapper = $('.page-quick-sidebar-wrapper');
+        var wrapper = $('.Page-quick-sidebar-wrapper');
 
         var initAlertsSlimScroll = function () {
-            var alertList = wrapper.find('.page-quick-sidebar-alerts-list');
+            var alertList = wrapper.find('.Page-quick-sidebar-alerts-list');
             var alertListHeight;
 
             alertListHeight = wrapper.height() - 80 - wrapper.find('.nav-justified > .nav-tabs').outerHeight();
@@ -132,10 +132,10 @@ var QuickSidebar = function () {
 
     // Handles quick sidebar settings
     var handleQuickSidebarSettings = function () {
-        var wrapper = $('.page-quick-sidebar-wrapper');
+        var wrapper = $('.Page-quick-sidebar-wrapper');
 
         var initSettingsSlimScroll = function () {
-            var settingsList = wrapper.find('.page-quick-sidebar-settings-list');
+            var settingsList = wrapper.find('.Page-quick-sidebar-settings-list');
             var settingsListHeight;
 
             settingsListHeight = wrapper.height() - 80 - wrapper.find('.nav-justified > .nav-tabs').outerHeight();

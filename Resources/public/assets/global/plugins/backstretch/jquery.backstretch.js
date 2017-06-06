@@ -15,7 +15,7 @@
     }
 
     /*
-     * Scroll the page one pixel to get the right window height on iOS
+     * Scroll the Page one pixel to get the right window height on iOS
      * Pretty harmless for everyone else
     */
     if ($(window).scrollTop() === 0 ) {
@@ -330,7 +330,7 @@
    *
    * In a nutshell, we need to figure out if fixed positioning is supported.
    * Unfortunately, this is very difficult to do on iOS, and usually involves
-   * injecting content, scrolling the page, etc.. It's ugly.
+   * injecting content, scrolling the Page, etc.. It's ugly.
    * jQuery Mobile uses this workaround. It's not ideal, but works.
    *
    * Modified to detect IE6

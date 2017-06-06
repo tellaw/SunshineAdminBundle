@@ -16,7 +16,7 @@ More examples can be found on [project homepage](http://botmonster.com/jquery-bo
 ```javascript
 $('#pagination-here').bootpag({
     total: 7,          // total pages
-    page: 1,            // default page
+    page: 1,            Page
     maxVisible: 5,     // visible pagination
     leaps: true         // next/prev leaps through maxVisible
 }).on("page", function(event, num){

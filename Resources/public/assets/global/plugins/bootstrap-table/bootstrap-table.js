@@ -411,7 +411,7 @@
             return 'Loading, please wait...';
         },
         formatRecordsPerPage: function (pageNumber) {
-            return sprintf('%s records per page', pageNumber);
+            return sprintf('%s records per Page', pageNumber);
         },
         formatShowingRows: function (pageFrom, pageTo, totalRows) {
             return sprintf('Showing %s to %s of %s rows', pageFrom, pageTo, totalRows);
@@ -1164,7 +1164,7 @@
                 $allSelected = true;
             } else if (this.options.pageSize === this.options.totalRows) {
                 // Fix #667 Table with pagination,
-                // multiple pages and a search that matches to one page throws exception
+                // multiple pages and a search that matches to one Page throws exception
                 var pageLst = typeof this.options.pageList === 'string' ?
                     this.options.pageList.replace('[', '').replace(']', '')
                         .replace(/ /g, '').toLowerCase().split(',') : this.options.pageList;
@@ -1195,7 +1195,7 @@
             '</span>');
 
         if (!this.options.onlyInfoPagination) {
-            html.push('<span class="page-list">');
+            html.push('<span class="Page-list">');
 
             var pageNumber = [
                     sprintf('<span class="btn-group %s">',
@@ -1244,7 +1244,7 @@
                 '<div class="pull-' + this.options.paginationHAlign + ' pagination">',
                 '<ul class="pagination' + sprintf(' pagination-%s', this.options.iconSize) + '">',
                 '<li class="page-first"><a href="javascript:void(0)">' + this.options.paginationFirstText + '</a></li>',
-                '<li class="page-pre"><a href="javascript:void(0)">' + this.options.paginationPreText + '</a></li>');
+                '<li class="Page-pre"><a href="javascript:void(0)">' + this.options.paginationPreText + '</a></li>');
 
             if (this.totalPages < 5) {
                 from = 1;
@@ -1277,7 +1277,7 @@
         this.$pagination.html(html.join(''));
 
         if (!this.options.onlyInfoPagination) {
-            $pageList = this.$pagination.find('.page-list a');
+            $pageList = this.$pagination.find('.Page-list a');
             $first = this.$pagination.find('.page-first');
             $pre = this.$pagination.find('.page-pre');
             $next = this.$pagination.find('.page-next');
@@ -1341,7 +1341,7 @@
         $this.parent().addClass('active').siblings().removeClass('active');
         this.options.pageSize = $this.text().toUpperCase() === this.options.formatAllRows().toUpperCase() ?
             this.options.formatAllRows() : +$this.text();
-        this.$toolbar.find('.page-size').text(this.options.pageSize);
+        this.$toolbar.find('.Page-size').text(this.options.pageSize);
 
         this.updatePagination(event);
     };

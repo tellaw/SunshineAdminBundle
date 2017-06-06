@@ -1067,7 +1067,7 @@ pathAnim = {
 		},
 	
 		/**
-		 * Get the position of an element relative to the top left of the page
+		 * Get the position of an element relative to the top left of the Page
 		 */
 		offset: function (el) {
 			return $(el).offset();
@@ -9895,7 +9895,7 @@ extend(Highcharts.Pointer.prototype, {
 			clip = {};
 
 		// Don't initiate panning until the user has pinched. This prevents us from 
-		// blocking page scrolling as users scroll down a long page (#4210).
+		// blocking Page scrolling as users scroll down a long Page (#4210).
 		if (touchesLength > 1) {
 			self.initiated = true;
 		}
@@ -10684,7 +10684,7 @@ Legend.prototype = {
 			this.fullHeight = legendHeight;
 			
 			// Fill pages with Y positions so that the top of each a legend item defines
-			// the scroll top for each page (#2098)
+			// the scroll top for each Page (#2098)
 			each(allItems, function (item, i) {
 				var y = item._legendItemPos[1],
 					h = mathRound(item.legendItem.getBBox().height),
@@ -10763,7 +10763,7 @@ Legend.prototype = {
 			padding = this.padding,
 			scrollOffset;
 		
-		// When resizing while looking at the last page
+		// When resizing while looking at the last Page
 		if (currentPage > pageCount) {
 			currentPage = pageCount;
 		}

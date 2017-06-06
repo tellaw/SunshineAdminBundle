@@ -48,7 +48,7 @@
           state.sortOrder = sortOrder;
         });
       })
-      .on('page-change.bs.table', CONTAINER_SELECTOR+' table', function (evt, pageNumber, pageSize) {
+      .on('Page-change.bs.table', CONTAINER_SELECTOR+' table', function (evt, pageNumber, pageSize) {
         var bsTable = getBsTable(evt.target);
         if (!bsTable) return;
         var state = bsTable.$s.bsTableControl.state;
