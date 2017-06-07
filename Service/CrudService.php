@@ -37,14 +37,7 @@ class CrudService
         $this->entityService = $entityService;
     }
 
-    /**
-     * Get an entity list
-     * @param Context $context
-     * @param $configuration
-     * @return array
-     */
-    public function getEntityList( $entityName )
-    {
+    public function getTotalElementsInTable ( $entityName ) {
 
         $listConfiguration = $this->entityService->getListConfiguration( $entityName );
         $baseConfiguration = $this->entityService->getConfiguration( $entityName );
@@ -56,9 +49,61 @@ class CrudService
         // ALIAS OF SEARCHED ENTITY
         $alias = 'l';
 
-        // PAGINATION INFOS
-//        $limit = $context->getPagination()['limit'];
-//        $offset = ($context->getPagination()['Page']-1) * $limit;
+        // GET COLUMNS AS FIELDS
+        foreach ($listConfiguration as $key => $item) {
+            if (key_exists('class', $item)) {
+                $joinField = ['class' => $item['class'], 'name' => $key];
+
+                // GET FOREIGN STRING FIELD TO SHOW
+                if (isset($item['string'])) {
+                    $joinField['string'] = $item['string'];
+                }
+                $joins[] = $joinField;
+            } else {
+                $fields[] = $alias.".".$key;
+            }
+        }
+
+        // PREPARE QUERY WITH FIELDS
+        $fieldsLine = implode(',', $fields);
+        $qb->select($fieldsLine ? $fieldsLine : $alias);
+        $qb->from($baseConfiguration["configuration"]["class"], $alias);
+
+        $result = $qb->getQuery()->getResult();
+
+        return count ($result);
+
+    }
+
+    /**
+     * Return the total count of an entity
+     * @param $entityName
+     */
+    public function getCountEntityElements (  $entityName, $orderCol, $orderDir, $start, $length, $searchValue ) {
+
+        $result = $this->getEntityList(  $entityName, $orderCol, $orderDir, $start, $length, $searchValue, false );
+
+        return count ($result);
+    }
+
+    /**
+     * Get an entity list
+     * @param Context $context
+     * @param $configuration
+     * @return array
+     */
+    public function getEntityList( $entityName, $orderCol, $orderDir, $start, $length, $searchValue, $enablePagination = true )
+    {
+
+        $listConfiguration = $this->entityService->getListConfiguration( $entityName );
+        $baseConfiguration = $this->entityService->getConfiguration( $entityName );
+
+        $fields = [];
+        $joins = [];
+        $qb = $this->em->createQueryBuilder();
+
+        // ALIAS OF SEARCHED ENTITY
+        $alias = 'l';
 
         // GET COLUMNS AS FIELDS
         foreach ($listConfiguration as $key => $item) {
@@ -91,25 +136,20 @@ class CrudService
         }
 
         // PREPARE QUERY FOR PAGINATION AND ORDER
-        /*
-        if ($paginate) {
-            $qb->setFirstResult($offset);
-            $qb->setMaxResults($limit);
-        }*/
-/*
-        if ($context->getOrderBy()) {
-            $qb->orderBy($context->getOrderBy(), $context->getOrderWay());
+        if ($enablePagination) {
+            $qb->setFirstResult($start);
+            $qb->setMaxResults($length);
         }
-*/
-        // PREPARE QUERY FOR PARAM SEARCH
-       /*
-        if ($context->getSearchKey() != "") {
 
-            $searchConfig = $this->configurationService->
-            getFinalConfigurationForAViewContext(
-                $context,
-                ConfigurationReaderService::VIEW_CONTEXT_SEARCH
-            );
+        //$listConfiguration[$orderCol]
+        $keys = array_keys( $listConfiguration );
+
+        $qb->orderBy( $alias.".".$keys[$orderCol] , $orderDir);
+
+        // PREPARE QUERY FOR PARAM SEARCH
+        if ($searchValue != "" && isset($baseConfiguration["list"]["search"]) ) {
+
+            $searchConfig = $baseConfiguration["list"]["search"];
 
             $searchParams = [];
             foreach ($searchConfig as $key => $item) {
@@ -117,9 +157,9 @@ class CrudService
                 $searchParams[] = " l.".$key." LIKE :searchParam";
             }
 
-            $qb->setParameter('search', "%{$context->getSearchKey()}%");
+            $qb->setParameter('search', "%{$searchValue}%");
         }
-*/
+
        /*
         // Filters
         $filters = $context->getFilters();

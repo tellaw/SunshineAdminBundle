@@ -18,12 +18,12 @@ class MenuController extends AbstractController
      * @Route("/menu", name="sunshine_menu")
      * @Method({"GET"})
      *
-     * @return JsonResponse
+     * @return \HttpResponse
      */
-    public function listAction()
+    public function indexAction()
     {
         $configuration = $this->get("sunshine.menu")->getConfiguration();
 
-        return new JsonResponse($configuration);
+        return $this->renderWithTheme( "Menu:index", array("menu" => $configuration) );
     }
 }

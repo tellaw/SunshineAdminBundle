@@ -31,4 +31,38 @@ class AjaxController extends Controller
         return $response;
     }
 
+    /**
+     * @Route("/ajax/datatable/{entity}", name="sunshine_ajax_datatable_callback")
+     * @Method({"GET", "POST"})
+     */
+    public function ajaxListCallBack ( Request $request, $entity ) {
+
+        $draw = $request->request->get ("draw");
+        $orderCol = $request->request->get ("order")[0]["column"];
+        $orderDir = $request->request->get ("order")[0]["dir"];
+        $paginationStart = $request->request->get ("start");
+        $paginationLength = $request->request->get ("length");
+        $searchValue = $request->request->get ("search")["value"];
+
+        /** @var CrudService $crudService */
+        $crudService = $this->get("sunshine.crud_service");
+        $list = $crudService->getEntityList( $entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue );
+        $nbElementsOfFilteredEntity = $crudService->getCountEntityElements( $entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue );
+        $nbElementsInTable = $crudService->getTotalElementsInTable( $entity );
+
+        $responseArray = array (
+            "draw" => $draw,
+            "recordsTotal" => $nbElementsInTable,
+            "recordsFiltered" => $nbElementsOfFilteredEntity,
+            "data" => $list
+        );
+
+        // Return them with the JSON Response Serialized
+        $serializedEntity = $this->container->get('serializer')->serialize($responseArray, 'json');
+        $response = new Response();
+        $response->setContent($serializedEntity);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
 }

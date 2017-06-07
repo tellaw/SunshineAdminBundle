@@ -24,12 +24,15 @@
                         <script type="text/javascript">
                             $(document).ready(function() {
                                 $('#{{ widgetName }}_datatable_ajax').DataTable( {
-                                    "ajax": "{{ path('sunshine_ajax_list', {'entity': entityName}) }}",
+                                    "ajax": {
+                                        url: "{{ path('sunshine_ajax_datatable_callback', {'entity': entityName}) }}",
+                                        type: "post",
+                                    },
                                     "columns": [
-                                        {% for name, field in fields %}
-                                        { "data": "{{ name }}" }{% if loop.last == false %},{% endif %}
-                                        {% endfor %}
-                                    ]
+                                        {% for name, field in fields %}{ "data": "{{ name }}" }{% if loop.last == false %},{% endif %}{% endfor %}
+                                    ],
+                                    "processing": true,
+                                    "serverSide": true
                                 } );
                             } );
                         </script>
