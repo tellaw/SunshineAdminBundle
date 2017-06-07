@@ -21,7 +21,7 @@ class AjaxController extends Controller
 
         /** @var CrudService $entities */
         $crudService = $this->get ("sunshine.crud_service");
-        $list = $crudService->getEntityList ( $entity );
+        $list = $crudService->getEntityList( $entity );
 
         // Return them with the JSON Response Serialized
         $serializedEntity = $this->container->get('serializer')->serialize(array("data"=>$list), 'json');

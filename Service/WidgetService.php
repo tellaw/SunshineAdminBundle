@@ -18,7 +18,8 @@ class WidgetService
     /**
      * Constructor
      *
-     * @param array $configuration
+     * @param $router
+     * @internal param array $configuration
      */
     public function __construct($router)
     {
