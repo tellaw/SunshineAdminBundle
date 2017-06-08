@@ -1,0 +1,24 @@
+<div class="portlet light portlet-fit portlet-datatable bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-eye font-dark"></i>
+            <span class="caption-subject font-dark sbold uppercase">{{ widget.title }}</span>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="table-container">
+
+            <div class="form-horizontal">
+                {{ form_start(form) }}
+                {% for row in form %}
+                    <div class="form-group field-">
+                        <div class="">
+                            {{ form_row(row) }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</div>

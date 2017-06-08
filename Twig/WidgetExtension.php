@@ -119,7 +119,7 @@ class WidgetExtension extends \Twig_Extension
     public function renderEntityField(\Twig_Environment $twig, $fieldValue, array $parameters, $view = true)
     {
         $this->twig = $twig;
-        $template = "@TellawSunshineAdmin/Widget/view/field_".$parameters['type'].".html.twig";
+        $template = "@TellawSunshineAdmin/Widget/fields/field_".$parameters['type'].".html.twig";
         $parameters['value'] = $fieldValue;
         $parameters['view'] = $view;
 
