@@ -1,5 +1,5 @@
 {% if item.type == 'page' %}
-    <li class="nav-item ">
+    <li class="nav-item {% if isThisActivePage(item, pageId) %}active{% endif %}">
         <a href="{{ path('sunshine_page', {'pageId': item.parameters.id}) }}" class="nav-link">
             {% if item.icon is defined %}
                 <i class="icon-{{ item.icon }}"></i>
@@ -19,13 +19,13 @@
     </li>
 {% elseif item.type == 'external' %}
     <li class="nav-item start ">
-        <a href="{{ item.parameters.url }}" class="nav-link">
+        <a href="{{ item.parameters.url }}" class="nav-link" {% if item.target is defined %}target="{{ item.target }}"{% endif %}>
             <i class="icon-home"></i>
             <span class="title">{{ item.label }}</span>
         </a>
     </li>
 {% elseif item.type == 'subMenu' %}
-    <li class="nav-item">
+    <li class="nav-item {% if isActivePageIsAChildPage( item, pageId ) %}active open{%  endif %}">
         <a href="javascript:;" class="nav-link nav-toggle">
             <i class="icon-puzzle"></i>
             <span class="title">{{ item.label }}</span>

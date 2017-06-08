@@ -15,15 +15,15 @@ class MenuController extends AbstractController
     /**
      * Expose menu configuration
      *
-     * @Route("/menu", name="sunshine_menu")
+     * @Route("/menu/{pageId}", name="sunshine_menu")
      * @Method({"GET"})
      *
      * @return \HttpResponse
      */
-    public function indexAction()
+    public function indexAction( $pageId )
     {
         $configuration = $this->get("sunshine.menu")->getConfiguration();
 
-        return $this->renderWithTheme( "Menu:index", array("menu" => $configuration) );
+        return $this->renderWithTheme( "Menu:index", array("menu" => $configuration, "pageId" => $pageId) );
     }
 }

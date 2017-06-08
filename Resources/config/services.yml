@@ -25,3 +25,8 @@ services:
     arguments: ["%tellaw_sunshine_admin.pages%", "@sunshine.widgets"]
     tags:
       - { name: twig.extension }
+
+  sunshine.menu_twig_extension:
+    class: Tellaw\SunshineAdminBundle\Twig\MenuExtension
+    tags:
+      - { name: twig.extension }

@@ -9,3 +9,10 @@ $( document ).ready(function() {
     });
 
 });
+
+function openWidgetEdit ( pageName, row, widgetName, itemId  ) {
+
+    var route = $("#widget-"+widgetName).data("editroute")+"/"+itemId;
+    $("#widget-"+widgetName).load ( route );
+
+}

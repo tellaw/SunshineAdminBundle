@@ -42,6 +42,7 @@
                 {% else %}
                     <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
                          data-route="{{ getWidgetUrl( widget, name, pageId, rowKey ) }}"
+                         data-editroute="{{ path('sunshine_widget_edit', {'pageName': pageId, 'widgetName': name, 'row': rowKey}) }}"
                          data-type="widget.ajax"
                          id="widget-{{ name }}" >
                     </div>

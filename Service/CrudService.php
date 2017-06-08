@@ -51,16 +51,18 @@ class CrudService
 
         // GET COLUMNS AS FIELDS
         foreach ($listConfiguration as $key => $item) {
-            if (key_exists('class', $item)) {
-                $joinField = ['class' => $item['class'], 'name' => $key];
+            if (isset( $item["type"] ) && $item["type"] != "custom" || !isset($item["type"]) ) {
+                if (key_exists('class', $item)) {
+                    $joinField = ['class' => $item['class'], 'name' => $key];
 
-                // GET FOREIGN STRING FIELD TO SHOW
-                if (isset($item['string'])) {
-                    $joinField['string'] = $item['string'];
+                    // GET FOREIGN STRING FIELD TO SHOW
+                    if (isset($item['string'])) {
+                        $joinField['string'] = $item['string'];
+                    }
+                    $joins[] = $joinField;
+                } else {
+                    $fields[] = $alias . "." . $key;
                 }
-                $joins[] = $joinField;
-            } else {
-                $fields[] = $alias.".".$key;
             }
         }
 
@@ -137,16 +139,21 @@ class CrudService
 
         // GET COLUMNS AS FIELDS
         foreach ($listConfiguration as $key => $item) {
-            if (key_exists('class', $item)) {
-                $joinField = ['class' => $item['class'], 'name' => $key];
 
-                // GET FOREIGN STRING FIELD TO SHOW
-                if (isset($item['string'])) {
-                    $joinField['string'] = $item['string'];
+            if (isset( $item["type"] ) && $item["type"] != "custom" || !isset($item["type"]) ) {
+
+                if (key_exists('class', $item) ) {
+                    $joinField = ['class' => $item['class'], 'name' => $key];
+
+                    // GET FOREIGN STRING FIELD TO SHOW
+                    if (isset($item['string'])) {
+                        $joinField['string'] = $item['string'];
+                    }
+                    $joins[] = $joinField;
+                } else {
+                    $fields[] = $alias.".".$key;
                 }
-                $joins[] = $joinField;
-            } else {
-                $fields[] = $alias.".".$key;
+
             }
         }
 

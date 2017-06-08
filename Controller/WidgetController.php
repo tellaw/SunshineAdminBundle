@@ -43,6 +43,7 @@ class WidgetController extends Controller
             'TellawSunshineAdminBundle:Widget:ajax-datatable.html.twig',
             array(
                 "fields" => $listConfiguration,
+                "row" => $row,
                 "widgetName" => $widgetName,
                 "pageName" => $pageName,
                 "entityName" => $entityName,
@@ -95,6 +96,22 @@ class WidgetController extends Controller
                 "entity" => $entity,
             ]
         );
+    }
+
+    /**
+     * Shows entity
+     *
+     * @Route("/app/widget/edit/{pageName}/{row}/{widgetName}/{objId}", name="sunshine_widget_edit")
+     * @Method("GET")
+     **/
+    public function editAction ( $pageName, $row, $widgetName, $objId = "" ) {
+
+        return $this->render(
+            'TellawSunshineAdminBundle:Default:index.html.twig',
+            []
+
+        );
+
     }
 
 }

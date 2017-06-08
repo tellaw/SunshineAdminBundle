@@ -28,8 +28,18 @@
                                         url: "{{ path('sunshine_ajax_datatable_callback', {'entity': entityName}) }}",
                                         type: "post",
                                     },
+                                    "columnDefs": [
+                                        {% for key,field in fields %}
+                                        {% if field.template is defined and field.template is not empty  %}
+                                        {
+                                            {% include field.template ~ '.html.twig' with  {'field':field, 'key':key} %}
+                                        },
+                                        {% endif %}
+                                        {% endfor %}
+                                        ],
                                     "columns": [
                                         {% for name, field in fields %}{ "data": "{{ name }}" }{% if loop.last == false %},{% endif %}{% endfor %}
+
                                     ],
                                     "processing": true,
                                     "serverSide": true
