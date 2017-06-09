@@ -106,14 +106,22 @@ class EntityService
         }
 
         foreach ($resultData as $fieldName => $fieldConfiguration) {
+
             if (!$fieldConfiguration['type'] || empty($fieldConfiguration['type'])) {
                  $type = $this->guessEntityFieldType($configuration['configuration']['class'], $fieldName);
                 $resultData[$fieldName]['type'] = $type;
+
+                if ($type == "object" && empty($fieldConfiguration['relatedClass'] )) {
+                    $relatedClass = $this->guessEntityFieldLinkedClass($configuration['configuration']['class'], $fieldName);
+                    $resultData[$fieldName]['relatedClass'] = $relatedClass;
+                }
+
             }
 
             if (!$fieldConfiguration['label'] || empty($fieldConfiguration['label'])) {
                 $resultData[$fieldName]['label'] = $fieldName;
             }
+
         }
 
         return $resultData;
@@ -129,7 +137,6 @@ class EntityService
      */
     protected function guessEntityFieldType($class, $property)
     {
-        $annotationReader = new AnnotationReader();
 
         $type = null;
 
@@ -141,14 +148,15 @@ class EntityService
         // the doctrine annotations and ASSERT annotations
 
         // Get Annotations for attribute
-        $reflectionProperty = new \ReflectionProperty($class, $property);
-        $propertyAnnotations = $annotationReader->getPropertyAnnotations($reflectionProperty);
+        $propertyAnnotations = $this->getAnnotationsForAttribute( $class, $property );
 
         foreach ($propertyAnnotations AS $annot) {
             if (get_class($annot) == "Symfony\\Component\\Validator\\Constraints\\Type") {
                 $typeAssert = $annot->type;
             } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\Column") {
                 $typeDoctrine = $annot->type;
+            } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\ManyToOne"  ) {
+                $typeDoctrine = "object";
             }
         }
 
@@ -161,5 +169,43 @@ class EntityService
         }
 
         throw new \Exception('Unable to guess the type for the ' . $property . ' property');
+    }
+
+    /**
+     *
+     * Method used to find the class of a related entity
+     *
+     * @param $class
+     * @param $property
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function guessEntityFieldLinkedClass ( $class, $property ) {
+
+        // Get Annotations for attribute
+        $propertyAnnotations = $this->getAnnotationsForAttribute( $class, $property );
+
+        foreach ($propertyAnnotations AS $annot) {
+            if (get_class($annot) == "Doctrine\\ORM\\Mapping\\ManyToOne" ) {
+                return $annot->targetEntity;
+            }
+        }
+
+        throw new \Exception('Unable to guess the class of the related entity for the ' . $property . ' property');
+    }
+
+    /**
+     *
+     * Method used to read Annotations on class
+     *
+     * @param $class
+     * @param $property
+     * @return mixed
+     */
+    private function getAnnotationsForAttribute ( $class, $property ) {
+        $annotationReader = new AnnotationReader();
+        $reflectionProperty = new \ReflectionProperty($class, $property);
+        return $annotationReader->getPropertyAnnotations($reflectionProperty);
+
     }
 }
