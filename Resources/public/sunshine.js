@@ -8,6 +8,14 @@ $( document ).ready(function() {
 
     });
 
+    // DatePicker Init
+    $('.date-picker').datepicker({format: 'dd/mm/yyyy'});
+
+    // Alert auto hide
+    $(".flashBagAlert").fadeTo(5000, 500).slideUp(500, function(){
+        $(this).slideUp(500);
+    });
+
 });
 
 function openWidgetEdit ( pageName, row, widgetName, itemId  ) {
