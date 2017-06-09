@@ -7,44 +7,46 @@
     </div>
     <div class="portlet-body">
         <div class="table-container">
-            <div id="{{ widgetName }}_datatable_ajax_wrapper" class="dataTables_wrapper dataTables_extended_wrapper no-footer">
+            <div id="{{ widgetName }}_datatable_ajax_wrapper"
+                 class="dataTables_wrapper dataTables_extended_wrapper no-footer">
                 <div class="row">
                     <div class="col-md-12 col-sm-12">
 
-                        <table class="table table-striped table-bordered table-hover table-checkable dataTable no-footer" id="{{ widgetName }}_datatable_ajax" aria-describedby="datatable_ajax_info" role="grid">
+                        <table class="table table-striped table-bordered table-hover table-checkable dataTable no-footer"
+                               id="{{ widgetName }}_datatable_ajax" aria-describedby="datatable_ajax_info" role="grid">
                             <thead>
-                                <tr role="row" class="heading">
-                                    {% for name, field in fields %}
-                                        <th class="sorting_disabled" rowspan="1" colspan="1"> {{name}} </th>
-                                    {% endfor %}
-                                </tr>
+                            <tr role="row" class="heading">
+                                {% for name, field in fields %}
+                                    <th class="sorting_disabled" rowspan="1" colspan="1"> {{ name }} </th>
+                                {% endfor %}
+                            </tr>
                             </thead>
                         </table>
 
                         <script type="text/javascript">
-                            $(document).ready(function() {
-                                $('#{{ widgetName }}_datatable_ajax').DataTable( {
+                            $(document).ready(function () {
+                                $('#{{ widgetName }}_datatable_ajax').DataTable({
                                     "ajax": {
                                         url: "{{ path('sunshine_ajax_datatable_callback', {'entity': entityName}) }}",
                                         type: "post",
                                     },
                                     "columnDefs": [
                                         {% for key,field in fields %}
-                                        {% if field.template is defined and field.template is not empty  %}
+                                        {% if field.template is defined and field.template is not empty %}
                                         {
-                                            {% include field.template ~ '.html.twig' with  {'field':field, 'key':key} %}
+                                            {% include field.template ~ '.html.twig' with  {'field':field, 'key':key, 'entityName':entityName} %}
                                         },
                                         {% endif %}
                                         {% endfor %}
-                                        ],
+                                    ],
                                     "columns": [
-                                        {% for name, field in fields %}{ "data": "{{ name }}" }{% if loop.last == false %},{% endif %}{% endfor %}
+                                            {% for name, field in fields %}{"data": "{{ name }}"}{% if loop.last == false %},{% endif %}{% endfor %}
 
                                     ],
                                     "processing": true,
                                     "serverSide": true
-                                } );
-                            } );
+                                });
+                            });
                         </script>
 
                     </div>

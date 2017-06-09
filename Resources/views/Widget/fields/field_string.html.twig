@@ -1,5 +1,1 @@
-{% if view == 'show' %}
-    {{ value|nl2br }}
-{% else %}
-    {{ value|truncate }}
-{% endif %}
+{{ view == 'show' ? value|nl2br : value|truncate }}

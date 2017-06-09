@@ -13,10 +13,17 @@
                 {% for row in form %}
                     <div class="form-group field-">
                         <div class="">
-                            {{ form_row(row) }}
+                            ldldl
+                            {% set name = row.vars.name %}
+                            {% if row.vars.data is defined and row.vars.data == null %}
+                                {% set value = sunshine_render_entity_field(attribute(entity, name), attribute(fields, name), false) %}
+                            {% else %}
+                                {#{{ form_row(row) }}#}
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
+                {{ form_end(form) }}
             </div>
         </div>
     </div>
