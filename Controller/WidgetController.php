@@ -134,7 +134,7 @@ class WidgetController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $entity = $form->getData();
             $em = $this->get('doctrine')->getEntityManager();
             $em->persist($entity);

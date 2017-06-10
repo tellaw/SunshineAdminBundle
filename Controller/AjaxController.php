@@ -35,7 +35,7 @@ class AjaxController extends Controller
      * @Route("/ajax/datatable/{entity}", name="sunshine_ajax_datatable_callback")
      * @Method({"GET", "POST"})
      */
-    public function ajaxListCallBack ( Request $request, $entity ) {
+    public function ajaxListCallBackAction ( Request $request, $entity ) {
 
         $draw = $request->request->get ("draw");
         $orderCol = $request->request->get ("order")[0]["column"];
