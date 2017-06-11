@@ -5,7 +5,7 @@ services:
 
   sunshine.menu:
     class: Tellaw\SunshineAdminBundle\Service\MenuService
-    arguments: ["%tellaw_sunshine_admin.menu%"]
+    arguments: ["%tellaw_sunshine_admin.menu%", "%tellaw_sunshine_admin.entities%"]
 
   sunshine.pages:
     class: Tellaw\SunshineAdminBundle\Service\PageService

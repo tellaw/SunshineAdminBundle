@@ -91,7 +91,7 @@ class EntityService
             // A field cannot be copyied if it is not declared in detailed configuration
             if (array_key_exists($fieldName, $globalConfiguration)) {
                 $fieldGlobalConfiguration = $globalConfiguration[$fieldName];
-dump($fieldGlobalConfiguration);
+
                 if (!is_array($fieldDetailedConfiguration)) {
                     $fieldDetailedConfiguration = array();
                 }

@@ -153,6 +153,7 @@ class WidgetController extends Controller
             'TellawSunshineAdminBundle:Page:edit.html.twig',
             [
                 "form" => $form->createView(),
+                "formConfiguration" => $configuration,
                 "fields" => $formConfiguration,
                 "entityName" => $entityName,
                 "entity" => $entity,

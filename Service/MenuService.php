@@ -14,13 +14,20 @@ class MenuService
     private $configuration;
 
     /**
+     * Entity Configuration
+     * @var array
+     */
+    private $entityConfiguration;
+
+    /**
      * Constructor
      *
      * @param array $configuration
      */
-    public function __construct(array $configuration)
+    public function __construct(array $configuration, $entityConfiguration)
     {
         $this->configuration = $configuration;
+        $this->entityConfiguration = $entityConfiguration;
     }
 
     /**
@@ -29,6 +36,7 @@ class MenuService
      */
     public function getConfiguration()
     {
+
         return $this->configuration;
     }
 }

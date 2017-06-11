@@ -337,6 +337,7 @@ class CrudService
                     break;
 
                 case "object":
+                    dump($field);
                     if ( !isset ( $field["relatedClass"] ) ) throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
                     if ( !isset ( $field["toString"] ) ) throw new \Exception("Object must define a toString attribut to define the correct label to use -> field : ".$field["label"]);
 
@@ -348,8 +349,8 @@ class CrudService
                         'choice_label' => $field["toString"],
 
                         // used to render a select box, check boxes or radios
-                        // 'multiple' => true,
-                        // 'expanded' => true,
+                        'multiple' => $field['multiple'],
+                        'expanded' => $field['expanded'],
                     ));
                     break;
 

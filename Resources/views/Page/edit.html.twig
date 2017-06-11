@@ -2,7 +2,7 @@
 {% form_theme form 'TellawSunshineAdminBundle:Form:fields.html.twig' %}
 
 {% block title %}
-    Edit
+    {{ formConfiguration.form.title }}
 {% endblock %}
 
 {% block breadcrumb %}
@@ -10,14 +10,13 @@
 {% endblock %}
 
 {% block body %}
-
+    {% if formConfiguration.form.description %}
+    <div class="m-heading-1 border-green m-bordered">
+        <p> {{ formConfiguration.form.description | raw }} </p>
+    </div>
+    {% endif %}
     <div class="portlet light portlet-fit portlet-datatable bordered">
-        <div class="portlet-title">
-            <div class="caption">
-                <i class="icon-eye font-dark"></i>
-                <span class="caption-subject font-dark sbold uppercase">EDIT : </span>
-            </div>
-        </div>
+
         <div class="portlet-body">
             <div class="table-container">
 
