@@ -31,7 +31,7 @@ class CrudController extends AbstractController
      */
     public function listAction( $entityName, $pageStart = 1, $length = 30, Request $request)
     {
-        
+
         $searchKey = $request->query->get('searchKey', '');
         $filters = $request->query->get('filters', []);
         $orderBy = $request->query->get('orderBy');
@@ -115,11 +115,6 @@ class CrudController extends AbstractController
     public function deleteAction( $targetId ) {
 
         $crudService = $this->get("sunshine.crud_service");
-
-
-    }
-
-    public function viewAction() {
 
     }
 

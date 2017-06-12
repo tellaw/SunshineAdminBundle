@@ -119,7 +119,6 @@ class CrudService
             }
         }
 */
-
         // GET RESULT
         $result = $qb->getQuery()->getResult();
 
@@ -154,7 +153,7 @@ class CrudService
 
                     // GET FOREIGN STRING FIELD TO SHOW
                     if (isset($item['toString'])) {
-                        $joinField['string'] = $item['toString'];
+                        $joinField['toString'] = $item['toString'];
                     }
                     $joins[] = $joinField;
                 } else {
@@ -173,7 +172,7 @@ class CrudService
 
             $joinAlias = $this->getAliasForEntity( $join['name'] );
             $qb->innerJoin($this->alias.'.'.$join['name'], $joinAlias);
-            $joinField = isset($join['string']) ? $join['string'] : 'id';
+            $joinField = isset($join['toString']) ? $join['toString'] : 'id';
 
             $qb->addSelect($joinAlias.'.'.$joinField.' as '.$join['name']);
         }
@@ -330,8 +329,8 @@ class CrudService
                         [
                             'widget' => 'single_text',
                             'input' => 'datetime',
-                            'format' => 'dd/MM/yyyy hh:mm:ss',
-                            'attr' => array('class' => 'date-picker'),
+                            'format' => 'dd/MM/yyyy hh:mm',
+                            'attr' => array('class' => 'datetime-picker'),
                         ]
                     );
                     break;
