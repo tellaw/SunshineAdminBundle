@@ -8,7 +8,7 @@
         {% else %}
             <div class="caption">
                 <i class="icon-settings font-dark"></i>
-                <span class="caption-subject font-dark sbold uppercase pull-left">{{ entityName }}</span>
+                <span class="caption-subject font-dark sbold uppercase pull-left">{{ entityName | trans }}</span>
             </div>
         {% endif %}
         <a href="{{ path('sunshine_page_new', {'entityName': entityName}) }}" class="btn green pull-right">
