@@ -138,7 +138,6 @@ class Configuration implements ConfigurationInterface
                                             ->defaultNull()
                                         ->end()
                                         ->scalarNode('toString')
-                                            ->defaultFalse()
                                         ->end()
                                         ->scalarNode('relatedClass')
                                             ->defaultFalse()
