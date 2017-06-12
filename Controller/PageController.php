@@ -22,7 +22,7 @@ class PageController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function listAction( $pageId )
+    public function pageAction( $pageId )
     {
 
         /** @var array $page */
@@ -31,6 +31,36 @@ class PageController extends AbstractController
         //$configuration = $this->get("sunshine.menu")->getConfiguration();
 
         return $this->renderWithTheme( "Page:index", ["page" => $page, "pageId" => $pageId] );
+    }
+
+    /**
+     *
+     * Show a list for an entity
+     * @Route("/page/list/{entityName}", name="sunshine_page_list")
+     *
+     * @param Request $request
+     * @param $entityName
+     */
+    public function listAction (Request $request, $entityName) {
+
+        /** @var EntityService $entities */
+        $entities = $this->get("sunshine.entities");
+        $listConfiguration = $entities->getListConfiguration($entityName);
+        $configuration = $entities->getConfiguration($entityName);
+
+        return $this->render(
+            'TellawSunshineAdminBundle:Page:list.html.twig',
+            [
+                "extraParameters" => array ("name" => "entityName", "value" => $entityName),
+                "widget" => array ("type" => "list"),
+                "formConfiguration" => $configuration,
+                "fields" => $listConfiguration,
+                "entityName" => $entityName,
+                "entity" => $entityName,
+                "pageId" => null,
+            ]
+        );
+
     }
 
     /**

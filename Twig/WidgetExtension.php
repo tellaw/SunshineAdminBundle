@@ -64,9 +64,9 @@ class WidgetExtension extends \Twig_Extension
      * @param $row
      * @return mixed
      */
-    public function getWidgetUrl($widget, $widgetName, $pageId, $row)
+    public function getWidgetUrl($widget, $widgetName, $pageId, $row, $extraParam = null)
     {
-        return $this->widgetService->getUrlOfWidget($widget, $widgetName, $pageId, $row);
+        return $this->widgetService->getUrlOfWidget($widget, $widgetName, $pageId, $row, $extraParam);
     }
 
 
