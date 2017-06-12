@@ -19,6 +19,7 @@
                                 {% for name, field in fields %}
                                     <th class="sorting_disabled" rowspan="1" colspan="1"> {{ name }} </th>
                                 {% endfor %}
+                                <th>Actions</th>
                             </tr>
                             </thead>
                         </table>
@@ -38,6 +39,13 @@
                                         },
                                         {% endif %}
                                         {% endfor %}
+                                        {
+                                            "targets": {{ fields|length }},
+                                            "render": function ( data, type, row, meta ) {
+                                                var itemID = row['id'];
+                                                return '<a href="{{ path('sunshine_page_new', {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn green btn-xs">Editer</a>';
+                                            }
+                                        }
                                     ],
                                     "columns": [
                                             {% for name, field in fields %}{"data": "{{ name }}"}{% if loop.last == false %},{% endif %}{% endfor %}
