@@ -329,8 +329,8 @@ class CrudService
                         [
                             'widget' => 'single_text',
                             'input' => 'datetime',
-                            'format' => 'dd/MM/yyyy hh:mm:ss',
-                            'attr' => array('class' => 'date-picker'),
+                            'format' => 'dd/MM/yyyy hh:mm',
+                            'attr' => array('class' => 'datetime-picker'),
                         ]
                     );
                     break;

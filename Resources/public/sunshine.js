@@ -11,6 +11,8 @@ $( document ).ready(function() {
     // DatePicker Init
     $('.date-picker').datepicker({format: 'dd/mm/yyyy'});
 
+    $('.datetime-picker').datetimepicker({format: 'dd/mm/yyyy hh:ii'});
+
     // Alert auto hide
     $(".flashBagAlert").fadeTo(5000, 500).slideUp(500, function(){
         $(this).slideUp(500);
