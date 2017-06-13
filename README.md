@@ -5,7 +5,7 @@ Sunshine Administration Bundle for Symfony
 
 1. (todo)[Setup and configuration](Resources/Documentation/installation.md)
 2. YAML Configuration
-3. Menu configuration
+3. [Menu configuration](Resources/Documentation/configuration/menu.md)
 4. Entity configuration
 3. Types and Reflexion
 2. [Page configuration](Resources/Documentation/backoffice-page.md)
@@ -32,8 +32,6 @@ Sunshine Administration Bundle for Symfony
 | DateTime         | DateTimePicker bootstrap           | OK |
 | Integer         | Champs texte simple, validation Integer           | OK |
 | Float         | Champs texte simple validation float           | OK |
-
-
 
 A ajouter : 
 2. ReadOnly String : Text Field
