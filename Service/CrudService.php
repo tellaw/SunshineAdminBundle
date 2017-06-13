@@ -336,11 +336,7 @@ class CrudService
                     break;
 
                 default:
-                    $fieldAttributes = array();
-                    if ( isset ( $field['label'] ) )
-                    {
-                        $fieldAttributes['label'] = $field['label'];
-                    }
+
                     $form->add($fieldName, $formTypeClass[$field['type']], $fieldAttributes);
                     break;
             }
