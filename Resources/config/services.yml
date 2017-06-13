@@ -26,6 +26,10 @@ services:
     tags:
       - { name: twig.extension }
 
+  sunshine.defaultType:
+    class: Tellaw\SunshineAdminBundle\Form\Type\DefaultType
+    arguments: ["@sunshine.crud_service"]
+
   sunshine.menu_twig_extension:
     class: Tellaw\SunshineAdminBundle\Twig\MenuExtension
     tags:

@@ -8,11 +8,23 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tellaw\SunshineAdminBundle\Service\CrudService;
 
 /**
  */
 class DefaultType extends AbstractType
 {
+    private $crudService;
+
+    /**
+     * DefaultType constructor.
+     * @param CrudService $crudService
+     */
+    public function __construct(CrudService $crudService)
+    {
+        $this->crudService = $crudService;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -37,11 +49,6 @@ class DefaultType extends AbstractType
         $crudService->buildFormFields($form, $fieldsConfiguration);
 
         $form->add('Valider', SubmitType::class);
-
-        dump($fieldsConfiguration);
-        dump($entityConfiguration);
-        dump($form);
-        dump($data); //die;
     }
 
     /**
@@ -49,6 +56,7 @@ class DefaultType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setDefaults(['fields_configuration' => [], 'configuration' => [], 'crud_service' => $this->crudService ]);
         $resolver->setRequired('fields_configuration');
         $resolver->setRequired('configuration');
         $resolver->setRequired('crud_service');

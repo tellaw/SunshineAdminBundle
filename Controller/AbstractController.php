@@ -17,7 +17,6 @@ abstract class AbstractController extends Controller
      * @param $template
      * @param $params
      * @return mixed
-     * 
      *
      */
     protected function renderWithTheme ( $template, $params )
