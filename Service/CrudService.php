@@ -336,7 +336,6 @@ class CrudService
                     break;
 
                 case "object":
-                    dump($field);
                     if ( !isset ( $field["relatedClass"] ) ) throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
                     if ( !isset ( $field["toString"] ) ) throw new \Exception("Object must define a toString attribut to define the correct label to use -> field : ".$field["label"]);
 
