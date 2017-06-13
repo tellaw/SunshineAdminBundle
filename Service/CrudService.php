@@ -281,20 +281,21 @@ class CrudService
         $formTypeClass = $this->getFieldTypeClasses();
 
         foreach ($formConfiguration as $fieldName => $field) {
+
+            $fieldAttributes = array ();
+
+            if ( isset ( $field['label'] ) )
+            {
+                $fieldAttributes['label'] = $field['label'];
+            }
+
             switch ( $field["type"] ) {
                 case "date":
 
-                    $fieldAttributes = array(
-                        'widget' => 'single_text',
-                        'input' => 'datetime',
-                        'format' => 'dd/MM/yyyy',
-                        'attr' => array('class' => 'date-picker')
-                    );
-
-                    if ( isset ( $field['label'] ) )
-                    {
-                        $fieldAttributes['label'] = $field['label'];
-                    }
+                    $fieldAttributes["widget"]  = 'single_text';
+                    $fieldAttributes["input"]   = 'datetime';
+                    $fieldAttributes["format"]  = 'dd/MM/yyyy';
+                    $fieldAttributes["attr"]    = array('class' => 'datetime-picker');
 
                     $form->add(
                         $fieldName,
@@ -313,17 +314,10 @@ class CrudService
 
                 case "datetime":
 
-                    $fieldAttributes = array(
-                        'widget' => 'single_text',
-                        'input' => 'datetime',
-                        'format' => 'dd/MM/yyyy hh:mm',
-                        'attr' => array('class' => 'datetime-picker'),
-                    );
-
-                    if ( isset ( $field['label'] ) )
-                    {
-                        $fieldAttributes['label'] = $field['label'];
-                    }
+                    $fieldAttributes["widget"]  = 'single_text';
+                    $fieldAttributes["input"]   = 'datetime';
+                    $fieldAttributes["format"]  = 'dd/MM/yyyy hh:mm';
+                    $fieldAttributes["attr"]    = array('class' => 'datetime-picker');
 
                     $form->add(
                         $fieldName,
@@ -337,35 +331,20 @@ class CrudService
                     if ( !isset ( $field["relatedClass"] ) ) throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
                     if ( !isset ( $field["toString"] ) ) throw new \Exception("Object must define a toString attribut to define the correct label to use -> field : ".$field["label"]);
 
-                    $fieldAttributes = array(
+                    $fieldAttributes["class"]           = $field["relatedClass"];
+                    $fieldAttributes["choice_label"]    = $field["toString"];
+                    $fieldAttributes["multiple"]        = $field["multiple"];
+                    $fieldAttributes["expanded"]        = $field["expanded"];
 
-                        // query choices from this entity
-                        'class' => $field["relatedClass"],
-
-                        // use the User.username property as the visible option string
-                        'choice_label' => $field["toString"],
-
-
-
-                        // used to render a select box, check boxes or radios
-                        'multiple' => $field['multiple'],
-                        'expanded' => $field['expanded'],
-                    );
-
-                    if ( isset ( $field['label'] ) )
-                    {
-                        $fieldAttributes['label'] = $field['label'];
+                    if (!$field["expanded"]) {
+                        $fieldAttributes["attr"]    = array('class' => 'select-picker', "data-live-search"=>"true");
                     }
 
                     $form->add($fieldName, EntityType::class, $fieldAttributes);
                     break;
 
                 default:
-                    $fieldAttributes = array();
-                    if ( isset ( $field['label'] ) )
-                    {
-                        $fieldAttributes['label'] = $field['label'];
-                    }
+
                     $form->add($fieldName, $formTypeClass[$field['type']], $fieldAttributes);
                     break;
             }
