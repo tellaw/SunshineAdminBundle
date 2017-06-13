@@ -281,20 +281,20 @@ class CrudService
         $formTypeClass = $this->getFieldTypeClasses();
 
         foreach ($formConfiguration as $fieldName => $field) {
+
+            $fieldAttributes = array ();
+
+            if ( isset ( $field['label'] ) )
+            {
+                $fieldAttributes['label'] = $field['label'];
+            }
+
             switch ( $field["type"] ) {
                 case "date":
 
-                    $fieldAttributes = array(
-                        'widget' => 'single_text',
-                        'input' => 'datetime',
-                        'format' => 'dd/MM/yyyy',
-                        'attr' => array('class' => 'date-picker')
-                    );
-
-                    if ( isset ( $field['label'] ) )
-                    {
-                        $fieldAttributes['label'] = $field['label'];
-                    }
+                    $fieldAttributes["widget"] = 'single_text';
+                    $fieldAttributes["input"] = 'datetime';
+                    $fieldAttributes["format"] = 'dd/MM/yyyy';
 
                     $form->add(
                         $fieldName,

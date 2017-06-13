@@ -34,3 +34,9 @@ services:
     class: Tellaw\SunshineAdminBundle\Twig\MenuExtension
     tags:
       - { name: twig.extension }
+
+  sunshine.default_form_type:
+    class: Tellaw\SunshineAdminBundle\Form\Type\DefaultType
+    arguments: ['@sunshine.crud_service']
+    tags:
+      - { name: form.type }
