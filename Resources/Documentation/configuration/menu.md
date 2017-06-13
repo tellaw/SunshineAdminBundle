@@ -12,6 +12,18 @@ tellaw_sunshine_admin:
             ... menu element...
 ```
 
+Here is how to include your configuration file to your config.yml standard file :
+```
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+...
+    - { resource: sunshine/menu.yml }
+...
+```
+config.yml file
+
 A menu can handle the following elements :
 
 ## Section
