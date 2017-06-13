@@ -13,6 +13,9 @@ $( document ).ready(function() {
 
     $('.datetime-picker').datetimepicker({format: 'dd/mm/yyyy hh:ii'});
 
+    $('.select-picker').selectpicker();
+
+
     // Alert auto hide
     $(".flashBagAlert").fadeTo(5000, 500).slideUp(500, function(){
         $(this).slideUp(500);
