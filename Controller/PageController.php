@@ -93,7 +93,6 @@ class PageController extends AbstractController
 
         $formOptions = [
             'fields_configuration' => $fieldsConfiguration,
-            'configuration' => $configuration,
             'crud_service' => $crudService
         ];
 
