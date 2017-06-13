@@ -11,9 +11,15 @@
                 <span class="caption-subject font-dark sbold uppercase pull-left">{{ entityName | trans }}</span>
             </div>
         {% endif %}
-        <a href="{{ path('sunshine_page_new', {'entityName': entityName}) }}" class="btn green pull-right">
-            <i class="fa fa-cogs"></i> Créer un élément
-        </a>
+        {% if widget.parameters.newRoute is defined %}
+            <a href="{{ path(widget.parameters.newRoute, {'entityName': entityName}) }}" class="btn green pull-right">
+                <i class="fa fa-cogs"></i> Créer un élément
+            </a>
+        {% else %}
+            <a href="{{ path('sunshine_page_new', {'entityName': entityName}) }}" class="btn green pull-right">
+                <i class="fa fa-cogs"></i> Créer un élément
+            </a>
+        {% endif %}
     </div>
     <div class="portlet-body">
         <div class="table-container">
@@ -57,7 +63,12 @@
                                             "targets": {{ fields|length }},
                                             "render": function ( data, type, row, meta ) {
                                                 var itemID = row['id'];
+                                                {% if widget.parameters.editRoute is defined %}
+                                                return '<a href="{{ path(widget.parameters.editRoute, {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn green btn-xs">Editer</a>';
+                                                {% else %}
                                                 return '<a href="{{ path('sunshine_page_edit', {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn green btn-xs">Editer</a>';
+                                                {% endif %}
+
                                             }
                                         }
                                     ],
