@@ -130,6 +130,15 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                 {% endif %}
 
+                {% if app.session.flashBag.has('error') %}
+                    <div class="flashBagAlert alert alert-danger">
+                        {% for msg in app.session.flashBag.get('error') %}
+                            {{ msg }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+
                 {% block body %}
                     Body de ma page
                 {% endblock %}
