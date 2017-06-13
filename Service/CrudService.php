@@ -369,7 +369,7 @@ class CrudService
 
     /**
      * Liste des types champs disponibles
-     * 
+     *
      * @return array
      */
     protected function getFieldTypeClasses()

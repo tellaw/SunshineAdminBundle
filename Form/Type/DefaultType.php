@@ -4,15 +4,31 @@ namespace Tellaw\SunshineAdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tellaw\SunshineAdminBundle\Service\CrudService;
 
 /**
  */
 class DefaultType extends AbstractType
 {
+    /**
+     * @var CrudService
+     */
+    private $crudService;
+
+    /**
+     * DefaultType constructor.
+     * @param CrudService $crudService
+     */
+    public function __construct(CrudService $crudService)
+    {
+        $this->crudService = $crudService;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -22,26 +38,16 @@ class DefaultType extends AbstractType
     }
 
     /**
-     * Construction du formulaire selon la nture de l'entité
+     * Construction du formulaire selon la nature de l'entité
      *
      * @param FormEvent $event
      */
     public function onPreSetData(FormEvent $event)
     {
         $form = $event->getForm();
-        $data = $event->getData(); 
-
         $fieldsConfiguration = $form->getConfig()->getOptions()['fields_configuration'];
-        $entityConfiguration = $form->getConfig()->getOptions()['configuration'];
-        $crudService = $form->getConfig()->getOptions()['crud_service'];
-        $crudService->buildFormFields($form, $fieldsConfiguration);
-
+        $this->buildFormFields($form, $fieldsConfiguration);
         $form->add('Valider', SubmitType::class);
-
-        dump($fieldsConfiguration);
-        dump($entityConfiguration);
-        dump($form);
-        dump($data); //die;
     }
 
     /**
@@ -50,7 +56,18 @@ class DefaultType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired('fields_configuration');
-        $resolver->setRequired('configuration');
         $resolver->setRequired('crud_service');
+    }
+
+    /**
+     * Genération des champs du formulaire selon la config yml
+     *
+     * @param Form $form
+     * @param array $fieldsConfiguration
+     * @throws \Exception
+     */
+    protected function buildFormFields(Form $form, array $fieldsConfiguration)
+    {
+        $this->crudService->buildFormFields($form, $fieldsConfiguration);
     }
 }
