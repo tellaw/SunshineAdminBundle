@@ -3,14 +3,11 @@ Sunshine Administration Bundle for Symfony
 
 ## Table of content :
 
-1. (todo)[Setup and configuration](Resources/Documentation/installation.md)
-2. YAML Configuration
-3. [Menu configuration](Resources/Documentation/configuration/menu.md)
-4. Entity configuration
+1. [Menu configuration](Resources/Documentation/configuration/menu.md)
+2. Entity configuration
 3. Types and Reflexion
-2. [Page configuration](Resources/Documentation/backoffice-page.md)
-3. [Menu Configuration](Resources/Documentation/backoffice-menu.md)
-4. [Entity Configuration with CRUD](Resources/Documentation/entity-configuration.md)
+4. [Page configuration](Resources/Documentation/backoffice-page.md)
+5. [Entity Configuration with CRUD](Resources/Documentation/entity-configuration.md)
 
 ## Available Widgets
 1. [Crud : List Entity](Resources/Documentation/widgets/crud-list.md)

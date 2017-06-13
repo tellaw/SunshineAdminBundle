@@ -140,6 +140,31 @@ For default theme, the icon list is availabie here : http://fortawesome.github.i
 | icon                          | The name of an icon used by your theme                      |
 | parameters/id                      | Id of the targeted page as it has been configured in your configuration                      |
 
+## route
+
+```
+...
+        -
+            label : Route Custom
+            type : route
+            icon : diamond
+            route : widget_test
+            parameters :
+                pageName : demoPage
+                row : 0
+                widgetName : test
+...
+```
+
+| Item                          | Description               |
+|-------------------------------|---------------------------|
+| label                         | Label which should be displayed |
+| type                          | Type of element. Should be one of this page of documentation                                             |
+| icon                          | The name of an icon used by your theme                      |
+| route                      | name of the route available in your application                      |
+| parameters                      | Any parameter you need to push to the route                      |
+
+
 ## External page
 
 
