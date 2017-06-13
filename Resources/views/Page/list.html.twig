@@ -1,0 +1,33 @@
+{% extends 'TellawSunshineAdminBundle::base-sunshine.html.twig' %}
+
+{% block title %}
+    {% if formConfiguration.list.title is defined %}
+        {{ formConfiguration.list.title }}
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumb %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+
+        {% if formConfiguration.list.description is defined %}
+            {% if formConfiguration.list.description %}
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="m-heading-1 border-green m-bordered">
+                        <p> {{ formConfiguration.list.description | raw }} </p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+             data-route="{{ getWidgetUrl( widget, 'list', 'editDefault', 1, extraParameters ) }}"
+             data-editroute=""
+             data-type="widget.ajax"
+             id="widget-list" >
+        </div>
+    </div>
+{% endblock %}

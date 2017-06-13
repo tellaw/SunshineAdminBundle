@@ -17,6 +17,7 @@ class WidgetController extends Controller
      * List entity in a dataTable ajax loaded bloc
      *
      * @Route("/app/widget/crudlist/{pageName}/{row}/{widgetName}", name="sunshine_widget_crudlist")
+     * @Route("/app/widget/crudlist/{pageName}/{row}/{widgetName}/{entityName}", name="sunshine_widget_crudlist")
      * @Method({"GET"})
      * @param Request $request
      * @param $pageName
@@ -25,17 +26,19 @@ class WidgetController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function widgetCrudListAction(Request $request, $pageName, $row, $widgetName)
+    public function widgetCrudListAction(Request $request, $pageName, $row, $widgetName, $entityName = null)
     {
 
         /** @var PageService $pageService */
         $pageService = $this->get("sunshine.pages");
         $pageConfiguration = $pageService->getPageConfiguration($pageName);
 
-        if (!isset($pageConfiguration["rows"][$row][$widgetName]["parameters"]["entityName"])) {
-            throw new \Exception("entityName parameter should be configured for widget ".$widgetName." in row : ".$row);
+        if (!$entityName) {
+            if (!isset($pageConfiguration["rows"][$row][$widgetName]["parameters"]["entityName"])) {
+                throw new \Exception("entityName parameter should be configured for widget ".$widgetName." in row : ".$row);
+            }
+            $entityName = $pageConfiguration["rows"][$row][$widgetName]["parameters"]["entityName"];
         }
-        $entityName = $pageConfiguration["rows"][$row][$widgetName]["parameters"]["entityName"];
 
         /** @var EntityService $entities */
         $entities = $this->get("sunshine.entities");

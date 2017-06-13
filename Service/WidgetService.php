@@ -26,7 +26,7 @@ class WidgetService
         $this->router = $router;
     }
 
-    public function getUrlOfWidget ( array $widget, $widgetName, $pageName, $row )
+    public function getUrlOfWidget ( array $widget, $widgetName, $pageName, $row, $extraParam = null )
     {
 
         /**
@@ -57,9 +57,15 @@ class WidgetService
             throw new \Exception( "Impossible to generate widget route, widget must have a 'type' or a 'route' attribute");
         }
 
+        $parameters = array( "pageName" => $pageName, "widgetName" => $widgetName, "row" => $row );
+
+        if ($extraParam) {
+            $parameters[$extraParam["name"]] = $extraParam["value"];
+        }
+
         $dataUrl = $this->router->generate(
             $route,
-            array( "pageName" => $pageName, "widgetName" => $widgetName, "row" => $row ),
+            $parameters,
             UrlGeneratorInterface::ABSOLUTE_URL // This guy right here
         );
 

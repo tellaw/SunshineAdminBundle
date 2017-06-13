@@ -80,6 +80,7 @@ class EntityService
         }
 
         $globalConfiguration = $configuration['attributes'];
+        $viewConfiguration = $configuration[$viewType];
         $detailedConfiguration = $configuration[$viewType]['fields'];
 
         $resultData = array();
@@ -157,6 +158,8 @@ class EntityService
                 $typeDoctrine = $annot->type;
             } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\ManyToOne"  ) {
                 $typeDoctrine = "object";
+            } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\OneToOne") {
+                $typeDoctrine = "object";
             }
         }
 
@@ -186,7 +189,7 @@ class EntityService
         $propertyAnnotations = $this->getAnnotationsForAttribute( $class, $property );
 
         foreach ($propertyAnnotations AS $annot) {
-            if (get_class($annot) == "Doctrine\\ORM\\Mapping\\ManyToOne" ) {
+            if (get_class($annot) == ("Doctrine\\ORM\\Mapping\\ManyToOne" ||  "Doctrine\\ORM\\Mapping\\OneToOne" )  ) {
                 return $annot->targetEntity;
             }
         }

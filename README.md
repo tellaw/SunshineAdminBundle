@@ -3,9 +3,11 @@ Sunshine Administration Bundle for Symfony
 
 ## Table of content :
 
-For Developpement platofmr, [read this](Resources/Documentation/dev.md)
-
-1. [Setup and configuration](Resources/Documentation/installation.md)
+1. (todo)[Setup and configuration](Resources/Documentation/installation.md)
+2. YAML Configuration
+3. [Menu configuration](Resources/Documentation/configuration/menu.md)
+4. Entity configuration
+3. Types and Reflexion
 2. [Page configuration](Resources/Documentation/backoffice-page.md)
 3. [Menu Configuration](Resources/Documentation/backoffice-menu.md)
 4. [Entity Configuration with CRUD](Resources/Documentation/entity-configuration.md)
@@ -20,9 +22,6 @@ For Developpement platofmr, [read this](Resources/Documentation/dev.md)
 7. Timeline
 8. List of links
 
-## Webservices
-1. [Crud : List Entity](Resources/Documentation/webservices/listEntity.md)
-
 ## Fields
 | Type     | Description          | Status   |
 |---------------|---------------|---------------|
@@ -33,8 +32,6 @@ For Developpement platofmr, [read this](Resources/Documentation/dev.md)
 | DateTime         | DateTimePicker bootstrap           | OK |
 | Integer         | Champs texte simple, validation Integer           | OK |
 | Float         | Champs texte simple validation float           | OK |
-
-
 
 A ajouter : 
 2. ReadOnly String : Text Field

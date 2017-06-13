@@ -2,7 +2,11 @@
 {% form_theme form 'TellawSunshineAdminBundle:Form:fields.html.twig' %}
 
 {% block title %}
-    {{ formConfiguration.form.title }}
+    {% if formConfiguration.form.title is defined %}
+        {{ formConfiguration.form.title }}
+    {% else %}
+        {{ entityName }}
+    {% endif %}
 {% endblock %}
 
 {% block breadcrumb %}
@@ -10,29 +14,33 @@
 {% endblock %}
 
 {% block body %}
-    {% if formConfiguration.form.description %}
-    <div class="m-heading-1 border-green m-bordered">
-        <p> {{ formConfiguration.form.description | raw }} </p>
-    </div>
-    {% endif %}
-    <div class="portlet light portlet-fit portlet-datatable bordered">
+    <div clas="row">
+        {% if formConfiguration.form.description is defined %}
+            {% if formConfiguration.form.description %}
+            <div class="m-heading-1 border-green m-bordered">
+                <p> {{ formConfiguration.form.description | raw }} </p>
+            </div>
+            {% endif %}
+        {% endif %}
+        <div class="portlet light portlet-fit portlet-datatable bordered">
 
-        <div class="portlet-body">
-            <div class="table-container">
+            <div class="portlet-body">
+                <div class="table-container">
 
-                <div class="form-horizontal">
-                    {{ form_start(form) }}
-                    {% for row in form %}
-                        <div class="form-group field-">
-                            <div class="">
-                                {{ form_row(row) }}
+                    <div class="form-horizontal">
+                        {{ form_start(form) }}
+                        {% for row in form %}
+                            <div class="form-group field-">
+                                <div class="">
+                                    {{ form_row(row) }}
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                    {{ form_end(form) }}
+                        {% endfor %}
+                        {{ form_end(form) }}
+                    </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 {% endblock %}

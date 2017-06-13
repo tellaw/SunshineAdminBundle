@@ -3,7 +3,7 @@
 namespace Tellaw\SunshineAdminBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\Form;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
 use Doctrine\DBAL\Types\JsonArrayType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -105,7 +105,9 @@ class CrudService
 
         $qb = $this->addSelectAndJoin ( $qb, $listConfiguration, $baseConfiguration );
         $qb = $this->addPagination( $qb, $start, $length, $enablePagination );
-        $qb = $this->addOrderBy ( $qb, $listConfiguration, $orderCol, $orderDir );
+        if (!empty($orderCol) && !empty($orderDir)) {
+            $qb = $this->addOrderBy ( $qb, $listConfiguration, $orderCol, $orderDir );
+        }
         $qb = $this->addSearch ( $qb, $searchValue, $listConfiguration, $baseConfiguration );
 
 
@@ -210,17 +212,16 @@ class CrudService
      * @param $orderDir
      * @return mixed
      */
-    private function addOrderBy ( $qb, $listConfiguration, $orderCol, $orderDir ) {
-
-        //$listConfiguration[$orderCol]
+    private function addOrderBy ( $qb, $listConfiguration, $orderCol, $orderDir )
+    {
         $keys = array_keys( $listConfiguration );
-        if ( $this->isRelatedObject( $listConfiguration[$keys[$orderCol]]) ) {
+
+        if ($this->isRelatedObject( $listConfiguration[$keys[$orderCol]]) ) {
             $joinAlias = $this->getAliasForEntity( $keys[$orderCol] );
             $qb->orderBy( $joinAlias.".".$listConfiguration[$keys[$orderCol]]["toString"] , $orderDir);
         } else {
             $qb->orderBy( $this->alias.".".$keys[$orderCol] , $orderDir);
         }
-
 
         return $qb;
     }
@@ -267,19 +268,113 @@ class CrudService
     }
 
     /**
-     *
      * Method used to generate fields in form
      *
-     * @param FormBuilder $formBuilder
-     * @param $formConfiguration
+     * @param Form $form
+     * @param array $formConfiguration
      * @return mixed
      * @throws \Exception
      *
      */
-    public function buildFormFields ( FormBuilder $formBuilder, $formConfiguration ) {
+    public function buildFormFields(Form $form, $formConfiguration)
+    {
+        $formTypeClass = $this->getFieldTypeClasses();
 
-        // Class par type
-        $formTypeClass = [
+        foreach ($formConfiguration as $fieldName => $field) {
+            switch ( $field["type"] ) {
+                case "date":
+
+                    $fieldAttributes = array(
+                        'widget' => 'single_text',
+                        'input' => 'datetime',
+                        'format' => 'dd/MM/yyyy',
+                        'attr' => array('class' => 'date-picker')
+                    );
+
+                    if ( isset ( $field['label'] ) )
+                    {
+                        $fieldAttributes['label'] = $field['label'];
+                    }
+
+                    $form->add(
+                        $fieldName,
+                        $formTypeClass[$field['type']],
+                        $fieldAttributes
+                    );
+                    break;
+
+                case "datetime":
+
+                    $fieldAttributes = array(
+                        'widget' => 'single_text',
+                        'input' => 'datetime',
+                        'format' => 'dd/MM/yyyy hh:mm',
+                        'attr' => array('class' => 'datetime-picker'),
+                    );
+
+                    if ( isset ( $field['label'] ) )
+                    {
+                        $fieldAttributes['label'] = $field['label'];
+                    }
+
+                    $form->add(
+                        $fieldName,
+                        $formTypeClass[$field['type']],
+                        $fieldAttributes
+                    );
+                    break;
+
+                case "object":
+
+                    if ( !isset ( $field["relatedClass"] ) ) throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
+                    if ( !isset ( $field["toString"] ) ) throw new \Exception("Object must define a toString attribut to define the correct label to use -> field : ".$field["label"]);
+
+                    $fieldAttributes = array(
+
+                        // query choices from this entity
+                        'class' => $field["relatedClass"],
+
+                        // use the User.username property as the visible option string
+                        'choice_label' => $field["toString"],
+
+
+
+                        // used to render a select box, check boxes or radios
+                        'multiple' => $field['multiple'],
+                        'expanded' => $field['expanded'],
+                    );
+
+                    if ( isset ( $field['label'] ) )
+                    {
+                        $fieldAttributes['label'] = $field['label'];
+                    }
+
+                    $form->add($fieldName, EntityType::class, $fieldAttributes);
+                    break;
+
+                default:
+                    $fieldAttributes = array();
+                    if ( isset ( $field['label'] ) )
+                    {
+                        $fieldAttributes['label'] = $field['label'];
+                    }
+                    $form->add($fieldName, $formTypeClass[$field['type']], $fieldAttributes);
+                    break;
+            }
+
+        }
+
+        return $form;
+    }
+
+    /**
+     * Liste des types champs disponibles
+     *
+     * @return array
+     */
+    protected function getFieldTypeClasses()
+    {
+        return [
             'array' => TextareaType::class,
             'bigint' => TextType::class,
             'boolean' => TextType::class,
@@ -304,63 +399,6 @@ class CrudService
             'toggle' => TextType::class,
             'url' => TextType::class,
         ];
-
-        foreach ($formConfiguration as $fieldName => $field) {
-
-            switch ( $field["type"] ) {
-
-                case "date":
-                    $formBuilder->add(
-                        $fieldName,
-                        $formTypeClass[$field['type']],
-                        [
-                            'widget' => 'single_text',
-                            'input' => 'datetime',
-                            'format' => 'dd/MM/yyyy',
-                            'attr' => array('class' => 'date-picker'),
-                        ]
-                    );
-                    break;
-
-                case "datetime":
-                    $formBuilder->add(
-                        $fieldName,
-                        $formTypeClass[$field['type']],
-                        [
-                            'widget' => 'single_text',
-                            'input' => 'datetime',
-                            'format' => 'dd/MM/yyyy hh:mm',
-                            'attr' => array('class' => 'datetime-picker'),
-                        ]
-                    );
-                    break;
-
-                case "object":
-                    if ( !isset ( $field["relatedClass"] ) ) throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
-                    if ( !isset ( $field["toString"] ) ) throw new \Exception("Object must define a toString attribut to define the correct label to use -> field : ".$field["label"]);
-
-                    $formBuilder->add($fieldName, EntityType::class, array(
-                        // query choices from this entity
-                        'class' => $field["relatedClass"],
-
-                        // use the User.username property as the visible option string
-                        'choice_label' => $field["toString"],
-
-                        // used to render a select box, check boxes or radios
-                        'multiple' => $field['multiple'],
-                        'expanded' => $field['expanded'],
-                    ));
-                    break;
-
-                default:
-                    $formBuilder->add($fieldName, $formTypeClass[$field['type']]);
-                    break;
-            }
-
-        }
-
-        return $formBuilder;
-
     }
 
 }

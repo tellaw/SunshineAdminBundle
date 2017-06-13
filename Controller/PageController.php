@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
 
 /**
  * Content pages management
@@ -22,7 +24,7 @@ class PageController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function listAction( $pageId )
+    public function pageAction( $pageId )
     {
 
         /** @var array $page */
@@ -31,6 +33,36 @@ class PageController extends AbstractController
         //$configuration = $this->get("sunshine.menu")->getConfiguration();
 
         return $this->renderWithTheme( "Page:index", ["page" => $page, "pageId" => $pageId] );
+    }
+
+    /**
+     *
+     * Show a list for an entity
+     * @Route("/page/list/{entityName}", name="sunshine_page_list")
+     *
+     * @param Request $request
+     * @param $entityName
+     */
+    public function listAction (Request $request, $entityName) {
+
+        /** @var EntityService $entities */
+        $entities = $this->get("sunshine.entities");
+        $listConfiguration = $entities->getListConfiguration($entityName);
+        $configuration = $entities->getConfiguration($entityName);
+
+        return $this->render(
+            'TellawSunshineAdminBundle:Page:list.html.twig',
+            [
+                "extraParameters" => array ("name" => "entityName", "value" => $entityName),
+                "widget" => array ("type" => "list"),
+                "formConfiguration" => $configuration,
+                "fields" => $listConfiguration,
+                "entityName" => $entityName,
+                "entity" => $entityName,
+                "pageId" => null,
+            ]
+        );
+
     }
 
     /**
@@ -46,13 +78,12 @@ class PageController extends AbstractController
      */
     public function editAction(Request $request, $entityName, $id = null)
     {
-
         /** @var EntityService $entities */
         $entities = $this->get("sunshine.entities");
-        $formConfiguration = $entities->getFormConfiguration($entityName);
+        $fieldsConfiguration = $entities->getFormConfiguration($entityName);
         $configuration = $entities->getConfiguration($entityName);
 
-        /** @var CrudService $entities */
+        /** @var CrudService $crudService */
         $crudService = $this->get("sunshine.crud_service");
         if ($id) {
             $entity = $crudService->getEntity($entityName, $id);
@@ -60,11 +91,18 @@ class PageController extends AbstractController
             $entity = new $configuration['configuration']['class'];
         }
 
-        $formBuilder = $this->createFormBuilder($entity);
-        $formBuilder = $crudService->buildFormFields ( $formBuilder, $formConfiguration );
-        $formBuilder->add('Enregistrer', SubmitType::class);
-        $form = $formBuilder->getForm();
+        $formOptions = [
+            'fields_configuration' => $fieldsConfiguration,
+            'configuration' => $configuration,
+            'crud_service' => $crudService
+        ];
 
+        if (!empty($configuration['form']['formType'])) {
+            $form = $this->createForm($configuration['form']['formType'], $entity, $formOptions);
+        } else {
+            $form = $this->createForm(DefaultType::class, $entity, $formOptions);
+        }
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -79,7 +117,6 @@ class PageController extends AbstractController
             ;
 
             return $this->redirectToRoute('sunshine_page_edit', ['entityName' => $entityName, 'id' => $id]);
-
         }
 
         return $this->render(
@@ -87,7 +124,7 @@ class PageController extends AbstractController
             [
                 "form" => $form->createView(),
                 "formConfiguration" => $configuration,
-                "fields" => $formConfiguration,
+                "fields" => $fieldsConfiguration,
                 "entityName" => $entityName,
                 "entity" => $entity,
                 "pageId" => null,
