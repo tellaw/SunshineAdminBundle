@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Content pages management
@@ -82,7 +83,7 @@ class PageController extends AbstractController
         $formConfiguration = $entities->getFormConfiguration($entityName);
         $configuration = $entities->getConfiguration($entityName);
 
-        /** @var CrudService $entities */
+        /** @var CrudService $crudService */
         $crudService = $this->get("sunshine.crud_service");
         if ($id) {
             $entity = $crudService->getEntity($entityName, $id);
@@ -92,6 +93,10 @@ class PageController extends AbstractController
 
         $formBuilder = $this->createFormBuilder($entity);
         $formBuilder = $crudService->buildFormFields ( $formBuilder, $formConfiguration );
+        if (empty($action = $configuration['form']['action']) !== null) {
+            $formBuilder->setAction($this->generateUrl($action['route'], $action['parameters'], UrlGeneratorInterface::ABSOLUTE_PATH));
+            $formBuilder->setMethod($configuration['form']['action']['method']);
+        }
         $formBuilder->add('Enregistrer', SubmitType::class);
         $form = $formBuilder->getForm();
 
