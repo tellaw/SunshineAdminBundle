@@ -1,10 +1,16 @@
 <div class="portlet light portlet-fit portlet-datatable bordered">
     <div class="portlet-title">
+        {% if widget.title is defined %}
         <div class="caption">
             <i class="icon-settings font-dark"></i>
             <span class="caption-subject font-dark sbold uppercase pull-left">{{ widget.title }}</span>
-
         </div>
+        {% else %}
+            <div class="caption">
+                <i class="icon-settings font-dark"></i>
+                <span class="caption-subject font-dark sbold uppercase pull-left">{{ entityName | trans }}</span>
+            </div>
+        {% endif %}
         <a href="{{ path('sunshine_page_new', {'entityName': entityName}) }}" class="btn green pull-right">
             <i class="fa fa-cogs"></i> Créer un élément
         </a>
@@ -21,7 +27,11 @@
                             <thead>
                             <tr role="row" class="heading">
                                 {% for name, field in fields %}
-                                    <th class="sorting_disabled" rowspan="1" colspan="1"> {{ name }} </th>
+                                    {% if field.label is defined %}
+                                        <th class="sorting_disabled" rowspan="1" colspan="1"> {{ field.label }} </th>
+                                    {% else %}
+                                        <th class="sorting_disabled" rowspan="1" colspan="1"> {{ name }} </th>
+                                    {% endif %}
                                 {% endfor %}
                                 <th>Actions</th>
                             </tr>

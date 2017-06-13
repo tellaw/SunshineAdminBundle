@@ -8,6 +8,17 @@
 
         </a>
     </li>
+{% elseif item.type == 'list' %}
+        <li class="nav-item {% if isThisActivePage(item, pageId) %}active{% endif %}">
+            <a href="{{ path('sunshine_page_list', {'entityName': item.entityName}) }}" class="nav-link">
+                {% if item.icon is defined %}
+                    <i class="icon-{{ item.icon }}"></i>
+                {% endif %}
+                <span class="title">{{ item.label }}</span>
+
+            </a>
+        </li>
+
 {%  elseif item.type == 'section' %}
     <li class="heading">
         <h3 class="uppercase">{{ item.label }}</h3>

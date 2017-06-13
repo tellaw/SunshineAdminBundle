@@ -283,50 +283,82 @@ class CrudService
         foreach ($formConfiguration as $fieldName => $field) {
             switch ( $field["type"] ) {
                 case "date":
+
+                    $fieldAttributes = array(
+                        'widget' => 'single_text',
+                        'input' => 'datetime',
+                        'format' => 'dd/MM/yyyy',
+                        'attr' => array('class' => 'date-picker')
+                    );
+
+                    if ( isset ( $field['label'] ) )
+                    {
+                        $fieldAttributes['label'] = $field['label'];
+                    }
+
                     $form->add(
                         $fieldName,
                         $formTypeClass[$field['type']],
-                        [
-                            'widget' => 'single_text',
-                            'input' => 'datetime',
-                            'format' => 'dd/MM/yyyy',
-                            'attr' => array('class' => 'date-picker'),
-                        ]
+                        $fieldAttributes
                     );
                     break;
 
                 case "datetime":
+
+                    $fieldAttributes = array(
+                        'widget' => 'single_text',
+                        'input' => 'datetime',
+                        'format' => 'dd/MM/yyyy hh:mm',
+                        'attr' => array('class' => 'datetime-picker'),
+                    );
+
+                    if ( isset ( $field['label'] ) )
+                    {
+                        $fieldAttributes['label'] = $field['label'];
+                    }
+
                     $form->add(
                         $fieldName,
                         $formTypeClass[$field['type']],
-                        [
-                            'widget' => 'single_text',
-                            'input' => 'datetime',
-                            'format' => 'dd/MM/yyyy hh:mm',
-                            'attr' => array('class' => 'datetime-picker'),
-                        ]
+                        $fieldAttributes
                     );
                     break;
 
                 case "object":
+
                     if ( !isset ( $field["relatedClass"] ) ) throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
                     if ( !isset ( $field["toString"] ) ) throw new \Exception("Object must define a toString attribut to define the correct label to use -> field : ".$field["label"]);
 
-                    $form->add($fieldName, EntityType::class, array(
+                    $fieldAttributes = array(
+
                         // query choices from this entity
                         'class' => $field["relatedClass"],
 
                         // use the User.username property as the visible option string
                         'choice_label' => $field["toString"],
 
+
+
                         // used to render a select box, check boxes or radios
                         'multiple' => $field['multiple'],
                         'expanded' => $field['expanded'],
-                    ));
+                    );
+
+                    if ( isset ( $field['label'] ) )
+                    {
+                        $fieldAttributes['label'] = $field['label'];
+                    }
+
+                    $form->add($fieldName, EntityType::class, $fieldAttributes);
                     break;
 
                 default:
-                    $form->add($fieldName, $formTypeClass[$field['type']]);
+                    $fieldAttributes = array();
+                    if ( isset ( $field['label'] ) )
+                    {
+                        $fieldAttributes['label'] = $field['label'];
+                    }
+                    $form->add($fieldName, $formTypeClass[$field['type']], $fieldAttributes);
                     break;
             }
 
