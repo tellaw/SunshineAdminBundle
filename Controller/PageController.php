@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
 
 /**
  * Content pages management
@@ -46,10 +47,9 @@ class PageController extends AbstractController
      */
     public function editAction(Request $request, $entityName, $id = null)
     {
-
         /** @var EntityService $entities */
         $entities = $this->get("sunshine.entities");
-        $formConfiguration = $entities->getFormConfiguration($entityName);
+        $fieldsConfiguration = $entities->getFormConfiguration($entityName);
         $configuration = $entities->getConfiguration($entityName);
 
         /** @var CrudService $entities */
@@ -60,11 +60,18 @@ class PageController extends AbstractController
             $entity = new $configuration['configuration']['class'];
         }
 
-        $formBuilder = $this->createFormBuilder($entity);
-        $formBuilder = $crudService->buildFormFields ( $formBuilder, $formConfiguration );
-        $formBuilder->add('Enregistrer', SubmitType::class);
-        $form = $formBuilder->getForm();
+        $formOptions = [
+            'fields_configuration' => $fieldsConfiguration,
+            'configuration' => $configuration,
+            'crud_service' => $crudService
+        ];
 
+        if (!empty($configuration['form']['formType'])) {
+            $form = $this->createForm($configuration['form']['formType'], $entity, $formOptions);
+        } else {
+            $form = $this->createForm(DefaultType::class, $entity, $formOptions);
+        }
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -79,7 +86,6 @@ class PageController extends AbstractController
             ;
 
             return $this->redirectToRoute('sunshine_page_edit', ['entityName' => $entityName, 'id' => $id]);
-
         }
 
         return $this->render(
@@ -87,7 +93,7 @@ class PageController extends AbstractController
             [
                 "form" => $form->createView(),
                 "formConfiguration" => $configuration,
-                "fields" => $formConfiguration,
+                "fields" => $fieldsConfiguration,
                 "entityName" => $entityName,
                 "entity" => $entity,
                 "pageId" => null,

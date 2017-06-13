@@ -80,6 +80,7 @@ class EntityService
         }
 
         $globalConfiguration = $configuration['attributes'];
+        $viewConfiguration = $configuration[$viewType];
         $detailedConfiguration = $configuration[$viewType]['fields'];
 
         $resultData = array();

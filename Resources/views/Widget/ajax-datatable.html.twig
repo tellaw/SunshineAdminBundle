@@ -47,7 +47,7 @@
                                             "targets": {{ fields|length }},
                                             "render": function ( data, type, row, meta ) {
                                                 var itemID = row['id'];
-                                                return '<a href="{{ path('sunshine_page_new', {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn green btn-xs">Editer</a>';
+                                                return '<a href="{{ path('sunshine_page_edit', {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn green btn-xs">Editer</a>';
                                             }
                                         }
                                     ],

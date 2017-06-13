@@ -94,6 +94,8 @@ class Configuration implements ConfigurationInterface
                                 ->isRequired()
                                 ->cannotBeEmpty()
                             ->end()
+                            ->scalarNode('formType')
+                            ->end()
                             ->arrayNode('fields')
                                 ->useAttributeAsKey('name')
                                 ->prototype('array')
