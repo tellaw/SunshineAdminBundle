@@ -73,7 +73,7 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->enumNode('type')
                                     ->defaultNull()
-                                    ->values(array('string', 'integer', 'date', 'datetime', 'object'))
+                                    ->values(array('string', 'integer', 'date', 'datetime', 'object', 'text'))
                                 ->end()
                                 ->booleanNode('sortable')
                                 ->end()

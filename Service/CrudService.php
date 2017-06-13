@@ -303,6 +303,14 @@ class CrudService
                     );
                     break;
 
+                case 'text':
+                    $form->add(
+                        $fieldName,
+                        $formTypeClass[$field['type']],
+                        []
+                    );
+                    break;
+
                 case "datetime":
 
                     $fieldAttributes = array(
@@ -394,7 +402,7 @@ class CrudService
             'smallint' => TextType::class,
             'string' => TextType::class,
             'tel' => TextType::class,
-            'text' => TextType::class,
+            'text' => TextareaType::class,
             'time' => TextType::class,
             'toggle' => TextType::class,
             'url' => TextType::class,
