@@ -15,10 +15,6 @@ use Tellaw\SunshineAdminBundle\Service\CrudService;
  */
 class DefaultType extends AbstractType
 {
-    /**
-     * @var CrudService
-     */
-    private $crudService;
 
     /**
      * DefaultType constructor.
@@ -28,6 +24,11 @@ class DefaultType extends AbstractType
     {
         $this->crudService = $crudService;
     }
+
+    /**
+     * @var CrudService
+     */
+    private $crudService;
 
     /**
      * {@inheritdoc}
@@ -55,6 +56,7 @@ class DefaultType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setDefaults(['fields_configuration' => [], 'configuration' => [], 'crud_service' => $this->crudService ]);
         $resolver->setRequired('fields_configuration');
         $resolver->setRequired('crud_service');
     }

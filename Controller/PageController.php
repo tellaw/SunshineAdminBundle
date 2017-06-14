@@ -2,13 +2,10 @@
 
 namespace Tellaw\SunshineAdminBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
 
 /**
@@ -24,7 +21,7 @@ class PageController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function pageAction( $pageId )
+    public function pageAction($pageId = null)
     {
 
         /** @var array $page */
