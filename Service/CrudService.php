@@ -4,6 +4,7 @@ namespace Tellaw\SunshineAdminBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Form;
+use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
 use Doctrine\DBAL\Types\JsonArrayType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -88,6 +89,55 @@ class CrudService
         return $result;
     }
 
+
+    /**
+     *
+     * Method used to find data for the SELECT2 Field in AJAX
+     *
+     * @param $entityClass
+     * @param $toString
+     * @param $query
+     * @param $metadata
+     * @return mixed
+     */
+    public function getEntityListByClassMetadata ( $entityClass, $toString, $query, $metadata, $page, $itemPerPage ) {
+
+        $identifier = $metadata->identifier;
+
+        $qb = $this->em->createQueryBuilder();
+        $qb->select(array ( 'l.'.$identifier[0], 'l.'.$toString." AS text"));
+        $qb->from($entityClass, 'l');
+        $qb->orWhere ('l.'.$toString.' LIKE :search');
+        $qb->setFirstResult(($page - 1) * $itemPerPage);
+        $qb->setMaxResults($itemPerPage);
+        $qb->setParameter('search', "%{$query}%");
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     *
+     * Method used to find data for the SELECT2 Field in AJAX
+     *
+     * @param $entityClass
+     * @param $toString
+     * @param $query
+     * @param $metadata
+     * @return mixed
+     */
+    public function getCountEntityListByClassMetadata ( $entityClass, $toString, $query, $metadata ) {
+
+        $identifier = $metadata->identifier;
+
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('COUNT(l)');
+        $qb->from($entityClass, 'l');
+        $qb->orWhere ('l.'.$toString.' LIKE :search');
+        $qb->setParameter('search', "%{$query}%");
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
     /**
      * Get an entity list
      * @param $entityName
@@ -163,6 +213,7 @@ class CrudService
                 }
             }
         }
+
 
         // PREPARE QUERY WITH FIELDS
         $fieldsLine = implode(',', $fields);
@@ -329,10 +380,30 @@ class CrudService
                     $fieldAttributes["expanded"]        = $field["expanded"];
 
                     if (!$field["expanded"]) {
-                        $fieldAttributes["attr"]    = array('class' => 'select-picker', "data-live-search"=>"true");
+                        $fieldAttributes["attr"]    = array(    'class' => $fieldName.'-select2',
+                                                                'toString' => $field["toString"],
+                                                                'relatedClass' => str_replace ("\\", "\\\\",$field["relatedClass"]));
                     }
 
-                    $form->add($fieldName, EntityType::class, $fieldAttributes);
+                    if (isset($field["lazy"]) && $field['lazy'] == true) {
+
+                        if (!$field["expanded"]) {
+                            $fieldAttributes["attr"]    = array(    'class' => $fieldName.'-select2',
+                                'toString' => $field["toString"],
+                                'relatedClass' => str_replace ("\\", "\\\\",$field["relatedClass"]));
+                        }
+
+                        $form->add($fieldName, Select2Type::class, $fieldAttributes);
+                    } else {
+
+                        if (!$field["expanded"]) {
+                            $fieldAttributes["attr"]    = array('class' => 'select-picker', "data-live-search"=>"true");
+                        }
+
+                        $form->add($fieldName, EntityType::class, $fieldAttributes);
+                    }
+
+
                     break;
 
                 default:

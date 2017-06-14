@@ -79,3 +79,43 @@
 {% block form_group_class -%}
     col-sm-10
 {%- endblock form_group_class %}
+
+{% block select2_widget %}
+    {{ form_widget(form) }}
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $(".{{ name }}-select2").select2({
+                language: "fr",
+                placeholder: 'This is my placeholder',
+                allowClear: true,
+                ajax: {
+                    url: "{{ path('sunshine_ajax_select2_callback', { "entityName" : name, "toStringField" : attr.toString,  }) }}",
+                    dataType: 'json',
+                    method: 'post',
+                    delay: 500,
+
+                    data: function (params) {
+                        return {
+                            q: params.term, // search term
+                            page: params.page,
+                            relatedClass: '{{ attr.relatedClass }}'
+                        };
+                    },
+
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+
+                        return {
+                            results: data.items,
+                            pagination: {
+                                more: (params.page * 10) < data.total_count
+                            }
+                           };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script>
+{% endblock %}
