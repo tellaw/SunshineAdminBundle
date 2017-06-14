@@ -303,13 +303,14 @@ class CrudService
 
                 case "object":
                     if ( !isset ( $field["relatedClass"] ) ) throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
-                    if ( !isset ( $field["toString"] ) ) throw new \Exception("Object must define a toString attribut to define the correct label to use -> field : ".$field["label"]);
                     
-                    $fieldAttributes["choice_label"]    = $field["toString"];
-                    $fieldAttributes["expanded"]        = $field["expanded"];
+                    if (!empty($field["toString"])) {
+                        $fieldAttributes["choice_label"] = $field["toString"];
+                    }
+                    $fieldAttributes["expanded"] = $field["expanded"];
 
                     if (!$field["expanded"]) {
-                        $fieldAttributes["attr"]    = array('class' => 'select-picker', "data-live-search"=>"true");
+                        $fieldAttributes["attr"] = array('class' => 'select-picker', "data-live-search"=>"true");
                     }
 
                     break;
