@@ -15,7 +15,6 @@ use Tellaw\SunshineAdminBundle\Service\CrudService;
  */
 class DefaultType extends AbstractType
 {
-    private $crudService;
 
     /**
      * DefaultType constructor.
@@ -30,15 +29,6 @@ class DefaultType extends AbstractType
      * @var CrudService
      */
     private $crudService;
-
-    /**
-     * DefaultType constructor.
-     * @param CrudService $crudService
-     */
-    public function __construct(CrudService $crudService)
-    {
-        $this->crudService = $crudService;
-    }
 
     /**
      * {@inheritdoc}

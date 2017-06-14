@@ -1,7 +1,7 @@
 {% extends 'TellawSunshineAdminBundle::base-sunshine.html.twig' %}
 
 {% block title %}
-{{ page.title }} <small>{{ page.description }}</small>
+{{ page.title|default('') }} <small>{{ page.description|default('') }}</small>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -11,14 +11,14 @@
             <i class="fa fa-circle"></i>
         </li>
         <li>
-            <span>{{ page.title }}</span>
+            <span>{{ page.title|default('') }}</span>
         </li>
     </ul>
 {% endblock %}
 
 {% block body %}
-
-    {% for rowKey, row in page.rows %}
+    {% if page is not empty %}
+        {% for rowKey, row in page.rows %}
         <div class="row">
             {% for name, widget in row %}
                 {% if (widget.preload is defined) and (widget.preload == 'true')%}
@@ -51,5 +51,5 @@
 
         </div>
     {% endfor %}
-
+    {% endif %}
 {% endblock %}
