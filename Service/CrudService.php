@@ -214,7 +214,6 @@ class CrudService
             }
         }
 
-
         // PREPARE QUERY WITH FIELDS
         $fieldsLine = implode(',', $fields);
         $qb->select($fieldsLine ? $fieldsLine : $this->alias);
@@ -329,126 +328,42 @@ class CrudService
      */
     public function buildFormFields(Form $form, $formConfiguration)
     {
-        $formTypeClass = $this->getFieldTypeClasses();
-
         foreach ($formConfiguration as $fieldName => $field) {
 
             $fieldAttributes = array ();
 
-            if ( isset ( $field['label'] ) )
-            {
+            if (isset($field['label'])) {
                 $fieldAttributes['label'] = $field['label'];
             }
 
             switch ( $field["type"] ) {
                 case "date":
-
                     $fieldAttributes["widget"]  = 'single_text';
                     $fieldAttributes["input"]   = 'datetime';
                     $fieldAttributes["format"]  = 'dd/MM/yyyy';
                     $fieldAttributes["attr"]    = array('class' => 'datetime-picker');
 
-                    $form->add(
-                        $fieldName,
-                        $formTypeClass[$field['type']],
-                        $fieldAttributes
-                    );
                     break;
 
                 case "datetime":
-
                     $fieldAttributes["widget"]  = 'single_text';
                     $fieldAttributes["input"]   = 'datetime';
                     $fieldAttributes["format"]  = 'dd/MM/yyyy hh:mm';
                     $fieldAttributes["attr"]    = array('class' => 'datetime-picker');
 
-                    $form->add(
-                        $fieldName,
-                        $formTypeClass[$field['type']],
-                        $fieldAttributes
-                    );
-                    break;
-
                 case "object":
-
                     if ( !isset ( $field["relatedClass"] ) ) throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
-                    if ( !isset ( $field["toString"] ) ) throw new \Exception("Object must define a toString attribut to define the correct label to use -> field : ".$field["label"]);
 
-                    $fieldAttributes["class"]           = $field["relatedClass"];
-                    $fieldAttributes["choice_label"]    = $field["toString"];
-                    $fieldAttributes["multiple"]        = $field["multiple"];
                     $fieldAttributes["expanded"]        = $field["expanded"];
+                    $fieldAttributes["attr"]    = array('class' => 'select-picker', "data-live-search"=>"true");
 
-                    if (!$field["expanded"]) {
-                        $fieldAttributes["attr"]    = array(    'class' => $fieldName.'-select2',
-                                                                'toString' => $field["toString"],
-                                                                'relatedClass' => str_replace ("\\", "\\\\",$field["relatedClass"]));
-                    }
-
-                    if (isset($field["lazy"]) && $field['lazy'] == true) {
-
-                        if (!$field["expanded"]) {
-                            $fieldAttributes["attr"]    = array(    'class' => $fieldName.'-select2',
-                                'toString' => $field["toString"],
-                                'relatedClass' => str_replace ("\\", "\\\\",$field["relatedClass"]));
-                        }
-
-                        $form->add($fieldName, Select2Type::class, $fieldAttributes);
-                    } else {
-
-                        if (!$field["expanded"]) {
-                            $fieldAttributes["attr"]    = array('class' => 'select-picker', "data-live-search"=>"true");
-                        }
-
-                        $form->add($fieldName, EntityType::class, $fieldAttributes);
-                    }
-
-
-                    break;
-
-                default:
-
-                    $form->add($fieldName, $formTypeClass[$field['type']], $fieldAttributes);
                     break;
             }
 
+            $form->add($fieldName, null, $fieldAttributes);
         }
 
         return $form;
-    }
-
-    /**
-     * Liste des types champs disponibles
-     *
-     * @return array
-     */
-    protected function getFieldTypeClasses()
-    {
-        return [
-            'array' => TextareaType::class,
-            'bigint' => TextType::class,
-            'boolean' => TextType::class,
-            'date' => DateType::class,
-            'datetime' => DateTimeType::class,
-            'datetimetz' => TextType::class,
-            'email' => TextType::class,
-            'float' => TextType::class,
-            'guid' => TextType::class,
-            'id' => TextType::class,
-            'image' => TextType::class,
-            'integer' => TextType::class,
-            'json_array' => JsonArrayType::class,
-            'object' => EntityType::class,
-            'raw' => TextType::class,
-            'simple_array' => TextType::class,
-            'smallint' => TextType::class,
-            'string' => TextType::class,
-            'tel' => TextType::class,
-            'text' => TextType::class,
-            'time' => TextType::class,
-            'toggle' => TextType::class,
-            'url' => TextType::class,
-        ];
     }
 
 }
