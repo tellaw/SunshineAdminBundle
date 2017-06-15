@@ -44,3 +44,10 @@
         </div>
     </div>
 {% endblock %}
+
+{%  block javascripts %}
+    {{ parent() }}
+    {% for include in formConfiguration.form.jsIncludes %}
+        <script type="application/javascript" src="{{ asset(include) }}"></script>
+    {% endfor %}
+{% endblock %}

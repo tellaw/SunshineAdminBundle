@@ -12,26 +12,60 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AjaxController extends Controller
 {
-    /**
-     * @Route("/ajax/list/{entity}", name="sunshine_ajax_list")
-     * @Method({"GET"})
-     */
-    public function ajaxListAction(Request $request, $entity)
-    {
 
-        /** @var CrudService $entities */
-        $crudService = $this->get ("sunshine.crud_service");
-        $list = $crudService->getEntityList( $entity );
+    /**
+     *
+     * Callback for the SELECT2 Ajax plugin
+     *
+     * @Route("/ajax/select2/{entityName}/{toStringField}", name="sunshine_ajax_select2_callback")
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param $entity
+     * @param $page
+     */
+    public function ajaxSelect2CallbackAction ( Request $request, $entityName, $toStringField ) {
+
+        $q = $request->request->get ("q");
+        $page = $request->request->get ("page");
+
+        if (!$page) {
+            $page = 1;
+        }
+
+        $itemPerPage = 10;
+        $relatedClass = $request->request->get ("relatedClass");
+
+        // Get class metadata
+        $doctrine = $this->get("doctrine");
+        $em = $doctrine->getManager();
+        $metadata = $em->getClassMetadata($relatedClass);
+
+        /** @var CrudService $crudService */
+        $crudService = $this->get("sunshine.crud_service");
+        $list = $crudService->getEntityListByClassMetadata( $relatedClass, $toStringField, $q, $metadata, $page, $itemPerPage );
+        $totalCount = $crudService->getCountEntityListByClassMetadata( $relatedClass, $toStringField, $q, $metadata );
+
+        $responseArray = array (
+            "items" => $list,
+            "total_count" => $totalCount
+        );
+
+
 
         // Return them with the JSON Response Serialized
-        $serializedEntity = $this->container->get('serializer')->serialize(array("data"=>$list), 'json');
+        $serializedEntity = $this->container->get('serializer')->serialize($responseArray, 'json');
         $response = new Response();
         $response->setContent($serializedEntity);
         $response->headers->set('Content-Type', 'application/json');
         return $response;
+
     }
 
     /**
+     *
+     * CallBack for the Datatable LIST AJAX plugin
+     *
      * @Route("/ajax/datatable/{entity}", name="sunshine_ajax_datatable_callback")
      * @Method({"GET", "POST"})
      */
@@ -47,7 +81,11 @@ class AjaxController extends Controller
         /** @var CrudService $crudService */
         $crudService = $this->get("sunshine.crud_service");
         $list = $crudService->getEntityList( $entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue );
+
+        // Get the number of elements using the filter
         $nbElementsOfFilteredEntity = $crudService->getCountEntityElements( $entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue );
+
+        // Get the total number of elements for this entity
         $nbElementsInTable = $crudService->getTotalElementsInTable( $entity );
 
         $responseArray = array (

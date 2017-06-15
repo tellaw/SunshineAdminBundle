@@ -42,28 +42,25 @@ class MenuExtension extends \Twig_Extension
      */
     public function isThisActivePage($item, $pageId)
     {
-
         if (isset ($item["parameters"]["id"]) && $item["parameters"]["id"] == $pageId) {
             return true;
-        } else if (isset ($item["entityName"]) && $item["entityName"] == $pageId)
-        {
+        } else if (isset ($item["entityName"]) && $item["entityName"] == $pageId) {
             return true;
-        } else
-        {
-            return false;
-        }
-    }
-
-    public function isActivePageIsAChildPage ($item, $pageId)
-    {
-        if ( isset( $item["children"]) ) {
-            return $this->isAChildPage( $item, $pageId );
         } else {
             return false;
         }
     }
 
-    private function isAChildPage ( $item, $pageId )
+    public function isActivePageIsAChildPage ($item, $pageType, $pageIdentifier)
+    {
+        if ( isset( $item["children"]) ) {
+            return $this->isAChildPage( $item, $pageType, $pageIdentifier );
+        } else {
+            return false;
+        }
+    }
+
+    private function isAChildPage ( $item, $pageType, $pageIdentifier )
     {
 
         if ( !isset( $item["children"]) ) {
@@ -71,11 +68,14 @@ class MenuExtension extends \Twig_Extension
         }
 
         foreach ( $item["children"] as $item ) {
-            if ( $item["type"] == "page" && $item["parameters"]["id"] == $pageId )
-            {
+            if ( $item["type"] == "sunshine_page" && $item["parameters"]["id"] == $pageIdentifier ) {
+                return true;
+            } else if ($item["type"] == "sunshine_page_list" && $item["entityName"] == $pageIdentifier) {
+                return true;
+            } else if ($item["type"] == "custom_page" && $item["route"] == $pageIdentifier) {
                 return true;
             } else if ( isset( $item["children"] ) ) {
-                $this->isAChildPage( $item, $pageId );
+                $this->isAChildPage( $item, $pageType, $pageIdentifier );
             }
         }
 
