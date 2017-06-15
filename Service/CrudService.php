@@ -320,13 +320,13 @@ class CrudService
     /**
      * Method used to generate fields in form
      *
-     * @param Form $form
+     * @param Form|FormBuilder $form
      * @param array $formConfiguration
      * @return mixed
      * @throws \Exception
      *
      */
-    public function buildFormFields(Form $form, $formConfiguration)
+    public function buildFormFields($form, $formConfiguration)
     {
         foreach ($formConfiguration as $fieldName => $field) {
 
