@@ -181,7 +181,7 @@ class CrudService
                     $setter = "set".ucfirst($joinField);
                     $getter = "get".ucfirst($joinField);
                     $object = $item->$getter();
-                    if (is_object( $object )) {
+                    if (is_object( $object ) && property_exists( $object, "__toString" )) {
                         $item->$setter ( $object->__toString() );
                     }
                 }
