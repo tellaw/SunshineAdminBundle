@@ -89,7 +89,7 @@
                 placeholder: 'This is my placeholder',
                 allowClear: true,
                 ajax: {
-                    url: "{{ path('sunshine_ajax_select2_callback', { "entityName" : name, "toStringField" : attr.toString,  }) }}",
+                    url: "{{ path('sunshine_ajax_select2_callback', { "entityName" : name, "toStringField" : attr.filterAttribute,  }) }}",
                     dataType: 'json',
                     method: 'post',
                     delay: 500,

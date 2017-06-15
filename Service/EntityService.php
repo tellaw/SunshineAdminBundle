@@ -154,7 +154,11 @@ class EntityService
         foreach ($propertyAnnotations AS $annot) {
             if (get_class($annot) == "Symfony\\Component\\Validator\\Constraints\\Type") {
                 $typeAssert = $annot->type;
-            } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\Column") {
+            }
+            elseif (get_class($annot) == "Symfony\\Component\\Validator\\Constraints\\File") {
+                $typeAssert = "file";
+            }
+            elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\Column") {
                 $typeDoctrine = $annot->type;
             } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\ManyToOne"  ) {
                 $typeDoctrine = "object";

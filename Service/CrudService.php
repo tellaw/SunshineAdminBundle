@@ -3,6 +3,7 @@
 namespace Tellaw\SunshineAdminBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Form;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
@@ -69,7 +70,7 @@ class CrudService
 
         $result = $this->getEntityList(  $entityName, $orderCol, $orderDir, $start, $length, $searchValue, false );
 
-        return count ($result);
+        return count($result);
     }
 
     /**
@@ -160,21 +161,35 @@ class CrudService
         }
         $qb = $this->addSearch ( $qb, $searchValue, $listConfiguration, $baseConfiguration );
 
-
-       /*
-        // Filters
-        $filters = $context->getFilters();
-        if (!empty($filters)) {
-            foreach ($filters as $key => $value) {
-                $qb->andWhere($alias . '.' . $key . ' LIKE :filterValue');
-                $qb->setParameter('filterValue', "%{$value}%");
-            }
-        }
-*/
         // GET RESULT
         $result = $qb->getQuery()->getResult();
 
+        return $this->flattenObjects($listConfiguration, $result);
+    }
+
+    private function flattenObjects ( $listConfiguration, $result ) {
+
+        $joinFields = null;
+        foreach ($listConfiguration as $key => $item) {
+            if (key_exists('relatedClass', $item) && $item['relatedClass'] != false) {
+                $joinFields[] = $key;
+            }
+        }
+
+        if ($joinFields) {
+            foreach ( $result as $item ) {
+                foreach ($joinFields as $joinField) {
+                    $setter = "set".ucfirst($joinField);
+                    $getter = "get".ucfirst($joinField);
+                    $object = $item->$getter();
+                    if (is_object( $object ) && method_exists( $object, "__toString" )) {
+                        $item->$setter ( $object->__toString() );
+                    }
+                }
+            }
+        }
         return $result;
+
     }
 
     private function getAliasForEntity ( $property ) {
@@ -195,38 +210,24 @@ class CrudService
         $fields = [];
         $joins = [];
 
+        $qb->select($this->alias);
+        $qb->from($baseConfiguration["configuration"]["class"], $this->alias);
+
         // GET COLUMNS AS FIELDS
         foreach ($listConfiguration as $key => $item) {
 
             if (isset( $item["type"] ) && $item["type"] != "custom" || !isset($item["type"]) ) {
 
                 if (key_exists('relatedClass', $item) && $item['relatedClass'] != false ) {
-                    $joinField = ['class' => $item['relatedClass'], 'name' => $key];
 
-                    // GET FOREIGN STRING FIELD TO SHOW
-                    if (isset($item['toString'])) {
-                        $joinField['toString'] = $item['toString'];
-                    }
-                    $joins[] = $joinField;
-                } else {
-                    $fields[] = $this->alias.".".$key;
+                    $join = ['class' => $item['relatedClass'], 'name' => $key];
+                    $joinAlias = $this->getAliasForEntity( $join['name'] );
+                    $qb->innerJoin($this->alias.'.'.$join['name'], $joinAlias);
+                    $qb->addSelect($joinAlias);
+
                 }
+
             }
-        }
-
-        // PREPARE QUERY WITH FIELDS
-        $fieldsLine = implode(',', $fields);
-        $qb->select($fieldsLine ? $fieldsLine : $this->alias);
-        $qb->from($baseConfiguration["configuration"]["class"], $this->alias);
-
-        // PREPARE QUERY WITH JOINED FIELDS
-        foreach ($joins as $k => $join) {
-
-            $joinAlias = $this->getAliasForEntity( $join['name'] );
-            $qb->innerJoin($this->alias.'.'.$join['name'], $joinAlias);
-            $joinField = isset($join['toString']) ? $join['toString'] : 'id';
-
-            $qb->addSelect($joinAlias.'.'.$joinField.' as '.$join['name']);
         }
 
         return $qb;
@@ -303,8 +304,8 @@ class CrudService
 
                 if ( $this->isRelatedObject( $listConfiguration[$key]) ) {
                     $joinAlias = $this->getAliasForEntity( $key );
-                    $qb->orWhere(' '.$joinAlias.'.'.$listConfiguration[$key]["toString"].' LIKE :search');
-                    $searchParams[] = " ".$joinAlias.".".$listConfiguration[$key]["toString"]." LIKE :searchParam";
+                    $qb->orWhere(' '.$joinAlias.'.'.$listConfiguration[$key]["filterAttribute"].' LIKE :search');
+                    $searchParams[] = " ".$joinAlias.".".$listConfiguration[$key]["filterAttribute"]." LIKE :searchParam";
                 } else {
                     $qb->orWhere($this->alias.'.'.$key.' LIKE :search');
                     $searchParams[] = " l.".$key." LIKE :searchParam";
@@ -354,6 +355,10 @@ class CrudService
                     $fieldAttributes["attr"]    = array('class' => 'datetime-picker');
                     break;
 
+                case "file":
+                    $type = FileType::class;
+                    break;
+
                 case "object":
 
                     if ( !isset ( $field["relatedClass"] ) ) throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
@@ -361,7 +366,7 @@ class CrudService
                     if (!isset($field["expanded"]) || $field["expanded"] == false) {
                         $fieldAttributes["attr"] = array(
                             'class' => $fieldName . '-select2',
-                            'toString' => $field["toString"],
+                            'filterAttribute' => $field["filterAttribute"],
                             'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"])
                         );
                         $fieldAttributes["class"] = $field["relatedClass"];
