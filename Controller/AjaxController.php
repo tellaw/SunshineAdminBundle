@@ -29,15 +29,11 @@ class AjaxController extends Controller
         $q = $request->request->get ("q");
         $page = $request->request->get ("page");
 
-
-
-        if (!$page)
-        {
+        if (!$page) {
             $page = 1;
         }
 
         $itemPerPage = 10;
-
         $relatedClass = $request->request->get ("relatedClass");
 
         // Get class metadata

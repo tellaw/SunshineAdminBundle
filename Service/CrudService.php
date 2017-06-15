@@ -336,13 +336,15 @@ class CrudService
                 $fieldAttributes['label'] = $field['label'];
             }
 
+            // Default, let the framework decide
+            $type = null;
+
             switch ( $field["type"] ) {
                 case "date":
                     $fieldAttributes["widget"]  = 'single_text';
                     $fieldAttributes["input"]   = 'datetime';
                     $fieldAttributes["format"]  = 'dd/MM/yyyy';
                     $fieldAttributes["attr"]    = array('class' => 'datetime-picker');
-
                     break;
 
                 case "datetime":
@@ -350,17 +352,29 @@ class CrudService
                     $fieldAttributes["input"]   = 'datetime';
                     $fieldAttributes["format"]  = 'dd/MM/yyyy hh:mm';
                     $fieldAttributes["attr"]    = array('class' => 'datetime-picker');
+                    break;
 
                 case "object":
+
                     if ( !isset ( $field["relatedClass"] ) ) throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
 
-                    $fieldAttributes["expanded"]        = $field["expanded"];
-                    $fieldAttributes["attr"]    = array('class' => 'select-picker', "data-live-search"=>"true");
-
+                    if (!isset($field["expanded"]) || $field["expanded"] == false) {
+                        $fieldAttributes["attr"] = array(
+                            'class' => $fieldName . '-select2',
+                            'toString' => $field["toString"],
+                            'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"])
+                        );
+                        $fieldAttributes["class"] = $field["relatedClass"];
+                        $type = Select2Type::class;
+                    } else {
+                        $fieldAttributes["attr"] = array('class' => 'select-picker', "data-live-search"=>"true");
+                        $fieldAttributes["expanded"] = "true";
+                    }
                     break;
+
             }
 
-            $form->add($fieldName, null, $fieldAttributes);
+            $form->add($fieldName, $type, $fieldAttributes);
         }
 
         return $form;
