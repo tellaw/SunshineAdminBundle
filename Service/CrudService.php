@@ -4,6 +4,7 @@ namespace Tellaw\SunshineAdminBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Form;
+use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
 use Doctrine\DBAL\Types\JsonArrayType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -86,6 +87,55 @@ class CrudService
         $result = $repository->findOneById($entityId);
 
         return $result;
+    }
+
+
+    /**
+     *
+     * Method used to find data for the SELECT2 Field in AJAX
+     *
+     * @param $entityClass
+     * @param $toString
+     * @param $query
+     * @param $metadata
+     * @return mixed
+     */
+    public function getEntityListByClassMetadata ( $entityClass, $toString, $query, $metadata, $page, $itemPerPage ) {
+
+        $identifier = $metadata->identifier;
+
+        $qb = $this->em->createQueryBuilder();
+        $qb->select(array ( 'l.'.$identifier[0], 'l.'.$toString." AS text"));
+        $qb->from($entityClass, 'l');
+        $qb->orWhere ('l.'.$toString.' LIKE :search');
+        $qb->setFirstResult(($page - 1) * $itemPerPage);
+        $qb->setMaxResults($itemPerPage);
+        $qb->setParameter('search', "%{$query}%");
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     *
+     * Method used to find data for the SELECT2 Field in AJAX
+     *
+     * @param $entityClass
+     * @param $toString
+     * @param $query
+     * @param $metadata
+     * @return mixed
+     */
+    public function getCountEntityListByClassMetadata ( $entityClass, $toString, $query, $metadata ) {
+
+        $identifier = $metadata->identifier;
+
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('COUNT(l)');
+        $qb->from($entityClass, 'l');
+        $qb->orWhere ('l.'.$toString.' LIKE :search');
+        $qb->setParameter('search', "%{$query}%");
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
     /**
@@ -286,13 +336,15 @@ class CrudService
                 $fieldAttributes['label'] = $field['label'];
             }
 
+            // Default, let the framework decide
+            $type = null;
+
             switch ( $field["type"] ) {
                 case "date":
                     $fieldAttributes["widget"]  = 'single_text';
                     $fieldAttributes["input"]   = 'datetime';
                     $fieldAttributes["format"]  = 'dd/MM/yyyy';
                     $fieldAttributes["attr"]    = array('class' => 'datetime-picker');
-
                     break;
 
                 case "datetime":
@@ -300,25 +352,32 @@ class CrudService
                     $fieldAttributes["input"]   = 'datetime';
                     $fieldAttributes["format"]  = 'dd/MM/yyyy hh:mm';
                     $fieldAttributes["attr"]    = array('class' => 'datetime-picker');
+                    break;
 
                 case "object":
+
                     if ( !isset ( $field["relatedClass"] ) ) throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
-                    
-                    if (!empty($field["toString"])) {
-                        $fieldAttributes["choice_label"] = $field["toString"];
-                    }
-                    $fieldAttributes["expanded"] = $field["expanded"];
 
-                    if (!$field["expanded"]) {
+                    if (!isset($field["expanded"]) || $field["expanded"] == false) {
+                        $fieldAttributes["attr"] = array(
+                            'class' => $fieldName . '-select2',
+                            'toString' => $field["toString"],
+                            'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"])
+                        );
+                        $fieldAttributes["class"] = $field["relatedClass"];
+                        $type = Select2Type::class;
+                    } else {
                         $fieldAttributes["attr"] = array('class' => 'select-picker', "data-live-search"=>"true");
+                        $fieldAttributes["expanded"] = "true";
                     }
-
                     break;
+
             }
 
-            $form->add($fieldName, null, $fieldAttributes);
+            $form->add($fieldName, $type, $fieldAttributes);
         }
 
         return $form;
     }
+
 }
