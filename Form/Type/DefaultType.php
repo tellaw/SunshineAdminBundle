@@ -64,11 +64,11 @@ class DefaultType extends AbstractType
     /**
      * Genération des champs du formulaire selon la config yml
      *
-     * @param Form $form
+     * @param Form|FormBuilder $form
      * @param array $fieldsConfiguration
      * @throws \Exception
      */
-    protected function buildFormFields(Form $form, array $fieldsConfiguration)
+    protected function buildFormFields($form, array $fieldsConfiguration)
     {
         $this->crudService->buildFormFields($form, $fieldsConfiguration);
     }
