@@ -13,6 +13,9 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class CrudService
 {
@@ -161,34 +164,28 @@ class CrudService
         }
         $qb = $this->addSearch ( $qb, $searchValue, $listConfiguration, $baseConfiguration );
 
-        // GET RESULT
-        $result = $qb->getQuery()->getResult();
-
-        return $this->flattenObjects($listConfiguration, $result);
+        return $this->flattenObjects($listConfiguration, $qb->getQuery()->getResult());
     }
 
     private function flattenObjects ( $listConfiguration, $result ) {
 
+        $normalizer = new ObjectNormalizer();
+        $encoder = new JsonEncoder();
+        $serializer = new Serializer(array($normalizer), array($encoder));
+
+        $callback = function ($object) {
+            return $object->__toString();
+        };
+
         $joinFields = null;
         foreach ($listConfiguration as $key => $item) {
             if (key_exists('relatedClass', $item) && $item['relatedClass'] != false) {
-                $joinFields[] = $key;
+                $normalizer->setCallbacks(array($key => $callback));
             }
         }
 
-        if ($joinFields) {
-            foreach ( $result as $item ) {
-                foreach ($joinFields as $joinField) {
-                    $setter = "set".ucfirst($joinField);
-                    $getter = "get".ucfirst($joinField);
-                    $object = $item->$getter();
-                    if (is_object( $object ) && method_exists( $object, "__toString" )) {
-                        $item->$setter ( $object->__toString() );
-                    }
-                }
-            }
-        }
-        return $result;
+        $serializedEntity = $serializer->serialize($result, 'json');
+        return json_decode($serializedEntity, true);
 
     }
 
