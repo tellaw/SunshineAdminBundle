@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Tellaw\SunshineAdminBundle\Service\CrudService;
 use Tellaw\SunshineAdminBundle\Service\EntityService;
 use Symfony\Component\HttpFoundation\Response;
@@ -96,7 +99,16 @@ class AjaxController extends Controller
         );
 
         // Return them with the JSON Response Serialized
-        $serializedEntity = $this->container->get('serializer')->serialize($responseArray, 'json');
+
+        $encoder = new JsonEncoder();
+        $normalizer = new ObjectNormalizer();
+
+        $normalizer->setCircularReferenceHandler(function ($object) {
+            return (method_exists( $object, "__toString" ))? $object->__toString() : null;
+        });
+
+        $serializer = new Serializer(array($normalizer), array($encoder));
+        $serializedEntity = $serializer->serialize($responseArray, 'json');
         $response = new Response();
         $response->setContent($serializedEntity);
         $response->headers->set('Content-Type', 'application/json');

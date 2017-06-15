@@ -3,6 +3,7 @@
 namespace Tellaw\SunshineAdminBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Form;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
@@ -181,7 +182,7 @@ class CrudService
                     $setter = "set".ucfirst($joinField);
                     $getter = "get".ucfirst($joinField);
                     $object = $item->$getter();
-                    if (is_object( $object ) && property_exists( $object, "__toString" )) {
+                    if (is_object( $object ) && method_exists( $object, "__toString" )) {
                         $item->$setter ( $object->__toString() );
                     }
                 }
@@ -352,6 +353,10 @@ class CrudService
                     $fieldAttributes["input"]   = 'datetime';
                     $fieldAttributes["format"]  = 'dd/MM/yyyy hh:mm';
                     $fieldAttributes["attr"]    = array('class' => 'datetime-picker');
+                    break;
+
+                case "file":
+                    $type = FileType::class;
                     break;
 
                 case "object":
