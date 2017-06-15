@@ -42,14 +42,11 @@ class MenuExtension extends \Twig_Extension
      */
     public function isThisActivePage($item, $pageId)
     {
-
         if (isset ($item["parameters"]["id"]) && $item["parameters"]["id"] == $pageId) {
             return true;
-        } else if (isset ($item["entityName"]) && $item["entityName"] == $pageId)
-        {
+        } else if (isset ($item["entityName"]) && $item["entityName"] == $pageId) {
             return true;
-        } else
-        {
+        } else {
             return false;
         }
     }

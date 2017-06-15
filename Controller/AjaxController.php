@@ -51,6 +51,8 @@ class AjaxController extends Controller
             "total_count" => $totalCount
         );
 
+
+
         // Return them with the JSON Response Serialized
         $serializedEntity = $this->container->get('serializer')->serialize($responseArray, 'json');
         $response = new Response();
