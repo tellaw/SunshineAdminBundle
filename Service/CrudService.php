@@ -178,10 +178,23 @@ class CrudService
         $serializer = new Serializer(array($normalizer), array($encoder));
 
         $callback = function ($object) {
-            if (method_exists($object, "__toString")) {
-                return $object->__toString();
+
+            if (get_class($object) == PersistentCollection::class ) {
+                $objectsArray = array();
+                foreach ( $object as $itemObject ){
+                    if (method_exists($object, "__toString")) {
+                        $objectsArray[] = $itemObject->__toString();
+                    } else {
+                        $objectsArray[] = "toString undefined for entity : ".get_class($itemObject);
+                    }
+                }
+                return implode( ',', $objectsArray);
             } else {
-                return "toString undefined for entity : ".get_class($object);
+                if (method_exists($object, "__toString")) {
+                    return $object->__toString();
+                } else {
+                    return "toString undefined for entity : ".get_class($object);
+                }
             }
 
         };
@@ -198,11 +211,6 @@ class CrudService
         foreach ( $result as $key => $object ) {
             $serializedEntity = $serializer->serialize($object, 'json');
             $serializedEntity = json_decode($serializedEntity, true);
-            foreach ( $joinFields as $field ) {
-                if ( is_array($serializedEntity[$field]) ) {
-                    $serializedEntity[$field] = implode( ",", $serializedEntity[$field] );
-                }
-            }
             $outputserialized[$key] = $serializedEntity;
         }
 
