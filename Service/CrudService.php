@@ -182,7 +182,7 @@ class CrudService
             if (get_class($object) == PersistentCollection::class ) {
                 $objectsArray = array();
                 foreach ( $object as $itemObject ){
-                    if (method_exists($object, "__toString")) {
+                    if (method_exists($itemObject, "__toString")) {
                         $objectsArray[] = $itemObject->__toString();
                     } else {
                         $objectsArray[] = "toString undefined for entity : ".get_class($itemObject);
