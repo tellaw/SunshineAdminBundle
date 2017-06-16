@@ -111,8 +111,7 @@ class EntityService
             if (!isset($fieldConfiguration['type']) || empty($fieldConfiguration['type'])) {
                  $type = $this->guessEntityFieldType($configuration['configuration']['class'], $fieldName);
                 $resultData[$fieldName]['type'] = $type;
-
-                if ($type == "object" && empty($fieldConfiguration['relatedClass'] )) {
+                if (($type == "object" || $type == "object-multiple") && empty($fieldConfiguration['relatedClass'] )) {
                     $relatedClass = $this->guessEntityFieldLinkedClass($configuration['configuration']['class'], $fieldName);
                     $resultData[$fieldName]['relatedClass'] = $relatedClass;
                 }
@@ -154,16 +153,18 @@ class EntityService
         foreach ($propertyAnnotations AS $annot) {
             if (get_class($annot) == "Symfony\\Component\\Validator\\Constraints\\Type") {
                 $typeAssert = $annot->type;
-            }
-            elseif (get_class($annot) == "Symfony\\Component\\Validator\\Constraints\\File") {
+            } elseif (get_class($annot) == "Symfony\\Component\\Validator\\Constraints\\File") {
                 $typeAssert = "file";
-            }
-            elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\Column") {
+            } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\Column") {
                 $typeDoctrine = $annot->type;
             } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\ManyToOne"  ) {
                 $typeDoctrine = "object";
             } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\OneToOne") {
                 $typeDoctrine = "object";
+            } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\OneToMany") {
+                $typeDoctrine = "object";
+            } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\ManyToMany") {
+                $typeDoctrine = "object-multiple";
             }
         }
 
@@ -193,7 +194,7 @@ class EntityService
         $propertyAnnotations = $this->getAnnotationsForAttribute( $class, $property );
 
         foreach ($propertyAnnotations AS $annot) {
-            if (get_class($annot) == ("Doctrine\\ORM\\Mapping\\ManyToOne" ||  "Doctrine\\ORM\\Mapping\\OneToOne" )  ) {
+            if (in_array(get_class($annot), ["Doctrine\\ORM\\Mapping\\ManyToOne", "Doctrine\\ORM\\Mapping\\OneToOne", "Doctrine\\ORM\\Mapping\\OneToMany", "Doctrine\\ORM\\Mapping\\ManyToMany"])  ) {
                 return $annot->targetEntity;
             }
         }

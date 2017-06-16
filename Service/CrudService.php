@@ -3,6 +3,7 @@
 namespace Tellaw\SunshineAdminBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Form;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
@@ -182,7 +183,12 @@ class CrudService
                     $setter = "set".ucfirst($joinField);
                     $getter = "get".ucfirst($joinField);
                     $object = $item->$getter();
-                    if (is_object( $object ) && method_exists( $object, "__toString" )) {
+
+                    if ($object instanceof PersistentCollection)
+                    {
+                       break;
+                    }
+                    elseif (is_object( $object ) && method_exists( $object, "__toString" )) {
                         $item->$setter ( $object->__toString() );
                     }
                 }
@@ -377,6 +383,24 @@ class CrudService
                     }
                     break;
 
+                case "object-multiple":
+
+                    if ( !isset ( $field["relatedClass"] ) ) throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
+
+                    if (!isset($field["expanded"]) || $field["expanded"] == false) {
+                        $fieldAttributes["attr"] = array(
+                            'class' => $fieldName . '-select2',
+                            'filterAttribute' => $field["filterAttribute"],
+                            'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"])
+                        );
+                        $fieldAttributes["class"] = $field["relatedClass"];
+                    } else {
+                        $fieldAttributes["attr"] = array('class' => 'select-picker', "data-live-search"=>"true");
+                        $fieldAttributes["expanded"] = "true";
+
+                    }
+                    $fieldAttributes["multiple"] = "true";
+                    break;
             }
 
             $form->add($fieldName, $type, $fieldAttributes);
