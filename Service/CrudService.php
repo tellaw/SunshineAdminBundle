@@ -174,20 +174,38 @@ class CrudService
         $serializer = new Serializer(array($normalizer), array($encoder));
 
         $callback = function ($object) {
-            return $object->__toString();
+            if (method_exists($object, "__toString")) {
+                return $object->__toString();
+            } else {
+                return "toString undefined for entity : ".get_class($object);
+            }
+
         };
 
+        $outputserialized = array();
         $joinFields = null;
         foreach ($listConfiguration as $key => $item) {
             if (key_exists('relatedClass', $item) && $item['relatedClass'] != false) {
                 $normalizer->setCallbacks(array($key => $callback));
+                $joinFields [] = $key;
             }
         }
 
-        $serializedEntity = $serializer->serialize($result, 'json');
-        return json_decode($serializedEntity, true);
+        foreach ( $result as $key => $object ) {
+            $serializedEntity = $serializer->serialize($object, 'json');
+            $serializedEntity = json_decode($serializedEntity, true);
+            foreach ( $joinFields as $field ) {
+                if ( is_array($serializedEntity[$field]) ) {
+                    $serializedEntity[$field] = implode( ",", $serializedEntity[$field] );
+                }
+            }
+            $outputserialized[$key] = $serializedEntity;
+        }
+
+        return $outputserialized;
 
     }
+
 
     private function getAliasForEntity ( $property ) {
         return strtolower( $property."_" );
