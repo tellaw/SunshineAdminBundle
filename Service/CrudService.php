@@ -14,6 +14,9 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class CrudService
 {
@@ -162,41 +165,48 @@ class CrudService
         }
         $qb = $this->addSearch ( $qb, $searchValue, $listConfiguration, $baseConfiguration );
 
-        // GET RESULT
-        $result = $qb->getQuery()->getResult();
-
-        return $this->flattenObjects($listConfiguration, $result);
+        return $this->flattenObjects($listConfiguration, $qb->getQuery()->getResult());
     }
 
     private function flattenObjects ( $listConfiguration, $result ) {
 
-        $joinFields = null;
+        $normalizer = new ObjectNormalizer();
+        $encoder = new JsonEncoder();
+        $serializer = new Serializer(array($normalizer), array($encoder));
+
+        $callback = function ($object) {
+            if (method_exists($object, "__toString")) {
+                return $object->__toString();
+            } else {
+                return "toString undefined for entity : ".get_class($object);
+            }
+
+        };
+
+        $outputserialized = array();
+        $joinFields = array();
         foreach ($listConfiguration as $key => $item) {
             if (key_exists('relatedClass', $item) && $item['relatedClass'] != false) {
-                $joinFields[] = $key;
+                $normalizer->setCallbacks(array($key => $callback));
+                $joinFields [] = $key;
             }
         }
 
-        if ($joinFields) {
-            foreach ( $result as $item ) {
-                foreach ($joinFields as $joinField) {
-                    $setter = "set".ucfirst($joinField);
-                    $getter = "get".ucfirst($joinField);
-                    $object = $item->$getter();
-
-                    if ($object instanceof PersistentCollection)
-                    {
-                       break;
-                    }
-                    elseif (is_object( $object ) && method_exists( $object, "__toString" )) {
-                        $item->$setter ( $object->__toString() );
-                    }
+        foreach ( $result as $key => $object ) {
+            $serializedEntity = $serializer->serialize($object, 'json');
+            $serializedEntity = json_decode($serializedEntity, true);
+            foreach ( $joinFields as $field ) {
+                if ( is_array($serializedEntity[$field]) ) {
+                    $serializedEntity[$field] = implode( ",", $serializedEntity[$field] );
                 }
             }
+            $outputserialized[$key] = $serializedEntity;
         }
-        return $result;
+
+        return $outputserialized;
 
     }
+
 
     private function getAliasForEntity ( $property ) {
         return strtolower( $property."_" );
@@ -327,13 +337,13 @@ class CrudService
     /**
      * Method used to generate fields in form
      *
-     * @param Form $form
+     * @param Form|FormBuilder $form
      * @param array $formConfiguration
      * @return mixed
      * @throws \Exception
      *
      */
-    public function buildFormFields(Form $form, $formConfiguration)
+    public function buildFormFields($form, $formConfiguration)
     {
         foreach ($formConfiguration as $fieldName => $field) {
 

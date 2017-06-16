@@ -99,6 +99,10 @@ class AjaxController extends Controller
         );
 
         // Return them with the JSON Response Serialized
+        return $this->getSerializedResponse( $responseArray );
+    }
+
+    private function getSerializedResponse ( $responseArray  ) {
 
         $encoder = new JsonEncoder();
         $normalizer = new ObjectNormalizer();
@@ -112,6 +116,7 @@ class AjaxController extends Controller
         $response = new Response();
         $response->setContent($serializedEntity);
         $response->headers->set('Content-Type', 'application/json');
+
         return $response;
     }
 
