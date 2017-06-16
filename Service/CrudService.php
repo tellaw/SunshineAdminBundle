@@ -183,7 +183,7 @@ class CrudService
         };
 
         $outputserialized = array();
-        $joinFields = null;
+        $joinFields = array();
         foreach ($listConfiguration as $key => $item) {
             if (key_exists('relatedClass', $item) && $item['relatedClass'] != false) {
                 $normalizer->setCallbacks(array($key => $callback));
