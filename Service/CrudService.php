@@ -170,6 +170,9 @@ class CrudService
     private function flattenObjects ( $listConfiguration, $result ) {
 
         $normalizer = new ObjectNormalizer();
+        $normalizer->setCircularReferenceHandler(function ($object) {
+            return (method_exists( $object, "__toString" ))? $object->__toString() : null;
+        });
         $encoder = new JsonEncoder();
         $serializer = new Serializer(array($normalizer), array($encoder));
 
