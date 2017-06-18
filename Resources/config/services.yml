@@ -45,5 +45,5 @@ services:
 
   sunshine.widgets.edit:
     class: Tellaw\SunshineAdminBundle\Service\Widgets\EditWidget
-    arguments: [ '@router', '@request_stack' ]
+    arguments: [ '@router', '@request_stack', '@twig' ]
     scope: request_stack
