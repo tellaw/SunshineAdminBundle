@@ -21,6 +21,7 @@
         {% for rowKey, row in page.rows %}
         <div class="row">
             {% for name, widget in row %}
+
                 {% if (widget.preload is defined) and (widget.preload == 'true')%}
                     <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
                          data-route="{{ getWidgetUrl( widget, name, pageId, rowKey ) }}"
@@ -39,13 +40,19 @@
                             )) }}
                         {% endif %}
                     </div>
+                {% elseif (serviceWidgets[name] is defined) %}
+
+                    {{ serviceWidgets[name] | raw }}
+
                 {% else %}
+
                     <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
                          data-route="{{ getWidgetUrl( widget, name, pageId, rowKey ) }}"
                          data-editroute=""
                          data-type="widget.ajax"
                          id="widget-{{ name }}" >
                     </div>
+
                 {% endif %}
             {% endfor %}
 
