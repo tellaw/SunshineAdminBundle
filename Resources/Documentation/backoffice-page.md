@@ -70,12 +70,51 @@ This method define a widget using a Symfony service instead of a controller. The
 
 ### Configure the service
 
+```
+  sunshine.widgets.edit:
+    class: Tellaw\SunshineAdminBundle\Service\Widgets\EditWidget
+    arguments: [ '@request_stack', '@twig' ]
+    scope: request_stack
+    tags:
+      - {name: sunshine.widget }
+```
 
+A widget is a service declared with the tag "sunshine.widget". It must extends AbsractWidget.
 
 ### Create the widget
 
+The minimum widget must be like this :
+
+```
+<?php
+namespace Tellaw\SunshineAdminBundle\Service\Widgets;
+
+use Tellaw\SunshineAdminBundle\Service\AbstractWidget;
+
+class EditWidget extends AbstractWidget {
+
+    public function create ( $configuration ) {
+
+
+        return $this->render( "Default:index", array() );
+
+    }
+
+}
+
+```
+
+It has to extend AbstractWidget and implement the method called 'create'
 
 ### Configure your widget in a page
 
+The widget must define a service to be considered as a 'Service Widget'
+```
+    widget1 :
+            title : Liste de projets
+            columns : 12
+            widget: monthly_activity
+            service : sunshine.widgets.edit
+```
 
 

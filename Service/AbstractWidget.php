@@ -3,16 +3,15 @@
 namespace Tellaw\SunshineAdminBundle\Service;
 
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Router;
 
 abstract class AbstractWidget {
 
-    protected $router = null;
     protected $requestStack = null;
     protected $twig = null;
 
-    public function __construct( $router, RequestStack $requestStack, \Twig_Environment $twig )
+    public function __construct( RequestStack $requestStack, \Twig_Environment $twig )
     {
-        $this->router = $router;
         $this->requestStack = $requestStack;
         $this->twig = $twig;
     }
@@ -22,12 +21,11 @@ abstract class AbstractWidget {
         return $this->requestStack->getCurrentRequest();
     }
 
-    public function getRouter ()
-    {
-        return $this->router;
+    public function render ( $template, $parameters ) {
+        return $this->twig->render('TellawSunshineAdminBundle:'.$template.".html.twig" , $parameters);
     }
 
-    public abstract function render ( $configuration );
+    public abstract function create ( $configuration );
 
 
 }

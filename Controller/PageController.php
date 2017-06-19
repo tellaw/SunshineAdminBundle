@@ -28,7 +28,6 @@ class PageController extends AbstractController
         /** @var array $page */
         $page = $this->get("sunshine.pages")->getPageConfiguration($pageId);
 
-        //$configuration = $this->get("sunshine.menu")->getConfiguration();
         /** @var WidgetService $widgetService */
         $widgetService = $this->get("sunshine.widgets");
         $serviceWidgets = $widgetService->loadServicesWidgetsForPage( $page );

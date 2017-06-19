@@ -10,20 +10,15 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /**
  * Widget Manager
  */
-class WidgetService implements ContainerAwareInterface
+class WidgetService
 {
+
+    private $serviceWidgets = array();
 
     /**
      * Symfony Router on request context
      */
     private $router;
-
-    private $container;
-
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
 
     /**
      * Constructor
@@ -83,6 +78,10 @@ class WidgetService implements ContainerAwareInterface
         return $dataUrl;
     }
 
+    public function addServiceWidget ( $id, $widgetReference ) {
+        $this->serviceWidgets[ $id ] = $widgetReference;
+    }
+
     /**
      *
      * Method loads the configuration and render widgets based on services
@@ -96,18 +95,17 @@ class WidgetService implements ContainerAwareInterface
         foreach ( $pageConfiguration["rows"] as $row ) {
 
             foreach ( $row as $key => $widgetConfiguration ) {
-
-                if ( array_key_exists( "service", $widgetConfiguration ) ) {
-                    $service = $this->container->get( $widgetConfiguration["service"] );
-                    if ( $service ) {
-                        $widgetContent = $service->render( $widgetConfiguration );
-                        $serviceWidgets[ $key ] = $widgetContent;
+                if ( array_key_exists( "service", $widgetConfiguration ) && array_key_exists($widgetConfiguration["service"], $this->serviceWidgets) ) {
+                    $service = $this->serviceWidgets[$widgetConfiguration["service"]];
+                    if ($service) {
+                        $widgetContent = $service->create($widgetConfiguration);
+                        $serviceWidgets[$key] = $widgetContent;
                     } else {
-                        throw new \Exception("Service call for widget (".$key.") returned a null instead of service ");
+                        throw new \Exception("Service call for widget (" . $key . ") returned a null instead of service ");
                     }
+
                 }
             }
-
         }
 
         return $serviceWidgets;

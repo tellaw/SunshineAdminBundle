@@ -5,10 +5,10 @@ use Tellaw\SunshineAdminBundle\Service\AbstractWidget;
 
 class EditWidget extends AbstractWidget {
 
-    public function render ( $configuration ) {
+    public function create ( $configuration ) {
 
 
-        return "<h1>Mon Widget</h1>";
+        return $this->render( "Default:index", array() );
 
     }
 
