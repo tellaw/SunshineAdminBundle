@@ -153,7 +153,8 @@ class EntityService
         foreach ($propertyAnnotations AS $annot) {
             if (get_class($annot) == "Symfony\\Component\\Validator\\Constraints\\Type") {
                 $typeAssert = $annot->type;
-            } elseif (get_class($annot) == "Symfony\\Component\\Validator\\Constraints\\File") {
+            } elseif (get_class($annot) == "Vich\\UploaderBundle\\Mapping\\Annotation\\UploadableField") {
+                dump($annot);
                 $typeAssert = "file";
             } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\Column") {
                 $typeDoctrine = $annot->type;
@@ -194,7 +195,7 @@ class EntityService
         $propertyAnnotations = $this->getAnnotationsForAttribute( $class, $property );
 
         foreach ($propertyAnnotations AS $annot) {
-            if (in_array(get_class($annot), ["Doctrine\\ORM\\Mapping\\ManyToOne", "Doctrine\\ORM\\Mapping\\OneToOne", "Doctrine\\ORM\\Mapping\\OneToMany", "Doctrine\\ORM\\Mapping\\ManyToMany"])  ) {
+            if (in_array(get_class($annot), ["Doctrine\\ORM\\Mapping\\ManyToOne", "Doctrine\\ORM\\Mapping\\OneToOne", "Doctrine\\ORM\\Mapping\\OneTo", "Doctrine\\ORM\\Mapping\\ManyToMany"])  ) {
                 return $annot->targetEntity;
             }
         }

@@ -84,7 +84,6 @@ class AjaxController extends Controller
         /** @var CrudService $crudService */
         $crudService = $this->get("sunshine.crud_service");
         $list = $crudService->getEntityList( $entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue );
-
         // Get the number of elements using the filter
         $nbElementsOfFilteredEntity = $crudService->getCountEntityElements( $entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue );
 

@@ -2,10 +2,12 @@
 
 namespace Tellaw\SunshineAdminBundle\Service;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Form;
+use Tellaw\SunshineAdminBundle\Form\Type\AttachmentType;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
 use Doctrine\DBAL\Types\JsonArrayType;
@@ -209,6 +211,7 @@ class CrudService
         }
 
         foreach ( $result as $key => $object ) {
+
             $serializedEntity = $serializer->serialize($object, 'json');
             $serializedEntity = json_decode($serializedEntity, true);
             $outputserialized[$key] = $serializedEntity;
@@ -366,7 +369,7 @@ class CrudService
 
             // Default, let the framework decide
             $type = null;
-
+            dump($type);
             switch ( $field["type"] ) {
                 case "date":
                     $fieldAttributes["widget"]  = 'single_text';
@@ -383,7 +386,8 @@ class CrudService
                     break;
 
                 case "file":
-                    $type = FileType::class;
+                    $fieldAttributes["file_property"] = $field["webPath"];
+                    $type = AttachmentType::class;
                     break;
 
                 case "object":
