@@ -362,7 +362,7 @@ class CrudService
 
         if ($this->isRelatedObject( $listConfiguration[$keys[$orderCol]]) ) {
             $joinAlias = $this->getAliasForEntity( $keys[$orderCol] );
-            $qb->orderBy( $joinAlias.".".$listConfiguration[$keys[$orderCol]]["toString"] , $orderDir);
+            $qb->orderBy( $joinAlias.".".$listConfiguration[$keys[$orderCol]]["filterAttribute"] , $orderDir);
         } else {
             $qb->orderBy( $this->alias.".".$keys[$orderCol] , $orderDir);
         }
