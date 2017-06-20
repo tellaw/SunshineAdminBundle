@@ -196,67 +196,73 @@ class CrudService
         // Loop over objects
         foreach ( $results as $result ) {
 
-            $flattenObject = array();
+            // Get values for attributes of the object
+            $flattenDatasValues = $this->getValuesForAttributes( $fieldMappings, $result );
 
-            // Loop over attributes
-            foreach ( $fieldMappings as $fieldName => $fieldMapping ) {
+            // Get values for related objects
+            $flattenDatasObject = $this->getValuesForRealtedObjects ( $associationMappings, $result );
 
-                $getter = "get".ucfirst($fieldName);
-                $value = null;
-
-                if (method_exists( $result, $getter )) {
-                    $value = $result->$getter();
-                }
-                $flattenObject[$fieldName] = $value;
-
-            }
-
-            // Loop over associations
-            foreach ( $associationMappings as $associationKey => $associationMapping ) {
-
-                $associationType = $associationMapping["type"];
-                $getter = "get".ucfirst($associationKey);
-
-                if (method_exists( $result, $getter )) {
-                    $linkedObject = $result->$getter();
-                }
-
-                if ( $linkedObject instanceof \Doctrine\Common\Persistence\Proxy && !$linkedObject->__isInitialized()) {
-                    $linkedObject->__load();
-                }
-
-                $stringValue = null;
-                switch ($associationType) {
-
-                    case "1":
-                        // ONE_TO_ONE -> simple Getter, call toString
-                        $stringValue = $this->getToString( $linkedObject );
-                        break;
-                    case "2":
-                        // MANY_TO_ONE -> simple getter
-                        $stringValue = $this->getToString( $linkedObject );
-                        break;
-                    case "4":
-                        // Getter return collection
-                        $stringValue = $this->getToString( $linkedObject );
-                        break;
-
-                    case "8":
-                        // Getter return collection
-                        $stringValue = $this->getToString( $linkedObject );
-                        break;
-
-                }
-
-                $flattenObject[$associationKey] = $stringValue;
-
-            }
-
-            $flattenDatas[] = $flattenObject;
+            // Merge simple attributes and related objects values into one result
+            $flattenDatas[] = array_merge( $flattenDatasValues, $flattenDatasObject );
 
         }
 
         return $flattenDatas;
+    }
+
+    /**
+     *
+     * Method used to load values for simple attributes
+     *
+     * @param $fieldMappings
+     * @param $object
+     * @return array
+     */
+    private function getValuesForAttributes ( $fieldMappings, $object ) {
+
+        $flattenObject = array();
+
+        // Loop over attributes
+        foreach ( $fieldMappings as $fieldName => $fieldMapping ) {
+
+            $getter = "get".ucfirst($fieldName);
+            $value = null;
+
+            if (method_exists( $object, $getter )) {
+                $value = $object->$getter();
+            }
+            $flattenObject[$fieldName] = $value;
+
+        }
+        return $flattenObject;
+    }
+
+    /**
+     * Method used to find toString values of related objects
+     *
+     * @param $associationMappings
+     * @param $object
+     * @return array
+     *
+     */
+    private function getValuesForRealtedObjects ( $associationMappings, $object ) {
+
+        $flattenObject = array();
+
+        // Loop over associations
+        foreach ( $associationMappings as $associationKey => $associationMapping ) {
+
+            $stringValue = null;
+            $getter = "get".ucfirst($associationKey);
+
+            if (method_exists( $object, $getter )) {
+                $linkedObject = $object->$getter();
+            }
+
+            $flattenObject[$associationKey] = $this->getToString( $linkedObject );
+        }
+
+        return $flattenObject;
 
     }
 
@@ -270,14 +276,15 @@ class CrudService
     private function getToString ( $element )
     {
         if (method_exists($element, "__toString")) {
+
             return $element->__toString();
+
         } else if ( get_class( $element ) == PersistentCollection::class ) {
 
             $results = array();
             foreach ( $element as $collectionObject ) {
                 $results[] = $this->getToString( $collectionObject );
             }
-
             return implode( ",", $results );
 
         } else {
@@ -285,12 +292,17 @@ class CrudService
         }
     }
 
+    /**
+     * This method defines the doctrine alias for an entity
+     *
+     * @param $property
+     * @return string
+     */
     private function getAliasForEntity ( $property ) {
         return strtolower( $property."_" );
     }
 
     /**
-     *
      * Add Select and Join elements to the query
      *
      * @param $qb
