@@ -2,21 +2,16 @@
 
 namespace Tellaw\SunshineAdminBundle\Service;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
+use Doctrine\ORM\Query;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Form;
+use Tellaw\SunshineAdminBundle\Form\Type\AttachmentType;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
-use Doctrine\DBAL\Types\JsonArrayType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 class CrudService
 {
@@ -165,66 +160,143 @@ class CrudService
         }
         $qb = $this->addSearch ( $qb, $searchValue, $listConfiguration, $baseConfiguration );
 
-        return $this->flattenObjects($listConfiguration, $qb->getQuery()->getResult());
+        return $this->flattenObjects( $entityName, $qb->getQuery()->getResult(Query::HYDRATE_OBJECT));
     }
 
-    private function flattenObjects ( $listConfiguration, $result ) {
+    /**
+     *
+     * Method used to flatten Objects into array
+     *
+     * @param $entityName
+     * @param $results
+     * @return array
+     */
+    private function flattenObjects ( $entityName, $results ) {
 
-        $normalizer = new ObjectNormalizer();
-        $normalizer->setCircularReferenceHandler(function ($object) {
-            return (method_exists( $object, "__toString" ))? $object->__toString() : null;
-        });
-        $encoder = new JsonEncoder();
-        $serializer = new Serializer(array($normalizer), array($encoder));
+        $listConfiguration = $this->entityService->getListConfiguration( $entityName );
+        $baseConfiguration = $this->entityService->getConfiguration( $entityName );
 
-        $callback = function ($object) {
+        $class = $baseConfiguration["configuration"]["class"];
 
-            if (get_class($object) == PersistentCollection::class ) {
-                $objectsArray = array();
-                foreach ( $object as $itemObject ){
-                    if (method_exists($itemObject, "__toString")) {
-                        $objectsArray[] = $itemObject->__toString();
-                    } else {
-                        $objectsArray[] = "toString undefined for entity : ".get_class($itemObject);
-                    }
-                }
-                return implode( ',', $objectsArray);
-            } else {
-                if (method_exists($object, "__toString")) {
-                    return $object->__toString();
-                } else {
-                    return "toString undefined for entity : ".get_class($object);
-                }
-            }
+        /** @var ClassMetadata $classMetadata */
+        $classMetadata = $this->em->getClassMetadata( $class );
 
-        };
+        $fieldMappings = $classMetadata->fieldMappings;
+        $associationMappings = $classMetadata->associationMappings;
 
-        $outputserialized = array();
-        $joinFields = array();
-        foreach ($listConfiguration as $key => $item) {
-            if (key_exists('relatedClass', $item) && $item['relatedClass'] != false) {
-                $normalizer->setCallbacks(array($key => $callback));
-                $joinFields [] = $key;
-            }
+        $flattenDatas = array();
+
+        // Loop over objects
+        foreach ( $results as $result ) {
+
+            // Get values for attributes of the object
+            $flattenDatasValues = $this->getValuesForAttributes( $fieldMappings, $result );
+
+            // Get values for related objects
+            $flattenDatasObject = $this->getValuesForRealtedObjects ( $associationMappings, $result );
+
+            // Merge simple attributes and related objects values into one result
+            $flattenDatas[] = array_merge( $flattenDatasValues, $flattenDatasObject );
+
         }
 
-        foreach ( $result as $key => $object ) {
-            $serializedEntity = $serializer->serialize($object, 'json');
-            $serializedEntity = json_decode($serializedEntity, true);
-            $outputserialized[$key] = $serializedEntity;
+        return $flattenDatas;
+    }
+
+    /**
+     *
+     * Method used to load values for simple attributes
+     *
+     * @param $fieldMappings
+     * @param $object
+     * @return array
+     */
+    private function getValuesForAttributes ( $fieldMappings, $object ) {
+
+        $flattenObject = array();
+
+        // Loop over attributes
+        foreach ( $fieldMappings as $fieldName => $fieldMapping ) {
+
+            $getter = "get".ucfirst($fieldName);
+            $value = null;
+
+            if (method_exists( $object, $getter )) {
+                $value = $object->$getter();
+            }
+            $flattenObject[$fieldName] = $value;
+
+        }
+        return $flattenObject;
+    }
+
+    /**
+     * Method used to find toString values of related objects
+     *
+     * @param $associationMappings
+     * @param $object
+     * @return array
+     *
+     */
+    private function getValuesForRealtedObjects ( $associationMappings, $object ) {
+
+        $flattenObject = array();
+
+        // Loop over associations
+        foreach ( $associationMappings as $associationKey => $associationMapping ) {
+
+            $stringValue = null;
+            $getter = "get".ucfirst($associationKey);
+
+            if (method_exists( $object, $getter )) {
+                $linkedObject = $object->$getter();
+            }
+
+            $flattenObject[$associationKey] = $this->getToString( $linkedObject );
+
         }
 
-        return $outputserialized;
+        return $flattenObject;
 
     }
 
+    /**
+     *
+     * Method used to extract the toString of the target Entity
+     *
+     * @param $element
+     * @return string
+     */
+    private function getToString ( $element )
+    {
+        if (method_exists($element, "__toString")) {
 
+            return $element->__toString();
+
+        } else if ( get_class( $element ) == PersistentCollection::class ) {
+
+            $results = array();
+            foreach ( $element as $collectionObject ) {
+                $results[] = $this->getToString( $collectionObject );
+            }
+            return implode( ",", $results );
+
+        } else {
+            return get_class($element). " has no toString method";
+        }
+    }
+
+    /**
+     * This method defines the doctrine alias for an entity
+     *
+     * @param $property
+     * @return string
+     */
     private function getAliasForEntity ( $property ) {
         return strtolower( $property."_" );
     }
 
     /**
-     *
      * Add Select and Join elements to the query
      *
      * @param $qb
@@ -296,7 +368,7 @@ class CrudService
 
         if ($this->isRelatedObject( $listConfiguration[$keys[$orderCol]]) ) {
             $joinAlias = $this->getAliasForEntity( $keys[$orderCol] );
-            $qb->orderBy( $joinAlias.".".$listConfiguration[$keys[$orderCol]]["toString"] , $orderDir);
+            $qb->orderBy( $joinAlias.".".$listConfiguration[$keys[$orderCol]]["filterAttribute"] , $orderDir);
         } else {
             $qb->orderBy( $this->alias.".".$keys[$orderCol] , $orderDir);
         }
@@ -366,7 +438,7 @@ class CrudService
 
             // Default, let the framework decide
             $type = null;
-
+            dump($type);
             switch ( $field["type"] ) {
                 case "date":
                     $fieldAttributes["widget"]  = 'single_text';
@@ -383,7 +455,8 @@ class CrudService
                     break;
 
                 case "file":
-                    $type = FileType::class;
+                    $fieldAttributes["file_property"] = $field["webPath"];
+                    $type = AttachmentType::class;
                     break;
 
                 case "object":

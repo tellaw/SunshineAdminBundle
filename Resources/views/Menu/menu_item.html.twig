@@ -4,7 +4,7 @@
             {% if item.icon is defined %}
                 <i class="icon-{{ item.icon }}"></i>
             {% endif %}
-            <span class="title">{{ item.label }}</span>
+            <span class="title">{{ item.label | trans }}</span>
 
         </a>
     </li>
@@ -14,7 +14,7 @@
             {% if item.icon is defined %}
                 <i class="icon-{{ item.icon }}"></i>
             {% endif %}
-            <span class="title">{{ item.label }}</span>
+            <span class="title">{{ item.label | trans }}</span>
 
         </a>
     </li>
@@ -24,7 +24,7 @@
                 {% if item.icon is defined %}
                     <i class="icon-{{ item.icon }}"></i>
                 {% endif %}
-                <span class="title">{{ item.label }}</span>
+                <span class="title">{{ item.label | trans }}</span>
 
             </a>
         </li>
@@ -42,14 +42,14 @@
     <li class="nav-item start ">
         <a href="{{ item.parameters.url }}" class="nav-link" {% if item.target is defined %}target="{{ item.target }}"{% endif %}>
             <i class="icon-home"></i>
-            <span class="title">{{ item.label }}</span>
+            <span class="title">{{ item.label | trans }}</span>
         </a>
     </li>
 {% elseif item.type == 'subMenu' %}
     <li class="nav-item {% if isActivePageIsAChildPage( item, pageType, pageIdentifier ) %}active open{%  endif %}">
         <a href="javascript:;" class="nav-link nav-toggle">
             <i class="icon-puzzle"></i>
-            <span class="title">{{ item.label }}</span>
+            <span class="title">{{ item.label | trans}}</span>
             <span class="arrow"></span>
         </a>
         <ul class="sub-menu">

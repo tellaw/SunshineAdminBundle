@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
+use Tellaw\SunshineAdminBundle\Service\WidgetService;
 
 /**
  * Content pages management
@@ -27,9 +28,11 @@ class PageController extends AbstractController
         /** @var array $page */
         $page = $this->get("sunshine.pages")->getPageConfiguration($pageId);
 
-        //$configuration = $this->get("sunshine.menu")->getConfiguration();
+        /** @var WidgetService $widgetService */
+        $widgetService = $this->get("sunshine.widgets");
+        $serviceWidgets = $widgetService->loadServicesWidgetsForPage( $page );
 
-        return $this->renderWithTheme( "Page:index", ["page" => $page, "pageId" => $pageId] );
+        return $this->renderWithTheme( "Page:index", ["page" => $page, "pageId" => $pageId, "serviceWidgets" => $serviceWidgets ] );
     }
 
     /**

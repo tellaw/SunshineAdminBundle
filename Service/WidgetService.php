@@ -2,6 +2,9 @@
 
 namespace Tellaw\SunshineAdminBundle\Service;
 
+use Google\Spreadsheet\Exception\Exception;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -9,6 +12,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class WidgetService
 {
+
+    private $serviceWidgets = array();
 
     /**
      * Symfony Router on request context
@@ -71,6 +76,40 @@ class WidgetService
 
 
         return $dataUrl;
+    }
+
+    public function addServiceWidget ( $id, $widgetReference ) {
+        $this->serviceWidgets[ $id ] = $widgetReference;
+    }
+
+    /**
+     *
+     * Method loads the configuration and render widgets based on services
+     *
+     * @param $pageConfiguration
+     */
+    public function loadServicesWidgetsForPage ( $pageConfiguration ) {
+
+        $serviceWidgets = array();
+
+        foreach ( $pageConfiguration["rows"] as $row ) {
+
+            foreach ( $row as $key => $widgetConfiguration ) {
+                if ( array_key_exists( "service", $widgetConfiguration ) && array_key_exists($widgetConfiguration["service"], $this->serviceWidgets) ) {
+                    $service = $this->serviceWidgets[$widgetConfiguration["service"]];
+                    if ($service) {
+                        $widgetContent = $service->create($widgetConfiguration);
+                        $serviceWidgets[$key] = $widgetContent;
+                    } else {
+                        throw new \Exception("Service call for widget (" . $key . ") returned a null instead of service ");
+                    }
+
+                }
+            }
+        }
+
+        return $serviceWidgets;
+
     }
 
 }

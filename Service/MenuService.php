@@ -39,19 +39,16 @@ class MenuService
 
         $autoMenu = array();
 
-        //if ( count ( $this->configuration ) == 0 ) {
+        foreach ( $this->entityConfiguration as $entityName => $entityConf ) {
+            $autoMenu[] = array (
+                "icon" => "puzzle",
+                "label" => $entityName,
+                "entityName" => $entityName,
+                "type" => "list"
 
-            foreach ( $this->entityConfiguration as $entityName => $entityConf ) {
-                $autoMenu[] = array (
-                    "icon" => "puzzle",
-                    "label" => $entityName,
-                    "entityName" => $entityName,
-                    "type" => "list"
+            );
+        }
 
-                );
-            }
-
-        //}
         $this->configuration[] = array ("type" => "section",
                                         "label" => "Vos entités",
                                         "children" => $autoMenu
