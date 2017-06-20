@@ -22,7 +22,7 @@ abstract class AbstractWidget {
     }
 
     public function render ( $template, $parameters ) {
-        return $this->twig->render('TellawSunshineAdminBundle:'.$template.".html.twig" , $parameters);
+        return $this->twig->render($template.".html.twig" , $parameters);
     }
 
     public abstract function create ( $configuration );
