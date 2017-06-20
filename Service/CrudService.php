@@ -3,7 +3,9 @@
 namespace Tellaw\SunshineAdminBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
+use Doctrine\ORM\Query;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Form;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
@@ -165,59 +167,127 @@ class CrudService
         }
         $qb = $this->addSearch ( $qb, $searchValue, $listConfiguration, $baseConfiguration );
 
-        return $this->flattenObjects($listConfiguration, $qb->getQuery()->getResult());
+        return $this->flattenObjects( $entityName, $qb->getQuery()->getResult(Query::HYDRATE_OBJECT));
     }
 
-    private function flattenObjects ( $listConfiguration, $result ) {
+    /**
+     *
+     * Method used to flatten Objects into array
+     *
+     * @param $entityName
+     * @param $results
+     * @return array
+     */
+    private function flattenObjects ( $entityName, $results ) {
 
-        $normalizer = new ObjectNormalizer();
-        $normalizer->setCircularReferenceHandler(function ($object) {
-            return (method_exists( $object, "__toString" ))? $object->__toString() : null;
-        });
-        $encoder = new JsonEncoder();
-        $serializer = new Serializer(array($normalizer), array($encoder));
+        $listConfiguration = $this->entityService->getListConfiguration( $entityName );
+        $baseConfiguration = $this->entityService->getConfiguration( $entityName );
 
-        $callback = function ($object) {
+        $class = $baseConfiguration["configuration"]["class"];
 
-            if (get_class($object) == PersistentCollection::class ) {
-                $objectsArray = array();
-                foreach ( $object as $itemObject ){
-                    if (method_exists($itemObject, "__toString")) {
-                        $objectsArray[] = $itemObject->__toString();
-                    } else {
-                        $objectsArray[] = "toString undefined for entity : ".get_class($itemObject);
-                    }
+        /** @var ClassMetadata $classMetadata */
+        $classMetadata = $this->em->getClassMetadata( $class );
+
+        $fieldMappings = $classMetadata->fieldMappings;
+        $associationMappings = $classMetadata->associationMappings;
+
+        $flattenDatas = array();
+
+        // Loop over objects
+        foreach ( $results as $result ) {
+
+            $flattenObject = array();
+
+            // Loop over attributes
+            foreach ( $fieldMappings as $fieldName => $fieldMapping ) {
+
+                $getter = "get".ucfirst($fieldName);
+                $value = null;
+
+                if (method_exists( $result, $getter )) {
+                    $value = $result->$getter();
                 }
-                return implode( ',', $objectsArray);
-            } else {
-                if (method_exists($object, "__toString")) {
-                    return $object->__toString();
-                } else {
-                    return "toString undefined for entity : ".get_class($object);
-                }
+                $flattenObject[$fieldName] = $value;
+
             }
 
-        };
+            // Loop over associations
+            foreach ( $associationMappings as $associationKey => $associationMapping ) {
 
-        $outputserialized = array();
-        $joinFields = array();
-        foreach ($listConfiguration as $key => $item) {
-            if (key_exists('relatedClass', $item) && $item['relatedClass'] != false) {
-                $normalizer->setCallbacks(array($key => $callback));
-                $joinFields [] = $key;
+                $associationType = $associationMapping["type"];
+                $associationClass = $associationMapping["targetEntity"];
+                $getter = "get".ucfirst($associationKey);
+
+                if (method_exists( $result, $getter )) {
+                    $linkedObject = $result->$getter();
+                }
+                if (
+                    $linkedObject instanceof \Doctrine\Common\Persistence\Proxy
+                    && !$linkedObject->__isInitialized()
+                ) {
+                    $linkedObject->__load();
+                }
+
+                $stringValue = null;
+                switch ($associationType) {
+
+                    case "1":
+                        // ONE_TO_ONE -> simple Getter, call toString
+                        $stringValue = $this->getToString( $linkedObject );
+                        break;
+                    case "2":
+                        // MANY_TO_ONE -> simple getter
+                        $stringValue = $this->getToString( $linkedObject );
+                        break;
+                    case "4":
+                        // Getter return collection
+                        $stringValue = $this->getToString( $linkedObject );
+                        break;
+
+                    case "8":
+                        // Getter return collection
+                        $stringValue = $this->getToString( $linkedObject );
+                        break;
+
+                }
+
+                $flattenObject[$associationKey] = $stringValue;
+
             }
+
+
+            $flattenDatas[] = $flattenObject;
+
         }
 
-        foreach ( $result as $key => $object ) {
-            $serializedEntity = $serializer->serialize($object, 'json');
-            $serializedEntity = json_decode($serializedEntity, true);
-            $outputserialized[$key] = $serializedEntity;
-        }
-
-        return $outputserialized;
+        return $flattenDatas;
 
     }
 
+    /**
+     *
+     * Method used to extract the toString of the target Entity
+     *
+     * @param $element
+     * @return string
+     */
+    private function getToString ( $element )
+    {
+        if (method_exists($element, "__toString")) {
+            return $element->__toString();
+        } else if ( get_class( $element ) == PersistentCollection::class ) {
+
+            $results = array();
+            foreach ( $element as $collectionObject ) {
+                $results[] = $this->getToString( $collectionObject );
+            }
+
+            return implode( ",", $results );
+
+        } else {
+            return get_class($element). " has no toString method";
+        }
+    }
 
     private function getAliasForEntity ( $property ) {
         return strtolower( $property."_" );
