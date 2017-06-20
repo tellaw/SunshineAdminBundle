@@ -121,7 +121,6 @@ class EntityService
             if (!$fieldConfiguration['label'] || empty($fieldConfiguration['label'])) {
                 $resultData[$fieldName]['label'] = $fieldName;
             }
-
         }
 
         return $resultData;
@@ -137,7 +136,6 @@ class EntityService
      */
     protected function guessEntityFieldType($class, $property)
     {
-
         $type = null;
 
         $typeDoctrine = null;
@@ -150,11 +148,10 @@ class EntityService
         // Get Annotations for attribute
         $propertyAnnotations = $this->getAnnotationsForAttribute( $class, $property );
 
-        foreach ($propertyAnnotations AS $annot) {
+        foreach ($propertyAnnotations as $annot) {
             if (get_class($annot) == "Symfony\\Component\\Validator\\Constraints\\Type") {
                 $typeAssert = $annot->type;
             } elseif (get_class($annot) == "Vich\\UploaderBundle\\Mapping\\Annotation\\UploadableField") {
-                dump($annot);
                 $typeAssert = "file";
             } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\Column") {
                 $typeDoctrine = $annot->type;
@@ -211,10 +208,10 @@ class EntityService
      * @param $property
      * @return mixed
      */
-    private function getAnnotationsForAttribute ( $class, $property ) {
+    private function getAnnotationsForAttribute ( $class, $property ) 
+    {
         $annotationReader = new AnnotationReader();
         $reflectionProperty = new \ReflectionProperty($class, $property);
         return $annotationReader->getPropertyAnnotations($reflectionProperty);
-
     }
 }

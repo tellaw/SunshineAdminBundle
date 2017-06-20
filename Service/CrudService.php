@@ -438,7 +438,7 @@ class CrudService
 
             // Default, let the framework decide
             $type = null;
-            dump($type);
+
             switch ( $field["type"] ) {
                 case "date":
                     $fieldAttributes["widget"]  = 'single_text';
@@ -461,7 +461,9 @@ class CrudService
 
                 case "object":
 
-                    if ( !isset ( $field["relatedClass"] ) ) throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
+                    if (!isset($field["relatedClass"])) {
+                        throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
+                    }
 
                     if (!isset($field["expanded"]) || $field["expanded"] == false) {
                         $fieldAttributes["attr"] = array(
@@ -472,14 +474,15 @@ class CrudService
                         $fieldAttributes["class"] = $field["relatedClass"];
                         $type = Select2Type::class;
                     } else {
-                        $fieldAttributes["attr"] = array('class' => 'select-picker', "data-live-search"=>"true");
                         $fieldAttributes["expanded"] = "true";
                     }
                     break;
 
                 case "object-multiple":
 
-                    if ( !isset ( $field["relatedClass"] ) ) throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
+                    if (!isset($field["relatedClass"])) {
+                        throw new \Exception("Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation");
+                    }
 
                     if (!isset($field["expanded"]) || $field["expanded"] == false) {
                         $fieldAttributes["attr"] = array(
@@ -488,11 +491,11 @@ class CrudService
                             'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"])
                         );
                         $fieldAttributes["class"] = $field["relatedClass"];
+                        $type = Select2Type::class;
                     } else {
-                        $fieldAttributes["attr"] = array('class' => 'select-picker', "data-live-search"=>"true");
                         $fieldAttributes["expanded"] = "true";
-
                     }
+
                     $fieldAttributes["multiple"] = "true";
                     break;
             }
