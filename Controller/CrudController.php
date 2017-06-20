@@ -4,14 +4,12 @@ namespace Tellaw\SunshineAdminBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
 use Tellaw\SunshineAdminBundle\Interfaces\ContextInterface;
 use Tellaw\SunshineAdminBundle\Interfaces\ContextServiceInterface;
 use Tellaw\SunshineAdminBundle\Interfaces\CrudServiceInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Yaml\Yaml;
 use Tellaw\SunshineAdminBundle\Services\ConfigurationReaderService;
 
 class CrudController extends AbstractController
@@ -25,11 +23,11 @@ class CrudController extends AbstractController
      * @param int $pageStart
      * @param int $length
      * @param Request $request
-     * 
+     *
      * @return Response
      *
      */
-    public function listAction( $entityName, $pageStart = 1, $length = 30, Request $request)
+    public function listAction($entityName, $pageStart = 1, $length = 30, Request $request)
     {
 
         $searchKey = $request->query->get('searchKey', '');
@@ -41,7 +39,15 @@ class CrudController extends AbstractController
         /* @var $contextService ContextServiceInterface */
         $contextService = $this->get("sunshine.context_service");
         /* @var $context ContextInterface */
-        $context = $contextService->buildEntityListContext($entityName, $length, $pageStart, $searchKey, $filters, $orderBy, $orderWay);
+        $context = $contextService->buildEntityListContext(
+            $entityName,
+            $length,
+            $pageStart,
+            $searchKey,
+            $filters,
+            $orderBy,
+            $orderWay
+        );
 
         /* @var $configurationReaderService ConfigurationReaderServiceInterface */
         $configurationReaderService = $this->get("sunshine.configuration-reader_service");
@@ -51,18 +57,22 @@ class CrudController extends AbstractController
         /* @var $crudService CrudServiceInterface */
         $crudService = $this->get("sunshine.crud_service");
         $entityList = $crudService->getEntityList($context, $headers);
-        $totalCount = count($entityList) < $length ? count($entityList) : $crudService->getEntityListTotalCount($context, $headers);
+        $totalCount = count($entityList) < $length ? count($entityList) : $crudService->getEntityListTotalCount(
+            $context,
+            $headers
+        );
         //$context->setTotalCount($totalCount);
         $context->setPagination($pageStart, $length, $totalCount);
 
         // Initiate Response
-        $response = array ( "headers" => $headers, "context" => $context, "list" => $entityList);
+        $response = array("headers" => $headers, "context" => $context, "list" => $entityList);
 
         // Return them with the JSON Response Serialized
         $serializedEntity = $this->container->get('serializer')->serialize($response, 'json');
         $response = new Response();
         $response->setContent($serializedEntity);
         $response->headers->set('Content-Type', 'application/json');
+
         return $response;
 
     }
@@ -72,31 +82,35 @@ class CrudController extends AbstractController
      * @Route("/crud/new/{entityName}", name="sunshine_crud_new")
      * @Method({"GET", "POST"})
      */
-    public function editAction( $entityName, $targetId = null) {
+    public function editAction($entityName, $targetId = null)
+    {
 
         // Retrieve context for entity
         /* @var $contextService ContextServiceInterface */
         $contextService = $this->get("sunshine.context_service");
 
         /* @var $context ContextInterface */
-        $context = $contextService->getContext( $entityName );
-        $context->setTargetId( $targetId );
+        $context = $contextService->getContext($entityName);
+        $context->setTargetId($targetId);
 
         /* @var $configurationReaderService ConfigurationReaderServiceInterface */
         $configurationReaderService = $this->get("sunshine.configuration-reader_service");
-        $headers = $configurationReaderService->getFinalConfigurationForAViewContext( $context, ConfigurationReaderService::VIEW_CONTEXT_FORM );
+        $headers = $configurationReaderService->getFinalConfigurationForAViewContext(
+            $context,
+            ConfigurationReaderService::VIEW_CONTEXT_FORM
+        );
 
         /* @var $crudService CrudServiceInterface */
-        if ( $targetId != null ) {
+        if ($targetId != null) {
             $crudService = $this->get("sunshine.crud_service");
-            $object = $crudService->getEntity( $context );
+            $object = $crudService->getEntity($context);
 
             // Initiate Response for Loading object
-            $response = array ( "headers" => $headers, "context" => $context, "object" => $object );
+            $response = array("headers" => $headers, "context" => $context, "object" => $object);
 
         } else {
             // Initiate Response for new Objects
-            $response = array ( "headers" => $headers, "context" => $context );
+            $response = array("headers" => $headers, "context" => $context);
         }
 
         // Return them with the JSON Response Serialized
@@ -104,6 +118,7 @@ class CrudController extends AbstractController
         $response = new Response();
         $response->setContent($serializedEntity);
         $response->headers->set('Content-Type', 'application/json');
+
         return $response;
 
     }
@@ -112,7 +127,8 @@ class CrudController extends AbstractController
      * @Route("/crud/delete/{entityName}/{targetId}", name="sunshine_crud_delete")
      * @Method({"GET", "POST"})
      */
-    public function deleteAction( $targetId ) {
+    public function deleteAction($targetId)
+    {
 
         $crudService = $this->get("sunshine.crud_service");
 
@@ -122,11 +138,12 @@ class CrudController extends AbstractController
      * @Route("/crud/post/{entityName}/{targetId}", name="sunshine_crud_post")
      * @Method({"GET", "POST"})
      */
-    public function postAction ( $entityName, $targetId, Request $request ) {
+    public function postAction($entityName, $targetId, Request $request)
+    {
 
         $data = $request->getContent();
         if ($data != "") {
-            $jsonData = json_decode( $data );
+            $jsonData = json_decode($data);
         } else {
             throw new \Exception ("Form content is empty, this is impossible");
         }
@@ -136,26 +153,25 @@ class CrudController extends AbstractController
         $contextService = $this->get("sunshine.context_service");
 
         /* @var $context ContextInterface */
-        $context = $contextService->getContext( $entityName );
-        $context->setTargetId( $targetId );
+        $context = $contextService->getContext($entityName);
+        $context->setTargetId($targetId);
 
         $crudService = $this->get("sunshine.crud_service");
 
         // Get or Create the object
         if ($context->getTargetId()) {
-            $object = $crudService->getEntity( $context );
+            $object = $crudService->getEntity($context);
         } else {
-            $object = $crudService->getNewEntity ($context);
+            $object = $crudService->getNewEntity($context);
         }
 
         // Populate the Object from React JSON
-        $object = $crudService->hydrateEntity ( $context, $object, $jsonData);
+        $object = $crudService->hydrateEntity($context, $object, $jsonData);
 
         // Validate Object
         // cf : http://symfony.com/doc/current/validation.html
         $validator = $this->get('validator');
         $errors = $validator->validate($object);
-
 
 
         // Return response and / or errors
@@ -186,8 +202,36 @@ class CrudController extends AbstractController
         $response = new Response();
         $response->setContent($serializedEntity);
         $response->headers->set('Content-Type', 'application/json');
+
         return $response;
 
+    }
+    /**
+     * @Route("/crud/downloadAttachment", name="sunshine_download_attachment")
+     * @Method({"GET", "POST"})
+     */
+    public function downloadAttachmentAction()
+    {
+        $downloadHandler = $this->get('vich_uploader.download_handler');
+
+//        return $downloadHandler->downloadObject($file, $fileField = 'attachmentFile');
+    }
+
+    /**
+     * @Route("/crud/deleteAttachment/{entityName}/{targetId}", name="sunshine_delete_attachment")
+     * @Method({"GET", "POST"})
+     */
+    public function deleteAttachmentAction($entityName, $targetId, Request $request)
+    {
+        $entity = $this->get('sunshine.crud_service')->getEntity($entityName, $targetId);
+        if ($entity) {
+            $entity->setAttachmentFile(null);
+        }
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($entity);
+        $manager->flush($entity);
+
+        return $this->redirect($request->headers->get('referer'));
     }
 
 }
