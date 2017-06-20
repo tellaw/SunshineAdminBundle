@@ -215,16 +215,13 @@ class CrudService
             foreach ( $associationMappings as $associationKey => $associationMapping ) {
 
                 $associationType = $associationMapping["type"];
-                $associationClass = $associationMapping["targetEntity"];
                 $getter = "get".ucfirst($associationKey);
 
                 if (method_exists( $result, $getter )) {
                     $linkedObject = $result->$getter();
                 }
-                if (
-                    $linkedObject instanceof \Doctrine\Common\Persistence\Proxy
-                    && !$linkedObject->__isInitialized()
-                ) {
+
+                if ( $linkedObject instanceof \Doctrine\Common\Persistence\Proxy && !$linkedObject->__isInitialized()) {
                     $linkedObject->__load();
                 }
 
@@ -254,7 +251,6 @@ class CrudService
                 $flattenObject[$associationKey] = $stringValue;
 
             }
-
 
             $flattenDatas[] = $flattenObject;
 
