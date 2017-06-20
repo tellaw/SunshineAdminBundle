@@ -40,3 +40,10 @@ services:
     arguments: ['@sunshine.crud_service']
     tags:
       - { name: form.type }
+
+  sunshine.widgets.edit:
+    class: Tellaw\SunshineAdminBundle\Service\Widgets\EditWidget
+    arguments: [ '@request_stack', '@twig' ]
+    scope: request_stack
+    tags:
+      - {name: sunshine.widget }
