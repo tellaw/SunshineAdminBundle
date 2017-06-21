@@ -71,15 +71,20 @@ This method define a widget using a Symfony service instead of a controller. The
 ### Configure the service
 
 ```
-  sunshine.widgets.edit:
-    class: Tellaw\SunshineAdminBundle\Service\Widgets\EditWidget
-    arguments: [ '@request_stack', '@twig' ]
-    scope: request_stack
+  teamtracking.widget.monthlyreporting:
+    class: AppBundle\Service\Widgets\MonthlyReport
+    parent: sunshine.widgets.abstract
+    calls:
+        - [ setReportService, ['@teamtracking.report']]
+        - [ setFormFactory, ['@form.factory']]
     tags:
       - {name: sunshine.widget }
 ```
 
 A widget is a service declared with the tag "sunshine.widget". It must extends AbsractWidget.
+Its configuration in service.yml should declare as parent 'sunshine.widgets.abstract' in order to configure its constructor.
+
+If you need to inject services, you should use calls to your class.
 
 ### Create the widget
 
@@ -110,7 +115,6 @@ The widget must define a service to be considered as a 'Service Widget'
     widget1 :
             title : Liste de projets
             columns : 12
-            widget: monthly_activity
             service : sunshine.widgets.edit
 ```
 
