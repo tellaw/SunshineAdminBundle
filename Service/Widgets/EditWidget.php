@@ -11,7 +11,7 @@ class EditWidget extends AbstractWidget {
         $request = $this->getCurrentRequest();
 
         $route = $request->get("_route");
-        return $this->render( "Default:index", array( "configuration" => $configuration, "request" => $request, "route" => $route ) );
+        return $this->render( "TellawSunshineAdminBundle:Default:index", array( "configuration" => $configuration, "request" => $request, "route" => $route ) );
 
     }
 
