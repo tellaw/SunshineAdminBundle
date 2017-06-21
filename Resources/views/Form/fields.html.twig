@@ -1,4 +1,5 @@
 {% use "bootstrap_3_layout.html.twig" %}
+{% extends "form_div_layout.html.twig" %}
 
 {% block form_start -%}
     {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-horizontal')|trim}) %}
@@ -24,7 +25,7 @@
 
 {# Rows #}
 
-{% block form_row -%}
+{% block form_row %}
     <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
         {{- form_label(form) -}}
         <div class="{{ block('form_group_class') }}">
@@ -32,7 +33,7 @@
             {{- form_errors(form) -}}
         </div>
         {##}</div>
-{%- endblock form_row %}
+{% endblock form_row %}
 
 {% block checkbox_row -%}
     {{- block('checkbox_radio_row') -}}
@@ -76,16 +77,20 @@
     {% endspaceless %}
 {% endblock reset_row %}
 
-{% block form_group_class -%}
+{% block form_group_class %}
     col-sm-10
-{%- endblock form_group_class %}
+{% endblock form_group_class %}
 
+{% block collection_widget %}
+    {{- parent() -}}
+    <a href="#" id="add_{{ form.vars.id }}" class="btn btn-xs btn-info pull-left">Add</a>
+{% endblock collection_widget %}
 
 
 {% block select2_widget %}
     {{ form_widget(form) }}
     <script type="text/javascript">
-        $( document ).ready(function() {
+        $(document).ready(function () {
             $(".{{ name }}-select2").select2({
                 language: "fr",
                 placeholder: 'Sélectionner une option',
@@ -112,7 +117,7 @@
                             pagination: {
                                 more: (params.page * 10) < data.total_count
                             }
-                           };
+                        };
                     },
                     cache: true
                 }
