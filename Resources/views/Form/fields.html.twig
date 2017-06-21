@@ -93,7 +93,7 @@
         $(document).ready(function () {
             $(".{{ name }}-select2").select2({
                 language: "fr",
-                placeholder: 'This is my placeholder',
+                placeholder: 'Sélectionner une option',
                 allowClear: true,
                 ajax: {
                     url: "{{ path('sunshine_ajax_select2_callback', { "entityName" : name, "toStringField" : attr.filterAttribute,  }) }}",

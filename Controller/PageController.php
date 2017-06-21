@@ -18,7 +18,7 @@ class PageController extends AbstractController
      * Expose Page
      *
      * @Route("/page/{pageId}", name="sunshine_page")
-     * @Method({"GET"})
+     * @Method({"GET", "POST"})
      *
      * @return JsonResponse
      */

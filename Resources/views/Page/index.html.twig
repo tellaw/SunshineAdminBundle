@@ -40,9 +40,12 @@
                             )) }}
                         {% endif %}
                     </div>
-                {% elseif (serviceWidgets[name] is defined) %}
 
+                {% elseif (serviceWidgets[name] is defined) %}
+                    <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
+                         id="widget-{{ name }}" >
                     {{ serviceWidgets[name] | raw }}
+                    </div>
 
                 {% else %}
 
