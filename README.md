@@ -5,8 +5,8 @@ Sunshine Administration Bundle for Symfony
 
 1. [Menu configuration](Resources/Documentation/configuration/menu.md)
 2. Entity configuration
-3. Types and Reflexion
-4. [Page configuration](Resources/Documentation/backoffice-page.md)
+3. [Page configuration](Resources/Documentation/backoffice-page.md)
+4. [Create a Custom Page & Widget Communications](Resources/Documentation/backoffice-custom-controller.md)
 5. [Entity Configuration with CRUD](Resources/Documentation/entity-configuration.md)
 
 ## Available Widgets
