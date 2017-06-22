@@ -11,8 +11,6 @@ use Tellaw\SunshineAdminBundle\Entity\MessageBag;
 abstract class AbstractPageController extends AbstractController
 {
 
-    private $messageBag = null;
-
     /**
      *
      * Method called in controlleur who wants to render a sunshine page.
@@ -24,7 +22,15 @@ abstract class AbstractPageController extends AbstractController
      * @return mixed
      * @throws \Exception
      */
-    protected function renderPage ( $parameters, $pageId = null ) {
+    protected function renderPage ( $pageId = null, $messageBag = null ) {
+
+        if ($messageBag == null) {
+            $messageBag = new MessageBag();
+        } else if ( is_array( $messageBag ) ) {
+            throw new \Exception("MessageBag must be an instance of MessageBag... Array Given ");
+        } else if ( ! $messageBag instanceof MessageBag) {
+            throw new \Exception("MessageBag must be an instance of MessageBag... -> Given : ".get_class($messageBag));
+        }
 
         if ($pageId === null) {
             throw new \Exception( "Page ID cannot be null to render a page" );
@@ -39,23 +45,16 @@ abstract class AbstractPageController extends AbstractController
 
         /** @var WidgetService $widgetService */
         $widgetService = $this->get("sunshine.widgets");
-        $serviceWidgets = $widgetService->loadServicesWidgetsForPage( $page, $this->getMessageBag() );
+        $serviceWidgets = $widgetService->loadServicesWidgetsForPage( $page, $messageBag );
 
+        $parameters = array();
         $parameters ["serviceWidgets"]  = $serviceWidgets;
         $parameters ["pageId"]          = $pageId;
         $parameters ["page"]            = $page;
-        $parameters ["messageBag"]      = $this->messageBag;
+        $parameters ["messageBag"]      = $messageBag;
 
         return $this->renderWithTheme( "Page:index" , $parameters );
 
     }
-
-    protected function getMessageBag () {
-        if ($this->messageBag == null) {
-            $this->messageBag = new MessageBag();
-        }
-        return $this->messageBag;
-    }
-
 
 }

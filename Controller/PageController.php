@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Tellaw\SunshineAdminBundle\Entity\MessageBag;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
 use Tellaw\SunshineAdminBundle\Service\WidgetService;
 
@@ -15,7 +16,7 @@ use Tellaw\SunshineAdminBundle\Service\WidgetService;
 class PageController extends AbstractPageController
 {
     /**
-     * Expose Page
+     * Expose Page by default for the sunshine bundle
      *
      * @Route("/page/{pageId}", name="sunshine_page")
      * @Method({"GET", "POST"})
@@ -24,8 +25,7 @@ class PageController extends AbstractPageController
      */
     public function pageAction($pageId = null)
     {
-
-        return $this->renderPage( array(), $pageId );
+        return $this->renderPage( $pageId );
     }
 
     /**
