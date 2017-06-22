@@ -12,7 +12,7 @@ use Tellaw\SunshineAdminBundle\Service\WidgetService;
 /**
  * Content pages management
  */
-class PageController extends AbstractController
+class PageController extends AbstractPageController
 {
     /**
      * Expose Page
@@ -25,14 +25,7 @@ class PageController extends AbstractController
     public function pageAction($pageId = null)
     {
 
-        /** @var array $page */
-        $page = $this->get("sunshine.pages")->getPageConfiguration($pageId);
-
-        /** @var WidgetService $widgetService */
-        $widgetService = $this->get("sunshine.widgets");
-        $serviceWidgets = $widgetService->loadServicesWidgetsForPage( $page );
-
-        return $this->renderWithTheme( "Page:index", ["page" => $page, "pageId" => $pageId, "serviceWidgets" => $serviceWidgets ] );
+        return $this->renderPage( array(), $pageId );
     }
 
     /**

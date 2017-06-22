@@ -88,7 +88,7 @@ class WidgetService
      *
      * @param $pageConfiguration
      */
-    public function loadServicesWidgetsForPage ( $pageConfiguration ) {
+    public function loadServicesWidgetsForPage ( $pageConfiguration, $messagebag ) {
 
         $serviceWidgets = array();
 
@@ -98,7 +98,7 @@ class WidgetService
                 if ( array_key_exists( "service", $widgetConfiguration ) && array_key_exists($widgetConfiguration["service"], $this->serviceWidgets) ) {
                     $service = $this->serviceWidgets[$widgetConfiguration["service"]];
                     if ($service) {
-                        $widgetContent = $service->create($widgetConfiguration);
+                        $widgetContent = $service->create($widgetConfiguration, $messagebag);
                         $serviceWidgets[$key] = $widgetContent;
                     } else {
                         throw new \Exception("Service call for widget (" . $key . ") returned a null instead of service ");

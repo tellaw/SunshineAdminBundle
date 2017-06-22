@@ -5,6 +5,7 @@ namespace Tellaw\SunshineAdminBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Router;
+use Tellaw\SunshineAdminBundle\Entity\MessageBag;
 
 abstract class AbstractWidget {
 
@@ -32,7 +33,7 @@ abstract class AbstractWidget {
         return $this->twig->render($template.".html.twig" , $parameters);
     }
 
-    public abstract function create ( $configuration );
+    public abstract function create ( $configuration, MessageBag $messageBag);
 
 
 }
