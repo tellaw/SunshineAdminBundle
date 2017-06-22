@@ -22,7 +22,7 @@ abstract class AbstractPageController extends AbstractController
      * @return mixed
      * @throws \Exception
      */
-    protected function renderPage ( $parameters, $pageId = null, $messageBag = null ) {
+    protected function renderPage ( $pageId = null, $messageBag = null ) {
 
         if ($messageBag == null) {
             $messageBag = new MessageBag();
@@ -47,6 +47,7 @@ abstract class AbstractPageController extends AbstractController
         $widgetService = $this->get("sunshine.widgets");
         $serviceWidgets = $widgetService->loadServicesWidgetsForPage( $page, $messageBag );
 
+        $parameters = array();
         $parameters ["serviceWidgets"]  = $serviceWidgets;
         $parameters ["pageId"]          = $pageId;
         $parameters ["page"]            = $page;

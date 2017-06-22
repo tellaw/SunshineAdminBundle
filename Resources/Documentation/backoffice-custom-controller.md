@@ -23,7 +23,7 @@ class PageController extends AbstractPageController
     public function pageAction($pageId = null)
     {
 
-        return $this->renderPage( array(), $pageId );
+        return $this->renderPage( $pageId );
     }
 
 }
@@ -56,7 +56,7 @@ class PageController extends AbstractPageController
         $messageBag = new MessageBag();
         $messageBag->addMessage( "myCustomKey", "MyCustomValue" );
 
-        return $this->renderPage( array(), $pageId, $messageBag );
+        return $this->renderPage( $pageId, $messageBag );
     }
 
 }
