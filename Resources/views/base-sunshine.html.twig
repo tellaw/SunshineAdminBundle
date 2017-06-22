@@ -83,6 +83,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- BEGIN CONTAINER -->
     <div class="page-container">
         <!-- BEGIN SIDEBAR -->
+        {% block sidebar %}
         <div class="page-sidebar-wrapper">
             <!-- BEGIN SIDEBAR -->
             <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
@@ -111,6 +112,7 @@ License: You must have a valid license purchased only from themeforest(the above
             </div>
             <!-- END SIDEBAR -->
         </div>
+        {% endblock sidebar %}
         <!-- END SIDEBAR -->
         <!-- BEGIN CONTENT -->
         <div class="page-content-wrapper">
