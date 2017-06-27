@@ -3,7 +3,7 @@ jQuery(document).ready(function() {
     var $collections = $(".dynamic-collection");
     $collections.each(function () {
         var $collectionId =  $form.attr('name') +'_'+ $(this).data('for');
-        console.log($collectionId);
+
         var $buttonId = '#add_'+ $collectionId;
         var $addTagLink = $($buttonId);
         var $newLinkLi = $('<div></div>').append($addTagLink);
@@ -31,22 +31,24 @@ function addAttachmentForm($collectionHolder, $newLinkLi) {
     var prototype = $collectionHolder.data('prototype');
     // get the new index
     var index = $collectionHolder.data('index');
+    var $label = $collectionHolder.data('label');
 
     // Replace '$$name$$' in the prototype's HTML to
     // instead be a number based on how many items we have
 
-    // var newForm = prototype.replace(/__name__label__/, 'Fichiers '+ index);
-    var newForm = prototype.replace(/__name__/g, index);
+    var newForm = prototype.replace(/__name__label__/, $label +' ' +(index+1));
+    newForm = newForm.replace(/__name__/g, index);
 
     // increase the index with one for the next item
     $collectionHolder.data('index', index + 1);
-    var parser = new DOMParser();
-    var doc = parser.parseFromString(newForm, "text/xml");
-    $(doc).find('label').remove();
-    console.log($(doc.childNodes).html());
+
+    // var parser = new DOMParser();
+    // var doc = parser.parseFromString(newForm, "text/xml");
+    // $(doc).find('label').remove();
 
     // Display the form in the page in an li, before the "Add a tag" link li
-    var $newFormDiv = $('<div></div>').append($(doc.childNodes).html());
+    // var $newFormDiv = $('<div></div>').append($(doc.childNodes).html());
+    var $newFormDiv = $('<div></div>').append($(newForm));
 
     // also add a remove button, just for this example
     $newFormDiv.append('<a href="#" class="remove-tag btn btn-danger">x</a>');

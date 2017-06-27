@@ -469,7 +469,8 @@ class CrudService
                         $fieldAttributes["attr"] = array(
                             'class' => $fieldName . '-select2',
                             'filterAttribute' => $field["filterAttribute"],
-                            'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"])
+                            'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"]),
+                            'ajaxCallback' =>  $field["ajaxCallback"]
                         );
                         $fieldAttributes["class"] = $field["relatedClass"];
                         $type = Select2Type::class;
@@ -488,7 +489,8 @@ class CrudService
                         $fieldAttributes["attr"] = array(
                             'class' => $fieldName . '-select2',
                             'filterAttribute' => $field["filterAttribute"],
-                            'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"])
+                            'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"]),
+                            'ajaxCallback' =>  $field["ajaxCallback"]
                         );
                         $fieldAttributes["class"] = $field["relatedClass"];
                         $type = Select2Type::class;

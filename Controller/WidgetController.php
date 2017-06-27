@@ -6,10 +6,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Tellaw\SunshineAdminBundle\Service\CrudService;
 use Tellaw\SunshineAdminBundle\Service\EntityService;
 use Tellaw\SunshineAdminBundle\Service\PageService;
+use Tellaw\SunshineAdminBundle\Service\WidgetService;
 
 class WidgetController extends Controller
 {
@@ -35,7 +37,9 @@ class WidgetController extends Controller
 
         if (!$entityName) {
             if (!isset($pageConfiguration["rows"][$row][$widgetName]["parameters"]["entityName"])) {
-                throw new \Exception("entityName parameter should be configured for widget ".$widgetName." in row : ".$row);
+                throw new \Exception(
+                    "entityName parameter should be configured for widget " . $widgetName . " in row : " . $row
+                );
             }
             $entityName = $pageConfiguration["rows"][$row][$widgetName]["parameters"]["entityName"];
         }
@@ -76,7 +80,9 @@ class WidgetController extends Controller
         $pageConfiguration = $pageService->getPageConfiguration($pageName);
 
         if (!isset($pageConfiguration["rows"][$row][$widgetName]["parameters"]["entityName"])) {
-            throw new \Exception("entityName parameter should be configured for widget ".$widgetName." in row : ".$row);
+            throw new \Exception(
+                "entityName parameter should be configured for widget " . $widgetName . " in row : " . $row
+            );
         }
 
         $entityName = $pageConfiguration["rows"][$row][$widgetName]["parameters"]["entityName"];
@@ -101,6 +107,36 @@ class WidgetController extends Controller
                 "entity" => $entity,
             ]
         );
+    }
+
+    /**
+     * Widget Content
+     *
+     * @Route("/app/widget/content/{pageId}", name="sunshine_widget_content" , options={"expose":true})
+     * @Method("GET")
+     * @param $pageId
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function widgetContentAction($pageId)
+    {
+        if ($pageId === null) {
+            throw new \Exception("Page ID cannot be null to render a page");
+        }
+
+        /** @var array $page */
+        $page = $this->get("sunshine.pages")->getPageConfiguration($pageId);
+
+        if ($page == null) {
+            throw new \Exception("Page not found : " . $pageId);
+        }
+
+        /** @var WidgetService $widgetService */
+        $widgetService = $this->get("sunshine.widgets");
+        $widgetContent = $widgetService->loadServicesWidgetsForPage($page, []);
+
+        return new JsonResponse(json_encode($widgetContent));
+
     }
 
 
