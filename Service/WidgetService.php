@@ -78,21 +78,23 @@ class WidgetService
         return $dataUrl;
     }
 
-    public function addServiceWidget ( $id, $widgetReference ) {
+    public function addServiceWidget ( $id, $widgetReference )
+    {
         $this->serviceWidgets[ $id ] = $widgetReference;
     }
 
     /**
-     *
      * Method loads the configuration and render widgets based on services
      *
-     * @param $pageConfiguration
+     * @param array $pageConfiguration
+     * @return array
+     * @throws \Exception
      */
-    public function loadServicesWidgetsForPage ( $pageConfiguration, $messagebag ) {
-
+    public function loadServicesWidgetsForPage($pageConfiguration, $messagebag) 
+    {
         $serviceWidgets = array();
 
-        foreach ( $pageConfiguration["rows"] as $row ) {
+        foreach ($pageConfiguration["rows"] as $row) {
 
             foreach ( $row as $key => $widgetConfiguration ) {
                 if ( array_key_exists( "service", $widgetConfiguration ) && array_key_exists($widgetConfiguration["service"], $this->serviceWidgets) ) {
@@ -109,7 +111,5 @@ class WidgetService
         }
 
         return $serviceWidgets;
-
     }
-
 }
