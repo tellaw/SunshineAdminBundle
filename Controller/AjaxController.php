@@ -80,12 +80,13 @@ class AjaxController extends Controller
         $paginationStart = $request->request->get ("start");
         $paginationLength = $request->request->get ("length");
         $searchValue = $request->request->get ("search")["value"];
+        $filters = [$request->request->get("filters", null)];
 
         /** @var CrudService $crudService */
         $crudService = $this->get("sunshine.crud_service");
-        $list = $crudService->getEntityList( $entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue );
+        $list = $crudService->getEntityList($entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue, true, $filters );
         // Get the number of elements using the filter
-        $nbElementsOfFilteredEntity = $crudService->getCountEntityElements( $entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue );
+        $nbElementsOfFilteredEntity = $crudService->getCountEntityElements( $entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue, $filters);
 
         // Get the total number of elements for this entity
         $nbElementsInTable = $crudService->getTotalElementsInTable( $entity );
