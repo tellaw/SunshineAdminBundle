@@ -78,15 +78,17 @@ class WidgetService
         return $dataUrl;
     }
 
-    public function addServiceWidget ( $id, $widgetReference ) {
+    public function addServiceWidget ( $id, $widgetReference )
+    {
         $this->serviceWidgets[ $id ] = $widgetReference;
     }
 
     /**
-     *
      * Method loads the configuration and render widgets based on services
      *
-     * @param $pageConfiguration
+     * @param array $pageConfiguration
+     * @return array
+     * @throws \Exception
      */
     public function loadServicesWidgetsForPage ($pageConfiguration, $messagebag ) {
 
@@ -108,7 +110,5 @@ class WidgetService
         }
 
         return $serviceWidgets;
-
     }
-
 }
