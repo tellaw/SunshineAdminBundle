@@ -51,3 +51,21 @@ services:
     parent: sunshine.widgets.abstract
     tags:
       - {name: sunshine.widget }
+
+  sunshine.widgets.view:
+    class: Tellaw\SunshineAdminBundle\Service\Widgets\ViewWidget
+    parent: sunshine.widgets.abstract
+    calls:
+      - [ setEntities, ['@sunshine.entities']]
+      - [ setCrudService, ['@sunshine.crud_service']]
+    tags:
+      - {name: sunshine.widget }
+
+  sunshine.widgets.list:
+    class: Tellaw\SunshineAdminBundle\Service\Widgets\ListWidget
+    parent: sunshine.widgets.abstract
+    calls:
+      - [ setEntities, ['@sunshine.entities']]
+      - [ setCrudService, ['@sunshine.crud_service']]
+    tags:
+      - {name: sunshine.widget }

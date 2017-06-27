@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Tellaw\SunshineAdminBundle\Entity\MessageBag;
+use Tellaw\SunshineAdminBundle\Service\WidgetService;
 
 abstract class AbstractPageController extends AbstractController
 {
@@ -22,8 +23,8 @@ abstract class AbstractPageController extends AbstractController
      * @return mixed
      * @throws \Exception
      */
-    protected function renderPage ( $pageId = null, $messageBag = null ) {
-
+    protected function renderPage ( $pageId = null, $messageBag = null )
+    {
         if ($messageBag == null) {
             $messageBag = new MessageBag();
         } else if ( is_array( $messageBag ) ) {

@@ -88,10 +88,9 @@ class WidgetService
      *
      * @param $pageConfiguration
      */
-    public function loadServicesWidgetsForPage ( $pageConfiguration, $messagebag ) {
+    public function loadServicesWidgetsForPage ($pageConfiguration, $messagebag ) {
 
         $serviceWidgets = array();
-
         foreach ( $pageConfiguration["rows"] as $row ) {
 
             foreach ( $row as $key => $widgetConfiguration ) {

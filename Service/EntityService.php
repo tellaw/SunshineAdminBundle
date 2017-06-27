@@ -122,7 +122,6 @@ class EntityService
                 $resultData[$fieldName]['label'] = $fieldName;
             }
         }
-
         return $resultData;
     }
 

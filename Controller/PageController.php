@@ -124,4 +124,21 @@ class PageController extends AbstractPageController
         );
     }
 
+    /**
+     * @Route("/page/view/{entityName}/{id}", name="sunshine_page_view")
+     * @Method({"GET", "POST"})
+     * @param $id
+     * @param $entityName
+     * @return mixed
+     */
+    public function viewAction($id, $entityName)
+    {
+        /** @var MessageBag $messages */
+        $messageBag = new MessageBag();
+        $messageBag->addMessage("id", $id );
+        $messageBag->addMessage("entityName", $entityName);
+
+        return $this->renderPage("practicalFileView", $messageBag);
+    }
+
 }

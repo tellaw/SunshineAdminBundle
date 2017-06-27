@@ -1,0 +1,9 @@
+
+    {% for item in value %}
+    {{ item.__toString()  }}
+        {% if loop.last == false %}
+            ,
+        {% endif %}
+
+    {% endfor %}
+
