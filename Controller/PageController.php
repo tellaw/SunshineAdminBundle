@@ -10,6 +10,7 @@ use Tellaw\SunshineAdminBundle\Entity\MessageBag;
 use Tellaw\SunshineAdminBundle\Event\EntityEvent;
 use Tellaw\SunshineAdminBundle\Event\SunshineEvents;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
+use Tellaw\SunshineAdminBundle\Service\EntityService;
 use Tellaw\SunshineAdminBundle\Service\WidgetService;
 
 /**

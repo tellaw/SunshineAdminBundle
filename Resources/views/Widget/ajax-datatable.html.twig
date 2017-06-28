@@ -11,14 +11,17 @@
                 <span class="caption-subject font-dark sbold uppercase pull-left">{{ entityName | trans }}</span>
             </div>
         {% endif %}
-        {% if widget.parameters.newRoute is defined %}
-            <a href="{{ path(widget.parameters.newRoute, {'entityName': entityName}) }}" class="btn green pull-right">
-                <i class="fa fa-cogs"></i> Créer un élément
-            </a>
-        {% else %}
-            <a href="{{ path('sunshine_page_new', {'entityName': entityName}) }}" class="btn green pull-right">
-                <i class="fa fa-cogs"></i> Créer un élément
-            </a>
+        {% if (showAddButton is not defined or showAddButton == true)? true : false %}
+            {% if widget.parameters.newRoute is defined %}
+                <a href="{{ path(widget.parameters.newRoute, {'entityName': entityName}) }}" class="btn green pull-right ">
+                    <i class="fa fa-cogs"></i> Créer un élément
+                </a>
+            {% else %}
+                <a href="{{ path('sunshine_page_new', {'entityName': entityName}) }}" class="btn green pull-right" >
+
+                    <i class="fa fa-cogs"></i> Créer un élément
+                </a>
+            {% endif %}
         {% endif %}
     </div>
     <div class="portlet-body">
