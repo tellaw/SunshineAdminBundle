@@ -7,6 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Tellaw\SunshineAdminBundle\Entity\MessageBag;
+use Tellaw\SunshineAdminBundle\Event\EntityEvent;
+use Tellaw\SunshineAdminBundle\Event\SunshineEvents;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
 use Tellaw\SunshineAdminBundle\Service\WidgetService;
 
@@ -102,6 +104,10 @@ class PageController extends AbstractPageController
             $entity = $form->getData();
             $em = $this->get('doctrine')->getEntityManager();
             $em->persist($entity);
+
+            $event = new EntityEvent($entity);
+            $this->get('event_dispatcher')->dispatch(SunshineEvents::ENTITY_PRE_FLUSHED, $event);
+
             $em->flush($entity);
 
             $request->getSession()
