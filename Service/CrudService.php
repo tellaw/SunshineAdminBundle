@@ -543,6 +543,7 @@ class CrudService
                             'ajaxCallback' => $field["ajaxCallback"],
                         );
                         $fieldAttributes["class"] = $field["relatedClass"];
+                        $fieldAttributes['placeholder'] = !empty($field["placeholder"]) ? $field["placeholder"] : '';
                         $type = Select2Type::class;
                     } else {
                         $fieldAttributes["expanded"] = "true";
@@ -565,6 +566,7 @@ class CrudService
                             'ajaxCallback' => $field["ajaxCallback"],
                         );
                         $fieldAttributes["class"] = $field["relatedClass"];
+                        $fieldAttributes['placeholder'] = !empty($field["placeholder"]) ? $field["placeholder"] : '';
                         $type = Select2Type::class;
                     } else {
                         $fieldAttributes["expanded"] = "true";
