@@ -86,6 +86,8 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->scalarNode('relatedClass')
                                 ->end()
+                                ->scalarNode('placeholder')
+                                ->end()
                                 ->scalarNode('lazy')
                                 ->end()
                             ->end()

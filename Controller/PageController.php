@@ -87,7 +87,8 @@ class PageController extends AbstractPageController
 
         $formOptions = [
             'fields_configuration' => $fieldsConfiguration,
-            'crud_service' => $crudService
+            'crud_service' => $crudService,
+            'em' => $this->get('doctrine')->getEntityManager()
         ];
 
         if (!empty($configuration['form']['formType'])) {

@@ -2,6 +2,7 @@
 
 namespace Tellaw\SunshineAdminBundle\Form\Type;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
@@ -15,6 +16,10 @@ use Tellaw\SunshineAdminBundle\Service\CrudService;
  */
 class DefaultType extends AbstractType
 {
+    /**
+     * @var CrudService
+     */
+    private $crudService;
 
     /**
      * DefaultType constructor.
@@ -24,11 +29,6 @@ class DefaultType extends AbstractType
     {
         $this->crudService = $crudService;
     }
-
-    /**
-     * @var CrudService
-     */
-    private $crudService;
 
     /**
      * {@inheritdoc}
@@ -59,6 +59,7 @@ class DefaultType extends AbstractType
         $resolver->setDefaults(['fields_configuration' => [], 'configuration' => [], 'crud_service' => $this->crudService ]);
         $resolver->setRequired('fields_configuration');
         $resolver->setRequired('crud_service');
+        $resolver->setRequired('em');
     }
 
     /**
