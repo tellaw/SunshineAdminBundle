@@ -283,6 +283,10 @@ class CrudService
             if (method_exists($object, $getter)) {
                 $value = $object->$getter();
             }
+            if ($value instanceof \DateTime)
+            {
+                $value = $value->format('d-m-Y H:i');
+            }
             $flattenObject[$fieldName] = $value;
 
         }
