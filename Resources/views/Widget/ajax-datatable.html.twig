@@ -49,7 +49,11 @@
                                 $('#{{ widgetName }}_datatable_ajax').DataTable({
                                     "ajax": {
                                         url: "{{ path('sunshine_ajax_datatable_callback', {'entity': entityName}) }}",
-                                        type: "post",
+                                        {% if filters is defined %}
+                                        data:{'filters': {{ filters|raw }} },
+                                        {% endif %}
+                                        type: "post"
+
                                     },
                                     "columnDefs": [
                                         {% for key,field in fields %}
