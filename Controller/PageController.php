@@ -7,7 +7,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Tellaw\SunshineAdminBundle\Entity\MessageBag;
+use Tellaw\SunshineAdminBundle\Event\EntityEvent;
+use Tellaw\SunshineAdminBundle\Event\SunshineEvents;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
+use Tellaw\SunshineAdminBundle\Service\EntityService;
 use Tellaw\SunshineAdminBundle\Service\WidgetService;
 
 /**
@@ -86,7 +89,8 @@ class PageController extends AbstractPageController
 
         $formOptions = [
             'fields_configuration' => $fieldsConfiguration,
-            'crud_service' => $crudService
+            'crud_service' => $crudService,
+            'em' => $this->get('doctrine')->getEntityManager()
         ];
 
         if (!empty($configuration['form']['formType'])) {
@@ -101,6 +105,10 @@ class PageController extends AbstractPageController
             $entity = $form->getData();
             $em = $this->get('doctrine')->getEntityManager();
             $em->persist($entity);
+
+            $event = new EntityEvent($entity);
+            $this->get('event_dispatcher')->dispatch(SunshineEvents::ENTITY_PRE_FLUSHED, $event);
+
             $em->flush($entity);
 
             $request->getSession()
@@ -122,6 +130,23 @@ class PageController extends AbstractPageController
                 "pageId" => null,
             ]
         );
+    }
+
+    /**
+     * @Route("/page/view/{entityName}/{id}", name="sunshine_page_view")
+     * @Method({"GET", "POST"})
+     * @param $id
+     * @param $entityName
+     * @return mixed
+     */
+    public function viewAction($id, $entityName)
+    {
+        /** @var MessageBag $messages */
+        $messageBag = new MessageBag();
+        $messageBag->addMessage("id", $id );
+        $messageBag->addMessage("entityName", $entityName);
+
+        return $this->renderPage("practicalFileView", $messageBag);
     }
 
 }

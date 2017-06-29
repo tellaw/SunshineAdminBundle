@@ -1,5 +1,5 @@
 {% use "bootstrap_3_layout.html.twig" %}
-{% extends "form_div_layout.html.twig" %}
+{#{% extends "form_div_layout.html.twig" %}#}
 
 {% block form_start -%}
     {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-horizontal')|trim}) %}
@@ -87,6 +87,20 @@
 {% endblock collection_widget %}
 
 
+{#Tags #}
+
+{%- block tag_widget -%}
+    {% spaceless %}
+        {%- set type = type|default('text') -%}
+        <div class="bootstrap-tagsinput">
+            <input type="text" placeholder="">
+        </div>
+        <input type="{{ type }}" class="form-control input-large" data-role="tagsinput" style="display: none;"
+               {% if value is not empty %}value="{{ value }}" {% endif %}/>
+
+    {% endspaceless %}
+{%- endblock tag_widget -%}
+
 {% block select2_widget %}
     {{ form_widget(form) }}
     <script type="text/javascript">
@@ -94,35 +108,40 @@
             $(".{{ name }}-select2").select2({
                 language: "fr",
                 placeholder: 'Sélectionner une option',
-                allowClear: true,
-                ajax: {
-                    url: "{{ path('sunshine_ajax_select2_callback', { "entityName" : name, "toStringField" : attr.filterAttribute,  }) }}",
-                    dataType: 'json',
-                    method: 'post',
-                    delay: 500,
-
-                    data: function (params) {
-                        return {
-                            q: params.term, // search term
-                            page: params.page,
-                            relatedClass: '{{ attr.relatedClass }}'
-                        };
-                    },
-
-                    processResults: function (data, params) {
-                        params.page = params.page || 1;
-
-                        return {
-                            results: data.items,
-                            pagination: {
-                                more: (params.page * 10) < data.total_count
-                            }
-                        };
-                    },
-                    cache: true
-                }
-
+                allowClear: true
             });
+
+            if ({{ attr.ajaxCallback }}) {
+                $(".{{ name }}-select2").select2({
+                    ajax: {
+                        url: "{{ path('sunshine_ajax_select2_callback', { "entityName" : name, "toStringField" : attr.filterAttribute,  }) }}",
+                        dataType: 'json',
+                        method: 'post',
+                        delay: 500,
+
+                        data: function (params) {
+                            return {
+                                q: params.term, // search term
+                                page: params.page,
+                                relatedClass: '{{ attr.relatedClass }}'
+                            };
+                        },
+
+                        processResults: function (data, params) {
+                            params.page = params.page || 1;
+
+                            return {
+                                results: data.items,
+                                pagination: {
+                                    more: (params.page * 10) < data.total_count
+                                }
+                            };
+                        },
+                        cache: true
+                    }
+
+                });
+            }
         });
     </script>
 {% endblock %}

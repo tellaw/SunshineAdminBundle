@@ -122,7 +122,6 @@ class EntityService
                 $resultData[$fieldName]['label'] = $fieldName;
             }
         }
-
         return $resultData;
     }
 
@@ -163,6 +162,8 @@ class EntityService
                 $typeDoctrine = "object";
             } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\ManyToMany") {
                 $typeDoctrine = "object-multiple";
+            } elseif (get_class($annot) == "Symfony\\Component\\Validator\\Constraints\\Date") {
+                $typeAssert = "date";
             }
         }
 
