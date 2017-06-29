@@ -269,17 +269,17 @@ class CrudService
      */
     private function getToString ( $element )
     {
-        if (method_exists($element, "__toString")) {
-
-            return $element->__toString();
-
-        } else if ( get_class( $element ) == PersistentCollection::class ) {
+        if (  $element instanceof \iterable ) {
 
             $results = array();
             foreach ( $element as $collectionObject ) {
                 $results[] = $this->getToString( $collectionObject );
             }
             return implode( ",", $results );
+
+        } else if (method_exists($element, "__toString")) {
+
+            return $element->__toString();
 
         } else {
             return get_class($element). " has no toString method";
