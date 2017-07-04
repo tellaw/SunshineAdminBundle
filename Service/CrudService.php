@@ -2,7 +2,7 @@
 
 namespace Tellaw\SunshineAdminBundle\Service;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
@@ -336,9 +336,9 @@ class CrudService
      */
     private function getToString ( $element )
     {
-
+        dump($element);
         if ($element != null) {
-            if (  $element instanceof \iterable ) {
+            if (  $element instanceof \iterable  || $element instanceof Collection) {
 
                 $results = array();
                 foreach ( $element as $collectionObject ) {
