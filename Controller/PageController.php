@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Tellaw\SunshineAdminBundle\Entity\MessageBag;
 use Tellaw\SunshineAdminBundle\Event\EntityEvent;
 use Tellaw\SunshineAdminBundle\Event\SunshineEvents;
@@ -32,14 +33,15 @@ class PageController extends AbstractPageController
     }
 
     /**
-     *
      * Show a list for an entity
+     *
      * @Route("/page/list/{entityName}", name="sunshine_page_list")
      *
-     * @param Request $request
      * @param $entityName
+     *
+     * @return Response
      */
-    public function listAction (Request $request, $entityName) {
+    public function listAction ($entityName) {
 
         /** @var EntityService $entities */
         $entities = $this->get("sunshine.entities");
@@ -64,8 +66,8 @@ class PageController extends AbstractPageController
     /**
      * Shows entity
      *
-     * @Route("/page/edit/{entityName}/{id}", name="sunshine_page_edit")
-     * @Route("/page/edit/{entityName}", name="sunshine_page_new")
+     * @Route("/page/edit/{entityName}/{id}", name="sunshine_page_edit", options={"expose"=true})
+     * @Route("/page/edit/{entityName}", name="sunshine_page_new", options={"expose"=true})
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param $entityName
@@ -133,8 +135,8 @@ class PageController extends AbstractPageController
     }
 
     /**
-     * @Route("/page/view/{entityName}/{id}", name="sunshine_page_view")
-     * @Method({"GET", "POST"})
+     * @Route("/page/view/{entityName}/{id}", name="sunshine_page_view", options={"expose"=true})
+     * @Method("GET")
      * @param $id
      * @param $entityName
      * @return mixed
