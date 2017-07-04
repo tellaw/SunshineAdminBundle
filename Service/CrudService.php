@@ -178,7 +178,6 @@ class CrudService
         $enablePagination = true,
         array $filters = null
     ) {
-
         $listConfiguration = $this->entityService->getListConfiguration($entityName);
         $baseConfiguration = $this->entityService->getConfiguration($entityName);
 
