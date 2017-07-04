@@ -75,22 +75,21 @@ class AjaxController extends Controller
     public function ajaxListCallBackAction ( Request $request, $entity ) {
 
         $draw = $request->request->get ("draw");
-        $orderCol = $request->request->get ("order")[0]["column"];
-        $orderDir = $request->request->get ("order")[0]["dir"];
+        $orderCol = $request->request->get("order")[0]["column"];
+        $orderDir = $request->request->get("order")[0]["dir"];
         $paginationStart = $request->request->get ("start");
         $paginationLength = $request->request->get ("length");
         $searchValue = $request->request->get ("search")["value"];
         $filters = [$request->request->get("filters", null)];
-
         /** @var CrudService $crudService */
         $crudService = $this->get("sunshine.crud_service");
         $list = $crudService->getEntityList($entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue, true, $filters );
+
         // Get the number of elements using the filter
         $nbElementsOfFilteredEntity = $crudService->getCountEntityElements( $entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue, $filters);
 
         // Get the total number of elements for this entity
         $nbElementsInTable = $crudService->getTotalElementsInTable( $entity );
-
         $responseArray = array (
             "draw" => $draw,
             "recordsTotal" => $nbElementsInTable,

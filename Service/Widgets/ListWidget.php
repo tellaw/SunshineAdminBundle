@@ -7,7 +7,7 @@ use Tellaw\SunshineAdminBundle\Service\AbstractWidget;
 use Tellaw\SunshineAdminBundle\Service\EntityService;
 
 class ListWidget extends AbstractWidget {
-
+    /** @var  EntityService */
     private $entities;
     private $crudService;
 

@@ -2,7 +2,7 @@
 
 namespace Tellaw\SunshineAdminBundle\Service;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
@@ -178,13 +178,13 @@ class CrudService
         $enablePagination = true,
         array $filters = null
     ) {
-
         $listConfiguration = $this->entityService->getListConfiguration($entityName);
         $baseConfiguration = $this->entityService->getConfiguration($entityName);
 
         $qb = $this->em->createQueryBuilder();
 
         $qb = $this->addSelectAndJoin($qb, $listConfiguration, $baseConfiguration, $filters);
+
         if ($filters !== null) {
             $qb = $this->addFilters($qb, $filters);
         }
@@ -195,7 +195,9 @@ class CrudService
 
         $qb = $this->addSearch($qb, $searchValue, $listConfiguration, $baseConfiguration);
 
-        return $this->flattenObjects($entityName, $qb->getQuery()->getResult(Query::HYDRATE_OBJECT));
+        $data = $qb->getQuery()->getResult(Query::HYDRATE_OBJECT);
+
+        return $this->flattenObjects($entityName, $data );
     }
 
 
@@ -332,25 +334,27 @@ class CrudService
      * @param $element
      * @return string
      */
-    private function getToString($element)
+    private function getToString ( $element )
     {
-        if (method_exists($element, "__toString")) {
-
-            return $element->__toString();
-
-        } else {
-            if (get_class($element) == PersistentCollection::class) {
+        dump($element);
+        if ($element != null) {
+            if (  $element instanceof \iterable  || $element instanceof Collection) {
 
                 $results = array();
-                foreach ($element as $collectionObject) {
-                    $results[] = $this->getToString($collectionObject);
+                foreach ( $element as $collectionObject ) {
+                    $results[] = $this->getToString( $collectionObject );
                 }
+                return implode( ",", $results );
 
-                return implode(",", $results);
+            } else if (method_exists($element, "__toString")) {
+
+                return $element->__toString();
 
             } else {
-                return get_class($element) . " has no toString method";
+                return get_class($element). " has no toString method";
             }
+        } else {
+            return "";
         }
     }
 
@@ -387,7 +391,7 @@ class CrudService
 
                     $join = ['class' => $item['relatedClass'], 'name' => $key];
                     $joinAlias = $this->getAliasForEntity($join['name']);
-                    $qb->innerJoin($this->alias . '.' . $join['name'], $joinAlias);
+                    $qb->leftJoin($this->alias . '.' . $join['name'], $joinAlias);
                     $qb->addSelect($joinAlias);
 
                 }

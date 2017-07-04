@@ -32,7 +32,7 @@ class CrudController extends AbstractController
 
         $searchKey = $request->query->get('searchKey', '');
         $filters = $request->query->get('filters', []);
-        $orderBy = $request->query->get('orderBy');
+        $orderBy = $request->query->get('orderBy', []);
         $orderWay = $request->query->get('orderWay', 'ASC');
 
         // Retrieve context for entity
