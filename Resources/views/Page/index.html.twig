@@ -63,3 +63,10 @@
     {% endfor %}
     {% endif %}
 {% endblock %}
+
+{%  block javascripts %}
+    {{ parent() }}
+    {% for include in page.jsIncludes %}
+        <script type="application/javascript" src="{{ asset(include) }}"></script>
+    {% endfor %}
+{% endblock %}

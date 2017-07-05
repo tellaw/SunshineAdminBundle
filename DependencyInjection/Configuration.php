@@ -266,6 +266,9 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('description')
                         ->defaultNull()
                     ->end()
+                    ->arrayNode('jsIncludes')
+                        ->prototype('scalar')->end()
+                    ->end()
                     ->variableNode('rows')->end()
                     ->variableNode('content')->end()
                 ->end();
