@@ -336,7 +336,6 @@ class CrudService
      */
     private function getToString ( $element )
     {
-        dump($element);
         if ($element != null) {
             if (  $element instanceof \iterable  || $element instanceof Collection) {
 
@@ -520,7 +519,7 @@ class CrudService
                     $fieldAttributes["widget"] = 'single_text';
                     $fieldAttributes["input"] = 'datetime';
                     $fieldAttributes["format"] = 'dd/MM/yyyy';
-                    $fieldAttributes["attr"] = array('class' => 'datetime-picker');
+                    $fieldAttributes["attr"] = array('class' => 'date-picker');
                     break;
 
                 case "datetime":

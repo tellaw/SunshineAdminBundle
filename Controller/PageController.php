@@ -29,7 +29,7 @@ class PageController extends AbstractPageController
      */
     public function pageAction($pageId = null)
     {
-        return $this->renderPage( $pageId );
+        return $this->renderPage($pageId);
     }
 
     /**
