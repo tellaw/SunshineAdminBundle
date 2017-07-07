@@ -13,6 +13,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->redirectToRoute("sunshine_page");
+        return $this->render("TellawSunshineAdminBundle::base-sunshine.html.twig");
     }
 }
