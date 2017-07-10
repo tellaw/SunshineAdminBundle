@@ -2,7 +2,7 @@
 
 namespace Tellaw\SunshineAdminBundle\Service;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
@@ -203,7 +203,6 @@ class CrudService
         $enablePagination = true,
         array $filters = null
     ) {
-
         $listConfiguration = $this->entityService->getListConfiguration($entityName);
         $baseConfiguration = $this->entityService->getConfiguration($entityName);
 
@@ -362,9 +361,8 @@ class CrudService
      */
     private function getToString ( $element )
     {
-
         if ($element != null) {
-            if (  $element instanceof \iterable ) {
+            if (  $element instanceof \iterable  || $element instanceof Collection) {
 
                 $results = array();
                 foreach ( $element as $collectionObject ) {
@@ -546,7 +544,7 @@ class CrudService
                     $fieldAttributes["widget"] = 'single_text';
                     $fieldAttributes["input"] = 'datetime';
                     $fieldAttributes["format"] = 'dd/MM/yyyy';
-                    $fieldAttributes["attr"] = array('class' => 'datetime-picker');
+                    $fieldAttributes["attr"] = array('class' => 'date-picker');
                     break;
 
                 case "datetime":

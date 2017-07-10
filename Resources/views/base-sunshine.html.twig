@@ -23,13 +23,15 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <head>
     <meta charset="utf-8"/>
-    <title>Metronic Admin Theme #1 | Admin Dashboard 2</title>
+    <title>Sunshine Super ADMIN bundle</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta content="Preview page of Metronic Admin Theme #1 for statistics, charts, recent events and reports"
           name="description"/>
     <meta content="" name="author"/>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {% block stylesheets %}
+    {% block global_stylesheets %}
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet"
           type="text/css"/>
     <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/font-awesome/css/font-awesome.min.css') }}"
@@ -40,8 +42,10 @@ License: You must have a valid license purchased only from themeforest(the above
           rel="stylesheet" type="text/css"/>
     <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css') }}"
           rel="stylesheet" type="text/css"/>
-    <!-- END GLOBAL MANDATORY STYLES -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    {% endblock global_stylesheets %}
+        <!-- END GLOBAL MANDATORY STYLES -->
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+    {% block pulgins_stylesheets %}
     <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/datatables/datatables.min.css') }}"
           rel="stylesheet" type="text/css"/>
     <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css') }}"
@@ -64,36 +68,46 @@ License: You must have a valid license purchased only from themeforest(the above
           rel="stylesheet" type="text/css"/>
     <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}"
           rel="stylesheet" type="text/css"/>
-    <!-- END PAGE LEVEL PLUGINS -->
-    <!-- BEGIN THEME GLOBAL STYLES -->
+    {% endblock pulgins_stylesheets %}
+        <!-- END PAGE LEVEL PLUGINS -->
+        <!-- BEGIN THEME GLOBAL STYLES -->
+    {% block theme_global_stylesheets %}
     <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/css/components-md.min.css') }}" rel="stylesheet"
           id="style_components" type="text/css"/>
     <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/css/plugins-md.min.css') }}" rel="stylesheet"
           type="text/css"/>
-    <!-- END THEME GLOBAL STYLES -->
-    <!-- BEGIN THEME LAYOUT STYLES -->
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/layouts/layout/css/layout.min.css') }}" rel="stylesheet"
+    {% endblock theme_global_stylesheets %}
+        <!-- END THEME GLOBAL STYLES -->
+        <!-- BEGIN THEME LAYOUT STYLES -->
+    {% block theme_stylesheets %}
+    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/layouts/layout/css/layout.min.css') }}"
+          rel="stylesheet"
           type="text/css"/>
     <link href="{{ asset ('bundles/tellawsunshineadmin/assets/layouts/layout/css/themes/darkblue.min.css') }}"
           rel="stylesheet" type="text/css" id="style_color"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/layouts/layout/css/custom.min.css') }}" rel="stylesheet"
+    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/layouts/layout/css/custom.min.css') }}"
+          rel="stylesheet"
           type="text/css"/>
+    {% endblock theme_stylesheets %}
 
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/jquery.min.js') }}"
-            type="text/javascript"></script>
+        <!--BEGIN tag CSS -->
+    {% block tags_stylesheets %}
+        <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}"
+                type="text/css"></script>
+        <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css') }}"
+                type="text/css"></script>
+        <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/typeahead/typeahead.css') }}"
+                type="text/css"></script>
+    {% endblock tags_stylesheets %}
 
-    <!--BEGIN tag CSS -->
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}"
-            type="text/css"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css') }}"
-            type="text/css"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/typeahead/typeahead.css') }}"
-            type="text/css"></script>
+        {% block page_stylesheets %}
+        {% endblock page_stylesheets %}
+    {% endblock stylesheets %}
     <!--END TAG CSS -->
     <!-- END THEME LAYOUT STYLES -->
     {#<link rel="shortcut icon" href="favicon.ico" /> </head>#}
     <!-- END HEAD -->
-
+    {% block allBody %}
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-content-white page-md">
 <div class="page-wrapper">
     <!-- BEGIN HEADER -->
@@ -102,7 +116,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <div class="page-header-inner ">
             <!-- BEGIN LOGO -->
             <div class="page-logo">
-                <a href="index.html">
+                <a href="{{ path('homepage') }}">
                     <img src="{{ asset ('bundles/tellawsunshineadmin/assets/layouts/layout/img/logo.png') }}" alt="logo"
                          class="logo-default"/> </a>
             </div>
@@ -347,6 +361,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 {% endblock %}
 </body>
+{% endblock allBody %}
 
 
 </html>

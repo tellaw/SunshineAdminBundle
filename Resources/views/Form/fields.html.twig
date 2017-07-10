@@ -92,12 +92,10 @@
 {%- block tag_widget -%}
     {% spaceless %}
         {%- set type = type|default('text') -%}
-        <div class="bootstrap-tagsinput">
-            <input type="text" placeholder="">
+        <div>
+            <input type="{{ type }}" {{ block('widget_attributes') }} class="form-control input-larg" data-role="tagsinput" style="display: none;"
+                   value="{{ value|default('') }}"/>
         </div>
-        <input type="{{ type }}" class="form-control input-large" data-role="tagsinput" style="display: none;"
-               {% if value is not empty %}value="{{ value }}" {% endif %}/>
-
     {% endspaceless %}
 {%- endblock tag_widget -%}
 

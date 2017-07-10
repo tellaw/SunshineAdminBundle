@@ -42,7 +42,9 @@
                                         <th class="sorting_disabled" rowspan="1" colspan="1"> {{ name }} </th>
                                     {% endif %}
                                 {% endfor %}
-                                <th>Actions</th>
+                                {%  if not fields['actions'] is defined %}
+                                    <th>Actions</th>
+                                {% endif %}
                             </tr>
                             </thead>
                         </table>
@@ -56,7 +58,6 @@
                                         data:{'filters': {{ filters|raw }} },
                                         {% endif %}
                                         type: "post"
-
                                     },
                                     "columnDefs": [
                                         {% for key,field in fields %}
@@ -66,6 +67,7 @@
                                         },
                                         {% endif %}
                                         {% endfor %}
+                                        {% if not fields['actions'] is defined %}
                                         {
                                             "targets": {{ fields|length }},
                                             "render": function ( data, type, row, meta ) {
@@ -78,6 +80,7 @@
 
                                             }
                                         }
+                                        {% endif %}
                                     ],
                                     "columns": [
                                             {% for name, field in fields %}{"data": "{{ name }}"}{% if loop.last == false %},{% endif %}{% endfor %}
