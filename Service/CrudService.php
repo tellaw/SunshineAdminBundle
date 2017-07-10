@@ -112,6 +112,31 @@ class CrudService
 
 
     /**
+     * Remove an entity from DB
+     * @param $entityName
+     * @param $entityId
+     * @return bool
+     * @throws \Exception
+     */
+    public function deleteEntity ($entityName, $entityId) {
+
+        $baseConfiguration = $this->entityService->getConfiguration($entityName);
+        $repository = $this->em->getRepository($baseConfiguration["configuration"]["class"]);
+
+        $object = $repository->findOneById($entityId);
+
+        if ($object == null) {
+            throw new \Exception("Entity is null : ".$entityName." / ".$entityId);
+        }
+
+        $this->em->remove($object);
+        $this->em->flush();
+
+        return true;
+
+    }
+
+    /**
      *
      * Method used to find data for the SELECT2 Field in AJAX
      *
