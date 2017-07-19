@@ -6,20 +6,27 @@ jQuery(document).ready(function() {
 
         var $buttonId = '#add_'+ $collectionId;
         var $addTagLink = $($buttonId);
-        var $newLinkLi = $('<div></div>').append($addTagLink);
+        var $newLinkDiv = $('<div></div>').append($addTagLink);
 
         var $collectionHolder = $('div#'+$collectionId);
+        var index = 0;
+        console.log($newLinkDiv);
 
-        // add the "add a tag" anchor and li to the tags ul
-        $collectionHolder.append($newLinkLi);
+        $collectionHolder.append($newLinkDiv);
 
-        // count the current form inputs we have (e.g. 2), use that as the new
-        // index when inserting a new item (e.g. 2)
-        $collectionHolder.data('index', $collectionHolder.find(':input').length);
+        var $prototype = $("<div/>").append($collectionHolder.data("prototype"));
+        if ($prototype.find(':input').length > 1)
+        {
+            index = $collectionHolder.find('*[data-unique="data-unique"]').length;
+        } else
+        {
+            index = $collectionHolder.find(':input').length;
+        }
+        $collectionHolder.data('index', index);
 
         $addTagLink.on('click', function(e) {
             e.preventDefault();
-            addAttachmentForm($collectionHolder, $newLinkLi);
+            addAttachmentForm($collectionHolder, $newLinkDiv);
         });
     });
 
@@ -38,16 +45,9 @@ function addAttachmentForm($collectionHolder, $newLinkLi) {
 
     var newForm = prototype.replace(/__name__label__/, $label +' ' +(index+1));
     newForm = newForm.replace(/__name__/g, index);
-
     // increase the index with one for the next item
     $collectionHolder.data('index', index + 1);
 
-    // var parser = new DOMParser();
-    // var doc = parser.parseFromString(newForm, "text/xml");
-    // $(doc).find('label').remove();
-
-    // Display the form in the page in an li, before the "Add a tag" link li
-    // var $newFormDiv = $('<div></div>').append($(doc.childNodes).html());
     var $newFormDiv = $('<div></div>').append($(newForm));
 
     // also add a remove button, just for this example

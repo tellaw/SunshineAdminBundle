@@ -102,6 +102,7 @@ class PageController extends AbstractPageController
         }
         
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $entity = $form->getData();

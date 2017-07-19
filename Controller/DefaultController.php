@@ -9,7 +9,7 @@ class DefaultController extends Controller
 {
 
     /**
-     * @Route("/", name="homepage")
+     * @Route(" /", name="sunshine_admin_homepage")
      */
     public function indexAction()
     {

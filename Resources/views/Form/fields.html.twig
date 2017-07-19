@@ -91,11 +91,17 @@
 
 {%- block tag_widget -%}
     {% spaceless %}
-        {%- set type = type|default('text') -%}
-        <div>
-            <input type="{{ type }}" {{ block('widget_attributes') }} class="form-control input-larg" data-role="tagsinput" style="display: none;"
-                   value="{{ value|default('') }}"/>
-        </div>
+        {% if value is not empty %}
+            {%- set type = type|default('text') -%}
+            <div>
+                <input type="{{ type }}" {{ block('widget_attributes') }} class="form-control input-larg"
+                       data-role="tagsinput" style="display: none;"
+                       value="{{ value|default('') }}"/>
+            </div>
+            {% else %}
+            {{ block('form_widget_simple') }}
+        {% endif %}
+
     {% endspaceless %}
 {%- endblock tag_widget -%}
 
@@ -106,11 +112,7 @@
             $(".{{ name }}-select2").select2({
                 language: "fr",
                 placeholder: 'Sélectionner une option',
-                allowClear: true
-            });
-
-            if ({{ attr.ajaxCallback }}) {
-                $(".{{ name }}-select2").select2({
+                allowClear: true,
                     ajax: {
                         url: "{{ path('sunshine_ajax_select2_callback', { "entityName" : name, "toStringField" : attr.filterAttribute,  }) }}",
                         dataType: 'json',
@@ -139,7 +141,6 @@
                     }
 
                 });
-            }
         });
     </script>
 {% endblock %}

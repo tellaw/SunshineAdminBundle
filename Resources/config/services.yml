@@ -37,7 +37,7 @@ services:
 
   sunshine.default_form_type:
     class: Tellaw\SunshineAdminBundle\Form\Type\DefaultType
-    arguments: ['@sunshine.crud_service']
+    arguments: ['@sunshine.crud_service', "@doctrine.orm.entity_manager" ]
     tags:
       - { name: form.type }
 

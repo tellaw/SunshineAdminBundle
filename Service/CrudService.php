@@ -547,13 +547,13 @@ class CrudService
                             'class' => $fieldName . '-select2',
                             'filterAttribute' => $field["filterAttribute"],
                             'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"]),
-                            'ajaxCallback' => $field["ajaxCallback"],
                         );
                         $fieldAttributes["class"] = $field["relatedClass"];
                         $fieldAttributes['placeholder'] = !empty($field["placeholder"]) ? $field["placeholder"] : '';
                         $type = Select2Type::class;
                     } else {
                         $fieldAttributes["expanded"] = "true";
+                        $fieldAttributes["required"] = $field["required"];
                     }
                     break;
 
@@ -570,7 +570,6 @@ class CrudService
                             'class' => $fieldName . '-select2',
                             'filterAttribute' => $field["filterAttribute"],
                             'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"]),
-                            'ajaxCallback' => $field["ajaxCallback"],
                         );
                         $fieldAttributes["class"] = $field["relatedClass"];
                         $fieldAttributes['placeholder'] = !empty($field["placeholder"]) ? $field["placeholder"] : '';
@@ -578,8 +577,8 @@ class CrudService
                     } else {
                         $fieldAttributes["expanded"] = "true";
                     }
-
                     $fieldAttributes["multiple"] = "true";
+                    $fieldAttributes["required"] = $field["required"];
                     break;
             }
 

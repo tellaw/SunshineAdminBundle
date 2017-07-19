@@ -38,7 +38,7 @@ class CrudController extends AbstractController
         // Retrieve context for entity
         /* @var $contextService ContextServiceInterface */
         $contextService = $this->get("sunshine.context_service");
-        /* @var $context ContextInterface */
+
         $context = $contextService->buildEntityListContext(
             $entityName,
             $length,
