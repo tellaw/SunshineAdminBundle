@@ -10,6 +10,7 @@ use Tellaw\SunshineAdminBundle\Interfaces\ContextServiceInterface;
 use Tellaw\SunshineAdminBundle\Interfaces\CrudServiceInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Tellaw\SunshineAdminBundle\Service\CrudService;
 use Tellaw\SunshineAdminBundle\Services\ConfigurationReaderService;
 
 class CrudController extends AbstractController
@@ -100,7 +101,7 @@ class CrudController extends AbstractController
             ConfigurationReaderService::VIEW_CONTEXT_FORM
         );
 
-        /* @var $crudService CrudServiceInterface */
+        /* @var $crudService CrudService */
         if ($targetId != null) {
             $crudService = $this->get("sunshine.crud_service");
             $object = $crudService->getEntity($context);
@@ -127,10 +128,19 @@ class CrudController extends AbstractController
      * @Route("/crud/delete/{entityName}/{targetId}", name="sunshine_crud_delete")
      * @Method({"GET", "POST"})
      */
-    public function deleteAction($targetId)
+    public function deleteAction($entityName, $targetId, Request $request)
     {
 
+        /* @var $crudService CrudService */
         $crudService = $this->get("sunshine.crud_service");
+
+        $crudService->deleteEntity( $entityName, $targetId  );
+
+        $request->getSession()
+            ->getFlashBag()
+            ->add('success', 'Element '.$targetId.' supprimé.');
+
+
 
     }
 

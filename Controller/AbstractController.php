@@ -24,4 +24,10 @@ abstract class AbstractController extends Controller
         return $this->render('TellawSunshineAdminBundle:'.$template.".html.twig" , $params);
     }
 
+    private function getLastMainPage ( Request $request ) {
+
+
+
+    }
+
 }
