@@ -27,9 +27,24 @@ jQuery(document).ready(function() {
         $addTagLink.on('click', function(e) {
             e.preventDefault();
             addAttachmentForm($collectionHolder, $newLinkDiv);
+            $.getScript("/bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js");
+            $.getScript("/bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js");
         });
     });
 
+
+    // DELETE ONE FROM COLLECTION
+    $('body').on('click', '.collection-delete', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'delete',
+            url: Routing.generate('collection-delete', {entityName: $(this).data('entityname'), id: $(this).data('id')}),
+            data: {},
+            success: function() {
+                location.reload();
+            }
+        });
+    });
 
 });
 
@@ -43,7 +58,7 @@ function addAttachmentForm($collectionHolder, $newLinkLi) {
     // Replace '$$name$$' in the prototype's HTML to
     // instead be a number based on how many items we have
 
-    var newForm = prototype.replace(/__name__label__/, $label +' ' +(index+1));
+    var newForm = prototype.replace(/__name__label__/, (index));
     newForm = newForm.replace(/__name__/g, index);
     // increase the index with one for the next item
     $collectionHolder.data('index', index + 1);

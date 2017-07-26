@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Tellaw\SunshineAdminBundle\Entity\MessageBag;
 use Tellaw\SunshineAdminBundle\Event\EntityEvent;
 use Tellaw\SunshineAdminBundle\Event\SunshineEvents;
@@ -96,13 +97,17 @@ class PageController extends AbstractPageController
         ];
 
         if (!empty($configuration['form']['formType'])) {
-            $form = $this->createForm($configuration['form']['formType'], $entity, $formOptions);
+            try {
+                $form = $this->createForm($configuration['form']['formType'], $entity, $formOptions);
+            } catch (UndefinedOptionsException $exception)
+            {
+                $form = $this->createForm($configuration['form']['formType'], $entity, []);
+            }
         } else {
             $form = $this->createForm(DefaultType::class, $entity, $formOptions);
         }
         
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
 
             $entity = $form->getData();

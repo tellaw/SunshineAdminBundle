@@ -1,5 +1,4 @@
 {% use "bootstrap_3_layout.html.twig" %}
-{#{% extends "form_div_layout.html.twig" %}#}
 
 {% block form_start -%}
     {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-horizontal')|trim}) %}
@@ -32,7 +31,7 @@
             {{- form_widget(form) -}}
             {{- form_errors(form) -}}
         </div>
-        {##}</div>
+    </div>
 {% endblock form_row %}
 
 {% block checkbox_row -%}
@@ -81,8 +80,58 @@
     col-sm-10
 {% endblock form_group_class %}
 
+
+
+
+{# Collection sunshine #}
+
+{%- block form_widget_collection -%}
+    {% if compound %}
+        {{- block('form_widget_compound_collection') -}}
+    {% else %}
+        {{- block('form_widget_simple_collection') -}}
+    {% endif %}
+{%- endblock form_widget_collection -%}
+
+{%- block form_widget_compound_collection -%}
+    <div {{ block('widget_container_attributes') }}>
+
+        {%- if form.parent is empty -%}
+            {{ form_errors(form) }}
+        {%- endif -%}
+        {{- block('form_rows_collection') -}}
+        {{- form_rest(form) -}}
+    </div>
+{%- endblock form_widget_compound_collection -%}
+
+{% block form_row_collection %}
+    <div class="form-group">
+        {{- form_label(form) -}}
+        <div class="{{ block('form_group_class') }}">
+            <a href="#" class="remove-tag btn btn-danger collection-delete" data-entityname = "{{ getClassName(data)}}" data-id = "{{ data.id }}">x</a>
+            {{- form_widget(form) -}}
+            {{- form_errors(form) -}}
+        </div>
+    </div>
+{% endblock form_row_collection %}
+
+{% block form_rows_collection %}
+
+    {% for child in form %}
+<div class="list-group-item list-group-item-action row" >
+        {{- form_row_collection(child) -}}
+    </div>
+    {% endfor %}
+{% endblock form_rows_collection %}
+
 {% block collection_widget %}
-    {{- parent() -}}
+    <div class="list-group">
+    {% if prototype is defined %}
+        {%- set attr = attr|merge({'data-prototype': form_row(prototype) }) -%}
+    {% endif %}
+
+    {{- block('form_widget_collection') -}}
+    </div>
     <a href="#" id="add_{{ form.vars.id }}" class="btn btn-xs btn-info pull-left">Add</a>
 {% endblock collection_widget %}
 
@@ -123,7 +172,8 @@
                             return {
                                 q: params.term, // search term
                                 page: params.page,
-                                relatedClass: '{{ attr.relatedClass }}'
+                                relatedClass: '{{ attr.relatedClass }}',
+                                callbackFunction: '{{ attr.callbackFunction }}'
                             };
                         },
 

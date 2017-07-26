@@ -1,8 +1,17 @@
 {% extends 'TellawSunshineAdminBundle::base-sunshine.html.twig' %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    {% if  page.cssIncludes is defined %}
+        {% for include in page.cssIncludes %}
+            <link href="{{ asset(include) }}" rel="stylesheet"
+                  id="style_components" type="text/css"/>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
 {% block title %}
 {{ page.title|default('') }} <small>{{ page.description|default('') }}</small>
 {% endblock %}
+
 
 {% block breadcrumb %}
     <ul class="page-breadcrumb">

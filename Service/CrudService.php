@@ -146,19 +146,26 @@ class CrudService
      * @param $metadata
      * @return mixed
      */
-    public function getEntityListByClassMetadata($entityClass, $toString, $query, $metadata, $page, $itemPerPage)
+    public function getEntityListByClassMetadata($entityClass, $toString, $query, $metadata, $page, $itemPerPage, $callbackFunction = null)
     {
 
         $identifier = $metadata->identifier;
+        if ($callbackFunction !== null)
+        {
+            $qb =$this->em->getRepository($entityClass)->$callbackFunction($identifier, $toString, $query);
+        } else {
 
-        $qb = $this->em->createQueryBuilder();
-        $qb->select(array('l.' . $identifier[0], 'l.' . $toString . " AS text"));
-        $qb->from($entityClass, 'l');
-        $qb->orWhere('l.' . $toString . ' LIKE :search');
+            $qb = $this->em->createQueryBuilder();
+            $qb->select(array('l.' . $identifier[0], 'l.' . $toString . " AS text"));
+            $qb->from($entityClass, 'l');
+            $qb->orWhere('l.' . $toString . ' LIKE :search');
+            $qb->setParameter('search', "%{$query}%");
+        }
+
         $qb->setFirstResult(($page - 1) * $itemPerPage);
         $qb->setMaxResults($itemPerPage);
-        $qb->setParameter('search', "%{$query}%");
 
+        dump($qb->getQuery()->getResult());
         return $qb->getQuery()->getResult();
     }
 
@@ -172,16 +179,24 @@ class CrudService
      * @param $metadata
      * @return mixed
      */
-    public function getCountEntityListByClassMetadata($entityClass, $toString, $query, $metadata)
+    public function getCountEntityListByClassMetadata($entityClass, $toString, $query, $metadata, $callbackFunction)
     {
-
         $identifier = $metadata->identifier;
+        if ($callbackFunction !== null)
+        {
+            /** @var QueryBuilder $qb */
+            $qb = $this->em->getRepository($entityClass)->$callbackFunction($identifier, $toString, $query);
+            $alias = $qb->getRootAliases()[0];
+            return $qb->select("COUNT($alias)")->getQuery()->getSingleScalarResult();
+        } else {
 
-        $qb = $this->em->createQueryBuilder();
-        $qb->select('COUNT(l)');
-        $qb->from($entityClass, 'l');
-        $qb->orWhere('l.' . $toString . ' LIKE :search');
-        $qb->setParameter('search', "%{$query}%");
+
+            $qb = $this->em->createQueryBuilder();
+            $qb->select('COUNT(l)');
+            $qb->from($entityClass, 'l');
+            $qb->orWhere('l.' . $toString . ' LIKE :search');
+            $qb->setParameter('search', "%{$query}%");
+        }
 
         return $qb->getQuery()->getSingleScalarResult();
     }
@@ -571,6 +586,7 @@ class CrudService
                         $fieldAttributes["attr"] = array(
                             'class' => $fieldName . '-select2',
                             'filterAttribute' => $field["filterAttribute"],
+                            'callbackFunction' => (key_exists('callbackFunction', $field))? $field["callbackFunction"]: "",
                             'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"]),
                         );
                         $fieldAttributes["class"] = $field["relatedClass"];

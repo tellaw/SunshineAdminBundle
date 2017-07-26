@@ -31,6 +31,7 @@ class AjaxController extends Controller
 
         $q = $request->request->get ("q");
         $page = $request->request->get ("page");
+        $callbackFunction = $request->request->get ("callbackFunction");
 
         if (!$page) {
             $page = 1;
@@ -46,8 +47,8 @@ class AjaxController extends Controller
 
         /** @var CrudService $crudService */
         $crudService = $this->get("sunshine.crud_service");
-        $list = $crudService->getEntityListByClassMetadata( $relatedClass, $toStringField, $q, $metadata, $page, $itemPerPage );
-        $totalCount = $crudService->getCountEntityListByClassMetadata( $relatedClass, $toStringField, $q, $metadata );
+        $list = $crudService->getEntityListByClassMetadata($relatedClass, $toStringField, $q, $metadata, $page, $itemPerPage,$callbackFunction);
+        $totalCount = $crudService->getCountEntityListByClassMetadata($relatedClass, $toStringField, $q, $metadata,$callbackFunction);
 
         $responseArray = array (
             "items" => $list,

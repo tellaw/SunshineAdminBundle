@@ -2,9 +2,6 @@
 
 namespace Tellaw\SunshineAdminBundle\Service;
 
-use Google\Spreadsheet\Exception\Exception;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**

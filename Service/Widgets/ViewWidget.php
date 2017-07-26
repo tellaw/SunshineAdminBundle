@@ -13,11 +13,10 @@ class ViewWidget extends AbstractWidget {
     private $crudService;
 
 
-    public function create ( $configuration, MessageBag $messagebag )
+    public function create ( $widgetConfiguration, MessageBag $messagebag )
     {
         $entityName = $messagebag->getMessage("entityName");
         $id = $messagebag->getMessage( "id" );
-
         if ($entityName != null && $id != null ) {
 
 
@@ -28,8 +27,8 @@ class ViewWidget extends AbstractWidget {
             }
 
             $entity = $this->crudService->getEntity($entityName, $id);
-
-            return $this->render( "TellawSunshineAdminBundle:Widget:view", array(
+            $template = isset($widgetConfiguration["template"])? $widgetConfiguration["template"] :"TellawSunshineAdminBundle:Widget:view";
+            return $this->render($template, array(
                     "fields" => $configuration,
                     "entityName" => $entityName,
                     "id" => $id,
