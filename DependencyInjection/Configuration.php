@@ -240,6 +240,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->variableNode('parameters')->end()
                     ->variableNode('children')->end()
+                    ->variableNode('roles')->end()
                 ->end()
             ->end();
 
@@ -277,6 +278,7 @@ class Configuration implements ConfigurationInterface
                     ->arrayNode('cssIncludes')
                         ->prototype('scalar')->end()
                     ->end()
+                    ->variableNode('roles')->end()
                     ->variableNode('rows')->end()
                     ->variableNode('content')->end()
                 ->end();

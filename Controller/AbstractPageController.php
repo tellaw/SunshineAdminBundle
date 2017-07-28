@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Tellaw\SunshineAdminBundle\Entity\MessageBag;
 use Tellaw\SunshineAdminBundle\Service\WidgetService;
 
@@ -39,6 +40,22 @@ abstract class AbstractPageController extends AbstractController
 
         /** @var array $page */
         $page = $this->get("sunshine.pages")->getPageConfiguration($pageId);
+
+        // Check roles to display the page of not.
+        $isVisible = false;
+        if (array_key_exists( "roles", $page )) {
+            foreach ( $page["roles"] as $role ) {
+                if ( $this->get('security.authorization_checker')->isGranted($role) ) {
+                    $isVisible = true;
+                }
+            }
+        } else {
+            $isVisible = true;
+        }
+
+        if (!$isVisible) {
+            throw new AccessDeniedException();
+        }
 
         if ( $page == null ) {
             throw new \Exception("Page not found : ".$pageId);

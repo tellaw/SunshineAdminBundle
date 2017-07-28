@@ -31,41 +31,57 @@
         <div class="row">
             {% for name, widget in row %}
 
-                {% if (widget.preload is defined) and (widget.preload == 'true')%}
-                    <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
-                         data-route="{{ getWidgetUrl( widget, name, pageId, rowKey ) }}"
-                         data-type="widget.preloaded"
-                         id="widget-{{ name }}">
+                {% set isVisible = false %}
 
-                        {% if (widget.type is defined) and (widget.type == 'list')%}
-                            {{ render(controller(
-                                'TellawSunshineAdminBundle:Widget:widgetCrudList',
-                                { 'pageName': pageId, 'widgetName': name, 'row': rowKey }
-                            )) }}
-                        {% else %}
-                            {{ render(controller(
-                                widget.route,
-                                { 'pageName': pageId, 'widgetName': name, 'row': rowKey }
-                            )) }}
+                {% if widget.roles is defined %}
+                    {% for role in widget.roles %}
+                        {% if is_granted(role) %}
+                            {% set isVisible = true %}
                         {% endif %}
-                    </div>
-
-                {% elseif (serviceWidgets[name] is defined) %}
-                    <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
-                         id="widget-{{ name }}" >
-                    {{ serviceWidgets[name] | raw }}
-                    </div>
-
+                    {% endfor %}
                 {% else %}
+                    {% set isVisible = true %}
+                {% endif %}
+                {% if isVisible == true %}
 
-                    <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
-                         data-route="{{ getWidgetUrl( widget, name, pageId, rowKey ) }}"
-                         data-editroute=""
-                         data-type="widget.ajax"
-                         id="widget-{{ name }}">
-                    </div>
+                    {% if (widget.preload is defined) and (widget.preload == 'true')%}
+                        <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
+                             data-route="{{ getWidgetUrl( widget, name, pageId, rowKey ) }}"
+                             data-type="widget.preloaded"
+                             id="widget-{{ name }}">
+
+                            {% if (widget.type is defined) and (widget.type == 'list')%}
+                                {{ render(controller(
+                                    'TellawSunshineAdminBundle:Widget:widgetCrudList',
+                                    { 'pageName': pageId, 'widgetName': name, 'row': rowKey }
+                                )) }}
+                            {% else %}
+                                {{ render(controller(
+                                    widget.route,
+                                    { 'pageName': pageId, 'widgetName': name, 'row': rowKey }
+                                )) }}
+                            {% endif %}
+                        </div>
+
+                    {% elseif (serviceWidgets[name] is defined) %}
+                        <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
+                             id="widget-{{ name }}" >
+                        {{ serviceWidgets[name] | raw }}
+                        </div>
+
+                    {% else %}
+
+                        <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
+                             data-route="{{ getWidgetUrl( widget, name, pageId, rowKey ) }}"
+                             data-editroute=""
+                             data-type="widget.ajax"
+                             id="widget-{{ name }}">
+                        </div>
+
+                    {% endif %}
 
                 {% endif %}
+
             {% endfor %}
 
         </div>
