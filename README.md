@@ -8,6 +8,7 @@ Sunshine Administration Bundle for Symfony
 3. [Page configuration](Resources/Documentation/backoffice-page.md)
 4. [Create a Custom Page & Widget Communications](Resources/Documentation/backoffice-custom-controller.md)
 5. [Entity Configuration with CRUD](Resources/Documentation/entity-configuration.md)
+6. [Roles Management](Resources/Documentation/roles-configuration.md)
 
 ## Available Widgets
 1. [Crud : List Entity](Resources/Documentation/widgets/crud-list.md)
