@@ -6,7 +6,8 @@ Sunshine Administration Bundle for Symfony
 1. [Menu configuration](Resources/Documentation/configuration/menu.md)
 2. Entity configuration
 3. [Page configuration](Resources/Documentation/backoffice-page.md)
-4. [Create a Custom Page & Widget Communications](Resources/Documentation/backoffice-custom-controller.md)
+4. [Create a Custom Page & Widget](Resources/Documentation/backoffice-custom-controller.md)
+5. [Create a Custom Ajax Controller to load a widget](Resources/Documentation/controller-load-ajax-widget.md)
 5. [Entity Configuration with CRUD](Resources/Documentation/entity-configuration.md)
 6. [Roles Management](Resources/Documentation/roles-configuration.md)
 
