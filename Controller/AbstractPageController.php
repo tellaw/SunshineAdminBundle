@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Tellaw\SunshineAdminBundle\Entity\MessageBag;
 use Tellaw\SunshineAdminBundle\Service\WidgetService;
@@ -26,13 +27,7 @@ abstract class AbstractPageController extends AbstractController
      */
     protected function renderPage ( $pageId = null, $messageBag = null )
     {
-        if ($messageBag == null) {
-            $messageBag = new MessageBag();
-        } else if ( is_array( $messageBag ) ) {
-            throw new \Exception("MessageBag must be an instance of MessageBag... Array Given ");
-        } else if ( ! $messageBag instanceof MessageBag) {
-            throw new \Exception("MessageBag must be an instance of MessageBag... -> Given : ".get_class($messageBag));
-        }
+        $messageBag = $this->validateMessageBag( $messageBag );
 
         if ($pageId === null) {
             throw new \Exception( "Page ID cannot be null to render a page" );
@@ -72,6 +67,60 @@ abstract class AbstractPageController extends AbstractController
         $parameters ["messageBag"]      = $messageBag;
 
         return $this->renderWithTheme( "Page:index" , $parameters );
+
+    }
+
+    private function validateMessageBag ( $messageBag ) {
+
+        if ($messageBag == null) {
+            $messageBag = new MessageBag();
+        } else if ( is_array( $messageBag ) ) {
+            throw new \Exception("MessageBag must be an instance of MessageBag... Array Given ");
+        } else if ( ! $messageBag instanceof MessageBag) {
+            throw new \Exception("MessageBag must be an instance of MessageBag... -> Given : ".get_class($messageBag));
+        }
+
+        return $messageBag;
+
+    }
+
+    protected function renderWidget ( $pageId, $widgetId, $messageBag ) {
+
+
+        $messageBag = $this->validateMessageBag( $messageBag );
+
+        if ($pageId === null) {
+            throw new \Exception( "Page ID cannot be null to render a widget" );
+        }
+
+        if ($widgetId === null) {
+            throw new \Exception( "Widget ID cannot be null to render a widget" );
+        }
+
+        /** @var array $page */
+        $pageConfiguration = $this->get("sunshine.pages")->getPageConfiguration($pageId);
+        if ( $pageId == null ) {
+            throw new \Exception("Page not found : ".$pageId);
+        }
+
+        $widgetConfiguration = null;
+
+        foreach ( $pageConfiguration["rows"] as $row ) {
+
+            if ( array_key_exists( $widgetId, $row ) ) {
+                $widgetConfiguration = $row[$widgetId];
+            }
+
+        }
+        if ( !$widgetConfiguration ) {
+            throw new \Exception("Widget ID (".$widgetId.") is not configured inside the page : ".$pageId);
+        }
+
+        /** @var WidgetService $widgetService */
+        $widgetService = $this->get("sunshine.widgets");
+        $widgetContent = $widgetService->renderWidget( $widgetConfiguration, $messageBag );
+
+        return new Response( $widgetContent );
 
     }
 

@@ -87,25 +87,49 @@ class WidgetService
      * @return array
      * @throws \Exception
      */
-    public function loadServicesWidgetsForPage ($pageConfiguration, $messagebag ) {
+    public function loadServicesWidgetsForPage ($pageConfiguration, $messageBag ) {
 
         $serviceWidgets = array();
         foreach ( $pageConfiguration["rows"] as $row ) {
 
             foreach ( $row as $key => $widgetConfiguration ) {
-                if ( array_key_exists( "service", $widgetConfiguration ) && array_key_exists($widgetConfiguration["service"], $this->serviceWidgets) ) {
-                    $service = $this->serviceWidgets[$widgetConfiguration["service"]];
-                    if ($service) {
-                        $widgetContent = $service->create($widgetConfiguration, $messagebag);
-                        $serviceWidgets[$key] = $widgetContent;
-                    } else {
-                        throw new \Exception("Service call for widget (" . $key . ") returned a null instead of service ");
-                    }
-
-                }
+                $serviceWidgets[$key] = $this->renderWidget( $widgetConfiguration, $messageBag );
             }
         }
 
         return $serviceWidgets;
     }
+
+    /**
+     *
+     * Method used to render a widget
+     *
+     * @param $widgetConfiguration
+     * @param $messageBag
+     * @return array
+     * @throws \Exception
+     */
+    public function renderWidget ( $widgetConfiguration, $messageBag ) {
+
+        if (    array_key_exists( "service", $widgetConfiguration ) &&
+                array_key_exists($widgetConfiguration["service"], $this->serviceWidgets) ) {
+
+            $service = $this->serviceWidgets[$widgetConfiguration["service"]];
+
+            if ($service) {
+                $widgetContent = $service->create($widgetConfiguration, $messageBag);
+
+            } else {
+                throw new \Exception("Service call for widget (" . $widgetConfiguration["service"] . ") returned a null instead of service ");
+            }
+
+            return $widgetContent;
+
+        } else {
+
+            return null;
+
+        }
+    }
+
 }
