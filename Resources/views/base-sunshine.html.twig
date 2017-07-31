@@ -116,6 +116,29 @@ License: You must have a valid license purchased only from themeforest(the above
     {% endblock stylesheets %}
     <!--END TAG CSS -->
     <!-- END THEME LAYOUT STYLES -->
+    <style>
+        .list-group-item {
+            padding: 0px 15px;
+            margin:0px;
+            border:0px;
+        }
+        .list-group-item > .form-group > .col-sm-10 {
+            padding:0px 10px 0px 0px;
+            margin-bottom:0px;
+        }
+        .prototype > .form-group > .control-label {
+            display:none;
+        }
+        .prototype .col-sm-2 {
+            display:none;
+        }
+        .list-group-item > .form-group {
+            margin-bottom:0px;
+        }
+        .list-group-item .remove-tag {
+            float:left;
+        }
+    </style>
     {#<link rel="shortcut icon" href="favicon.ico" /> </head>#}
     <!-- END HEAD -->
     {% block allBody %}

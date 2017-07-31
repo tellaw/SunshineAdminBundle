@@ -2,18 +2,18 @@ jQuery(document).ready(function() {
     var $form = $("form");
     var $collections = $(".dynamic-collection");
     $collections.each(function () {
+
         var $collectionId =  $form.attr('name') +'_'+ $(this).data('for');
 
+        // Adding ADD Button
         var $buttonId = '#add_'+ $collectionId;
-
         var $addTagLink = $($buttonId);
         var $newLinkDiv = $('<div></div>').append($addTagLink);
-
         var $collectionHolder = $('div#'+$collectionId);
         var index = 0;
-
         $collectionHolder.append($newLinkDiv);
 
+        // Prototype
         var $prototype = $("<div/>").append($collectionHolder.data("prototype"));
         if ($prototype.find(':input').length > 1)
         {
@@ -26,11 +26,7 @@ jQuery(document).ready(function() {
 
         $addTagLink.on('click', function(e) {
             e.preventDefault();
-
-            addAttachmentForm($collectionHolder, $newLinkDiv);
-            $.getScript("/bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js");
-            $.getScript("/bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js");
-
+            addAttachmentForm($collectionHolder, $newLinkDiv, $collectionId);
         });
     });
 
@@ -50,7 +46,7 @@ jQuery(document).ready(function() {
 
 });
 
-function addAttachmentForm($collectionHolder, $newLinkLi) {
+function addAttachmentForm($collectionHolder, $newLinkLi, $collectionId) {
     // Get the data-prototype explained earlier
     var prototype = $collectionHolder.data('prototype');
     // get the new index
@@ -64,11 +60,14 @@ function addAttachmentForm($collectionHolder, $newLinkLi) {
     newForm = newForm.replace(/__name__/g, index);
     // increase the index with one for the next item
     $collectionHolder.data('index', index + 1);
-
-    var $newFormDiv = $('<div></div>').append($(newForm));
+    var divId = $collectionId + '_'+ index;
+    console.log(divId);
+    var $newFormDiv = $('<div class="prototype list-group-item list-group-item-action row"></div>').append($(newForm));
+     $newFormDiv.find('#'+divId).prepend('<a href="#" class="remove-tag btn btn-danger">x</a>');
+   // var $newFormDiv = $('<div class="prototype list-group-item list-group-item-action row"></div>').append('<a href="#" class="remove-tag btn btn-danger">x</a>');
 
     // also add a remove button, just for this example
-    $newFormDiv.append('<a href="#" class="remove-tag btn btn-danger">x</a>');
+    //$newFormDiv.append($(newForm));
 
     $newLinkLi.before($newFormDiv);
 

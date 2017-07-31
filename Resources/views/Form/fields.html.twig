@@ -94,8 +94,8 @@
 {%- endblock form_widget_collection -%}
 
 {%- block form_widget_compound_collection -%}
-    <div {{ block('widget_container_attributes') }}>
 
+    <div {{ block('widget_container_attributes') }}>
         {%- if form.parent is empty -%}
             {{ form_errors(form) }}
         {%- endif -%}
@@ -106,7 +106,6 @@
 
 {% block form_row_collection %}
     <div class="form-group">
-        {{- form_label(form) -}}
         <div class="{{ block('form_group_class') }}">
             <a href="#" class="remove-tag btn btn-danger collection-delete" data-entityname = "{{ getClassName(data)}}" data-id = "{{ data.id }}">x</a>
             {{- form_widget(form) -}}
@@ -133,7 +132,7 @@
 
     {{- block('form_widget_collection') -}}
     </div>
-    <a href="#" id="add_{{ form.vars.id }}" class="btn btn-xs btn-info pull-left">Add</a>
+    <a style="" href="#" id="add_{{ form.vars.id }}" class="btn btn-xs btn-info pull-left">Add</a>
 {% endblock collection_widget %}
 
 
