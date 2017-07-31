@@ -5,7 +5,9 @@ namespace Tellaw\SunshineAdminBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -118,6 +120,33 @@ class AjaxController extends Controller
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
+    }
+
+    /**
+     * @Route("collection/{entityName}/delete/{id}", name="collection-delete", options={"expose"=true})
+     * @Method("DELETE")
+     * @param $entityName
+     * @param $id
+     * @return JsonResponse
+     */
+    public function deleteOneFromCollectionAction($entityName, $id)
+    {
+        if (!class_exists($entityName)) {
+            throw new NotFoundHttpException($entityName . " : L'entité n'existe pas");
+        }
+
+        $status = 404;
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository($entityName);
+        $entity = $repository->find($id);
+        if ($entity)
+        {
+            $em->remove($entity);
+            $em->flush();
+            $status = 200;
+        }
+
+        return new JsonResponse(null, $status);
     }
 
 }

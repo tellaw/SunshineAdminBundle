@@ -125,6 +125,7 @@
 {% endblock form_rows_collection %}
 
 {% block collection_widget %}
+
     <div class="list-group">
     {% if prototype is defined %}
         {%- set attr = attr|merge({'data-prototype': form_row(prototype) }) -%}

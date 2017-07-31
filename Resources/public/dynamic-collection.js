@@ -5,12 +5,12 @@ jQuery(document).ready(function() {
         var $collectionId =  $form.attr('name') +'_'+ $(this).data('for');
 
         var $buttonId = '#add_'+ $collectionId;
+
         var $addTagLink = $($buttonId);
         var $newLinkDiv = $('<div></div>').append($addTagLink);
 
         var $collectionHolder = $('div#'+$collectionId);
         var index = 0;
-        console.log($newLinkDiv);
 
         $collectionHolder.append($newLinkDiv);
 
@@ -26,9 +26,11 @@ jQuery(document).ready(function() {
 
         $addTagLink.on('click', function(e) {
             e.preventDefault();
+
             addAttachmentForm($collectionHolder, $newLinkDiv);
             $.getScript("/bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js");
             $.getScript("/bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js");
+
         });
     });
 
@@ -58,7 +60,7 @@ function addAttachmentForm($collectionHolder, $newLinkLi) {
     // Replace '$$name$$' in the prototype's HTML to
     // instead be a number based on how many items we have
 
-    var newForm = prototype.replace(/__name__label__/, (index));
+    var newForm = prototype.replace(/__name__label__/, '');
     newForm = newForm.replace(/__name__/g, index);
     // increase the index with one for the next item
     $collectionHolder.data('index', index + 1);

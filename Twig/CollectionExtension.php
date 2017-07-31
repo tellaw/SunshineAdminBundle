@@ -28,7 +28,7 @@ class CollectionExtension extends \Twig_Extension
     {
         $reflectionClass = new \ReflectionClass($class);
 
-        return $reflectionClass->getShortName();
+        return $reflectionClass->getName();
     }
 
     /**
