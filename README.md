@@ -1,46 +1,37 @@
-# SunshineAdminBundle
-Sunshine Administration Bundle for Symfony
+# Sunshine Admin Bundle
 
-## Table of content :
+## introduction
 
-1. [Menu configuration](Resources/Documentation/configuration/menu.md)
-2. Entity configuration
-3. [Page configuration](Resources/Documentation/backoffice-page.md)
-4. [Create a Custom Page & Widget](Resources/Documentation/backoffice-custom-controller.md)
-5. [Create a Custom Ajax Controller to load a widget](Resources/Documentation/controller-load-ajax-widget.md)
-5. [Entity Configuration with CRUD](Resources/Documentation/entity-configuration.md)
-6. [Roles Management](Resources/Documentation/roles-configuration.md)
+SunshineAdminBundle is a bundle designed to help you to create easily a backoffice tool for your application.
 
-## Available Widgets
-1. [Crud : List Entity](Resources/Documentation/widgets/crud-list.md)
-2. Crud : Form
-3. Ajax rendered content
-4. AMCharts Graphs
-5. Statistic Counter
-6. Comments
-7. Timeline
-8. List of links
+The bundle provides two different level :
 
-## Fields
-| Type     | Description          | Status   |
-|---------------|---------------|---------------|
-| String        | Chaine de caractères simple           | Ok |
-| Hidden Field  | Champs caché                          | Ok |
-| Email         | Chaîne de caractère avec validation email           | NOK |
-| Date          | DatePicker Bootstrap           | OK |
-| DateTime         | DateTimePicker bootstrap           | OK |
-| Integer         | Champs texte simple, validation Integer           | OK |
-| Float         | Champs texte simple validation float           | OK |
+- Entities management : Very simple to setup, it makes possible to handle CRUD actions very easily.
+- Pages and widgets management : Makes possible for user to go a step further and customize the backoffice application.
 
-A ajouter : 
-2. ReadOnly String : Text Field
-7. Link
-8. Integer
-9. Float
-10. List (Object relation 1 to N)
-11. Related Object
-12. Text Area
-13. Json Field
-14. Html Field
-15. List
-16. Filtered List
+## Setup
+1. [Setup in your project](Resources/Documentation/setup.md)
+
+## Entities Management (CRUD)
+
+1. [YAML Entity description](Resources/Documentation/entity-configuration.md)
+1. [Field types and overrides](Resources/Documentation/filed-types-overrides.md)
+1. Relations : OneToOne, OneToMany
+1. Relations : ManyToMany
+1. Custom FormType for advanced configuration
+
+## Pages, widgets and menu
+
+1. [Menu configuration](Resources/Documentation/menu.md)
+1. [Page configuration](Resources/Documentation/backoffice-page.md)
+1. [Create a Custom Page & Widget](Resources/Documentation/backoffice-custom-controller.md)
+1. [Create a Custom Ajax Controller to load a widget](Resources/Documentation/controller-load-ajax-widget.md)
+
+## Available widgets
+
+1. [Crud list widget](Resources/Documentation/widgets/crud-list.md)
+
+## Security: Authentication and Roles
+
+1. Enabling Authentication
+1. [Filtering by user role](Resources/Documentation/roles-configuration.md)
