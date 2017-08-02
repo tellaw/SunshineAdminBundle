@@ -171,7 +171,9 @@
     {{ form_widget(form) }}
     <script type="text/javascript">
         $(document).ready(function () {
-            $(".{{ name }}-select2").select2({
+            console.log ("Execution");
+            console.log ($("#{{ id }}"));
+            $("#{{ id }}").select2({
                 language: "fr",
                 placeholder: 'Sélectionner une option',
                 allowClear: true,

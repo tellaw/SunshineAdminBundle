@@ -5,7 +5,7 @@ jQuery(document).ready(function() {
 
         var collectionId =  form.attr('name') +'_'+ $(this).data('for');
         var collectionHolder = $('#'+collectionId);
-        
+
         var index = collectionHolder.children().length;
         collectionHolder.data('index', index);
 
