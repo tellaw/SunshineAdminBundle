@@ -80,9 +80,6 @@
     col-sm-10
 {% endblock form_group_class %}
 
-
-
-
 {# Collection sunshine #}
 
 {%- block form_widget_collection -%}
@@ -96,20 +93,30 @@
 {%- block form_widget_compound_collection -%}
 
     <div {{ block('widget_container_attributes') }}>
+
         {%- if form.parent is empty -%}
             {{ form_errors(form) }}
         {%- endif -%}
         {{- block('form_rows_collection') -}}
         {{- form_rest(form) -}}
+
     </div>
 {%- endblock form_widget_compound_collection -%}
 
 {% block form_row_collection %}
     <div class="form-group">
         <div class="{{ block('form_group_class') }}">
-            <a href="#" class="remove-tag btn btn-danger collection-delete" data-entityname = "{{ getClassName(data)}}" data-id = "{{ data.id }}">x</a>
-            {{- form_widget(form) -}}
-            {{- form_errors(form) -}}
+            {% if form.parent.vars.allow_delete == true %}
+            <div class="collectionDeleteButton col-sm-1"><a href="#" class="remove-tag btn btn-danger collection-delete" data-entityname = "{{ getClassName(data)}}" data-id = "{{ data.id }}">x</a></div>
+            <div class="collectionForm col-sm-11">
+                {{- form_widget(form) -}}
+                {{- form_errors(form) -}}
+            </div>
+            {% else %}
+                {{- form_widget(form) -}}
+                {{- form_errors(form) -}}
+            {% endif %}
+
         </div>
     </div>
 {% endblock form_row_collection %}
@@ -117,10 +124,11 @@
 {% block form_rows_collection %}
 
     {% for child in form %}
-<div class="list-group-item list-group-item-action row" >
-        {{- form_row_collection(child) -}}
-    </div>
+        <div class="list-group-item list-group-item-action row" >
+            {{- form_row_collection(child) -}}
+        </div>
     {% endfor %}
+
 {% endblock form_rows_collection %}
 
 {% block collection_widget %}
@@ -132,7 +140,12 @@
 
     {{- block('form_widget_collection') -}}
     </div>
-    <a style="" href="#" id="add_{{ form.vars.id }}" class="btn btn-xs btn-info pull-left">Add</a>
+    {% if prototype is defined %}
+        <div class="col-sm-12" id="button_add_{{ form.vars.id }}">
+            <a style="" href="#" id="add_{{ form.vars.id }}" class="btn btn btn-info pull-left">+ Add element</a>
+        </div>
+    {% endif %}
+
 {% endblock collection_widget %}
 
 

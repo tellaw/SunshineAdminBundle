@@ -35,6 +35,10 @@ services:
     class: Tellaw\SunshineAdminBundle\Form\Type\DefaultType
     arguments: ["@sunshine.crud_service"]
 
+  sunshine.embeddedType:
+    class: Tellaw\SunshineAdminBundle\Form\Type\EmbeddedType
+    arguments: ["@sunshine.crud_service"]
+
   sunshine.menu_twig_extension:
     class: Tellaw\SunshineAdminBundle\Twig\MenuExtension
     tags:
@@ -42,6 +46,12 @@ services:
 
   sunshine.default_form_type:
     class: Tellaw\SunshineAdminBundle\Form\Type\DefaultType
+    arguments: ['@sunshine.crud_service', "@doctrine.orm.entity_manager" ]
+    tags:
+      - { name: form.type }
+
+  sunshine.embedded_form_type:
+    class: Tellaw\SunshineAdminBundle\Form\Type\EmbeddedType
     arguments: ['@sunshine.crud_service', "@doctrine.orm.entity_manager" ]
     tags:
       - { name: form.type }

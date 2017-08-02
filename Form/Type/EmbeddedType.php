@@ -15,7 +15,7 @@ use Tellaw\SunshineAdminBundle\Service\CrudService;
 
 /**
  */
-class DefaultType extends AbstractType
+class EmbeddedType extends AbstractType
 {
     /**
      * @var CrudService
@@ -57,8 +57,6 @@ class DefaultType extends AbstractType
         $form = $event->getForm();
         $fieldsConfiguration = $form->getConfig()->getOptions()['fields_configuration'];
         $this->buildFormFields($form, $fieldsConfiguration);
-        $form->add('Valider', SubmitType::class);
-
     }
 
     /**
@@ -81,6 +79,6 @@ class DefaultType extends AbstractType
      */
     protected function buildFormFields($form, array $fieldsConfiguration)
     {
-        $this->crudService->buildFormFields($form, $fieldsConfiguration);
+        $this->crudService->buildFormFields($form, $fieldsConfiguration, $embeddedMode = true);
     }
 }

@@ -1,33 +1,25 @@
 jQuery(document).ready(function() {
-    var $form = $("form");
-    var $collections = $(".dynamic-collection");
-    $collections.each(function () {
+    var form = $("form");
+    var collections = $(".dynamic-collection");
+    collections.each(function () {
 
-        var $collectionId =  $form.attr('name') +'_'+ $(this).data('for');
-
-        // Adding ADD Button
-        var $buttonId = '#add_'+ $collectionId;
-        var $addTagLink = $($buttonId);
-        var $newLinkDiv = $('<div></div>').append($addTagLink);
-        var $collectionHolder = $('div#'+$collectionId);
+        var collectionId =  form.attr('name') +'_'+ $(this).data('for');
+        var collectionHolder = $('div#'+collectionId);
         var index = 0;
-        $collectionHolder.append($newLinkDiv);
+        collectionHolder.data('index', index);
 
-        // Prototype
-        var $prototype = $("<div/>").append($collectionHolder.data("prototype"));
-        if ($prototype.find(':input').length > 1)
-        {
-            index = $collectionHolder.find('*[data-unique="data-unique"]').length;
-        } else
-        {
-            index = $collectionHolder.find(':input').length;
+        if (collectionHolder.data("prototype") != undefined) {
+
+            // Adding ADD Button
+            var buttonId = '#button_add_'+ collectionId;
+            var addButton = $(buttonId);
+
+            addButton.on('click', function(e) {
+                e.preventDefault();
+                addAttachmentForm(collectionHolder, addButton, collectionId);
+            });
+
         }
-        $collectionHolder.data('index', index);
-
-        $addTagLink.on('click', function(e) {
-            e.preventDefault();
-            addAttachmentForm($collectionHolder, $newLinkDiv, $collectionId);
-        });
     });
 
 
@@ -46,36 +38,30 @@ jQuery(document).ready(function() {
 
 });
 
-function addAttachmentForm($collectionHolder, $newLinkLi, $collectionId) {
+function addAttachmentForm(collectionHolder, addButtonObj, collectionId) {
     // Get the data-prototype explained earlier
-    var prototype = $collectionHolder.data('prototype');
+    var prototype = collectionHolder.data('prototype');
     // get the new index
-    var index = $collectionHolder.data('index');
-    var $label = $collectionHolder.data('label');
+    var index = collectionHolder.data('index');
+    var $label = collectionHolder.data('label');
 
-    // Replace '$$name$$' in the prototype's HTML to
-    // instead be a number based on how many items we have
-
-    var newForm = prototype.replace(/__name__label__/, '');
-    newForm = newForm.replace(/__name__/g, index);
     // increase the index with one for the next item
-    $collectionHolder.data('index', index + 1);
-    var divId = $collectionId + '_'+ index;
-    console.log(divId);
-    var $newFormDiv = $('<div class="prototype list-group-item list-group-item-action row"></div>').append($(newForm));
-     $newFormDiv.find('#'+divId).prepend('<a href="#" class="remove-tag btn btn-danger">x</a>');
-   // var $newFormDiv = $('<div class="prototype list-group-item list-group-item-action row"></div>').append('<a href="#" class="remove-tag btn btn-danger">x</a>');
+    collectionHolder.data('index', index + 1);
+    var divId = collectionId + '_'+ ( index + 1);
 
-    // also add a remove button, just for this example
-    //$newFormDiv.append($(newForm));
+    var prototype = prototype.replace(/<label(.*)__name__label__<\/label>/i, '');
+    prototype = prototype.replace(/__name__/g, index + 1);
 
-    $newLinkLi.before($newFormDiv);
+    prototype = prototype.replace ('<div id="'+divId+'">','<div id="'+divId+'" class="collectionForm col-sm-11">');
+
+    $("#"+collectionId).append( '<div class="prototype list-group list-group-item row">'+prototype+'</div>' );
+    $('<div class="collectionDeleteButton col-sm-1"><a href="#" class="remove-tag btn btn-danger">x</a></div>').insertBefore ('#'+divId);
 
     // handle the removal, just for this example
     $('.remove-tag').click(function(e) {
-        $collectionHolder.data('index', index);
+        collectionHolder.data('index', index);
         e.preventDefault();
-        $(this).parent().remove();
+        $(this).parent().parent().parent().parent().remove();
 
         return false;
     });

@@ -2,16 +2,22 @@
 
 namespace Tellaw\SunshineAdminBundle\Service;
 
+use AppBundle\Entity\Task;
+use AppBundle\Form\Type\TaskType;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Form;
 use Tellaw\SunshineAdminBundle\Form\Type\AttachmentType;
+use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
+use Tellaw\SunshineAdminBundle\Form\Type\EmbeddedType;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
+use Tellaw\SunshineAdminBundle\Form\Type\SunshineCollectionType;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
 
 class CrudService
@@ -150,7 +156,7 @@ class CrudService
     {
 
         $identifier = $metadata->identifier;
-        if ($callbackFunction !== null)
+        if ($callbackFunction !== null && $callbackFunction != '' )
         {
             $qb =$this->em->getRepository($entityClass)->$callbackFunction($identifier, $toString, $query);
         } else {
@@ -182,7 +188,7 @@ class CrudService
     public function getCountEntityListByClassMetadata($entityClass, $toString, $query, $metadata, $callbackFunction)
     {
         $identifier = $metadata->identifier;
-        if ($callbackFunction !== null)
+        if ($callbackFunction !== null  && $callbackFunction != '')
         {
             /** @var QueryBuilder $qb */
             $qb = $this->em->getRepository($entityClass)->$callbackFunction($identifier, $toString, $query);
@@ -541,8 +547,9 @@ class CrudService
      * @throws \Exception
      *
      */
-    public function buildFormFields($form, $formConfiguration)
+    public function buildFormFields($form, $formConfiguration, $modeEmbedded = false)
     {
+
         foreach ($formConfiguration as $fieldName => $field) {
 
             $fieldAttributes = array();
@@ -572,6 +579,29 @@ class CrudService
                 case "file":
                     $fieldAttributes["file_property"] = $field["webPath"];
                     $type = AttachmentType::class;
+                    break;
+
+                case "embedded":
+
+                    $type = CollectionType::class;
+
+                    $prototypeConfiguration = $this->entityService->getFormConfiguration($field["configuration"]);
+                    $fieldAttributes['entry_options'] = array(
+                        "fields_configuration" => $prototypeConfiguration,
+                        "data_class" => $field["relatedClass"],
+                    );
+                    $fieldAttributes['entry_type'] = EmbeddedType::class;
+
+                    $fieldAttributes['allow_add'] =  $field["allow_add"];
+                    $fieldAttributes['allow_delete'] =  $field["allow_delete"];
+                    $fieldAttributes['by_reference'] =  false;
+                    $fieldAttributes['prototype'] =  true;
+
+                    $fieldAttributes['attr'] =  array(
+                        'class' => 'dynamic-collection',
+                        'data-for' => $fieldName
+                    );
+
                     break;
 
                 case "object":
@@ -610,6 +640,7 @@ class CrudService
                         $fieldAttributes["attr"] = array(
                             'class' => $fieldName . '-select2',
                             'filterAttribute' => $field["filterAttribute"],
+                            'callbackFunction' => (key_exists('callbackFunction', $field))? $field["callbackFunction"]: "",
                             'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"]),
                         );
                         $fieldAttributes["class"] = $field["relatedClass"];
