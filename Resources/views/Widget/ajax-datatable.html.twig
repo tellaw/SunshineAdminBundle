@@ -73,9 +73,9 @@
                                             "render": function ( data, type, row, meta ) {
                                                 var itemID = row['id'];
                                                 {% if widget.parameters.editRoute is defined %}
-                                                return '<a href="{{ path(widget.parameters.editRoute, {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn green btn-xs">Editer</a>';
+                                                return '<a href="{{ path(widget.parameters.editRoute, {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn green btn-xs">Editer</a>&nbsp<a href="{{ path(widget.parameters.deleteRoute, {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn red btn-xs" onClick="return confirm(\'Confirmez-vous la suppression ?\')">Supprimer</a>"';
                                                 {% else %}
-                                                return '<a href="{{ path('sunshine_page_edit', {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn green btn-xs">Editer</a>';
+                                                return '<a href="{{ path('sunshine_page_edit', {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn green btn-xs">Editer</a>&nbsp;<a href="{{ path('sunshine_crud_delete_js', {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn red btn-xs" onClick="return confirm(\'Confirmez-vous la suppression ?\')">Supprimer</a>';
                                                 {% endif %}
 
                                             }

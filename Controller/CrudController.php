@@ -128,6 +128,7 @@ class CrudController extends AbstractController
 
     /**
      * @Route("/crud/delete/{entityName}/{targetId}", name="sunshine_crud_delete")
+     * @Route("/crud/delete/{entityName}", name="sunshine_crud_delete_js")
      * @Method({"GET", "POST"})
      */
     public function deleteAction($entityName, $targetId, Request $request)
@@ -140,9 +141,9 @@ class CrudController extends AbstractController
 
         $request->getSession()
             ->getFlashBag()
-            ->add('success', 'Element '.$targetId.' supprimé.');
+            ->add('success', 'Element "'.$targetId.'" supprimé.');
 
-
+        return $this->redirectToRoute('sunshine_page_list', array('entityName' => $entityName));
 
     }
 
