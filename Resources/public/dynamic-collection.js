@@ -4,8 +4,9 @@ jQuery(document).ready(function() {
     collections.each(function () {
 
         var collectionId =  form.attr('name') +'_'+ $(this).data('for');
-        var collectionHolder = $('div#'+collectionId);
-        var index = 0;
+        var collectionHolder = $('#'+collectionId);
+        
+        var index = collectionHolder.children().length;
         collectionHolder.data('index', index);
 
         if (collectionHolder.data("prototype") != undefined) {
@@ -21,7 +22,6 @@ jQuery(document).ready(function() {
 
         }
     });
-
 
     // DELETE ONE FROM COLLECTION
     $('body').on('click', '.collection-delete', function(e) {
@@ -39,15 +39,18 @@ jQuery(document).ready(function() {
 });
 
 function addAttachmentForm(collectionHolder, addButtonObj, collectionId) {
+
     // Get the data-prototype explained earlier
     var prototype = collectionHolder.data('prototype');
+
     // get the new index
     var index = collectionHolder.data('index');
+
     var $label = collectionHolder.data('label');
 
     // increase the index with one for the next item
     collectionHolder.data('index', index + 1);
-    var divId = collectionId + '_'+ ( index + 1);
+    var divId = collectionId + '_' + ( index + 1);
 
     var prototype = prototype.replace(/<label(.*)__name__label__<\/label>/i, '');
     prototype = prototype.replace(/__name__/g, index + 1);
@@ -65,4 +68,5 @@ function addAttachmentForm(collectionHolder, addButtonObj, collectionId) {
 
         return false;
     });
+
 }
