@@ -34,25 +34,28 @@ class MenuService
      * Provide the menu configuration
      * @return array
      */
-    public function getConfiguration()
+    public function getConfiguration( $currentUser )
     {
 
         $autoMenu = array();
 
-        foreach ( $this->entityConfiguration as $entityName => $entityConf ) {
-            $autoMenu[] = array (
-                "icon" => "puzzle",
-                "label" => $entityName,
-                "entityName" => $entityName,
-                "type" => "list"
+        if ( $currentUser->hasRole('ROLE_ADMIN') ) {
 
-            );
-        }
+            foreach ( $this->entityConfiguration as $entityName => $entityConf ) {
+                $autoMenu[] = array (
+                    "icon" => "puzzle",
+                    "label" => $entityName,
+                    "entityName" => $entityName,
+                    "type" => "list"
+
+                );
+            }
 
         $this->configuration[] = array ("type" => "section",
                                         "label" => "Vos entités",
                                         "children" => $autoMenu
         );
+        }
         return $this->configuration;
     }
 }

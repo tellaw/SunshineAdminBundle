@@ -22,7 +22,7 @@ class MenuController extends AbstractController
      */
     public function indexAction( $pageType, $pageIdentifier )
     {
-        $configuration = $this->get("sunshine.menu")->getConfiguration();
+        $configuration = $this->get("sunshine.menu")->getConfiguration( $this->getUser() );
 
         return $this->renderWithTheme( "Menu:index", array("menu" => $configuration, "pageType" => $pageType, "pageIdentifier" => $pageIdentifier) );
     }
