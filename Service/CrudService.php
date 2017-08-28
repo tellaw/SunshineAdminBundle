@@ -624,8 +624,8 @@ class CrudService
                         $type = Select2Type::class;
                     } else {
                         $fieldAttributes["expanded"] = "true";
-                        $fieldAttributes["required"] = $field["required"];
                     }
+                    $fieldAttributes["required"] = $field["required"];
                     break;
 
                 case "object-multiple":
