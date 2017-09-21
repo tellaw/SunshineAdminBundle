@@ -3,15 +3,22 @@
 ## In the configuration, enable the Symfony serializer component
  
 In your config file (app/config/config.yml)
- 
+Add the namespace to be able to extend Sunshine templates:
+
 ```
-app/config/config.yml
- framework:
-     # ...
-     serializer: { enable_annotations: true }
+# Twig Configuration
+twig:
+ [...]
+    paths:
+        '%kernel.root_dir%/../vendor/tellaw/sunshine-admin-bundle/Tellaw/SunshineAdminBundle/Resources/views': sunshine
+ [...]
 ```
 
-Enable the serializer.
+## Add the bundle in your composer JSON.
+```
+"tellaw/sunshine-admin-bundle": "0.9.0"
+```
+Please check Packagist to find the latest release : https://packagist.org/packages/tellaw/sunshine-admin-bundle
 
 ## Add the bundle to the kernel
 
