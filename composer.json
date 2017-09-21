@@ -1,5 +1,5 @@
 {
-    "name": "tellaw/sunshineAdminBundle",
+    "name": "tellaw/sunshine-admin-bundle",
     "type": "library",
     "description": "Admin Bundle for Symfony",
     "keywords": ["admin", "CRUD", "Back-office", "Dashboard"],
