@@ -1,6 +1,6 @@
 # Installation du module
 
-## In the configuration, enable the Symfony serializer component
+## Step 1/4 : In the configuration, enable the Symfony serializer component
  
 In your config file (app/config/config.yml)
 Add the namespace to be able to extend Sunshine templates:
@@ -14,13 +14,13 @@ twig:
  [...]
 ```
 
-## Add the bundle in your composer JSON.
+## Step 2/4 : Add the bundle in your composer JSON.
 ```
 "tellaw/sunshine-admin-bundle": "0.9.0"
 ```
 Please check Packagist to find the latest release : https://packagist.org/packages/tellaw/sunshine-admin-bundle
 
-## Add the bundle to the kernel
+## Step 3/4 : Add the bundle to the kernel
 
 ```
     public function registerBundles()
@@ -57,7 +57,7 @@ Add the following line :
 new Tellaw\SunshineAdminBundle\TellawSunshineAdminBundle(),
 ```
 
-## Update your configuration
+## Step 4/4 : Update your configuration
 
 Add to your routing.yml
 ```
