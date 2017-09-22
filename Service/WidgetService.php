@@ -93,7 +93,11 @@ class WidgetService
         foreach ( $pageConfiguration["rows"] as $row ) {
 
             foreach ( $row as $key => $widgetConfiguration ) {
-                $serviceWidgets[$key] = $this->renderWidget( $widgetConfiguration, $messageBag );
+
+                $widget = $this->renderWidget( $widgetConfiguration, $messageBag );
+                if ( $widget ) {
+                    $serviceWidgets[$key] = $widget;
+                }
             }
         }
 
