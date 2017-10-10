@@ -171,7 +171,6 @@ class CrudService
         $qb->setFirstResult(($page - 1) * $itemPerPage);
         $qb->setMaxResults($itemPerPage);
 
-        dump($qb->getQuery()->getResult());
         return $qb->getQuery()->getResult();
     }
 
