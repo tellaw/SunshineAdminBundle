@@ -2,26 +2,21 @@
 
 namespace Tellaw\SunshineAdminBundle\Twig;
 
-use Tellaw\SunshineAdminBundle\Service\WidgetService;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class MenuExtension extends \Twig_Extension
 {
-
     /**
-     * Pages configuration
-     * @var array
+     * @var AuthorizationCheckerInterface
      */
-    private $configuration;
+    private $securityChecker;
 
     /**
      * Constructor
-     *
-     * @param array $configuration
-     * @param WidgetService $widgetService
      */
-    public function __construct()
+    public function __construct(AuthorizationCheckerInterface $securityChecker = null)
     {
-
+        $this->securityChecker = $securityChecker;
     }
 
     /**
@@ -31,7 +26,8 @@ class MenuExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('isThisActivePage', array($this, 'isThisActivePage'), array()),
-            new \Twig_SimpleFunction('isActivePageIsAChildPage', array($this, 'isActivePageIsAChildPage'), array())
+            new \Twig_SimpleFunction('isActivePageIsAChildPage', array($this, 'isActivePageIsAChildPage'), array()),
+            new \Twig_SimpleFunction('isMenuItemVisible', array($this, 'isMenuItemVisible'), array())
         );
     }
 
@@ -81,6 +77,68 @@ class MenuExtension extends \Twig_Extension
 
         return false;
 
+    }
+
+    /**
+     * Vérifie si l'utilisateur loggué peut voir l'élément de menu
+     *
+     * @param array $item élément du menu
+     * @return boolean
+     */
+    public function isMenuItemVisible($item)
+    {
+        if (empty($item['security'])) {
+            return true;
+        }
+
+        $security = $item['security'];
+
+        // On vérifie dans un premier temps si l'utilisateur possède la permission sur l'entité configurée
+        if (!empty($security['permissions']) && !empty($security['entity'])) {
+            foreach ($security['permissions'] as $permission) {
+                if ($this->isGranted($permission, $security['entity'])) {
+
+                    return true;
+                }
+            }
+        }
+
+        // On vérifie si le role de l'utilisateur est autorisé
+        if (!empty($security['roles'])) {
+            foreach ($security['roles'] as $role) {
+                if ($this->isGranted($role)) {
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Vérifie les droits d'accès de l'utilisateur loggué
+     *
+     * @param string $role
+     * @param null $object
+     * @param null $field
+     * @return bool
+     */
+    public function isGranted($role, $object = null, $field = null)
+    {
+        if (null === $this->securityChecker) {
+            return false;
+        }
+
+        if (null !== $field) {
+            $object = new FieldVote($object, $field);
+        }
+
+        try {
+            return $this->securityChecker->isGranted($role, $object);
+        } catch (AuthenticationCredentialsNotFoundException $e) {
+            return false;
+        }
     }
 
 }

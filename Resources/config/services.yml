@@ -41,6 +41,7 @@ services:
 
   sunshine.menu_twig_extension:
     class: Tellaw\SunshineAdminBundle\Twig\MenuExtension
+    arguments: ["@security.authorization_checker"]
     tags:
       - { name: twig.extension }
 

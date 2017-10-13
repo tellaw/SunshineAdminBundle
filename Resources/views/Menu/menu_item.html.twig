@@ -1,74 +1,60 @@
-{% set isVisible = false %}
+{% if item.type == 'page' %}
+    <li class="nav-item {% if pageType == 'sunshine_page' and pageIdentifier == item.parameters.id  %}active{% endif %}">
+        <a href="{{ path('sunshine_page', {'pageId': item.parameters.id}) }}" class="nav-link">
+            {% if item.icon is defined %}
+                <i class="icon-{{ item.icon }}"></i>
+            {% endif %}
+            <span class="title">{{ item.label | trans }}</span>
 
-{% if item.roles is defined %}
-    {% for role in item.roles %}
-        {% if is_granted(role) %}
-            {% set isVisible = true %}
-        {% endif %}
+        </a>
+    </li>
+{% elseif item.type == 'route' %}
+    <li class="nav-item {% if pageType == 'custom_page' and pageIdentifier == item.route %}active{% endif %}">
+        <a href="{{ path(item.route, item.parameters) }}" class="nav-link">
+            {% if item.icon is defined %}
+                <i class="icon-{{ item.icon }}"></i>
+            {% endif %}
+            <span class="title">{{ item.label | trans }}</span>
+        </a>
+    </li>
+{% elseif item.type == 'list' %}
+        <li class="nav-item {% if pageType == 'sunshine_page_list' and pageIdentifier == item.entityName %}active{% endif %}">
+            <a href="{{ path('sunshine_page_list', {'entityName': item.entityName}) }}" class="nav-link">
+                {% if item.icon is defined %}
+                    <i class="icon-{{ item.icon }}"></i>
+                {% endif %}
+                <span class="title">{{ item.label | trans }}</span>
+
+            </a>
+        </li>
+
+{%  elseif item.type == 'section' %}
+    <li class="heading">
+        <h3 class="uppercase">{{ item.label }}</h3>
+    </li>
+    <li class="nav-item">
+    {% for items in item.children %}
+        {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':items} %}
     {% endfor %}
-{% else %}
-    {% set isVisible = true %}
-{% endif %}
-
-{% if isVisible == true %}
-    {% if item.type == 'page' %}
-        <li class="nav-item {% if pageType == 'sunshine_page' and pageIdentifier == item.parameters.id  %}active{% endif %}">
-            <a href="{{ path('sunshine_page', {'pageId': item.parameters.id}) }}" class="nav-link">
-                {% if item.icon is defined %}
-                    <i class="icon-{{ item.icon }}"></i>
-                {% endif %}
-                <span class="title">{{ item.label | trans }}</span>
-
-            </a>
-        </li>
-    {% elseif item.type == 'route' %}
-        <li class="nav-item {% if pageType == 'custom_page' and pageIdentifier == item.route %}active{% endif %}">
-            <a href="{{ path(item.route, item.parameters) }}" class="nav-link">
-                {% if item.icon is defined %}
-                    <i class="icon-{{ item.icon }}"></i>
-                {% endif %}
-                <span class="title">{{ item.label | trans }}</span>
-            </a>
-        </li>
-    {% elseif item.type == 'list' %}
-            <li class="nav-item {% if pageType == 'sunshine_page_list' and pageIdentifier == item.entityName %}active{% endif %}">
-                <a href="{{ path('sunshine_page_list', {'entityName': item.entityName}) }}" class="nav-link">
-                    {% if item.icon is defined %}
-                        <i class="icon-{{ item.icon }}"></i>
-                    {% endif %}
-                    <span class="title">{{ item.label | trans }}</span>
-
-                </a>
-            </li>
-
-    {%  elseif item.type == 'section' %}
-        <li class="heading">
-            <h3 class="uppercase">{{ item.label }}</h3>
-        </li>
-        <li class="nav-item">
-        {% for items in item.children %}
-            {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':items} %}
-        {% endfor %}
-        </li>
-    {% elseif item.type == 'external' %}
-        <li class="nav-item start ">
-            <a href="{{ item.parameters.url }}" class="nav-link" {% if item.target is defined %}target="{{ item.target }}"{% endif %}>
-                <i class="icon-home"></i>
-                <span class="title">{{ item.label | trans }}</span>
-            </a>
-        </li>
-    {% elseif item.type == 'subMenu' %}
-        <li class="nav-item {% if isActivePageIsAChildPage( item, pageType, pageIdentifier ) %}active open{%  endif %}">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="icon-puzzle"></i>
-                <span class="title">{{ item.label | trans}}</span>
-                <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-                {% for items in item.children %}
-                    {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':items} %}
-                {% endfor %}
-            </ul>
-        </li>
-    {% endif %}
+    </li>
+{% elseif item.type == 'external' %}
+    <li class="nav-item start ">
+        <a href="{{ item.parameters.url }}" class="nav-link" {% if item.target is defined %}target="{{ item.target }}"{% endif %}>
+            <i class="icon-home"></i>
+            <span class="title">{{ item.label | trans }}</span>
+        </a>
+    </li>
+{% elseif item.type == 'subMenu' %}
+    <li class="nav-item {% if isActivePageIsAChildPage( item, pageType, pageIdentifier ) %}active open{%  endif %}">
+        <a href="javascript:;" class="nav-link nav-toggle">
+            <i class="icon-puzzle"></i>
+            <span class="title">{{ item.label | trans}}</span>
+            <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            {% for items in item.children %}
+                {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':items} %}
+            {% endfor %}
+        </ul>
+    </li>
 {% endif %}

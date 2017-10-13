@@ -257,9 +257,15 @@ class Configuration implements ConfigurationInterface
                         ->cannotBeEmpty()
                         ->values(array('page', 'external', 'section', 'subMenu'))
                     ->end()
+                    ->arrayNode('security')
+                    ->children()
+                    ->variableNode('roles')->defaultNull()->end()
+                    ->variableNode('permissions')->defaultNull()->end()
+                    ->scalarNode('entity')->defaultNull()->end()
+                    ->end()
+                    ->end()
                     ->variableNode('parameters')->end()
                     ->variableNode('children')->end()
-                    ->variableNode('roles')->end()
                 ->end()
             ->end();
 
