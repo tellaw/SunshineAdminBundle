@@ -127,24 +127,28 @@ class CrudController extends AbstractController
     }
 
     /**
+     * Remove an entity
+     *
      * @Route("/crud/delete/{entityName}/{targetId}", name="sunshine_crud_delete")
      * @Route("/crud/delete/{entityName}", name="sunshine_crud_delete_js")
      * @Method({"GET", "POST"})
      */
     public function deleteAction($entityName, $targetId, Request $request)
     {
-
         /* @var $crudService CrudService */
         $crudService = $this->get("sunshine.crud_service");
 
-        $crudService->deleteEntity( $entityName, $targetId  );
-
-        $request->getSession()
-            ->getFlashBag()
-            ->add('success', 'Element "'.$targetId.'" supprimé.');
+        if ($crudService->deleteEntity($entityName, $targetId)) {
+            $request->getSession()
+                ->getFlashBag()
+                ->add('success', 'Element "'.$targetId.'" supprimé.');
+        } else {
+            $request->getSession()
+                ->getFlashBag()
+                ->add('error', "Impossible de supprimer l'élément, vérifiez s'il existe des dépendances bloquant la suppresion");
+        }
 
         return $this->redirectToRoute('sunshine_page_list', array('entityName' => $entityName));
-
     }
 
     /**

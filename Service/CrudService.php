@@ -136,10 +136,14 @@ class CrudService
         }
 
         $this->em->remove($object);
-        $this->em->flush();
 
-        return true;
-
+        // On teste si l'objet n'a pas été détaché via un événement preRemove
+        if ($this->em->getUnitOfWork()->isScheduledForDelete($object)) {
+            $this->em->flush();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
