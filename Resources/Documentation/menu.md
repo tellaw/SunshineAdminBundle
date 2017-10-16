@@ -187,3 +187,16 @@ For default theme, the icon list is availabie here : http://fortawesome.github.i
 | icon                          | The name of an icon used by your theme                      |
 | parameters/url                      | Url of the page                      |
 | target                      | Any of HTML compliant targets                     |
+
+
+# Visibility configuration
+
+You may need to configure menu items to be available only for specific users based on their roles and/or permissions.
+You may achieve this by adding a security parameter for each menu item you want to control access to. 
+See example below :
+
+security:
+    roles: [ROLE_ADMIN]
+    permissions: ['edit_user']
+    entity: User
+
