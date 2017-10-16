@@ -195,8 +195,9 @@ You may need to configure menu items to be available only for specific users bas
 You may achieve this by adding a security parameter for each menu item you want to control access to. 
 See example below :
 
+```
 security:
     roles: [ROLE_ADMIN]
     permissions: ['edit_user']
     entity: User
-
+```
