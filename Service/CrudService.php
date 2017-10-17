@@ -279,7 +279,7 @@ class CrudService
      * @param $results
      * @return array
      */
-    private function flattenObjects($entityName, $results)
+    public function flattenObjects($entityName, $results)
     {
 
         $listConfiguration = $this->entityService->getListConfiguration($entityName);
