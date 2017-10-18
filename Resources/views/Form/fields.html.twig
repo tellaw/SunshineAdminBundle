@@ -131,25 +131,30 @@
 
 {% endblock form_rows_collection %}
 
-{% block SunshineCollectionType_widget %}
-    <div class="row">
-        <div class="col-sm-5 mycollection">
-            {{ form_widget(form) }}
-        </div>
-        <div class="col-sm-3">
-            <a href="#" class="collection-up btn btn-default" title="Move fruit up"><span class="glyphicon glyphicon-arrow-up"></span></a>
-            <a href="#" class="collection-down btn btn-default" title="Move fruit down"><span class="glyphicon glyphicon-arrow-down"></span></a>
-        </div>
-        <div class="col-sm-3">
-            <a href="#" class="collection-remove btn btn-default" title="Delete fruit"><span class="glyphicon glyphicon-trash"></span></a>
-            <a href="#" class="collection-add btn btn-default" title="Add fruit"><span class="glyphicon glyphicon-plus-sign"></span></a>
-        </div>
-        <div class="col-sm-1">
-            <a href="#" class="collection-duplicate btn btn-default" title="Duplicate fruit"><span class="glyphicon glyphicon-th-large"></span></a>
-        </div>
+{% block SunshineCollectionType_row %}
+    <div class="col-md-3">
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
     </div>
+{% endblock %}
 
-{% endblock SunshineCollectionType_widget %}
+{% block SunshineCollectionType_widget %}
+    {{ form_widget(form) }}
+    <br/>
+    <p class="text-center">
+        <a href="#" class="collection-up btn btn-default">&lt;</a>
+        <a href="#" class="collection-remove btn btn-default">-</a>
+        <a href="#" class="collection-add btn btn-default">+</a>
+        <a href="#" class="collection-down btn btn-default">&gt;</a>
+    </p>
+    <script type="text/javascript">
+    $(document).ready(function () {
+            // load collections
+            $('.dynamic-collection').collection({allow_duplicate: true, name_prefix: '{{ form.vars.id }}'});
+        });
+    </script>
+{% endblock %}
 
 
 {#Tags #}

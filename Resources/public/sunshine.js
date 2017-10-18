@@ -30,8 +30,7 @@ $(document).ready(function () {
         $($input).attr('value', $inputValue);
     });
 
-    // load collections
-    $('.dynamic-collection').collection({allow_duplicate: true});
+
 
 });
 
