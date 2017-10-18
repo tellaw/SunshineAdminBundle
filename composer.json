@@ -26,12 +26,22 @@
         "doctrine/doctrine-fixtures-bundle": "2.3.*",
         "beberlei/DoctrineExtensions" : "1.0.*",
         "tetranz/select2entity-bundle": "2.*",
-        "friendsofsymfony/jsrouting-bundle": "^1.6"
+        "friendsofsymfony/jsrouting-bundle": "^1.6",
+        "ninsuo/symfony-collection": "dev-master"
     },
     "autoload" : {
       "psr-0" : {
         "Tellaw\\SunshineAdminBundle" : ""
       }
     },
-    "target-dir" : "Tellaw/SunshineAdminBundle"
+    "target-dir" : "Tellaw/SunshineAdminBundle",
+
+    "scripts": {
+      "post-install-cmd": [
+        "Fuz\\Symfony\\Collection\\ScriptHandler::postInstall"
+      ],
+      "post-update-cmd": [
+        "Fuz\\Symfony\\Collection\\ScriptHandler::postUpdate"
+      ]
+    }
 }

@@ -14,7 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Form;
 use Tellaw\SunshineAdminBundle\Form\Type\AttachmentType;
-use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
 use Tellaw\SunshineAdminBundle\Form\Type\EmbeddedType;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
 use Tellaw\SunshineAdminBundle\Form\Type\SunshineCollectionType;
@@ -459,7 +458,6 @@ class CrudService
      */
     private function addPagination($qb, $start, $length, $enablePagination)
     {
-
         // PREPARE QUERY FOR PAGINATION AND ORDER
         if ($enablePagination) {
             $qb->setFirstResult($start);
@@ -482,11 +480,11 @@ class CrudService
     {
         $keys = array_keys($listConfiguration);
 
-        if ($this->isRelatedObject($listConfiguration[$keys[$orderCol]])) {
-            $joinAlias = $this->getAliasForEntity($keys[$orderCol]);
-            $qb->orderBy($joinAlias . "." . $listConfiguration[$keys[$orderCol]]["filterAttribute"], $orderDir);
+        if ($this->isRelatedObject($listConfiguration[$orderCol])) {
+            $joinAlias = $this->getAliasForEntity($orderCol);
+            $qb->orderBy($joinAlias . "." . $listConfiguration[$orderCol]["filterAttribute"], $orderDir);
         } else {
-            $qb->orderBy($this->alias . "." . $keys[$orderCol], $orderDir);
+            $qb->orderBy($this->alias . "." . $orderCol, $orderDir);
         }
 
         return $qb;
@@ -583,19 +581,20 @@ class CrudService
 
                 case "embedded":
 
-                    $type = CollectionType::class;
+                    $type = SunshineCollectionType::class;
 
                     $prototypeConfiguration = $this->entityService->getFormConfiguration($field["configuration"]);
                     $fieldAttributes['entry_options'] = array(
                         "fields_configuration" => $prototypeConfiguration,
                         "data_class" => $field["relatedClass"],
                     );
-                    $fieldAttributes['entry_type'] = EmbeddedType::class;
 
-                    $fieldAttributes['allow_add'] =  $field["allow_add"];
-                    $fieldAttributes['allow_delete'] =  $field["allow_delete"];
-                    $fieldAttributes['by_reference'] =  false;
-                    $fieldAttributes['prototype'] =  true;
+
+                    $fieldAttributes['entry_type']      = EmbeddedType::class;
+                    $fieldAttributes['allow_add']       =  $field["allow_add"];
+                    $fieldAttributes['allow_delete']    =  $field["allow_delete"];
+                    $fieldAttributes['by_reference']    =  true;
+                    $fieldAttributes['prototype']       =  true;
 
                     $fieldAttributes['attr'] =  array(
                         'class' => 'dynamic-collection',

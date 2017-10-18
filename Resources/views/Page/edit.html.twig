@@ -22,23 +22,18 @@
             </div>
             {% endif %}
         {% endif %}
-        <div class="portlet light portlet-fit portlet-datatable bordered">
+        <div class="m-portlet m-portlet--mobile">
 
-            <div class="portlet-body">
-                <div class="table-container">
+            <div class="m-portlet__body">
 
-                    <div class="form-horizontal">
-                        {{ form_start(form) }}
-                        {% for row in form %}
-                            <div class="form-group field-">
-                                <div class="">
-                                    {{ form_row(row) }}
-                                </div>
-                            </div>
-                        {% endfor %}
-                        {{ form_end(form) }}
+                {{ form_start(form) }}
+                {% for row in form %}
+                    <div class="form-group m-form__group">
+                            {{ form_row(row) }}
                     </div>
-                </div>
+                {% endfor %}
+                {{ form_end(form) }}
+
             </div>
 
         </div>

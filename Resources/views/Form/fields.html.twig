@@ -56,7 +56,7 @@
 
 {% block submit_row -%}
     {% spaceless %}
-        <div class="form-group">
+        <div class="form-group m-form__group">
             <div class="{{ block('form_label_class') }}"></div>
             <div class="{{ block('form_group_class') }}">
                 {{ form_widget(form) }}
@@ -67,7 +67,7 @@
 
 {% block reset_row -%}
     {% spaceless %}
-        <div class="form-group">
+        <div class="form-group m-form__group">
             <div class="{{ block('form_label_class') }}"></div>
             <div class="{{ block('form_group_class') }}">
                 {{ form_widget(form) }}
@@ -77,7 +77,7 @@
 {% endblock reset_row %}
 
 {% block form_group_class %}
-    col-sm-10
+    col-sm-12
 {% endblock form_group_class %}
 
 {# Collection sunshine #}
@@ -104,7 +104,7 @@
 {%- endblock form_widget_compound_collection -%}
 
 {% block form_row_collection %}
-    <div class="form-group">
+    <div class="form-group m-form__group">
         <div class="{{ block('form_group_class') }}">
             {% if form.parent.vars.allow_delete == true %}
             <div class="collectionDeleteButton col-sm-1"><a href="#" class="remove-tag btn btn-danger collection-delete" data-entityname = "{{ getClassName(data)}}" data-id = "{{ data.id }}">x</a></div>
@@ -131,22 +131,25 @@
 
 {% endblock form_rows_collection %}
 
-{% block collection_widget %}
-
-    <div class="list-group">
-    {% if prototype is defined %}
-        {%- set attr = attr|merge({'data-prototype': form_row(prototype) }) -%}
-    {% endif %}
-
-    {{- block('form_widget_collection') -}}
-    </div>
-    {% if prototype is defined %}
-        <div class="col-sm-12" id="button_add_{{ form.vars.id }}">
-            <a style="" href="#" id="add_{{ form.vars.id }}" class="btn btn btn-info pull-left">+ Add element</a>
+{% block SunshineCollectionType_widget %}
+    <div class="row">
+        <div class="col-sm-5 mycollection">
+            {{ form_widget(form) }}
         </div>
-    {% endif %}
+        <div class="col-sm-3">
+            <a href="#" class="collection-up btn btn-default" title="Move fruit up"><span class="glyphicon glyphicon-arrow-up"></span></a>
+            <a href="#" class="collection-down btn btn-default" title="Move fruit down"><span class="glyphicon glyphicon-arrow-down"></span></a>
+        </div>
+        <div class="col-sm-3">
+            <a href="#" class="collection-remove btn btn-default" title="Delete fruit"><span class="glyphicon glyphicon-trash"></span></a>
+            <a href="#" class="collection-add btn btn-default" title="Add fruit"><span class="glyphicon glyphicon-plus-sign"></span></a>
+        </div>
+        <div class="col-sm-1">
+            <a href="#" class="collection-duplicate btn btn-default" title="Duplicate fruit"><span class="glyphicon glyphicon-th-large"></span></a>
+        </div>
+    </div>
 
-{% endblock collection_widget %}
+{% endblock SunshineCollectionType_widget %}
 
 
 {#Tags #}

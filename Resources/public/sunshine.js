@@ -1,7 +1,6 @@
 $(document).ready(function () {
     // Iterate to find widgets
     $("div").find("[data-type='widget.ajax']").each(function (item) {
-
         var route = $(this).data("route");
         $(this).load(route);
 
@@ -31,6 +30,9 @@ $(document).ready(function () {
         $($input).attr('value', $inputValue);
     });
 
+    // load collections
+    $('.dynamic-collection').collection({allow_duplicate: true});
+
 });
 
 function openWidgetEdit(pageName, row, widgetName, itemId) {
@@ -38,4 +40,8 @@ function openWidgetEdit(pageName, row, widgetName, itemId) {
     var route = $("#widget-" + widgetName).data("editroute") + "/" + itemId;
     $("#widget-" + widgetName).load(route);
 
+}
+
+function openListLink ( obj ) {
+    location.href = obj.getAttribute('data-url');
 }

@@ -1,402 +1,180 @@
-<!DOCTYPE html>
-<!--
-Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
-Version: 4.7.5
-Author: KeenThemes
-Website: http://www.keenthemes.com/
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Dribbble: www.dribbble.com/keenthemes
-Like: www.facebook.com/keenthemes
-Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
-Renew Support: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
-<!--[if IE 8]>
-<html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]>
-<html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
-<html lang="en">
-<!--<![endif]-->
-<!-- BEGIN HEAD -->
+{% extends 'TellawSunshineAdminBundle::base-skeleton.html.twig' %}
+{% block page %}
 
-<head>
-    <meta charset="utf-8"/>
-    <title>Sunshine Super ADMIN bundle</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <meta content="Preview page of Metronic Admin Theme #1 for statistics, charts, recent events and reports"
-          name="description"/>
-    <meta content="" name="author"/>
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    {% block stylesheets %}
-    {% block global_stylesheets %}
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet"
-          type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/font-awesome/css/font-awesome.min.css') }}"
-          rel="stylesheet" type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/simple-line-icons/simple-line-icons.min.css') }}"
-          rel="stylesheet" type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap/css/bootstrap.min.css') }}"
-          rel="stylesheet" type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css') }}"
-          rel="stylesheet" type="text/css"/>
-
-        <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/jquery.min.js') }}"
-                type="text/javascript"></script>
-    {% endblock global_stylesheets %}
-        <!-- END GLOBAL MANDATORY STYLES -->
-        <!-- BEGIN PAGE LEVEL PLUGINS -->
-    {% block pulgins_stylesheets %}
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/datatables/datatables.min.css') }}"
-          rel="stylesheet" type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css') }}"
-          rel="stylesheet" type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}"
-          rel="stylesheet" type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
-          rel="stylesheet" type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-select/css/bootstrap-select.css') }}"
-          rel="stylesheet" type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/select2/css/select2.css') }}"
-          rel="stylesheet" type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css') }}"
-          rel="stylesheet" type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/morris/morris.css') }}" rel="stylesheet"
-          type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/fullcalendar/fullcalendar.min.css') }}"
-          rel="stylesheet" type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/jqvmap/jqvmap/jqvmap.css') }}"
-          rel="stylesheet" type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}"
-          rel="stylesheet" type="text/css"/>
-    {% endblock pulgins_stylesheets %}
-        <!-- END PAGE LEVEL PLUGINS -->
-        <!-- BEGIN THEME GLOBAL STYLES -->
-    {% block theme_global_stylesheets %}
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/css/components-md.min.css') }}" rel="stylesheet"
-          id="style_components" type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/css/plugins-md.min.css') }}" rel="stylesheet"
-          type="text/css"/>
-    {% endblock theme_global_stylesheets %}
-        <!-- END THEME GLOBAL STYLES -->
-        <!-- BEGIN THEME LAYOUT STYLES -->
-    {% block theme_stylesheets %}
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/layouts/layout/css/layout.min.css') }}"
-          rel="stylesheet"
-          type="text/css"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/layouts/layout/css/themes/darkblue.min.css') }}"
-          rel="stylesheet" type="text/css" id="style_color"/>
-    <link href="{{ asset ('bundles/tellawsunshineadmin/assets/layouts/layout/css/custom.min.css') }}"
-          rel="stylesheet"
-          type="text/css"/>
-    {% endblock theme_stylesheets %}
-
-        <!--BEGIN tag CSS -->
-    {% block tags_stylesheets %}
-        <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}"
-                type="text/css"></script>
-        <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css') }}"
-                type="text/css"></script>
-        <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/typeahead/typeahead.css') }}"
-                type="text/css"></script>
-    {% endblock tags_stylesheets %}
-
-        <!-- progress bar CSS -->
-
-        <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/ion.rangeslider/css/ion.rangeSlider.css') }}"
-              rel="stylesheet" type="text/css">
-        <link href="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/ion.rangeslider/css/ion.rangeSlider.skinFlat.css') }}"
-              rel="stylesheet" type="text/css">
-        <!-- END Progress bar -->
-
-        {% block page_stylesheets %}
-        {% endblock page_stylesheets %}
-    {% endblock stylesheets %}
-    <!--END TAG CSS -->
-    <!-- END THEME LAYOUT STYLES -->
-    <style>
-        .list-group-item {
-            padding: 0px 15px;
-            margin:0px;
-            border:0px;
-            border-bottom:1px dashed #e0e0e0;
-            margin-top:10px;
-        }
-        .prototype {
-            margin-top:20px;
-        }
-        .select2-selection--single {
-            background-color: #fff;
-            border: 1px solid #aaa;
-            border-radius: 4px;
-        }
-    </style>
-    {#<link rel="shortcut icon" href="favicon.ico" /> </head>#}
-    <!-- END HEAD -->
-    {% block allBody %}
-<body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-content-white page-md">
-<div class="page-wrapper">
-    <!-- BEGIN HEADER -->
-    <div class="page-header navbar navbar-fixed-top">
-        <!-- BEGIN HEADER INNER -->
-        <div class="page-header-inner ">
-            <!-- BEGIN LOGO -->
-            <div class="page-logo">
-                <a href="{{ path('homepage') }}">
-                    <img src="{{ asset ('bundles/tellawsunshineadmin/assets/layouts/layout/img/logo.png') }}" alt="logo"
-                         class="logo-default"/> </a>
-            </div>
-            <!-- END LOGO -->
-
-        </div>
-        <!-- END HEADER INNER -->
-    </div>
-    <!-- END HEADER -->
-    <!-- BEGIN HEADER & CONTENT DIVIDER -->
-    <div class="clearfix"></div>
-    <!-- END HEADER & CONTENT DIVIDER -->
-    <!-- BEGIN CONTAINER -->
-    <div class="page-container">
-        <!-- BEGIN SIDEBAR -->
-        {% block sidebar %}
-            <div class="page-sidebar-wrapper">
-                <!-- BEGIN SIDEBAR -->
-                <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-                <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-                <div class="page-sidebar navbar-collapse collapse">
-                    <!-- BEGIN SIDEBAR MENU -->
-                    <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
-                    <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
-                    <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
-                    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-                    <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
-                    <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-                    <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-light " data-keep-expanded="false"
-                        data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
-                        <!-- Menu -->
-                        {% if  app.request.attributes.get('_route') == "sunshine_page" %}
-                            {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "sunshine_page", "pageIdentifier" : pageId } )) }}
-                        {% elseif app.request.attributes.get('_route') == "sunshine_page_list" %}
-                            {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "sunshine_page_list", "pageIdentifier" : entity } )) }}
-                        {% else %}
-                            {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "custom_page", "pageIdentifier" : app.request.attributes.get('_route') } )) }}
-                        {% endif %}
-
-                    </ul>
-                    <!-- END SIDEBAR MENU -->
-                    <!-- END SIDEBAR MENU -->
-                </div>
-                <!-- END SIDEBAR -->
-            </div>
-        {% endblock sidebar %}
-        <!-- END SIDEBAR -->
-        <!-- BEGIN CONTENT -->
-        <div class="page-content-wrapper">
-            <!-- BEGIN CONTENT BODY -->
-            <div class="page-content">
-                <!-- BEGIN PAGE HEADER-->
-                <!-- BEGIN PAGE BAR -->
-                <div class="page-bar">
-                    {% block breadcrumb %}
-                        Mon Breadcrumb
-                    {% endblock %}
-                </div>
-                <!-- END PAGE BAR -->
-                <!-- BEGIN PAGE TITLE-->
-                <h1 class="page-title">
-                    {% block title %}
-                        Titre de page
-                    {% endblock %}
-                </h1>
-                <!-- END PAGE TITLE-->
-                <!-- END PAGE HEADER-->
-
-                {% if app.session.flashBag.has('success') %}
-                    <div class="flashBagAlert alert alert-success">
-                        {% for msg in app.session.flashBag.get('success') %}
-                            {{ msg }}
-                        {% endfor %}
+    <!-- BEGIN: Header -->
+    <header class="m-grid__item    m-header "  data-minimize-offset="200" data-minimize-mobile-offset="200" >
+        <div class="m-container m-container--fluid m-container--full-height">
+            <div class="m-stack m-stack--ver m-stack--desktop">
+                <!-- BEGIN: Brand -->
+                <div class="m-stack__item m-brand  m-brand--skin-dark ">
+                    <div class="m-stack m-stack--ver m-stack--general">
+                        <div class="m-stack__item m-stack__item--middle m-brand__logo">
+                            <a href="index.html" class="m-brand__logo-wrapper">
+                                <img alt="" src="{{ asset ('bundles/tellawsunshineadmin/assets/vendors/base/media/img/logo/logo_default_dark.png') }}"/>
+                            </a>
+                        </div>
+                        <div class="m-stack__item m-stack__item--middle m-brand__tools">
+                            <!-- BEGIN: Left Aside Minimize Toggle -->
+                            <a href="javascript:;" id="m_aside_left_minimize_toggle" class="m-brand__icon m-brand__toggler m-brand__toggler--left m--visible-desktop-inline-block
+					 ">
+                                <span></span>
+                            </a>
+                            <!-- END -->
+                            <!-- BEGIN: Responsive Aside Left Menu Toggler -->
+                            <a href="javascript:;" id="m_aside_left_offcanvas_toggle" class="m-brand__icon m-brand__toggler m-brand__toggler--left m--visible-tablet-and-mobile-inline-block">
+                                <span></span>
+                            </a>
+                            <!-- END -->
+                            <!-- BEGIN: Responsive Header Menu Toggler -->
+                            <a id="m_aside_header_menu_mobile_toggle" href="javascript:;" class="m-brand__icon m-brand__toggler m--visible-tablet-and-mobile-inline-block">
+                                <span></span>
+                            </a>
+                            <!-- END -->
+                            <!-- BEGIN: Topbar Toggler -->
+                            <a id="m_aside_header_topbar_mobile_toggle" href="javascript:;" class="m-brand__icon m--visible-tablet-and-mobile-inline-block">
+                                <i class="flaticon-more"></i>
+                            </a>
+                            <!-- BEGIN: Topbar Toggler -->
+                        </div>
                     </div>
-                {% endif %}
+                </div>
+                <!-- END: Brand -->
+                <div class="m-stack__item m-stack__item--fluid m-header-head" id="m_header_nav">
+                    <!-- BEGIN: Horizontal Menu -->
+                    <button class="m-aside-header-menu-mobile-close  m-aside-header-menu-mobile-close--skin-dark " id="m_aside_header_menu_mobile_close_btn">
+                        <i class="la la-close"></i>
+                    </button>
 
-                {% if app.session.flashBag.has('error') %}
-                    <div class="flashBagAlert alert alert-danger">
-                        {% for msg in app.session.flashBag.get('error') %}
-                            {{ msg }}
-                        {% endfor %}
+                    <!-- END: Horizontal Menu -->
+                    <!-- BEGIN: Topbar -->
+                    <div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general">
+                        <div class="m-stack__item m-topbar__nav-wrapper">
+                            <ul class="m-topbar__nav m-nav m-nav--inline">
+                                <li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light" data-dropdown-toggle="click">
+                                    <a href="#" class="m-nav__link m-dropdown__toggle">
+												<span class="m-topbar__userpic">
+													<img src="{{ asset ('bundles/tellawsunshineadmin/assets/app/media/img/users/user4.jpg') }}" class="m--img-rounded m--marginless m--img-centered" alt=""/>
+												</span>
+                                        <span class="m-topbar__username m--hide">
+													Nick
+												</span>
+                                    </a>
+                                    <div class="m-dropdown__wrapper">
+                                        <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
+                                        <div class="m-dropdown__inner">
+                                            <div class="m-dropdown__header m--align-center" style="background: url({{ asset ('bundles/tellawsunshineadmin/assets/app/media/img/misc/user_profile_bg.jpg') }}); background-size: cover;">
+                                                <div class="m-card-user m-card-user--skin-dark">
+                                                    <div class="m-card-user__pic">
+                                                        <img src="{{ asset ('bundles/tellawsunshineadmin/assets/app/media/img/users/user4.jpg') }}" class="m--img-rounded m--marginless" alt=""/>
+                                                    </div>
+                                                    <div class="m-card-user__details">
+																<span class="m-card-user__name m--font-weight-500">
+																	Mark Andre
+																</span>
+                                                        <a href="" class="m-card-user__email m--font-weight-300 m-link">
+                                                            mark.andre@gmail.com
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="m-dropdown__body">
+                                                <div class="m-dropdown__content">
+                                                    <ul class="m-nav m-nav--skin-light">
+                                                        <li class="m-nav__section m--hide">
+																	<span class="m-nav__section-text">
+																		Section
+																	</span>
+                                                        </li>
+                                                        <li class="m-nav__item">
+                                                            <a href="header/profile.html" class="m-nav__link">
+                                                                <i class="m-nav__link-icon flaticon-profile-1"></i>
+                                                                <span class="m-nav__link-title">
+																			<span class="m-nav__link-wrap">
+																				<span class="m-nav__link-text">
+																					Mon profile
+																				</span>
+																			</span>
+																		</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="m-nav__separator m-nav__separator--fit"></li>
+                                                        <li class="m-nav__item">
+                                                            <a href="snippets/pages/user/login-1.html" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
+                                                                Se deconnecter
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                {% endif %}
-
-
-                {% block body %}
-                    Body de ma page
-                {% endblock %}
+                    <!-- END: Topbar -->
+                </div>
             </div>
-            <!-- END CONTENT BODY -->
         </div>
-        <!-- END CONTENT -->
+    </header>
+    <!-- END: Header -->
+    <!-- begin::Body -->
+    <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
+        <!-- BEGIN: Left Aside -->
+        <button class="m-aside-left-close  m-aside-left-close--skin-dark " id="m_aside_left_close_btn">
+            <i class="la la-close"></i>
+        </button>
+        <div id="m_aside_left" class="m-grid__item	m-aside-left  m-aside-left--skin-dark ">
+            <!-- BEGIN: Aside Menu -->
+            <div
+                    id="m_ver_menu"
+                    class="m-aside-menu  m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark "
+                    data-menu-vertical="true"
+                    data-menu-scrollable="false" data-menu-dropdown-timeout="500"
+            >
+                <ul class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow " style="padding-top:0px;">
+                <!-- Insert Here the menu -->
+                {% if  app.request.attributes.get('_route') == "sunshine_page" %}
+                    {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "sunshine_page", "pageIdentifier" : pageId } )) }}
+                {% elseif app.request.attributes.get('_route') == "sunshine_page_list" %}
+                    {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "sunshine_page_list", "pageIdentifier" : entity } )) }}
+                {% else %}
+                    {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "custom_page", "pageIdentifier" : app.request.attributes.get('_route') } )) }}
+                {% endif %}
+                </ul>
 
+            </div>
+            <!-- END: Aside Menu -->
+        </div>
+        <!-- END: Left Aside -->
+        <div class="m-grid__item m-grid__item--fluid m-wrapper">
+
+            <!-- BODY CONTENT OF PAGE -->
+            {% if app.session.flashBag.has('success') %}
+                <div class="flashBagAlert alert alert-success">
+                    {% for msg in app.session.flashBag.get('success') %}
+                        {{ msg }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if app.session.flashBag.has('error') %}
+                <div class="flashBagAlert alert alert-danger">
+                    {% for msg in app.session.flashBag.get('error') %}
+                        {{ msg }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="m-content">
+            {% block body %}
+                Default page
+            {% endblock %}
+            </div>
+
+        </div>
     </div>
-    <!-- END CONTAINER -->
-    <!-- BEGIN FOOTER -->
-    <div class="page-footer">
-        <div class="page-footer-inner"> 2016 &copy; Metronic Theme By
-            <a target="_blank" href="http://keenthemes.com">Keenthemes</a> &nbsp;|&nbsp;
-            <a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes"
-               title="Purchase Metronic just for 27$ and get lifetime updates for free" target="_blank">Purchase
-                Metronic!</a>
-        </div>
-        <div class="scroll-to-top">
-            <i class="icon-arrow-up"></i>
-        </div>
-    </div>
-    <!-- END FOOTER -->
-</div>
+    <!-- end:: Body -->
 
-
-{% block javascripts %}
-    <!--[if lt IE 9]>
-
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/respond.min.js') }}"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/excanvas.min.js') }}"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/ie8.fix.min.js') }}"></script>
-    <![endif]-->
-    <!-- BEGIN CORE PLUGINS -->
-
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap/js/bootstrap.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/js.cookie.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/jquery.blockui.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"
-            type="text/javascript"></script>
-    <!-- END CORE PLUGINS -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/scripts/datatable.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/datatables/datatables.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}"
-            type="text/javascript"></script>
-
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/moment.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.fr.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-select/js/bootstrap-select.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/select2/js/select2.full.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/morris/morris.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/morris/raphael-min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/counterup/jquery.waypoints.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/counterup/jquery.counterup.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/amcharts/amcharts/amcharts.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/amcharts/amcharts/serial.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/amcharts/amcharts/pie.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/amcharts/amcharts/radar.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/amcharts/amcharts/themes/light.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/amcharts/amcharts/themes/patterns.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/amcharts/amcharts/themes/chalk.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/amcharts/ammap/ammap.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/amcharts/ammap/maps/js/worldLow.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/amcharts/amstockcharts/amstock.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/fullcalendar/fullcalendar.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/horizontal-timeline/horizontal-timeline.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/flot/jquery.flot.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/flot/jquery.flot.resize.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/flot/jquery.flot.categories.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/jquery.sparkline.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/jqvmap/jqvmap/jquery.vmap.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js') }}"
-            type="text/javascript"></script>
-    {#<script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>#}
-    <!-- END PAGE LEVEL PLUGINS -->
-    <!-- BEGIN THEME GLOBAL SCRIPTS -->
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/scripts/app.min.js') }}"
-            type="text/javascript"></script>
-    <!-- END THEME GLOBAL SCRIPTS -->
-    <!-- BEGIN PAGE LEVEL SCRIPTS -->
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/pages/scripts/dashboard.min.js') }}"
-            type="text/javascript"></script>
-    <!-- END PAGE LEVEL SCRIPTS -->
-    <!-- BEGIN THEME LAYOUT SCRIPTS -->
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/layouts/layout/scripts/layout.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/layouts/layout/scripts/demo.min.js') }}"
-            type="text/javascript"></script>
-    <!-- END THEME LAYOUT SCRIPTS -->
-    <!-- START TAG JS -->
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/typeahead/handlebars.min.js') }}"
-            type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/typeahead/typeahead.bundle.min.js') }}"
-            type="text/javascript"></script>
-    <!-- END TAG -->
-    <script src="{{ asset ('bundles/tellawsunshineadmin/sunshine.js') }}" type="text/javascript"></script>
-    <script src="{{ asset ('bundles/tellawsunshineadmin/dynamic-collection.js') }}" type="text/javascript"></script>
-    <!-- End -->
-
-    <!-- progress barre -->
-
-    <script src="{{ asset ('bundles/tellawsunshineadmin/assets/global/plugins/ion.rangeslider/js/ion.rangeSlider.min.js') }}"
-            type="text/javascript"></script>
-
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 
 {% endblock %}
-</body>
-{% endblock allBody %}
-
-
-</html>

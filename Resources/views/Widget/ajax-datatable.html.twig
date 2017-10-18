@@ -1,100 +1,172 @@
-<div class="portlet light portlet-fit portlet-datatable bordered">
-    <div class="portlet-title">
+<div class="m-portlet m-portlet--mobile">
+    <div class="m-portlet__head">
         {% if widget.title is defined %}
-        <div class="caption">
-            <i class="icon-settings font-dark"></i>
-            <span class="caption-subject font-dark sbold uppercase pull-left">{{ widget.title }}</span>
-        </div>
-        {% else %}
-            <div class="caption">
-                <i class="icon-settings font-dark"></i>
-                <span class="caption-subject font-dark sbold uppercase pull-left">{{ entityName | trans }}</span>
-            </div>
-        {% endif %}
-        {% if (showAddButton is not defined or showAddButton == true)? true : false %}
-            {% if widget.parameters.newRoute is defined %}
-                <a href="{{ path(widget.parameters.newRoute, {'entityName': entityName}) }}" class="btn green pull-right ">
-                    <i class="fa fa-cogs"></i> Créer un élément
-                </a>
-            {% else %}
-                <a href="{{ path('sunshine_page_new', {'entityName': entityName}) }}" class="btn green pull-right" >
-
-                    <i class="fa fa-cogs"></i> Créer un élément
-                </a>
-            {% endif %}
-        {% endif %}
-    </div>
-    <div class="portlet-body">
-        <div class="table-container">
-            <div id="{{ widgetName }}_datatable_ajax_wrapper"
-                 class="dataTables_wrapper dataTables_extended_wrapper no-footer">
-                <div class="row">
-                    <div class="col-md-12 col-sm-12">
-
-                        <table class="table table-striped table-bordered table-hover table-checkable dataTable no-footer"
-                               id="{{ widgetName }}_datatable_ajax" aria-describedby="datatable_ajax_info" role="grid">
-                            <thead>
-                            <tr role="row" class="heading">
-                                {% for name, field in fields %}
-                                    {% if field.label is defined %}
-                                        <th class="sorting_disabled" rowspan="1" colspan="1"> {{ field.label }} </th>
-                                    {% else %}
-                                        <th class="sorting_disabled" rowspan="1" colspan="1"> {{ name }} </th>
-                                    {% endif %}
-                                {% endfor %}
-                                {%  if not fields['actions'] is defined %}
-                                    <th>Actions</th>
-                                {% endif %}
-                            </tr>
-                            </thead>
-                        </table>
-
-                        <script type="text/javascript">
-                            $(document).ready(function () {
-                                $('#{{ widgetName }}_datatable_ajax').DataTable({
-                                    "ajax": {
-                                        url: "{{ path('sunshine_ajax_datatable_callback', {'entity': entityName}) }}",
-                                        {% if filters is defined %}
-                                        data:{'filters': {{ filters|raw }} },
-                                        {% endif %}
-                                        type: "post"
-                                    },
-                                    "columnDefs": [
-                                        {% for key,field in fields %}
-                                        {% if field.template is defined and field.template is not empty %}
-                                        {
-                                            {% include field.template ~ '.html.twig' with  {'field':field, 'key':key, 'entityName':entityName} %}
-                                        },
-                                        {% endif %}
-                                        {% endfor %}
-                                        {% if not fields['actions'] is defined %}
-                                        {
-                                            "targets": {{ fields|length }},
-                                            "render": function ( data, type, row, meta ) {
-                                                var itemID = row['id'];
-                                                {% if widget.parameters.editRoute is defined %}
-                                                return '<a href="{{ path(widget.parameters.editRoute, {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn green btn-xs">Editer</a>&nbsp<a href="{{ path(widget.parameters.deleteRoute, {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn red btn-xs" onClick="return confirm(\'Confirmez-vous la suppression ?\')">Supprimer</a>"';
-                                                {% else %}
-                                                return '<a href="{{ path('sunshine_page_edit', {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn green btn-xs">Editer</a>&nbsp;<a href="{{ path('sunshine_crud_delete_js', {'entityName':entityName}) }}/'+itemID+'" type="button" class="btn red btn-xs" onClick="return confirm(\'Confirmez-vous la suppression ?\')">Supprimer</a>';
-                                                {% endif %}
-
-                                            }
-                                        }
-                                        {% endif %}
-                                    ],
-                                    "columns": [
-                                            {% for name, field in fields %}{"data": "{{ name }}"}{% if loop.last == false %},{% endif %}{% endfor %}
-
-                                    ],
-                                    "processing": true,
-                                    "serverSide": true
-                                });
-                            });
-                        </script>
-
-                    </div>
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">{{ widget.title }}</h3>
                 </div>
             </div>
-        </div>
+        {% else %}
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">{{ entityName | trans }}</h3>
+                </div>
+            </div>
+        {% endif %}
     </div>
+    <div class="m-portlet__body">
+        <div class="form-group m-form__group row align-items-center">
+            <div class="col-md-4">
+                <div class="m-input-icon m-input-icon--left">
+                    <input type="text" class="form-control m-input m-input--solid" placeholder="Recherchez..." id="m_form_search">
+                    <span class="m-input-icon__icon m-input-icon__icon--left"><span><i class="la la-search"></i></span></span>
+                </div>
+            </div>
+
+            {% if (showAddButton is not defined or showAddButton == true)? true : false %}
+                {% if widget.parameters.newRoute is defined %}
+                <div class="col-xl-4 order-1 order-xl-2 m--align-right">
+                    <a href="{{ path(widget.parameters.newRoute, {'entityName': entityName}) }}" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                        <span><i class="la la-cart-plus"></i><span>Créer un élément</span></span>
+                    </a>
+                    <div class="m-separator m-separator--dashed d-xl-none"></div>
+                </div>
+                {% else %}
+                    <div class="col-xl-4 order-1 order-xl-2 m--align-right">
+                        <a href="{{ path('sunshine_page_new', {'entityName': entityName}) }}" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                            <span><i class="la la-cart-plus"></i><span>Créer un élément</span></span>
+                        </a>
+                        <div class="m-separator m-separator--dashed d-xl-none"></div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+
+
+        <table class="table table-striped table-bordered table-hover table-checkable dataTable no-footer"
+               id="{{ widgetName }}_datatable_ajax" aria-describedby="datatable_ajax_info" role="grid">
+            <thead>
+            <tr role="row" class="heading">
+                {% for name, field in fields %}
+                    {% if field.label is defined %}
+                        <th class="sorting_disabled" rowspan="1" colspan="1"> {{ field.label }} </th>
+                    {% else %}
+                        <th class="sorting_disabled" rowspan="1" colspan="1"> {{ name }} </th>
+                    {% endif %}
+                {% endfor %}
+                {%  if not fields['actions'] is defined %}
+                    <th>Actions</th>
+                {% endif %}
+            </tr>
+            </thead>
+        </table>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var datatable = $('#{{ widgetName }}_datatable_ajax').mDatatable({
+                    data: {
+                        type: 'remote',
+                        source: {
+                            read: {
+                                url:"{{ path('sunshine_ajax_datatable_callback', {'entity': entityName}) }}",
+                                query: {
+                                    generalSearch: ''
+                                }
+                            }
+                        },
+                        pageSize: 10,
+                        saveState: {
+                            cookie: false,
+                            webstorage: true
+                        },
+                        serverPaging: true,
+                        serverFiltering: true,
+                        serverSorting: true
+                    },
+
+                    // layout definition
+                    layout: {
+                        theme: 'default', // datatable theme
+                        class: '', // custom wrapper class
+                        scroll: false, // enable/disable datatable scroll both horizontal and vertical when needed.
+                        footer: false // display/hide footer
+                    },
+
+                    // column sorting
+                    sortable: true,
+
+                    // Enable Pagination
+                    pagination: true,
+
+                    columns: [
+                        {% for key,field in fields %} {# Browse Fields and keys of fields #}
+                        {#
+                            if field has a non empty template attribute, use it instead of default view
+                        #}
+                        {% if field.template is defined and field.template is not empty %}
+                        {
+                            {% include field.template ~ '.html.twig' with  {'field':field, 'key':key, 'entityName':entityName} %}
+                        },
+                        {% else %}
+                        {#
+                            Default template
+                        #}
+                        {
+                            field: "{{ key }}",
+                            title: "{{ key }}"
+                        },
+                        {% endif %}
+                        {% endfor %}
+                        {#
+                            If no field "actions" is defined, then add the default one
+                        #}
+                        {% if not fields['actions'] is defined %}
+                        {
+                            field: "action",
+                            title: "Action",
+                            template: function (row) {
+                                {% if widget.parameters.editRoute is defined %}
+                                return '<button onclick="openListLink(this)" data-url="{{ path(widget.parameters.editRoute, {'entityName':entityName}) }}/'+row.id+'" type="button" class="btn btn-primary btn-sm">Editer</button>&nbsp<button onclick="openListLink(this)" data-url="{{ path(widget.parameters.deleteRoute, {'entityName':entityName}) }}/'+row.id+'" type="button" class="btn btn-danger btn-sm" onClick="return confirm(\'Confirmez-vous la suppression ?\')">Supprimer</button>"';
+                                {% else %}
+                                return '<button onclick="openListLink(this)" data-url="{{ path('sunshine_page_edit', {'entityName':entityName}) }}/'+row.id+'" type="button" class="btn btn-primary btn-sm">Editer</button>&nbsp;<button onclick="openListLink(this)" data-url="{{ path('sunshine_crud_delete_js', {'entityName':entityName}) }}/'+row.id+'" type="button" class="btn btn-danger btn-sm" onClick="return confirm(\'Confirmez-vous la suppression ?\')">Supprimer</button>';
+                                {% endif %}
+                            }
+                        }
+                        {% endif %}
+                    ],
+                    translate: {
+                        records: {
+                            processing: 'Patientez s\'il vous plait...',
+                            noRecords: 'Aucune donnée'
+                        },
+                        toolbar: {
+                            pagination: {
+                                items: {
+                                    default: {
+                                        first: 'Le premier',
+                                        prev: 'Précédent',
+                                        next: 'Suivant',
+                                        last: 'Le dernier',
+                                        more: 'Plus de pages',
+                                        input: 'Numéro de page',
+                                        select: 'Taille de la liste'
+                                    },
+                                    {% verbatim %}info: '{{start}} - {{end}} sur {{total}} enregistrements'{% endverbatim %}
+                                }
+                            }
+                        }
+                    }
+                });
+
+                var query = datatable.getDataSourceQuery();
+
+                $('#m_form_search').on('keyup', function (e) {
+                    datatable.search($(this).val().toLowerCase());
+                }).val(query.generalSearch);
+
+            });
+        </script>
+
+    </div>
+
 </div>
