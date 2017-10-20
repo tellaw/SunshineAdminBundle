@@ -77,42 +77,32 @@ class AjaxController extends Controller
      */
     public function ajaxListCallBackAction ( Request $request, $entity ) {
 
-        $draw = $request->request->get ("draw");
-
+        $orderCol = "id";
+        $orderDir = "asc";
         if (isset($request->request->get ("datatable")["sort"]["field"]) && $request->request->get ("datatable")["sort"]["field"] != "") {
             $orderCol = $request->request->get("datatable")["sort"]["field"];
             $orderDir = $request->request->get("datatable")["sort"]["sort"];
-        } else {
-            $orderCol = "id";
-            $orderDir = "asc";
         }
 
+        $paginationLength = 10;
         if (isset($request->request->get ("datatable")["pagination"]["perpage"]) && $request->request->get ("datatable")["pagination"]["perpage"] != "") {
             $paginationLength = $request->request->get ("datatable")["pagination"]["perpage"];
-        } else {
-            $paginationLength = 10;
         }
 
+        $page = 0;
         if (isset($request->request->get ("datatable")["pagination"]["page"])) {
             $page = $request->request->get ("datatable")["pagination"]["page"];
-        } else {
-            $page = 0;
         }
 
         $paginationStart =  ( $page -1 ) * $paginationLength ;
-
-        //$paginationStart = $request->request->get ("pagination");
-        //$paginationLength = $request->request->get ("length");
+        $searchValue = "";
         if (isset($request->request->get ("datatable")["query"])) {
-        $searchValue = $request->request->get ("datatable")["query"]["generalSearch"];
-        } else {
-            $searchValue = "";
+            $searchValue = $request->request->get ("datatable")["query"]["generalSearch"];
         }
 
         $filters = null;
         if (isset($request->request->get ("datatable")["filters"])) {
             $filters = $request->request->get("datatable")["filters"];
-            dump($filters);
         }
 
         /** @var CrudService $crudService */
@@ -121,9 +111,6 @@ class AjaxController extends Controller
 
         // Get the number of elements using the filter
         $nbElementsOfFilteredEntity = $crudService->getCountEntityElements( $entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue, $filters);
-
-        // Get the total number of elements for this entity
-        $nbElementsInTable = $crudService->getTotalElementsInTable( $entity );
 
         $responseArray = array (
             'infos' => array (
