@@ -207,15 +207,18 @@ class EntityService
     }
 
     /**
-     *
      * Method used to read Annotations on class
      *
      * @param $class
      * @param $property
-     * @return mixed
+     * @return array
      */
-    private function getAnnotationsForAttribute ( $class, $property ) 
+    private function getAnnotationsForAttribute($class, $property)
     {
+        if (!property_exists($class, $property)) {
+            return [];
+        }
+
         $annotationReader = new AnnotationReader();
         $reflectionProperty = new \ReflectionProperty($class, $property);
         return $annotationReader->getPropertyAnnotations($reflectionProperty);

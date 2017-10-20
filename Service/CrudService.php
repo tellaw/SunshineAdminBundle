@@ -257,13 +257,15 @@ class CrudService
             return $qb;
         }
 
+        $i = 0;
         foreach ($filters as $filter) {
             if (
                 array_key_exists('property', $filter) &&
                 array_key_exists('value', $filter)
             ) {
-                $qb->andWhere($this->alias . "." . $filter['property'] . " =:value ")
-                    ->setParameter("value", $filter["value"]);
+                $qb->andWhere($this->alias . "." . $filter['property'] . " =:value$i ")
+                    ->setParameter("value$i", $filter["value"]);
+                $i++;
 
             }
         }
@@ -279,12 +281,10 @@ class CrudService
      * @param $results
      * @return array
      */
-    public function flattenObjects($entityName, $results)
+    private function flattenObjects($entityName, $results)
     {
-
         $listConfiguration = $this->entityService->getListConfiguration($entityName);
         $baseConfiguration = $this->entityService->getConfiguration($entityName);
-
         $class = $baseConfiguration["configuration"]["class"];
 
         /** @var ClassMetadata $classMetadata */
@@ -292,6 +292,12 @@ class CrudService
 
         $fieldMappings = $classMetadata->fieldMappings;
         $associationMappings = $classMetadata->associationMappings;
+
+        foreach ($listConfiguration as $key => $configuration) {
+            if ($configuration['type'] != 'custom' && $configuration['type'] != 'object' && empty($fieldMappings[$key])) {
+                $fieldMappings[$key] = $configuration;
+            }
+        }
 
         $flattenDatas = array();
 
@@ -515,7 +521,7 @@ class CrudService
     protected function addSearch($qb, $searchValue, $listConfiguration, $baseConfiguration)
     {
         // PREPARE QUERY FOR PARAM SEARCH
-        if ($searchValue != "" && isset($baseConfiguration["list"]["search"])) {
+        if ($searchValue != "" && !empty($baseConfiguration["list"]["search"])) {
 
             $searchConfig = $baseConfiguration["list"]["search"];
 
