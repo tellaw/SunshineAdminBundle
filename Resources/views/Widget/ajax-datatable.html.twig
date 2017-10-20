@@ -69,9 +69,15 @@
                         source: {
                             read: {
                                 url:"{{ path('sunshine_ajax_datatable_callback', {'entity': entityName}) }}",
-                                query: {
-                                    generalSearch: ''
-                                }
+                                params: {
+                                        generalSearch: '',
+                                        filters: [
+                                            {
+                                                property: 'name',
+                                                value: 'EDW | Etoile App Mobile'
+                                            }
+                                        ]
+                                    }
                             }
                         },
                         pageSize: 10,
@@ -98,28 +104,26 @@
                     // Enable Pagination
                     pagination: true,
 
+                    {# START of Column Definition #}
                     columns: [
                         {% for key,field in fields %} {# Browse Fields and keys of fields #}
-                        {#
-                            if field has a non empty template attribute, use it instead of default view
-                        #}
-                        {% if field.template is defined and field.template is not empty %}
-                        {
-                            {% include field.template ~ '.html.twig' with  {'field':field, 'key':key, 'entityName':entityName} %}
-                        },
-                        {% else %}
-                        {#
-                            Default template
-                        #}
-                        {
-                            field: "{{ key }}",
-                            title: "{{ key }}"
-                        },
-                        {% endif %}
+
+                            {# if field has a non empty template attribute, use it instead of default view #}
+                            {% if field.template is defined and field.template is not empty %}
+                                {
+                                    {% include field.template ~ '.html.twig' with  {'field':field, 'key':key, 'entityName':entityName} %}
+                                },
+                            {% else %}
+                            {# Default template #}
+                                {
+                                    field: "{{ key }}",
+                                    title: "{{ key }}"
+                                },
+                            {% endif %}
+
                         {% endfor %}
-                        {#
-                            If no field "actions" is defined, then add the default one
-                        #}
+
+                        {# If no field "actions" is defined, then add the default one #}
                         {% if not fields['actions'] is defined %}
                         {
                             field: "action",
@@ -134,6 +138,8 @@
                         }
                         {% endif %}
                     ],
+                    {# END of Column Definition #}
+
                     translate: {
                         records: {
                             processing: 'Patientez s\'il vous plait...',

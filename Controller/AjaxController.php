@@ -108,7 +108,12 @@ class AjaxController extends Controller
         } else {
             $searchValue = "";
         }
-        $filters = [$request->request->get("filters", null)];
+
+        $filters = null;
+        if (isset($request->request->get ("datatable")["filters"])) {
+            $filters = $request->request->get("datatable")["filters"];
+            dump($filters);
+        }
 
         /** @var CrudService $crudService */
         $crudService = $this->get("sunshine.crud_service");
