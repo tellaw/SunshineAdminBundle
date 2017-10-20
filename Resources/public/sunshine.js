@@ -30,8 +30,6 @@ $(document).ready(function () {
         $($input).attr('value', $inputValue);
     });
 
-
-
 });
 
 function openWidgetEdit(pageName, row, widgetName, itemId) {

@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Form;
 use Tellaw\SunshineAdminBundle\Form\Type\AttachmentType;
+use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
 use Tellaw\SunshineAdminBundle\Form\Type\EmbeddedType;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
 use Tellaw\SunshineAdminBundle\Form\Type\SunshineCollectionType;
@@ -581,7 +582,7 @@ class CrudService
 
                 case "embedded":
 
-                    $type = SunshineCollectionType::class;
+                    $type = CollectionType::class;
 
                     $prototypeConfiguration = $this->entityService->getFormConfiguration($field["configuration"]);
                     $fieldAttributes['entry_options'] = array(
@@ -589,12 +590,12 @@ class CrudService
                         "data_class" => $field["relatedClass"],
                     );
 
+                    $fieldAttributes['entry_type'] = EmbeddedType::class;
 
-                    $fieldAttributes['entry_type']      = EmbeddedType::class;
-                    $fieldAttributes['allow_add']       =  $field["allow_add"];
-                    $fieldAttributes['allow_delete']    =  $field["allow_delete"];
-                    $fieldAttributes['by_reference']    =  true;
-                    $fieldAttributes['prototype']       =  true;
+                    $fieldAttributes['allow_add'] =  $field["allow_add"];
+                    $fieldAttributes['allow_delete'] =  $field["allow_delete"];
+                    $fieldAttributes['by_reference'] =  false; // By Reference to false ensure setter of parent must be called in all case
+                    $fieldAttributes['prototype'] =  true;
 
                     $fieldAttributes['attr'] =  array(
                         'class' => 'dynamic-collection',

@@ -52,13 +52,18 @@ function addAttachmentForm(collectionHolder, addButtonObj, collectionId) {
     collectionHolder.data('index', index + 1);
     var divId = collectionId + '_' + ( index + 1);
 
+    // Remove the first label
     var prototype = prototype.replace(/<label(.*)__name__label__<\/label>/i, '');
+
+    // Replace __name__ by the correct index
     prototype = prototype.replace(/__name__/g, index + 1);
 
-    prototype = prototype.replace ('<div id="'+divId+'">','<div id="'+divId+'" class="collectionForm col-sm-11">');
+    prototype = prototype.replace ('<div id="'+divId+'">','<div id="'+divId+'" class="collectionForm col-lg-11">');
 
     $("#"+collectionId).append( '<div class="prototype list-group list-group-item row">'+prototype+'</div>' );
-    $('<div class="collectionDeleteButton col-sm-1"><a href="#" class="remove-tag btn btn-danger">x</a></div>').insertBefore ('#'+divId);
+    $('<div class="collectionDeleteButton col-lg-1"><a href="#" class="remove-tag btn btn-danger">x</a></div>').insertBefore ('#'+divId);
+
+    $('#'+divId).parent().wrapInner("<div class='row'></div>");
 
     // handle the removal, just for this example
     $('.remove-tag').click(function(e) {

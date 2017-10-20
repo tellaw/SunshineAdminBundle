@@ -45,7 +45,7 @@
                 {% if isVisible == true %}
 
                     {% if (widget.preload is defined) and (widget.preload == 'true')%}
-                        <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
+                        <div class="col-xl-{{ widget.columns }}"
                              data-route="{{ getWidgetUrl( widget, name, pageId, rowKey ) }}"
                              data-type="widget.preloaded"
                              id="widget-{{ name }}">
@@ -64,14 +64,14 @@
                         </div>
 
                     {% elseif (serviceWidgets[name] is defined) %}
-                        <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
+                        <div class="col-xl-{{ widget.columns }}"
                              id="widget-{{ name }}" >
                         {{ serviceWidgets[name] | raw }}
                         </div>
 
                     {% else %}
 
-                        <div class="col-lg-{{ widget.columns }} col-md-{{ widget.columns }} col-sm-{{ widget.columns }} col-xs-{{ widget.columns }}"
+                        <div class="col-xl-{{ widget.columns }}"
                              data-route="{{ getWidgetUrl( widget, name, pageId, rowKey ) }}"
                              data-editroute=""
                              data-type="widget.ajax"
