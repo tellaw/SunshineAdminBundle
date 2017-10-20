@@ -29,20 +29,20 @@ class CrudService
      *
      * @var string
      */
-    private $alias = 'l';
+    protected $alias = 'l';
 
     /**
      * Entity manager
      *
      * @var EntityManagerInterface
      */
-    private $em;
+    protected $em;
 
     /**
      * Entity Service
      * @var EntityService
      */
-    private $entityService;
+    protected $entityService;
 
     /**
      * CrudService constructor.
@@ -136,10 +136,14 @@ class CrudService
         }
 
         $this->em->remove($object);
-        $this->em->flush();
 
-        return true;
-
+        // On teste si l'objet n'a pas été détaché via un événement preRemove
+        if ($this->em->getUnitOfWork()->isScheduledForDelete($object)) {
+            $this->em->flush();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -171,7 +175,6 @@ class CrudService
         $qb->setFirstResult(($page - 1) * $itemPerPage);
         $qb->setMaxResults($itemPerPage);
 
-        dump($qb->getQuery()->getResult());
         return $qb->getQuery()->getResult();
     }
 
@@ -246,21 +249,30 @@ class CrudService
         return $this->flattenObjects($entityName, $data );
     }
 
-
-    private function addFilters(QueryBuilder $qb, array $filters = null)
+    /**
+     *
+     * Method used to filter the query
+     *
+     * @param QueryBuilder $qb
+     * @param array|null $filters
+     * @return QueryBuilder
+     */
+    protected function addFilters(QueryBuilder $qb, array $filters = null)
     {
         if ($filters[0] === null)
         {
             return $qb;
         }
 
+        $i = 0;
         foreach ($filters as $filter) {
             if (
                 array_key_exists('property', $filter) &&
                 array_key_exists('value', $filter)
             ) {
-                $qb->andWhere($this->alias . "." . $filter['property'] . " =:value ")
-                    ->setParameter("value", $filter["value"]);
+                $qb->andWhere($this->alias . "." . $filter['property'] . " =:value$i ")
+                    ->setParameter("value$i", $filter["value"]);
+                $i++;
 
             }
         }
@@ -278,10 +290,8 @@ class CrudService
      */
     private function flattenObjects($entityName, $results)
     {
-
         $listConfiguration = $this->entityService->getListConfiguration($entityName);
         $baseConfiguration = $this->entityService->getConfiguration($entityName);
-
         $class = $baseConfiguration["configuration"]["class"];
 
         /** @var ClassMetadata $classMetadata */
@@ -289,6 +299,12 @@ class CrudService
 
         $fieldMappings = $classMetadata->fieldMappings;
         $associationMappings = $classMetadata->associationMappings;
+
+        foreach ($listConfiguration as $key => $configuration) {
+            if ($configuration['type'] != 'custom' && $configuration['type'] != 'object' && empty($fieldMappings[$key])) {
+                $fieldMappings[$key] = $configuration;
+            }
+        }
 
         $flattenDatas = array();
 
@@ -317,7 +333,7 @@ class CrudService
      * @param $object
      * @return array
      */
-    private function getValuesForAttributes($fieldMappings, $object)
+    protected function getValuesForAttributes($fieldMappings, $object)
     {
 
         $flattenObject = array();
@@ -350,7 +366,7 @@ class CrudService
      * @return array
      *
      */
-    private function getValuesForRealtedObjects($associationMappings, $object)
+    protected function getValuesForRealtedObjects($associationMappings, $object)
     {
 
         $flattenObject = array();
@@ -380,7 +396,7 @@ class CrudService
      * @param $element
      * @return string
      */
-    private function getToString ( $element )
+    protected function getToString ( $element )
     {
         if ($element != null) {
             if (  $element instanceof \iterable  || $element instanceof Collection) {
@@ -409,7 +425,7 @@ class CrudService
      * @param $property
      * @return string
      */
-    private function getAliasForEntity($property)
+    protected function getAliasForEntity($property)
     {
         return strtolower($property . "_");
     }
@@ -422,7 +438,7 @@ class CrudService
      * @param $baseConfiguration
      * @return mixed
      */
-    private function addSelectAndJoin($qb, $listConfiguration, $baseConfiguration, array $filters = null)
+    protected function addSelectAndJoin($qb, $listConfiguration, $baseConfiguration, array $filters = null)
     {
         $qb->select($this->alias);
         $qb->from($baseConfiguration["configuration"]["class"], $this->alias);
@@ -457,7 +473,7 @@ class CrudService
      * @param $enablePagination
      * @return mixed
      */
-    private function addPagination($qb, $start, $length, $enablePagination)
+    protected function addPagination($qb, $start, $length, $enablePagination)
     {
         // PREPARE QUERY FOR PAGINATION AND ORDER
         if ($enablePagination) {
@@ -477,7 +493,7 @@ class CrudService
      * @param $orderDir
      * @return mixed
      */
-    private function addOrderBy($qb, $listConfiguration, $orderCol, $orderDir)
+    protected function addOrderBy($qb, $listConfiguration, $orderCol, $orderDir)
     {
         $keys = array_keys($listConfiguration);
 
@@ -491,7 +507,7 @@ class CrudService
         return $qb;
     }
 
-    private function isRelatedObject($item)
+    protected function isRelatedObject($item)
     {
         if (key_exists('relatedClass', $item) && $item["relatedClass"] != false) {
             return true;
@@ -508,10 +524,10 @@ class CrudService
      * @param $baseConfiguration
      * @return mixed
      */
-    private function addSearch($qb, $searchValue, $listConfiguration, $baseConfiguration)
+    protected function addSearch($qb, $searchValue, $listConfiguration, $baseConfiguration)
     {
         // PREPARE QUERY FOR PARAM SEARCH
-        if ($searchValue != "" && isset($baseConfiguration["list"]["search"])) {
+        if ($searchValue != "" && !empty($baseConfiguration["list"]["search"])) {
 
             $searchConfig = $baseConfiguration["list"]["search"];
 

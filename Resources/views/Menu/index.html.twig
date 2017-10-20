@@ -1,3 +1,5 @@
 {% for item in menu %}
-    {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':item} %}
+    {%  if isMenuItemVisible(item) %}
+        {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':item} %}
+    {% endif %}
 {% endfor %}
