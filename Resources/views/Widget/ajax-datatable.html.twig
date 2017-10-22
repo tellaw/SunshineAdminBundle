@@ -1,3 +1,4 @@
+{% form_theme filtersForm 'TellawSunshineAdminBundle:Form:filterFields.html.twig'%}
 <div class="m-portlet m-portlet--mobile">
     <div class="m-portlet__head">
         {% if widget.title is defined %}
@@ -16,7 +17,7 @@
     </div>
     <div class="m-portlet__body">
         <div class="form-group m-form__group row align-items-center">
-            <div class="col-md-4">
+            <div class="col-lg-6">
                 <div class="m-input-icon m-input-icon--left">
                     <input type="text" class="form-control m-input m-input--solid" placeholder="Recherchez..." id="m_form_search">
                     <span class="m-input-icon__icon m-input-icon__icon--left"><span><i class="la la-search"></i></span></span>
@@ -25,14 +26,14 @@
 
             {% if (showAddButton is not defined or showAddButton == true)? true : false %}
                 {% if widget.parameters.newRoute is defined %}
-                <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                    <a href="{{ path(widget.parameters.newRoute, {'entityName': entityName}) }}" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-                        <span><i class="la la-cart-plus"></i><span>Créer un élément</span></span>
-                    </a>
-                    <div class="m-separator m-separator--dashed d-xl-none"></div>
-                </div>
+                    <div class="col-xl-6 order-1 order-xl-2 m--align-right">
+                        <a href="{{ path(widget.parameters.newRoute, {'entityName': entityName}) }}" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                            <span><i class="la la-cart-plus"></i><span>Créer un élément</span></span>
+                        </a>
+                        <div class="m-separator m-separator--dashed d-xl-none"></div>
+                    </div>
                 {% else %}
-                    <div class="col-xl-4 order-1 order-xl-2 m--align-right">
+                    <div class="col-xl-6 order-1 order-xl-2 m--align-right">
                         <a href="{{ path('sunshine_page_new', {'entityName': entityName}) }}" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
                             <span><i class="la la-cart-plus"></i><span>Créer un élément</span></span>
                         </a>
@@ -42,6 +43,16 @@
             {% endif %}
         </div>
 
+        <div class="form-group m-form__group row align-items-center">
+            <div class="col-md-12">
+                {% if filtersForm %}
+                    <!-- Input field for search -->
+                    <div class="m-input-icon m-input-icon--left">
+                            {{ form(filtersForm) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
 
         <table class="table table-striped table-bordered table-hover table-checkable dataTable no-footer"
                id="{{ widgetName }}_datatable_ajax" aria-describedby="datatable_ajax_info" role="grid">
@@ -62,22 +73,37 @@
         </table>
 
         <script type="text/javascript">
-            $(document).ready(function () {
-                var datatable = $('#{{ widgetName }}_datatable_ajax').mDatatable({
+
+            var filters = [];
+
+            var datatable;
+
+            function updateFilters () {
+                newFilters = [];
+                $("body").find(".filterElement").each(function (index, item) {
+                    if (item.value != "") {
+                        name = item.name;
+                        name = name.replace("filters[", "");
+                        name = name.replace ("]", "");
+                        console.log (item.value);
+                        newFilters.push({property:name, value:item.value});
+                    }
+                });
+                filters = newFilters;
+
+                if (datatable) {
+                    datatable.destroy();
+                }
+                datatable = $('#{{ widgetName }}_datatable_ajax').mDatatable({
                     data: {
                         type: 'remote',
                         source: {
                             read: {
-                                url:"{{ path('sunshine_ajax_datatable_callback', {'entity': entityName}) }}",
+                                url: "{{ path('sunshine_ajax_datatable_callback', {'entity': entityName}) }}",
                                 params: {
-                                        generalSearch: '',
-                                        filters: [
-                                            {
-                                                property: 'name',
-                                                value: 'EDW | Etoile App Mobile'
-                                            }
-                                        ]
-                                    }
+                                    generalSearch: '',
+                                    filters: filters
+                                }
                             }
                         },
                         pageSize: 10,
@@ -108,18 +134,18 @@
                     columns: [
                         {% for key,field in fields %} {# Browse Fields and keys of fields #}
 
-                            {# if field has a non empty template attribute, use it instead of default view #}
-                            {% if field.template is defined and field.template is not empty %}
-                                {
-                                    {% include field.template ~ '.html.twig' with  {'field':field, 'key':key, 'entityName':entityName} %}
-                                },
-                            {% else %}
-                            {# Default template #}
-                                {
-                                    field: "{{ key }}",
-                                    title: "{{ key }}"
-                                },
-                            {% endif %}
+                        {# if field has a non empty template attribute, use it instead of default view #}
+                        {% if field.template is defined and field.template is not empty %}
+                        {
+                            {% include field.template ~ '.html.twig' with  {'field':field, 'key':key, 'entityName':entityName} %}
+                        },
+                        {% else %}
+                        {# Default template #}
+                        {
+                            field: "{{ key }}",
+                            title: "{{ key }}"
+                        },
+                        {% endif %}
 
                         {% endfor %}
 
@@ -130,9 +156,9 @@
                             title: "Action",
                             template: function (row) {
                                 {% if widget.parameters.editRoute is defined %}
-                                return '<button onclick="openListLink(this)" data-url="{{ path(widget.parameters.editRoute, {'entityName':entityName}) }}/'+row.id+'" type="button" class="btn btn-primary btn-sm">Editer</button>&nbsp<button onclick="openListLink(this)" data-url="{{ path(widget.parameters.deleteRoute, {'entityName':entityName}) }}/'+row.id+'" type="button" class="btn btn-danger btn-sm" onClick="return confirm(\'Confirmez-vous la suppression ?\')">Supprimer</button>"';
+                                return '<button onclick="openListLink(this)" data-url="{{ path(widget.parameters.editRoute, {'entityName':entityName}) }}/' + row.id + '" type="button" class="btn btn-primary btn-sm">Editer</button>&nbsp<button onclick="openListLink(this)" data-url="{{ path(widget.parameters.deleteRoute, {'entityName':entityName}) }}/' + row.id + '" type="button" class="btn btn-danger btn-sm" onClick="return confirm(\'Confirmez-vous la suppression ?\')">Supprimer</button>"';
                                 {% else %}
-                                return '<button onclick="openListLink(this)" data-url="{{ path('sunshine_page_edit', {'entityName':entityName}) }}/'+row.id+'" type="button" class="btn btn-primary btn-sm">Editer</button>&nbsp;<button onclick="openListLink(this)" data-url="{{ path('sunshine_crud_delete_js', {'entityName':entityName}) }}/'+row.id+'" type="button" class="btn btn-danger btn-sm" onClick="return confirm(\'Confirmez-vous la suppression ?\')">Supprimer</button>';
+                                return '<button onclick="openListLink(this)" data-url="{{ path('sunshine_page_edit', {'entityName':entityName}) }}/' + row.id + '" type="button" class="btn btn-primary btn-sm">Editer</button>&nbsp;<button onclick="openListLink(this)" data-url="{{ path('sunshine_crud_delete_js', {'entityName':entityName}) }}/' + row.id + '" type="button" class="btn btn-danger btn-sm" onClick="return confirm(\'Confirmez-vous la suppression ?\')">Supprimer</button>';
                                 {% endif %}
                             }
                         }
@@ -163,6 +189,12 @@
                         }
                     }
                 });
+                return  datatable;
+            }
+
+            $(document).ready(function () {
+
+                updateFilters();
 
                 var query = datatable.getDataSourceQuery();
 
@@ -170,7 +202,16 @@
                     datatable.search($(this).val().toLowerCase());
                 }).val(query.generalSearch);
 
+                $(".filterElement").on("keyup", function (e) {
+                    updateFilters();
+                });
+
+                $(".filterElement").on("change", function (e) {
+                    updateFilters();
+                });
+
             });
+
         </script>
 
     </div>

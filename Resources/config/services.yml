@@ -31,10 +31,6 @@ services:
     tags:
       - { name: twig.extension }
 
-  sunshine.defaultType:
-    class: Tellaw\SunshineAdminBundle\Form\Type\DefaultType
-    arguments: ["@sunshine.crud_service"]
-
   sunshine.embeddedType:
     class: Tellaw\SunshineAdminBundle\Form\Type\EmbeddedType
     arguments: ["@sunshine.crud_service"]
@@ -51,12 +47,15 @@ services:
     tags:
       - { name: form.type }
 
-  sunshine.embedded_form_type:
-    class: Tellaw\SunshineAdminBundle\Form\Type\EmbeddedType
+  sunshine.filtersType:
+    class: Tellaw\SunshineAdminBundle\Form\Type\FiltersType
     arguments: ['@sunshine.crud_service', "@doctrine.orm.entity_manager" ]
     tags:
       - { name: form.type }
 
+  ##
+  ## WIDGETS DEFINITION
+  ##
   sunshine.widgets.abstract:
     abstract:  true
     arguments: [ '@request_stack', '@twig', "@doctrine.orm.entity_manager" ]

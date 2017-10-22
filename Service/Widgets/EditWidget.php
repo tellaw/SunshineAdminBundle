@@ -11,8 +11,10 @@ use Tellaw\SunshineAdminBundle\Service\EntityService;
 
 class EditWidget extends AbstractWidget {
 
+    /** @var CrudService */
     private $crudService;
 
+    /** @var  EntityService */
     private $entitiesService;
 
     /** @var FormFactory $formFactory */

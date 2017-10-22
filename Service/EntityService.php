@@ -37,6 +37,47 @@ class EntityService
     }
 
     /**
+     *
+     * Provide the Filters configuration for the entity
+     * This configuration is used to build the list view in order to generate the list of filters
+     *
+     * @param $entityName
+     * @return array
+     */
+    public function getFiltersConfiguration ( $entityName ) {
+
+        $fieldList =  $this->getConfigurationByViewType($entityName, "list");
+
+        // Now we have the field list, we must remove any field no relevant to the filter form.
+        $configuration = $this->getConfiguration($entityName);
+        $detailedConfiguration = $configuration["list"];
+
+        if (array_key_exists( "filters", $detailedConfiguration ) && count ($detailedConfiguration["filters"]) > 0 ) {
+            $filtersFields = $detailedConfiguration["filters"];
+
+            $filters = array();
+
+            foreach ( $filtersFields as $filterField => $filterData ) {
+
+                if (array_key_exists( $filterField, $fieldList )) {
+                    $filters[$filterField] = $fieldList[ $filterField ];
+                } else {
+                    throw new \Exception("Filter field doesn't match an existing field. Entity : ".$entityName." - Field : ".$filterField);
+                }
+
+            }
+
+            return $filters;
+
+        } else {
+            // Now configuration for filters, return null
+            return null;
+        }
+
+    }
+
+
+    /**
      * Provide the entity configuration for the list view
      *
      * @param string $entityName
@@ -80,7 +121,6 @@ class EntityService
         }
 
         $globalConfiguration = $configuration['attributes'];
-        $viewConfiguration = $configuration[$viewType];
         $detailedConfiguration = $configuration[$viewType]['fields'];
 
         $resultData = array();
@@ -106,6 +146,8 @@ class EntityService
             }
         }
 
+        // Now that we have the filed list, try to guess types and related objects
+        // This second pass is not very efficient, should be done in a one pass process.
         foreach ($resultData as $fieldName => $fieldConfiguration) {
 
             if (!isset($fieldConfiguration['type']) || empty($fieldConfiguration['type'])) {
@@ -223,4 +265,16 @@ class EntityService
         $reflectionProperty = new \ReflectionProperty($class, $property);
         return $annotationReader->getPropertyAnnotations($reflectionProperty);
     }
+
+
+    public function getFiltersForm ( $entityName ) {
+
+        // First get filters configuration, if none, juste leave
+
+        // Render the form Obj
+
+        // Return it
+
+    }
+
 }

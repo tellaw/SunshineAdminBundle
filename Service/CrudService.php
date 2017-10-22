@@ -235,7 +235,7 @@ class CrudService
         $qb = $this->addSelectAndJoin($qb, $listConfiguration, $baseConfiguration, $filters);
 
         if ($filters !== null) {
-            $qb = $this->addFilters($qb, $filters);
+            $qb = $this->addFilters($qb, $filters, $listConfiguration);
         }
         $qb = $this->addPagination($qb, $start, $length, $enablePagination);
         if (!empty($orderCol) && !empty($orderDir)) {
@@ -257,8 +257,9 @@ class CrudService
      * @param array|null $filters
      * @return QueryBuilder
      */
-    protected function addFilters(QueryBuilder $qb, array $filters = null)
+    protected function addFilters(QueryBuilder $qb, array $filters = null, $listConfiguration)
     {
+
         if ($filters[0] === null)
         {
             return $qb;
@@ -266,12 +267,15 @@ class CrudService
 
         $i = 0;
         foreach ($filters as $filter) {
-            if (
-                array_key_exists('property', $filter) &&
-                array_key_exists('value', $filter)
-            ) {
-                $qb->andWhere($this->alias . "." . $filter['property'] . " =:value$i ")
-                    ->setParameter("value$i", $filter["value"]);
+            if ( array_key_exists('property', $filter) && array_key_exists('value', $filter)) {
+
+                if ($listConfiguration[$filter['property']]["type"] == "object") {
+                    $qb->andWhere($this->alias . "." . $filter['property'] . " = :value$i ")
+                        ->setParameter("value$i", $filter["value"]);
+                } else {
+                    $qb->andWhere($this->alias . "." . $filter['property'] . " LIKE :value$i ")
+                        ->setParameter("value$i", "%".$filter["value"]."%");
+                }
                 $i++;
 
             }
@@ -562,7 +566,7 @@ class CrudService
      * @throws \Exception
      *
      */
-    public function buildFormFields($form, $formConfiguration, $modeEmbedded = false)
+    public function buildFormFields($form, $formConfiguration, $modeEmbedded = false, $forcedClass = "")
     {
 
         foreach ($formConfiguration as $fieldName => $field) {
@@ -573,6 +577,8 @@ class CrudService
                 $fieldAttributes['label'] = $field['label'];
             }
 
+            $fieldAttributes["attr"] = array('class' => $forcedClass);
+
             // Default, let the framework decide
             $type = null;
 
@@ -581,14 +587,14 @@ class CrudService
                     $fieldAttributes["widget"] = 'single_text';
                     $fieldAttributes["input"] = 'datetime';
                     $fieldAttributes["format"] = 'dd/MM/yyyy';
-                    $fieldAttributes["attr"] = array('class' => 'date-picker');
+                    $fieldAttributes["attr"] = array('class' => 'date-picker '.$forcedClass);
                     break;
 
                 case "datetime":
                     $fieldAttributes["widget"] = 'single_text';
                     $fieldAttributes["input"] = 'datetime';
                     $fieldAttributes["format"] = 'dd/MM/yyyy hh:mm';
-                    $fieldAttributes["attr"] = array('class' => 'datetime-picker');
+                    $fieldAttributes["attr"] = array('class' => 'datetime-picker '.$forcedClass);
                     break;
 
                 case "file":
@@ -614,7 +620,7 @@ class CrudService
                     $fieldAttributes['prototype'] =  true;
 
                     $fieldAttributes['attr'] =  array(
-                        'class' => 'dynamic-collection',
+                        'class' => 'dynamic-collection '.$forcedClass,
                         'data-for' => $fieldName
                     );
 
@@ -630,7 +636,7 @@ class CrudService
 
                     if (!isset($field["expanded"]) || $field["expanded"] == false) {
                         $fieldAttributes["attr"] = array(
-                            'class' => $fieldName . '-select2',
+                            'class' => $fieldName . '-select2 '.$forcedClass,
                             'filterAttribute' => $field["filterAttribute"],
                             'callbackFunction' => (key_exists('callbackFunction', $field))? $field["callbackFunction"]: "",
                             'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"]),
@@ -654,7 +660,7 @@ class CrudService
 
                     if (!isset($field["expanded"]) || $field["expanded"] == false) {
                         $fieldAttributes["attr"] = array(
-                            'class' => $fieldName . '-select2',
+                            'class' => $fieldName . '-select2 '.$forcedClass,
                             'filterAttribute' => $field["filterAttribute"],
                             'callbackFunction' => (key_exists('callbackFunction', $field))? $field["callbackFunction"]: "",
                             'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"]),

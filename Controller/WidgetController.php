@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
+use Tellaw\SunshineAdminBundle\Form\Type\FiltersType;
 use Tellaw\SunshineAdminBundle\Service\CrudService;
 use Tellaw\SunshineAdminBundle\Service\EntityService;
 use Tellaw\SunshineAdminBundle\Service\PageService;
@@ -33,6 +35,7 @@ class WidgetController extends Controller
 
         /** @var PageService $pageService */
         $pageService = $this->get("sunshine.pages");
+        $crudService = $this->get("sunshine.crud_service");
         $pageConfiguration = $pageService->getPageConfiguration($pageName);
 
         if (!$entityName) {
@@ -48,9 +51,24 @@ class WidgetController extends Controller
         $entities = $this->get("sunshine.entities");
         $listConfiguration = $entities->getListConfiguration($entityName);
 
+        $filtersConfiguration = $entities->getFiltersConfiguration( $entityName );
+        // Instantiate filters
+        // Get Filters Definition
+        $formFactory = $this->get("form.factory");
+        if ($filtersConfiguration != null) {
+            $formOptions = [
+                'fields_configuration' => $filtersConfiguration,
+                'crud_service' => $crudService
+            ];
+            $filtersForm = $formFactory->create(FiltersType::class, null, $formOptions);
+        } else {
+            $filtersForm = null;
+        }
+
         return $this->render(
             'TellawSunshineAdminBundle:Widget:ajax-datatable.html.twig',
             array(
+                "filtersForm" => $filtersForm->createView(),
                 "fields" => $listConfiguration,
                 "row" => $row,
                 "widgetName" => $widgetName,
