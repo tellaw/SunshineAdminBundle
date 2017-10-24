@@ -18,24 +18,26 @@
         </a>
     </li>
 {% elseif item.type == 'list' %}
-        <li class="nav-item {% if pageType == 'sunshine_page_list' and pageIdentifier == item.entityName %}active{% endif %}">
-            <a href="{{ path('sunshine_page_list', {'entityName': item.entityName}) }}" class="nav-link">
-                {% if item.icon is defined %}
-                    <i class="icon-{{ item.icon }}"></i>
-                {% endif %}
-                <span class="title">{{ item.label | trans }}</span>
+    <li class="nav-item {% if pageType == 'sunshine_page_list' and pageIdentifier == item.entityName %}active{% endif %}">
+        <a href="{{ path('sunshine_page_list', {'entityName': item.entityName}) }}" class="nav-link">
+            {% if item.icon is defined %}
+                <i class="icon-{{ item.icon }}"></i>
+            {% endif %}
+            <span class="title">{{ item.label | trans }}</span>
 
-            </a>
-        </li>
+        </a>
+    </li>
 
 {%  elseif item.type == 'section' %}
     <li class="heading">
         <h3 class="uppercase">{{ item.label }}</h3>
     </li>
     <li class="nav-item">
-    {% for items in item.children %}
-        {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':items} %}
-    {% endfor %}
+        {% for subItem in item.children %}
+            {% if isMenuItemVisible(subItem) %}
+                {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':subItem} %}
+            {% endif %}
+        {% endfor %}
     </li>
 {% elseif item.type == 'external' %}
     <li class="nav-item start ">
@@ -52,8 +54,10 @@
             <span class="arrow"></span>
         </a>
         <ul class="sub-menu">
-            {% for items in item.children %}
-                {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':items} %}
+            {% for subItem in item.children %}
+                {% if isMenuItemVisible(subItem) %}
+                    {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':subItem} %}
+                {% endif %}
             {% endfor %}
         </ul>
     </li>
