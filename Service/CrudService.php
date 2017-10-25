@@ -340,10 +340,13 @@ class CrudService
             if (method_exists($object, $getter)) {
                 $value = $object->$getter();
             }
-            if ($value instanceof \DateTime)
-            {
+
+            if ($value instanceof \DateTime && $fieldMapping['type'] == 'date') {
+                $value = $value->format('d-m-Y');
+            } elseif ($value instanceof \DateTime) {
                 $value = $value->format('d-m-Y H:i');
             }
+            
             $flattenObject[$fieldName] = $value;
 
         }
