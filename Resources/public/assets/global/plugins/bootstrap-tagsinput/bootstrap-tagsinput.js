@@ -25,7 +25,7 @@
     maxTags: undefined,
     maxChars: undefined,
     confirmKeys: [13],
-    delimiter: ',',
+    delimiter: '$',
     delimiterRegex: null,
     cancelConfirmKeysOnEmpty: false,
     onTagExists: function(item, $tag) {
