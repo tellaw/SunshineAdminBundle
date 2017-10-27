@@ -20,12 +20,12 @@ class DefaultType extends AbstractType
     /**
      * @var CrudService
      */
-    private $crudService;
+    protected $crudService;
 
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    protected $em;
 
     /**
      * DefaultType constructor.
