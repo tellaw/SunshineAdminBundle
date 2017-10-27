@@ -24,7 +24,7 @@
     addOnBlur: true,
     maxTags: undefined,
     maxChars: undefined,
-    confirmKeys: [13],
+    confirmKeys: [13,36],
     delimiter: '$',
     delimiterRegex: null,
     cancelConfirmKeysOnEmpty: false,
