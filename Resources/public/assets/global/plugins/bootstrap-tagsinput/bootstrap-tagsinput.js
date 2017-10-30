@@ -283,9 +283,9 @@
 
             }
           });
-      
-      self.$element.val(val.join('$'), true);
-      self.$element.val(val, true);
+
+      self.$element.val(val.join(self.options.delimiter), true);
+      //self.$element.val(val, true);
 
       if (self.options.triggerChange)
         self.$element.trigger('change');
