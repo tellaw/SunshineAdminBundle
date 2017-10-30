@@ -283,7 +283,8 @@
 
             }
           });
-
+      
+      self.$element.val(val.join('$'), true);
       self.$element.val(val, true);
 
       if (self.options.triggerChange)
