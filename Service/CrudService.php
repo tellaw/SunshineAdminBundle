@@ -15,7 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Form;
 use Tellaw\SunshineAdminBundle\Form\Type\AttachmentType;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
-use Tellaw\SunshineAdminBundle\Form\Type\EmbeddedType;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
 use Tellaw\SunshineAdminBundle\Form\Type\SunshineCollectionType;
 use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
@@ -534,21 +533,19 @@ class CrudService
         if ($searchValue != "" && !empty($baseConfiguration["list"]["search"])) {
 
             $searchConfig = $baseConfiguration["list"]["search"];
+            $searchQuery = [];
 
-            $searchParams = [];
             foreach ($searchConfig as $key => $item) {
-
                 if ($this->isRelatedObject($listConfiguration[$key])) {
                     $joinAlias = $this->getAliasForEntity($key);
-                    $qb->orWhere(
-                        ' ' . $joinAlias . '.' . $listConfiguration[$key]["filterAttribute"] . ' LIKE :search'
-                    );
-                    $searchParams[] = " " . $joinAlias . "." . $listConfiguration[$key]["filterAttribute"] . " LIKE :searchParam";
+                    $searchQuery[] = ' ' . $joinAlias . '.' . $listConfiguration[$key]["filterAttribute"] . ' LIKE :search';
                 } else {
-                    $qb->orWhere($this->alias . '.' . $key . ' LIKE :search');
-                    $searchParams[] = " l." . $key . " LIKE :searchParam";
+                    $searchQuery[] = $this->alias . '.' . $key . ' LIKE :search';
                 }
+            }
 
+            if (!empty($searchQuery)) {
+                $qb->andWhere(implode(' OR ', $searchQuery));
             }
 
             $qb->setParameter('search', "%{$searchValue}%");
@@ -612,7 +609,7 @@ class CrudService
                         "data_class" => $field["relatedClass"],
                     );
 
-                    $fieldAttributes['entry_type'] = EmbeddedType::class;
+                    $fieldAttributes['entry_type'] = DefaultType::class;
 
                     $fieldAttributes['allow_add'] =  $field["allow_add"];
                     $fieldAttributes['allow_delete'] =  $field["allow_delete"];
