@@ -98,6 +98,8 @@ class AjaxController extends Controller
         $searchValue = "";
         if (isset($request->request->get ("datatable")["query"])) {
             $searchValue = $request->request->get ("datatable")["query"]["generalSearch"];
+        } elseif (isset($request->request->get ("datatable")["generalSearch"])) {
+            $searchValue = $request->request->get ("datatable")["generalSearch"];
         }
 
         $filters = null;
