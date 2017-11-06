@@ -269,7 +269,7 @@ class CrudService
             if ( array_key_exists('property', $filter) && array_key_exists('value', $filter)) {
 
                 if ($listConfiguration[$filter['property']]["type"] == "object") {
-                    $qb->andWhere($this->alias . "." . $filter['property'] . " = :value$i ")
+                    $qb->andWhere($this->alias . "." . $filter['property'] . " IN (:value$i) ")
                         ->setParameter("value$i", $filter["value"]);
                 } else {
                     $qb->andWhere($this->alias . "." . $filter['property'] . " LIKE :value$i ")

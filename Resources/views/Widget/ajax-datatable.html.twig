@@ -103,7 +103,7 @@
                             read: {
                                 url: "{{ path('sunshine_ajax_datatable_callback', {'entity': entityName}) }}",
                                 params: {
-                                    generalSearch: '',
+                                    generalSearch: $('#m_form_search').val().toLowerCase(),
                                     filters: filters
                                 }
                             }

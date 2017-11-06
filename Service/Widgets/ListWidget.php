@@ -12,30 +12,17 @@ class ListWidget extends AbstractWidget {
     private $entities;
     private $crudService;
 
-
     public function create ( $configuration, MessageBag $messagebag ) {
 
         $entityName = $messagebag->getMessage("entityName");
 
         $listConfiguration = $this->entities->getListConfiguration( $entityName );
-        $filtersConfiguration = $this->entities->getFiltersConfiguration( $entityName );
         $configuration = $this->entities->getConfiguration( $entityName );
-
-        // Get Filters Definition
-        if ($filtersConfiguration != null) {
-            $formOptions = [
-                'fields_configuration' => $filtersConfiguration,
-                'crud_service' => $this->crudService
-            ];
-
-            $filtersForm = $this->formFactory->create(DefaultType::class, null, $formOptions);
-        }
 
         return $this->render(
             'TellawSunshineAdminBundle:Widget:list',
             [
                 "extraParameters" => array ("name" => "entityName", "value" => $entityName),
-                "filtersForm" => $filtersForm,
                 "widget" => array ("type" => "list"),
                 "formConfiguration" => $configuration,
                 "fields" => $listConfiguration,
