@@ -68,7 +68,7 @@ class WidgetController extends Controller
         return $this->render(
             'TellawSunshineAdminBundle:Widget:ajax-datatable.html.twig',
             array(
-                "filtersForm" => $filtersForm->createView(),
+                "filtersForm" => is_null($filtersForm) ? null : $filtersForm->createView(),
                 "fields" => $listConfiguration,
                 "row" => $row,
                 "widgetName" => $widgetName,

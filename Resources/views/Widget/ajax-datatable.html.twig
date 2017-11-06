@@ -1,4 +1,6 @@
-{% form_theme filtersForm 'TellawSunshineAdminBundle:Form:filterFields.html.twig'%}
+{% if filtersForm  %}
+    {% form_theme filtersForm 'TellawSunshineAdminBundle:Form:filterFields.html.twig'%}
+{% endif %}
 <div class="m-portlet m-portlet--mobile">
     <div class="m-portlet__head">
         {% if widget.title is defined %}
