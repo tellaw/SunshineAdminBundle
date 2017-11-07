@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->addEntitiesNode())
                 ->append($this->addMenuNode())
                 ->append($this->addPagesNode())
+                ->append($this->addThemeNode())
             ->end();
 
         return $treeBuilder;
@@ -307,6 +308,28 @@ class Configuration implements ConfigurationInterface
                     ->variableNode('rows')->end()
                     ->variableNode('content')->end()
                 ->end();
+
+        return $node;
+    }
+
+
+    /**
+     * Définition du bloc de configuration "Theme"
+     * @return \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition|\Symfony\Component\Config\Definition\Builder\NodeDefinition
+     */
+    public function addThemeNode()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('theme');
+        $node
+            ->children()
+                ->arrayNode('logo')
+                    ->children()
+                        ->scalarNode('url')->defaultValue('bundles/tellawsunshineadmin/assets/vendors/base/media/img/logo/logo_default_dark.png')->end()
+                        ->scalarNode('alt')->end()
+                    ->end()
+                ->end()
+            ->end();
 
         return $node;
     }

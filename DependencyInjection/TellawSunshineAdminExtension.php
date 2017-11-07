@@ -25,6 +25,7 @@ class TellawSunshineAdminExtension extends Extension
         $container->setParameter('tellaw_sunshine_admin.menu', $config['menu']);
         $container->setParameter('tellaw_sunshine_admin.entities', $config['entities']);
         $container->setParameter('tellaw_sunshine_admin.pages', $config['pages']);
+        $container->setParameter('tellaw_sunshine_admin.theme', $config['theme']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

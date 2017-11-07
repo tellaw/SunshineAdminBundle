@@ -84,3 +84,9 @@ services:
       - [ setCrudService, ['@sunshine.crud_service']]
     tags:
       - {name: sunshine.widget }
+
+  sunshine.theme_twig_extension:
+    class: Tellaw\SunshineAdminBundle\Twig\ThemeExtension
+    arguments: ["%tellaw_sunshine_admin.theme%"]
+    tags:
+      - { name: twig.extension }
