@@ -13,7 +13,6 @@ use Tellaw\SunshineAdminBundle\Event\EntityEvent;
 use Tellaw\SunshineAdminBundle\Event\SunshineEvents;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
 use Tellaw\SunshineAdminBundle\Service\EntityService;
-use Tellaw\SunshineAdminBundle\Service\WidgetService;
 
 /**
  * Content pages management
@@ -121,8 +120,12 @@ class PageController extends AbstractPageController
 
             $request->getSession()
                 ->getFlashBag()
-                ->add('success', 'Enregistrement effectué.')
-            ;
+                ->add('success', 'Enregistrement effectué.');
+
+
+            if ($form->has('buttons') && $form->get('buttons')->get('save_and_quit')->isClicked()) {
+                return $this->redirectToRoute('sunshine_page_list', ['entityName' => $entityName]);
+            }
 
             return $this->redirectToRoute('sunshine_page_edit', ['entityName' => $entityName, 'id' => $id]);
         }

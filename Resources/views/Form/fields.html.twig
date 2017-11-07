@@ -69,6 +69,19 @@
     {% endspaceless %}
 {% endblock submit_row %}
 
+{% block choice_button_row -%}
+    {% spaceless %}
+        <div class="form-group m-form__group">
+            <div class="{{ block('form_label_class') }}"></div>
+            <div class="{{ block('form_group_class') }} btn-group">
+                 {% for child in form %}
+                     {{ form_widget(child) }}
+                 {% endfor %}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock choice_button_row %}
+
 {% block reset_row -%}
     {% spaceless %}
         <div class="form-group m-form__group">

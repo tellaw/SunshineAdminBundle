@@ -57,8 +57,7 @@ class DefaultType extends AbstractType
         $form = $event->getForm();
         $fieldsConfiguration = $form->getConfig()->getOptions()['fields_configuration'];
         $this->buildFormFields($form, $fieldsConfiguration);
-        $form->add('Valider', SubmitType::class);
-
+        $form->add('buttons', ChoiceButtonType::class, ['mapped' => false]);
     }
 
     /**
