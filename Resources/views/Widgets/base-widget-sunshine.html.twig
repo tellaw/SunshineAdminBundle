@@ -1,10 +1,10 @@
-<div class="m-portlet m-portlet--full-height ">
+<div class="m-portlet {{ full_height is not defined or full_height ? 'm-portlet--full-height'}}">
     <div class="m-portlet__head">
         <div class="m-portlet__head-caption">
             <div class="m-portlet__head-title">
                 <h3 class="m-portlet__head-text">
                     <!-- Header or title of my portlet -->
-                    Title of Widget
+                    {% block title %}Title of Widget{% endblock %}
                 </h3>
             </div>
         </div>
