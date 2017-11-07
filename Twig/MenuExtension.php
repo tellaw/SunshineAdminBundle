@@ -3,6 +3,7 @@
 namespace Tellaw\SunshineAdminBundle\Twig;
 
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 class MenuExtension extends \Twig_Extension
 {

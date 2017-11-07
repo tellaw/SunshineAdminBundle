@@ -36,6 +36,10 @@ abstract class AbstractPageController extends AbstractController
         /** @var array $page */
         $page = $this->get("sunshine.pages")->getPageConfiguration($pageId);
 
+        if (false === $page) {
+            throw new \Exception("Page not found : ".$pageId);
+        }
+
         // Check roles to display the page of not.
         $isVisible = false;
         if (array_key_exists( "roles", $page )) {
@@ -52,9 +56,6 @@ abstract class AbstractPageController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        if ( $page == null ) {
-            throw new \Exception("Page not found : ".$pageId);
-        }
 
         /** @var WidgetService $widgetService */
         $widgetService = $this->get("sunshine.widgets");
@@ -72,7 +73,7 @@ abstract class AbstractPageController extends AbstractController
 
     private function validateMessageBag ( $messageBag ) {
 
-        if ($messageBag == null) {
+        if ($messageBag === null) {
             $messageBag = new MessageBag();
         } else if ( is_array( $messageBag ) ) {
             throw new \Exception("MessageBag must be an instance of MessageBag... Array Given ");
@@ -99,7 +100,7 @@ abstract class AbstractPageController extends AbstractController
 
         /** @var array $page */
         $pageConfiguration = $this->get("sunshine.pages")->getPageConfiguration($pageId);
-        if ( $pageId == null ) {
+        if ( $pageId === null ) {
             throw new \Exception("Page not found : ".$pageId);
         }
 

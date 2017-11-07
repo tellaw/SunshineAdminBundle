@@ -17,7 +17,7 @@ class ViewWidget extends AbstractWidget {
     {
         $entityName = $messagebag->getMessage("entityName");
         $id = $messagebag->getMessage( "id" );
-        if ($entityName != null && $id != null ) {
+        if ($entityName !== null && $id !== null ) {
 
 
             $configuration = $this->entities->getFormConfiguration($entityName);

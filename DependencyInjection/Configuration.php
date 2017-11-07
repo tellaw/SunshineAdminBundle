@@ -320,13 +320,15 @@ class Configuration implements ConfigurationInterface
     public function addThemeNode()
     {
         $builder = new TreeBuilder();
-        $node = $builder->root('theme');
+        $node = $builder->root('theme')->addDefaultsIfNotSet();
         $node
             ->children()
                 ->arrayNode('logo')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('url')->defaultValue('bundles/tellawsunshineadmin/assets/vendors/base/media/img/logo/logo_default_dark.png')->end()
-                        ->scalarNode('alt')->end()
+                        ->scalarNode('alt')->defaultValue("logo")->end()
+                        ->booleanNode('external_url')->defaultFalse()->end()
                     ->end()
                 ->end()
             ->end();

@@ -64,7 +64,6 @@ class CrudController extends AbstractController
             $context,
             $headers
         );
-        //$context->setTotalCount($totalCount);
         $context->setPagination($pageStart, $length, $totalCount);
 
         // Initiate Response
@@ -104,7 +103,7 @@ class CrudController extends AbstractController
         );
 
         /* @var $crudService CrudService */
-        if ($targetId != null) {
+        if ($targetId !== null) {
             $crudService = $this->get("sunshine.crud_service");
             $object = $crudService->getEntity($context);
 

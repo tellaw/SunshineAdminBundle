@@ -1,6 +1,7 @@
 <?php
 
 namespace Tellaw\SunshineAdminBundle\Service;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Menu Manager
@@ -34,9 +35,8 @@ class MenuService
      * Provide the menu configuration
      * @return array
      */
-    public function getConfiguration( $currentUser )
+    public function getConfiguration($currentUser)
     {
-
         $autoMenu = array();
 
         if ( $currentUser->hasRole('ROLE_ADMIN') ) {

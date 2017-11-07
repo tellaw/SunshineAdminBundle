@@ -182,8 +182,6 @@ class EntityService
      */
     protected function guessEntityFieldType($class, $property)
     {
-        $type = null;
-
         $typeDoctrine = null;
         $typeAssert = null;
 
@@ -195,30 +193,30 @@ class EntityService
         $propertyAnnotations = $this->getAnnotationsForAttribute( $class, $property );
 
         foreach ($propertyAnnotations as $annot) {
-            if (get_class($annot) == "Symfony\\Component\\Validator\\Constraints\\Type") {
+            if (get_class($annot) === "Symfony\\Component\\Validator\\Constraints\\Type") {
                 $typeAssert = $annot->type;
             } elseif (get_class($annot) == "Vich\\UploaderBundle\\Mapping\\Annotation\\UploadableField") {
                 $typeAssert = "file";
-            } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\Column") {
+            } elseif (get_class($annot) === "Doctrine\\ORM\\Mapping\\Column") {
                 $typeDoctrine = $annot->type;
-            } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\ManyToOne"  ) {
+            } elseif (get_class($annot) === "Doctrine\\ORM\\Mapping\\ManyToOne"  ) {
                 $typeDoctrine = "object";
-            } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\OneToOne") {
+            } elseif (get_class($annot) === "Doctrine\\ORM\\Mapping\\OneToOne") {
                 $typeDoctrine = "object";
-            } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\OneToMany") {
+            } elseif (get_class($annot) === "Doctrine\\ORM\\Mapping\\OneToMany") {
                 $typeDoctrine = "object-multiple";
-            } elseif (get_class($annot) == "Doctrine\\ORM\\Mapping\\ManyToMany") {
+            } elseif (get_class($annot) === "Doctrine\\ORM\\Mapping\\ManyToMany") {
                 $typeDoctrine = "object-multiple";
-            } elseif (get_class($annot) == "Symfony\\Component\\Validator\\Constraints\\Date") {
+            } elseif (get_class($annot) === "Symfony\\Component\\Validator\\Constraints\\Date") {
                 $typeAssert = "date";
             }
         }
 
         // first look in asserts
-        if ($typeAssert != null) {
+        if ($typeAssert !== null) {
             return $typeAssert;
             // secondly look in Doctrine annotations
-        } else if ($typeDoctrine != null) {
+        } else if ($typeDoctrine !== null) {
             return $typeDoctrine;
         }
 

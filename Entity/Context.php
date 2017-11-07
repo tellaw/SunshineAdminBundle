@@ -2,8 +2,6 @@
 
 namespace Tellaw\SunshineAdminBundle\Entity;
 
-use Tellaw\SunshineAdminBundle\Interfaces\CrudServicesInterface;
-
 /**
  * Class Context
  * @package Tellaw\SunshineAdminBundle\Entity

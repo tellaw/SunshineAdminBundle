@@ -7,12 +7,11 @@ use AppBundle\Form\Type\TaskType;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilder;
 use Tellaw\SunshineAdminBundle\Form\Type\AttachmentType;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
@@ -130,7 +129,7 @@ class CrudService
 
         $object = $repository->findOneById($entityId);
 
-        if ($object == null) {
+        if ($object === null) {
             throw new \Exception("Entity is null : ".$entityName." / ".$entityId);
         }
 
@@ -152,7 +151,7 @@ class CrudService
      * @param $entityClass
      * @param $toString
      * @param $query
-     * @param $metadata
+     * @param \Doctrine\ORM\Mapping\ClassMetadata $metadata
      * @return mixed
      */
     public function getEntityListByClassMetadata($entityClass, $toString, $query, $metadata, $page, $itemPerPage, $callbackFunction = null)
@@ -184,7 +183,7 @@ class CrudService
      * @param $entityClass
      * @param $toString
      * @param $query
-     * @param $metadata
+     * @param \Doctrine\ORM\Mapping\ClassMetadata $metadata
      * @return mixed
      */
     public function getCountEntityListByClassMetadata($entityClass, $toString, $query, $metadata, $callbackFunction)
@@ -377,11 +376,12 @@ class CrudService
         // Loop over associations
         foreach ($associationMappings as $associationKey => $associationMapping) {
 
-            $stringValue = null;
             $getter = "get" . ucfirst($associationKey);
 
             if (method_exists($object, $getter)) {
                 $linkedObject = $object->$getter();
+            } else {
+                $linkedObject = null;
             }
 
             $flattenObject[$associationKey] = $this->getToString($linkedObject);
@@ -401,7 +401,7 @@ class CrudService
      */
     protected function getToString ( $element )
     {
-        if ($element != null) {
+        if ($element !== null) {
             if (  $element instanceof \iterable  || $element instanceof Collection) {
 
                 $results = array();
@@ -436,7 +436,7 @@ class CrudService
     /**
      * Add Select and Join elements to the query
      *
-     * @param $qb
+     * @param QueryBuilder $qb
      * @param $listConfiguration
      * @param $baseConfiguration
      * @return mixed
@@ -451,7 +451,7 @@ class CrudService
 
             if (isset($item["type"]) && $item["type"] != "custom" || !isset($item["type"])) {
 
-                if (key_exists('relatedClass', $item) && $item['relatedClass'] != false) {
+                if (array_key_exists('relatedClass', $item) && $item['relatedClass'] !== false) {
 
                     $join = ['class' => $item['relatedClass'], 'name' => $key];
                     $joinAlias = $this->getAliasForEntity($join['name']);
@@ -470,7 +470,7 @@ class CrudService
     /**
      * Add the pagination to the query
      *
-     * @param $qb
+     * @param QueryBuilder $qb
      * @param $start
      * @param $length
      * @param $enablePagination
@@ -490,7 +490,7 @@ class CrudService
     /**
      * Add orderBy to the query
      *
-     * @param $qb
+     * @param QueryBuilder $qb
      * @param $listConfiguration
      * @param $orderCol
      * @param $orderDir
@@ -498,8 +498,6 @@ class CrudService
      */
     protected function addOrderBy($qb, $listConfiguration, $orderCol, $orderDir)
     {
-        $keys = array_keys($listConfiguration);
-
         if ($this->isRelatedObject($listConfiguration[$orderCol])) {
             $joinAlias = $this->getAliasForEntity($orderCol);
             $qb->orderBy($joinAlias . "." . $listConfiguration[$orderCol]["filterAttribute"], $orderDir);
@@ -512,7 +510,7 @@ class CrudService
 
     protected function isRelatedObject($item)
     {
-        if (key_exists('relatedClass', $item) && $item["relatedClass"] != false) {
+        if (array_key_exists('relatedClass', $item) && $item["relatedClass"] !== false) {
             return true;
         } else {
             return false;
@@ -522,7 +520,7 @@ class CrudService
     /**
      * Add search option to the query
      *
-     * @param $qb
+     * @param QueryBuilder $qb
      * @param $searchValue
      * @param $baseConfiguration
      * @return mixed
@@ -565,9 +563,7 @@ class CrudService
      */
     public function buildFormFields($form, $formConfiguration, $modeEmbedded = false, $forcedClass = "")
     {
-
         foreach ($formConfiguration as $fieldName => $field) {
-
             $fieldAttributes = array();
 
             if (isset($field['label'])) {
@@ -631,7 +627,7 @@ class CrudService
                         );
                     }
 
-                    if (!isset($field["expanded"]) || $field["expanded"] == false) {
+                    if (!isset($field["expanded"]) || $field["expanded"] === false) {
                         $fieldAttributes["attr"] = array(
                             'class' => $fieldName . '-select2 '.$forcedClass,
                             'filterAttribute' => $field["filterAttribute"],
@@ -655,7 +651,7 @@ class CrudService
                         );
                     }
 
-                    if (!isset($field["expanded"]) || $field["expanded"] == false) {
+                    if (!isset($field["expanded"]) || $field["expanded"] === false) {
                         $fieldAttributes["attr"] = array(
                             'class' => $fieldName . '-select2 '.$forcedClass,
                             'filterAttribute' => $field["filterAttribute"],

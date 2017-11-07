@@ -1,7 +1,7 @@
 <?php
 namespace Tellaw\SunshineAdminBundle\Service\Widgets;
 
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Form\FormFactory;
 use Tellaw\SunshineAdminBundle\Entity\MessageBag;
 use Tellaw\SunshineAdminBundle\Service\AbstractWidget;
 use Tellaw\SunshineAdminBundle\Service\CrudService;

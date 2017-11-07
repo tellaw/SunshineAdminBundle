@@ -2,6 +2,7 @@
 
 namespace Tellaw\SunshineAdminBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -44,6 +45,9 @@ class AjaxController extends Controller
 
         // Get class metadata
         $doctrine = $this->get("doctrine");
+        /**
+         * @var EntityManagerInterface $em
+         */
         $em = $doctrine->getManager();
         $metadata = $em->getClassMetadata($relatedClass);
 

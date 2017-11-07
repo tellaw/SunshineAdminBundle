@@ -24,8 +24,6 @@ class EditWidget extends AbstractWidget {
 
         $request = $this->getCurrentRequest();
 
-        $route = $request->get("_route");
-
         $entityName = $messagebag['entityName'];
         $id = $messagebag['id'];
         $fieldsConfiguration = $this->entitiesService->getFormConfiguration($entityName);

@@ -2,13 +2,15 @@
 
 namespace Tellaw\SunshineAdminBundle\Twig;
 
-use Tellaw\SunshineAdminBundle\Service\WidgetService;
-
+/**
+ * Class ThemeExtension
+ * @package Tellaw\SunshineAdminBundle\Twig
+ */
 class ThemeExtension extends \Twig_Extension
 {
 
     /**
-     * Pages configuration
+     * Theme configuration
      * @var array
      */
     private $configuration;
@@ -17,12 +19,10 @@ class ThemeExtension extends \Twig_Extension
      * Constructor
      *
      * @param array $configuration
-     * @param WidgetService $widgetService
      */
-    public function __construct(array $configuration, WidgetService $widgetService)
+    public function __construct(array $configuration)
     {
         $this->configuration = $configuration;
-        $this->widgetService = $widgetService;
     }
 
     /**

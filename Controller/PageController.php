@@ -29,8 +29,6 @@ class PageController extends AbstractPageController
      */
     public function pageAction($pageId = null)
     {
-        dump($this->getParameter('tellaw_sunshine_admin.theme'));
-        die;
         return $this->renderPage($pageId);
     }
 

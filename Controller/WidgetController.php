@@ -55,7 +55,7 @@ class WidgetController extends Controller
         // Instantiate filters
         // Get Filters Definition
         $formFactory = $this->get("form.factory");
-        if ($filtersConfiguration != null) {
+        if ($filtersConfiguration !== null) {
             $formOptions = [
                 'fields_configuration' => $filtersConfiguration,
                 'crud_service' => $crudService
@@ -145,7 +145,7 @@ class WidgetController extends Controller
         /** @var array $page */
         $page = $this->get("sunshine.pages")->getPageConfiguration($pageId);
 
-        if ($page == null) {
+        if ($page === null) {
             throw new \Exception("Page not found : " . $pageId);
         }
 
