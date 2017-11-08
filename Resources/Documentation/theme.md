@@ -12,7 +12,7 @@ tellaw_sunshine_admin:
             url: logo.png
             alt: logo
             external_url: false
-        name: Application Nama
+        name: Sunshine | Dashboard
 ```
 
 NB : block theme is not required.
