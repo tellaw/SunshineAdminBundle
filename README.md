@@ -25,6 +25,7 @@ The bundle provides two different level :
 1. [Menu configuration](Resources/Documentation/menu.md)
 1. [Theme configuration](Resources/Documentation/theme.md)
 1. [Page configuration](Resources/Documentation/backoffice-page.md)
+1. [List order](Resources/Documentation/list-order.md)
 1. [Create a Custom Page & Widget](Resources/Documentation/backoffice-custom-controller.md)
 1. [Create a Custom Ajax Controller to load a widget](Resources/Documentation/controller-load-ajax-widget.md)
 

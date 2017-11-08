@@ -15,7 +15,7 @@ tellaw_sunshine_admin:
         name: Sunshine | Dashboard
 ```
 
-NB : block theme is not required.
+Note: block theme is not required.
 
 Here is how to include your configuration file to your config.yml standard file :
 ```
