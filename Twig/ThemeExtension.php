@@ -32,6 +32,7 @@ class ThemeExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('getLogo', array($this, 'getLogo'), array()),
+            new \Twig_SimpleFunction('getApplicationName', array($this, 'getApplicationName'), array()),
         );
     }
 
@@ -41,5 +42,10 @@ class ThemeExtension extends \Twig_Extension
     public function getLogo()
     {
         return $this->configuration['logo'];
+    }
+
+    public function getApplicationName()
+    {
+        return $this->configuration['name'];
     }
 }

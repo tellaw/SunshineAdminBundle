@@ -1,7 +1,6 @@
 <?php
 
 namespace Tellaw\SunshineAdminBundle\Service;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Menu Manager

@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -79,6 +80,6 @@ class FiltersType extends AbstractType
      */
     protected function buildFormFields($form, array $fieldsConfiguration)
     {
-        $this->crudService->buildFormFields($form, $fieldsConfiguration, null, 'filterElement');
+        $this->crudService->buildFormFields($form, $fieldsConfiguration, 'filterElement');
     }
 }

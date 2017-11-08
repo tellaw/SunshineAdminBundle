@@ -331,6 +331,9 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('external_url')->defaultFalse()->end()
                     ->end()
                 ->end()
+                ->scalarNode('name')
+                    ->defaultValue('Sunshine | Dashboard')
+                ->end()
             ->end();
 
         return $node;

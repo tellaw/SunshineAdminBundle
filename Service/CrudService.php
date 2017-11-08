@@ -154,7 +154,7 @@ class CrudService
      * @param \Doctrine\ORM\Mapping\ClassMetadata $metadata
      * @return mixed
      */
-    public function getEntityListByClassMetadata($entityClass, $toString, $query, $metadata, $page, $itemPerPage, $callbackFunction = null)
+    public function getEntityListByClassMetadata($entityClass, $toString, $query, ClassMetadata $metadata, $page, $itemPerPage, $callbackFunction = null)
     {
 
         $identifier = $metadata->identifier;
@@ -186,7 +186,7 @@ class CrudService
      * @param \Doctrine\ORM\Mapping\ClassMetadata $metadata
      * @return mixed
      */
-    public function getCountEntityListByClassMetadata($entityClass, $toString, $query, $metadata, $callbackFunction)
+    public function getCountEntityListByClassMetadata($entityClass, $toString, $query, ClassMetadata $metadata, $callbackFunction)
     {
         $identifier = $metadata->identifier;
         if ($callbackFunction !== null  && $callbackFunction != '')
@@ -441,7 +441,7 @@ class CrudService
      * @param $baseConfiguration
      * @return mixed
      */
-    protected function addSelectAndJoin($qb, $listConfiguration, $baseConfiguration, array $filters = null)
+    protected function addSelectAndJoin(QueryBuilder $qb, $listConfiguration, $baseConfiguration, array $filters = null)
     {
         $qb->select($this->alias);
         $qb->from($baseConfiguration["configuration"]["class"], $this->alias);
@@ -476,7 +476,7 @@ class CrudService
      * @param $enablePagination
      * @return mixed
      */
-    protected function addPagination($qb, $start, $length, $enablePagination)
+    protected function addPagination(QueryBuilder $qb, $start, $length, $enablePagination)
     {
         // PREPARE QUERY FOR PAGINATION AND ORDER
         if ($enablePagination) {
@@ -496,7 +496,7 @@ class CrudService
      * @param $orderDir
      * @return mixed
      */
-    protected function addOrderBy($qb, $listConfiguration, $orderCol, $orderDir)
+    protected function addOrderBy(QueryBuilder $qb, $listConfiguration, $orderCol, $orderDir)
     {
         if ($this->isRelatedObject($listConfiguration[$orderCol])) {
             $joinAlias = $this->getAliasForEntity($orderCol);
@@ -525,7 +525,7 @@ class CrudService
      * @param $baseConfiguration
      * @return mixed
      */
-    protected function addSearch($qb, $searchValue, $listConfiguration, $baseConfiguration)
+    protected function addSearch(QueryBuilder $qb, $searchValue, $listConfiguration, $baseConfiguration)
     {
         // PREPARE QUERY FOR PARAM SEARCH
         if ($searchValue != "" && !empty($baseConfiguration["list"]["search"])) {
@@ -557,11 +557,11 @@ class CrudService
      *
      * @param Form|FormBuilder $form
      * @param array $formConfiguration
+     * @param string $forcedClass
      * @return mixed
      * @throws \Exception
-     *
      */
-    public function buildFormFields($form, $formConfiguration, $modeEmbedded = false, $forcedClass = "")
+    public function buildFormFields($form, $formConfiguration, $forcedClass = "")
     {
         foreach ($formConfiguration as $fieldName => $field) {
             $fieldAttributes = array();
