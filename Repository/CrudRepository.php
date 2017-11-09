@@ -5,6 +5,4 @@ use Doctrine\ORM\EntityRepository;
 
 class CrudRepository extends EntityRepository
 {
-
-
 }
