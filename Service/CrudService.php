@@ -2,13 +2,12 @@
 
 namespace Tellaw\SunshineAdminBundle\Service;
 
-use AppBundle\Entity\Task;
-use AppBundle\Form\Type\TaskType;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
@@ -41,18 +40,25 @@ class CrudService
      * @var EntityService
      */
     protected $entityService;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
     /**
      * CrudService constructor.
      * @param EntityManagerInterface $em
      * @param EntityService $entityService
+     * @param ContainerInterface $container
      */
     public function __construct(
         EntityManagerInterface $em,
-        EntityService $entityService
+        EntityService $entityService,
+        ContainerInterface $container
     ) {
         $this->em = $em;
         $this->entityService = $entityService;
+        $this->container = $container;
     }
 
     public function getTotalElementsInTable($entityName, array $filters = null)
@@ -570,6 +576,10 @@ class CrudService
                 $fieldAttributes['label'] = $field['label'];
             }
 
+            if (isset($field['value'])) {
+                $fieldAttributes['data'] = $this->buildDefaultValueOfField($fieldName, $field, $formConfiguration);
+            }
+
             $fieldAttributes["attr"] = array('class' => $forcedClass);
 
             // Default, let the framework decide
@@ -675,4 +685,40 @@ class CrudService
         return $form;
     }
 
+    /**
+     * Crée la valeur par défaut d'un champs.
+     *
+     * @param $fieldName
+     * @param array $field
+     * @param array $formConfiguration
+     * @return mixed
+     */
+    private function buildDefaultValueOfField($fieldName, $field, $formConfiguration)
+    {
+        if (isset($field['value']['provider'])) {
+            $piece = explode("@", $field['value']['provider']);
+
+            if (isset($piece[1])) {
+                $callable = [$piece[0], $piece[1]];
+            } else {
+                $callable = $piece[0];
+            }
+        } else {
+            $that = $this;
+            $callable = function ($item) use ($that, $field, $fieldName, $formConfiguration){
+                if (isset($field['type']) && in_array($field['type'], ['object', 'object-multiple']) &&  null !== $item) {
+                    $rep = $that->em->getRepository($field['relatedClass']);
+                    if ('object' === $field['type']) {
+                        return $rep->findOneBy([$formConfiguration[$fieldName]['filterAttribute'] => $item]);
+                    } else {
+                        return $rep->findBy([$formConfiguration[$fieldName]['filterAttribute'] => func_get_args()]);
+                    }
+                } else {
+                    return $item;
+                }
+            };
+        }
+
+        return call_user_func_array($callable, isset($field['value']['arguments']) ? (array) $field['value']['arguments'] : []);
+    }
 }

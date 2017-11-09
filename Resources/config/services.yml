@@ -1,7 +1,7 @@
 services:
   sunshine.crud_service:
     class: Tellaw\SunshineAdminBundle\Service\CrudService
-    arguments: ["@doctrine.orm.entity_manager", "@sunshine.entities"]
+    arguments: ["@doctrine.orm.entity_manager", "@sunshine.entities", "@service_container"]
 
   sunshine.menu:
     class: Tellaw\SunshineAdminBundle\Service\MenuService

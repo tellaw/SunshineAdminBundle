@@ -5,10 +5,7 @@ namespace Tellaw\SunshineAdminBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
 use Tellaw\SunshineAdminBundle\Form\Type\FiltersType;
 use Tellaw\SunshineAdminBundle\Service\CrudService;
 use Tellaw\SunshineAdminBundle\Service\EntityService;
@@ -23,14 +20,13 @@ class WidgetController extends Controller
      * @Route("/app/widget/crudlist/{pageName}/{row}/{widgetName}", name="sunshine_widget_crudlist")
      * @Route("/app/widget/crudlist/{pageName}/{row}/{widgetName}/{entityName}", name="sunshine_widget_crudlist")
      * @Method({"GET"})
-     * @param Request $request
      * @param $pageName
      * @param $row
      * @param $widgetName
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function widgetCrudListAction(Request $request, $pageName, $row, $widgetName, $entityName = null)
+    public function widgetCrudListAction($pageName, $row, $widgetName, $entityName = null)
     {
 
         /** @var PageService $pageService */
@@ -52,6 +48,8 @@ class WidgetController extends Controller
         $listConfiguration = $entities->getListConfiguration($entityName);
 
         $filtersConfiguration = $entities->getFiltersConfiguration( $entityName );
+        $configuration = $entities->getConfiguration($entityName);
+
         // Instantiate filters
         // Get Filters Definition
         $formFactory = $this->get("form.factory");
@@ -69,12 +67,14 @@ class WidgetController extends Controller
             'TellawSunshineAdminBundle:Widget:ajax-datatable.html.twig',
             array(
                 "filtersForm" => is_null($filtersForm) ? null : $filtersForm->createView(),
+                "configuration" => $configuration,
                 "fields" => $listConfiguration,
                 "row" => $row,
                 "widgetName" => $widgetName,
                 "pageName" => $pageName,
                 "entityName" => $entityName,
                 "widget" => $pageConfiguration["rows"][$row][$widgetName],
+                "generalSearch" => isset($configuration['list']['general_search']) ? $configuration['list']['general_search'] : null
             )
         );
     }
@@ -154,8 +154,5 @@ class WidgetController extends Controller
         $widgetContent = $widgetService->loadServicesWidgetsForPage($page, []);
 
         return new JsonResponse(json_encode($widgetContent));
-
     }
-
-
 }
