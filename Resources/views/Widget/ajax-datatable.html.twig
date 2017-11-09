@@ -80,15 +80,33 @@
 
             var datatable;
 
+            function buildArrayToObject(partials, value, index) {
+                if (index === partials.length || partials[index] === "") {
+                    return value;
+                }
+
+                var key = partials[index],
+                        result = {};
+                result[key] = buildArrayToObject(partials, value, index + 1)
+                return result;
+            }
+
             function updateFilters () {
                 newFilters = [];
                 $("body").find(".filterElement").each(function (index, item) {
                     if (item.value != "") {
-                        name = item.name;
+                        var name = item.name;
                         name = name.replace("filters[", "");
                         name = name.replace ("]", "");
-                        console.log (item.value);
-                        newFilters.push({property:name, value:item.value});
+                        var values = $(this).val(),
+                                partials = name.split('[').map(function(element) {
+                                    return element.replace(']', '');
+                                });
+                        if (partials.length <= 1) {
+                            newFilters.push({property:partials[0], value: values});
+                        } else {
+                            newFilters.push({property:partials[0], value: buildArrayToObject(partials, values, 1)});
+                        }
                     }
                 });
                 filters = newFilters;

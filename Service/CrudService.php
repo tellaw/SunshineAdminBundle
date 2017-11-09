@@ -69,7 +69,7 @@ class CrudService
         $qb = $this->em->createQueryBuilder();
         $qb->select('COUNT(l)')->from($baseConfiguration["configuration"]["class"], 'l');
         if ($filters !== null) {
-            $qb = $this->addFilters($qb, $filters);
+            $qb = $this->addFilters($qb, $baseConfiguration["configuration"]["class"], $filters);
         }
 
         return $qb->getQuery()->getSingleScalarResult();
@@ -236,10 +236,10 @@ class CrudService
 
         $qb = $this->em->createQueryBuilder();
 
-        $qb = $this->addSelectAndJoin($qb, $listConfiguration, $baseConfiguration, $filters);
+        $qb = $this->addSelectAndJoin($qb, $listConfiguration, $baseConfiguration);
 
         if ($filters !== null) {
-            $qb = $this->addFilters($qb, $filters, $listConfiguration);
+            $qb = $this->addFilters($qb, $baseConfiguration["configuration"]["class"], $filters, $listConfiguration, $entityName);
         }
         $qb = $this->addPagination($qb, $start, $length, $enablePagination);
         if (!empty($orderCol) && !empty($orderDir)) {
@@ -258,32 +258,50 @@ class CrudService
      * Method used to filter the query
      *
      * @param QueryBuilder $qb
+     * @param $className
      * @param array|null $filters
+     * @param $listConfiguration
      * @return QueryBuilder
      */
-    protected function addFilters(QueryBuilder $qb, array $filters = null, $listConfiguration)
+    protected function addFilters(QueryBuilder $qb, $className, array $filters = null, $listConfiguration = null)
     {
-
-        if ($filters[0] === null)
-        {
+        if (empty($filters) || empty($listConfiguration)) {
             return $qb;
         }
+
+        $qbf = (clone $qb);
 
         $i = 0;
         foreach ($filters as $filter) {
             if ( array_key_exists('property', $filter) && array_key_exists('value', $filter)) {
-
-                if ($listConfiguration[$filter['property']]["type"] == "object") {
-                    $qb->andWhere($this->alias . "." . $filter['property'] . " IN (:value$i) ")
+                if (in_array($listConfiguration[$filter['property']]["type"], [ "object",  "object-multiple"]) ) {
+                    if ($listConfiguration[$filter['property']]["type"] === 'object') {
+                        $field = $this->alias . "." . $filter['property'];
+                    } else {
+                        $field = $this->getAliasForEntity($filter['property']);
+                    }
+                    $qbf
+                        ->andWhere($field . " IN (:value$i) ")
                         ->setParameter("value$i", $filter["value"]);
                 } else {
-                    $qb->andWhere($this->alias . "." . $filter['property'] . " LIKE :value$i ")
+                    $qbf->andWhere($this->alias . "." . $filter['property'] . " LIKE :value$i ")
                         ->setParameter("value$i", "%".$filter["value"]."%");
                 }
                 $i++;
 
             }
         }
+
+        $identifier = $this->em->getClassMetadata($className)->getSingleIdentifierFieldName();
+        $identifierPath = $this->alias . '.' . $identifier;
+        $ids = $qbf->select($identifierPath)->getQuery()->getResult();
+        $ids = array_map(function($item) use ($identifier){
+            return $item[$identifier];
+        }, $ids);
+
+        $qb
+            ->andWhere($identifierPath. " IN (:value$i)")
+            ->setParameter("value$i", $ids);
 
         return $qb;
     }
@@ -447,7 +465,7 @@ class CrudService
      * @param $baseConfiguration
      * @return mixed
      */
-    protected function addSelectAndJoin(QueryBuilder $qb, $listConfiguration, $baseConfiguration, array $filters = null)
+    protected function addSelectAndJoin(QueryBuilder $qb, $listConfiguration, $baseConfiguration)
     {
         $qb->select($this->alias);
         $qb->from($baseConfiguration["configuration"]["class"], $this->alias);
