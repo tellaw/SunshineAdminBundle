@@ -17,7 +17,6 @@ use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
 
 class CrudService
 {
-
     /**
      *
      * Alias used for QueryBuilder
@@ -215,9 +214,14 @@ class CrudService
     /**
      * Get an entity list
      * @param $entityName
+     * @param $orderCol
+     * @param $orderDir
+     * @param $start
+     * @param $length
+     * @param $searchValue
+     * @param bool $enablePagination
+     * @param array $filters
      * @return array
-     * @internal param Context $context
-     * @internal param $configuration
      */
     public function getEntityList(
         $entityName,
@@ -359,7 +363,6 @@ class CrudService
      */
     protected function getValuesForAttributes($fieldMappings, $object)
     {
-
         $flattenObject = array();
 
         // Loop over attributes
@@ -369,10 +372,9 @@ class CrudService
             $value = null;
 
             if (method_exists($object, $getter)) {
-                $value = $object->$getter();
+                $value = call_user_func_array([$object, $getter], []);
             }
-            if ($value instanceof \DateTime)
-            {
+            if ($value instanceof \DateTime) {
                 $value = $value->format('d-m-Y H:i');
             }
             $flattenObject[$fieldName] = $value;
@@ -392,7 +394,6 @@ class CrudService
      */
     protected function getValuesForRealtedObjects($associationMappings, $object)
     {
-
         $flattenObject = array();
 
         // Loop over associations
@@ -401,7 +402,7 @@ class CrudService
             $getter = "get" . ucfirst($associationKey);
 
             if (method_exists($object, $getter)) {
-                $linkedObject = $object->$getter();
+                $linkedObject = call_user_func_array([$object, $getter], []);
             } else {
                 $linkedObject = null;
             }
@@ -646,33 +647,7 @@ class CrudService
                     break;
 
                 case "object":
-
-                    if (!isset($field["relatedClass"])) {
-                        throw new \Exception(
-                            "Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation"
-                        );
-                    }
-
-                    if (!isset($field["expanded"]) || $field["expanded"] === false) {
-                        $fieldAttributes["attr"] = array(
-                            'class' => $fieldName . '-select2 '.$forcedClass,
-                            'filterAttribute' => $field["filterAttribute"],
-                            'callbackFunction' => (key_exists('callbackFunction', $field))? $field["callbackFunction"]: "",
-                            'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"]),
-                        );
-                        $fieldAttributes["class"] = $field["relatedClass"];
-                        $fieldAttributes['placeholder'] = !empty($field["placeholder"]) ? $field["placeholder"] : '';
-                        $type = Select2Type::class;
-                    } else {
-                        $fieldAttributes["expanded"] = "true";
-                    }
-
-                    $fieldAttributes["multiple"] = isset($field['multiple']) ? $field['multiple'] : false;
-                    $fieldAttributes["required"] = $field["required"];
-                    break;
-
                 case "object-multiple":
-
                     if (!isset($field["relatedClass"])) {
                         throw new \Exception(
                             "Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation"
@@ -683,7 +658,7 @@ class CrudService
                         $fieldAttributes["attr"] = array(
                             'class' => $fieldName . '-select2 '.$forcedClass,
                             'filterAttribute' => $field["filterAttribute"],
-                            'callbackFunction' => (key_exists('callbackFunction', $field))? $field["callbackFunction"]: "",
+                            'callbackFunction' => (array_key_exists('callbackFunction', $field))? $field["callbackFunction"]: "",
                             'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"]),
                         );
                         $fieldAttributes["class"] = $field["relatedClass"];
@@ -693,7 +668,7 @@ class CrudService
                         $fieldAttributes["expanded"] = "true";
                     }
 
-                    $fieldAttributes["multiple"] = isset($field['multiple']) ? $field['multiple'] : true;
+                    $fieldAttributes["multiple"] = (isset($field['multiple']) && $field['multiple']) || $field["type"] === 'object-multiple';
                     $fieldAttributes["required"] = $field["required"];
                     break;
             }

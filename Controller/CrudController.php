@@ -228,9 +228,6 @@ class CrudController extends AbstractController
      */
     public function downloadAttachmentAction()
     {
-        $downloadHandler = $this->get('vich_uploader.download_handler');
-
-//        return $downloadHandler->downloadObject($file, $fileField = 'attachmentFile');
     }
 
     /**

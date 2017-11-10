@@ -28,7 +28,6 @@ class WidgetController extends Controller
      */
     public function widgetCrudListAction($pageName, $row, $widgetName, $entityName = null)
     {
-
         /** @var PageService $pageService */
         $pageService = $this->get("sunshine.pages");
         $crudService = $this->get("sunshine.crud_service");

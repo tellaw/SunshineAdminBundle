@@ -47,7 +47,4 @@ class Filter
     {
         $this->value = $value;
     }
-
-
-
 }

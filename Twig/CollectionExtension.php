@@ -38,5 +38,4 @@ class CollectionExtension extends \Twig_Extension
     {
         return 'form_collection';
     }
-
 }

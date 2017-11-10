@@ -11,7 +11,7 @@ class WidgetExtension extends \Twig_Extension
      * Pages configuration
      * @var array
      */
-    private $configuration;
+    protected $configuration;
 
     /**
      * Service managing widgets

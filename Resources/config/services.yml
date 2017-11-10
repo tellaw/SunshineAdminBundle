@@ -31,10 +31,6 @@ services:
     tags:
       - { name: twig.extension }
 
-  sunshine.embeddedType:
-    class: Tellaw\SunshineAdminBundle\Form\Type\EmbeddedType
-    arguments: ["@sunshine.crud_service"]
-
   sunshine.menu_twig_extension:
     class: Tellaw\SunshineAdminBundle\Twig\MenuExtension
     arguments: ["@security.authorization_checker"]

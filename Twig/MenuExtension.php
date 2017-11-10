@@ -14,6 +14,7 @@ class MenuExtension extends \Twig_Extension
 
     /**
      * Constructor
+     * @param AuthorizationCheckerInterface $securityChecker
      */
     public function __construct(AuthorizationCheckerInterface $securityChecker = null)
     {

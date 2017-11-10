@@ -8,9 +8,14 @@ use Tellaw\SunshineAdminBundle\Service\CrudService;
 use Tellaw\SunshineAdminBundle\Service\EntityService;
 
 class ListWidget extends AbstractWidget {
+
     /** @var  EntityService */
     private $entities;
-    private $crudService;
+
+    /**
+     * @var CrudService
+     */
+    protected $crudService;
 
     public function create ( $configuration, MessageBag $messagebag ) {
 

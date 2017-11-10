@@ -16,5 +16,4 @@ class MessageBag {
             return null;
         }
     }
-
 }

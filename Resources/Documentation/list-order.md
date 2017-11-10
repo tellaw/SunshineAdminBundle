@@ -18,8 +18,8 @@ tellaw_sunshine_admin:
                       
 ```
 
-| Item                          | Description                                            | Required|
-|-------------------------------|--------------------------------------------------------|----------
-| order                           | order direction (asc, desc)                     | No      |
+| Item                          | Description           | Required | Possible value
+|-------------------------------|-----------------------|--------------------------
+| order                           | order direction     | No       | **asc** or **desc**
 
 Note : The order attribute must be applied to only one field.

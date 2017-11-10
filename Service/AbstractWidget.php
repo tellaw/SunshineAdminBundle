@@ -34,6 +34,4 @@ abstract class AbstractWidget {
     }
 
     public abstract function create ( $configuration, MessageBag $messageBag);
-
-
 }

@@ -27,7 +27,7 @@
         "beberlei/DoctrineExtensions" : "1.0.*",
         "tetranz/select2entity-bundle": "2.*",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
-        "ninsuo/symfony-collection": "dev-master"
+        "ninsuo/symfony-collection": "2.1.19"
     },
     "autoload" : {
       "psr-0" : {

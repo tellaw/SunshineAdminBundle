@@ -14,6 +14,8 @@ class Context {
     private $entityName;
     private $startPage;
     private $nbItemPerPage;
+    private $displayedInMenu;
+    private $roles;
 
     /**
      * @var array
@@ -70,17 +72,17 @@ class Context {
     /**
      * @return mixed
      */
-    public function getIsDisplayedInMenu()
+    public function isDisplayedInMenu()
     {
-        return $this->isDisplayedInMenu;
+        return $this->displayedInMenu;
     }
 
     /**
      * @param mixed $isDisplayedInMenu
      */
-    public function setIsDisplayedInMenu($isDisplayedInMenu)
+    public function setDisplayedInMenu($isDisplayedInMenu)
     {
-        $this->isDisplayedInMenu = $isDisplayedInMenu;
+        $this->displayedInMenu = $isDisplayedInMenu;
     }
 
     /**
@@ -98,8 +100,6 @@ class Context {
     {
         $this->roles = $roles;
     }
-    private $isDisplayedInMenu;
-    private $roles;
 
     /**
      * @return mixed
@@ -206,7 +206,7 @@ class Context {
             'Page' => $page,
             'limit' => $limit
         ];
-        
+
         if (!is_null($totalCount)) {
             $this->pagination['totalCount'] = $totalCount;
             $this->pagination['totalPages'] = $totalCount <= $limit ? 1 : $totalCount/$limit;
@@ -219,5 +219,53 @@ class Context {
     public function getPagination()
     {
         return $this->pagination;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartPage()
+    {
+        return $this->startPage;
+    }
+
+    /**
+     * @param mixed $startPage
+     */
+    public function setStartPage($startPage)
+    {
+        $this->startPage = $startPage;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNbItemPerPage()
+    {
+        return $this->nbItemPerPage;
+    }
+
+    /**
+     * @param mixed $nbItemPerPage
+     */
+    public function setNbItemPerPage($nbItemPerPage)
+    {
+        $this->nbItemPerPage = $nbItemPerPage;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalCount()
+    {
+        return $this->totalCount;
+    }
+
+    /**
+     * @param int $totalCount
+     */
+    public function setTotalCount($totalCount)
+    {
+        $this->totalCount = $totalCount;
     }
 }

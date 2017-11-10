@@ -23,6 +23,7 @@ class MenuService
      * Constructor
      *
      * @param array $configuration
+     * @param $entityConfiguration
      */
     public function __construct(array $configuration, $entityConfiguration)
     {
@@ -32,13 +33,14 @@ class MenuService
 
     /**
      * Provide the menu configuration
+     * @param $currentUser
      * @return array
      */
     public function getConfiguration($currentUser)
     {
         $autoMenu = array();
 
-        if ( $currentUser->hasRole('ROLE_ADMIN') ) {
+        if (call_user_func_array([$currentUser, 'hasRole'], ['ROLE_ADMIN'])) {
 
             foreach ( $this->entityConfiguration as $entityName => $entityConf ) {
                 $autoMenu[] = array (
