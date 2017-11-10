@@ -64,6 +64,6 @@ tellaw_sunshine_admin:
 ```
 
 
-| Option                             | Description                           | Required |  Possible value
-|-----------------------------------|---------------------------------------|-------------------------------
-| multiple                          | multiple choice                       | No       | true or false
+| Option                             | Description                           | Required |  Possible value       |
+|------------------------------------|---------------------------------------|----------|-----------------------|
+| multiple                           | multiple choice                       | No       | **true** or **false** |
