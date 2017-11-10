@@ -18,7 +18,7 @@ tellaw_sunshine_admin:
                       
 ```
 
-| Item                          | Description           | Required | Possible value       |
+| Option                          | Description           | Required | Possible value       |
 |-------------------------------|-----------------------|----------|----------------------|
 | order                         | order direction       | No       | **asc** or **desc**  |
 

@@ -77,7 +77,7 @@ tellaw_sunshine_admin:
                             arguments: ["Editions T.I", "Comundi"] # default value of company.
 ```
 
-| Field                             | Description                           | Required |  Possible value                                   |
+| Option                             | Description                           | Required |  Possible value                                   |
 |-----------------------------------|---------------------------------------|----------|---------------------------------------------------|
 | provider                          | provide default value of your field   | No       | function_name or your_service@function_name       |
 | arguments                         | arguments of your provider            | No       | array                                             |
