@@ -5,14 +5,11 @@
 Sunshine roles management is based on Symfony roles. You should define roles withing your symfony application.
 Theses roles will then be available to restrict access to sunshine elements.
 
-## Access Restriction based on roles
+## Access Restriction based on roles and roles permissions
 
 ### Menu
 
-In the menu configuration, you can add a list of roles who can access to the link.
-Any person who doesn't have the role, may not be able to see the menu entry.
-
-Note : Default menu entries, generated for entities do not handle roles management.
+You may need to configure menu items to be available only for specific users based on their roles and/or permissions. You may achieve this by adding a security parameter for each menu item you want to control access to. See example below :
 
 Sample menu configuration :
 ```
@@ -28,8 +25,10 @@ Sample menu configuration :
                 icon : compass
                 parameters :
                     id : reporting_monthly
-                roles :
-                    - ROLE_ADMIN
+                security:
+                    roles: [ROLE_ADMIN]
+                    permissions: ['edit_user']
+                    entity: User
 ```
 With this configuration, the menu entry 'Mensuel' will only be shown to users with the role 'ROLE_ADMIN'
 Note that you can give an array of authorized roles.
