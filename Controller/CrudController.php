@@ -128,7 +128,7 @@ class CrudController extends AbstractController
     /**
      * Remove an entity
      *
-     * @Route("/crud/delete/{entityName}/{targetId}", name="sunshine_crud_delete")
+     * @Route("/crud/delete/{entityName}/{targetId}", name="sunshine_crud_delete", options={"expose": true})
      * @Route("/crud/delete/{entityName}", name="sunshine_crud_delete_js")
      * @Method({"GET", "POST"})
      */

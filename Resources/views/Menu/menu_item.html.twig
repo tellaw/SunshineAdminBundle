@@ -31,8 +31,10 @@
     <li class="m-menu__section">
         <h4 class="m-menu__section-text">{{ item.label }}</h4>
     </li>
-    {% for items in item.children %}
-        {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':items} %}
+    {% for subItem in item.children %}
+        {% if isMenuItemVisible(subItem) %}
+            {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':subItem} %}
+        {% endif %}
     {% endfor %}
 {% elseif item.type == 'external' %}
     <li class="m-menu__item ">
@@ -55,8 +57,10 @@
         <div class="m-menu__submenu">
             <span class="m-menu__arrow"></span>
             <ul class="m-menu__subnav">
-                {% for items in item.children %}
-                    {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':items} %}
+                {% for subItem in item.children %}
+                    {% if isMenuItemVisible(subItem) %}
+                        {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':subItem} %}
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>

@@ -157,7 +157,7 @@ class PageController extends AbstractPageController
         $messageBag->addMessage("id", $id );
         $messageBag->addMessage("entityName", $entityName);
 
-        return $this->renderPage("practicalFileView", $messageBag);
+        return $this->renderPage(strtolower($entityName) . 'View', $messageBag, $messageBag);
     }
 
 }

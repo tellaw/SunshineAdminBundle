@@ -316,7 +316,7 @@ class CrudService
      * @param $results
      * @return array
      */
-    private function flattenObjects($entityName, $results)
+    protected function flattenObjects($entityName, $results)
     {
         $listConfiguration = $this->entityService->getListConfiguration($entityName);
         $baseConfiguration = $this->entityService->getConfiguration($entityName);
@@ -374,7 +374,10 @@ class CrudService
             if (method_exists($object, $getter)) {
                 $value = call_user_func_array([$object, $getter], []);
             }
-            if ($value instanceof \DateTime) {
+
+            if ($value instanceof \DateTime && $fieldMapping['type'] == 'date') {
+                $value = $value->format('d-m-Y');
+            } elseif ($value instanceof \DateTime) {
                 $value = $value->format('d-m-Y H:i');
             }
             $flattenObject[$fieldName] = $value;
@@ -580,7 +583,6 @@ class CrudService
      *
      * @param Form|FormBuilder $form
      * @param array $formConfiguration
-     * @param string $forcedClass
      * @return mixed
      * @throws \Exception
      */
