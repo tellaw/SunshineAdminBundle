@@ -54,17 +54,20 @@ class EntityService
 
         if (array_key_exists( "filters", $detailedConfiguration ) && count ($detailedConfiguration["filters"]) > 0 ) {
             $filtersFields = $detailedConfiguration["filters"];
-
             $filters = array();
 
-            foreach ( $filtersFields as $filterField => $filterData ) {
-
-                if (array_key_exists( $filterField, $fieldList )) {
-                    $filters[$filterField] = $fieldList[ $filterField ];
+            foreach($filtersFields as $key => $value) {
+                if (!isset($fieldList[$key])) {
+                    $filters[$key] = $value;
                 } else {
-                    throw new \Exception("Filter field doesn't match an existing field. Entity : ".$entityName." - Field : ".$filterField);
+                    if (is_null($value)) {
+                        $filters[$key] = $value;
+                    } elseif(is_array($value) && is_array($fieldList[$key])) {
+                        $filters[$key] = $this->overrideArrayValues($fieldList[$key], $value);
+                    } else {
+                        $filters[$key] = $value;
+                    }
                 }
-
             }
 
             return $filters;
@@ -73,7 +76,29 @@ class EntityService
             // Now configuration for filters, return null
             return null;
         }
+    }
 
+    /**
+     *
+     * Override values of array.
+     *
+     * @param array $parent
+     * @param array $child
+     * @return array
+     */
+    private function overrideArrayValues(array $parent, array $child)
+    {
+        foreach ($parent as $key => $value) {
+            if (!isset($child[$key]) || is_null($child[$key])) {
+                $child[$key] = $value;
+            } else {
+                if (is_array($value)) {
+                    $child[$key] = $this->overrideArrayValues($value, $child[$key]);
+                }
+            }
+        }
+
+        return $child;
     }
 
 

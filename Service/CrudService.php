@@ -14,8 +14,6 @@ use Symfony\Component\Form\FormBuilder;
 use Tellaw\SunshineAdminBundle\Form\Type\AttachmentType;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
-use Tellaw\SunshineAdminBundle\Form\Type\SunshineCollectionType;
-use Tellaw\SunshineAdminBundle\Interfaces\ConfigurationReaderServiceInterface;
 
 class CrudService
 {
@@ -668,6 +666,8 @@ class CrudService
                     } else {
                         $fieldAttributes["expanded"] = "true";
                     }
+
+                    $fieldAttributes["multiple"] = isset($field['multiple']) ? $field['multiple'] : false;
                     $fieldAttributes["required"] = $field["required"];
                     break;
 
@@ -692,7 +692,8 @@ class CrudService
                     } else {
                         $fieldAttributes["expanded"] = "true";
                     }
-                    $fieldAttributes["multiple"] = "true";
+
+                    $fieldAttributes["multiple"] = isset($field['multiple']) ? $field['multiple'] : true;
                     $fieldAttributes["required"] = $field["required"];
                     break;
             }
@@ -723,13 +724,14 @@ class CrudService
             }
         } else {
             $that = $this;
-            $callable = function ($item) use ($that, $field, $fieldName, $formConfiguration){
+            $callable = function ($item) use ($that, $field, $fieldName, $formConfiguration) {
                 if (isset($field['type']) && in_array($field['type'], ['object', 'object-multiple']) &&  null !== $item) {
                     $rep = $that->em->getRepository($field['relatedClass']);
-                    if ('object' === $field['type']) {
-                        return $rep->findOneBy([$formConfiguration[$fieldName]['filterAttribute'] => $item]);
-                    } else {
+                    $multiple =((isset($field['multiple']) && $field['multiple']) || ($field['type'] === 'object-multiple'));
+                    if ($multiple) {
                         return $rep->findBy([$formConfiguration[$fieldName]['filterAttribute'] => func_get_args()]);
+                    } else {
+                        return $rep->findOneBy([$formConfiguration[$fieldName]['filterAttribute'] => $item]);
                     }
                 } else {
                     return $item;
