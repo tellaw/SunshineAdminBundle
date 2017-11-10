@@ -79,5 +79,5 @@ tellaw_sunshine_admin:
 
 | Option                             | Description                           | Required |  Possible value                                   |
 |-----------------------------------|---------------------------------------|----------|---------------------------------------------------|
-| provider                          | provide default value of your field   | No       | function_name or your_service@function_name       |
+| provider                          | provide default value of your field   | No       | **function_name** or **your_service@function_name**       |
 | arguments                         | arguments of your provider            | No       | array                                             |
