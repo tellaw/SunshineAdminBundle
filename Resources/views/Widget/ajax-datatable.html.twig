@@ -1,7 +1,7 @@
-{% if filtersForm  %}
+{% if filtersForm is defined  %}
     {% form_theme filtersForm 'TellawSunshineAdminBundle:Form:filterFields.html.twig'%}
 {% endif %}
-<div class="m-portlet m-portlet--mobile">
+<div class="m-portlet m-portlet--mobile {{ widgetName }}-portlet">
     <div class="m-portlet__head">
         {% if widget.title is defined %}
             <div class="m-portlet__head-caption">
@@ -21,7 +21,7 @@
         <div class="form-group m-form__group row align-items-center">
             <div class="col-lg-6">
                 <div class="m-input-icon m-input-icon--left">
-                    <input type="text" class="form-control m-input m-input--solid" placeholder="Recherchez..." value="{{ generalSearch }}" id="m_form_search">
+                    <input type="text" class="form-control m-input m-input--solid" placeholder="Recherchez..." value="{{ generalSearch|default('') }}" id="m_form_search">
                     <span class="m-input-icon__icon m-input-icon__icon--left"><span><i class="la la-search"></i></span></span>
                 </div>
             </div>
@@ -47,10 +47,10 @@
 
         <div class="form-group m-form__group row align-items-center">
             <div class="col-md-12">
-                {% if filtersForm %}
+                {% if filtersForm is defined %}
                     <!-- Input field for search -->
                     <div class="m-input-icon m-input-icon--left">
-                            {{ form(filtersForm) }}
+                        {{ form(filtersForm) }}
                     </div>
                 {% endif %}
             </div>
@@ -75,10 +75,7 @@
         </table>
 
         <script type="text/javascript">
-
-            var filters = [];
-
-            var datatable;
+            var {{ widgetName }}datatable;
 
             function buildArrayToObject(partials, value, index) {
                 if (index === partials.length || partials[index] === "") {
@@ -91,9 +88,11 @@
                 return result;
             }
 
-            function updateFilters () {
+            function {{ widgetName }}updateFilters (widgetName) {
+                var filters = [];
+                console.log(widgetName);
                 newFilters = [];
-                $("body").find(".filterElement").each(function (index, item) {
+                $("body").find('.' + widgetName + '-portlet .filterElement').each(function (index, item) {
                     if (item.value != "") {
                         var name = item.name;
                         name = name.replace("filters[", "");
@@ -109,12 +108,13 @@
                         }
                     }
                 });
+                console.log('2');
                 filters = newFilters;
 
-                if (datatable) {
-                    datatable.destroy();
+                if ({{ widgetName }}datatable) {
+                    {{ widgetName }}datatable.destroy();
                 }
-                datatable = $('#{{ widgetName }}_datatable_ajax').mDatatable({
+                {{ widgetName }}datatable = $('#' + widgetName + '_datatable_ajax').mDatatable({
                     data: {
                         type: 'remote',
                         source: {
@@ -208,25 +208,26 @@
                         }
                     }
                 });
-                return  datatable;
+                console.log({{ widgetName }}datatable);
+                return  {{ widgetName }}datatable;
             }
 
             $(document).ready(function () {
 
-                updateFilters();
+                {{ widgetName }}updateFilters('{{ widgetName }}');
 
                 // var query = datatable.getDataSourceQuery();
 
-                $('#m_form_search').on('keyup', function (e) {
-                    datatable.search($(this).val().toLowerCase());
+                $('.' + '{{ widgetName }}' + '-portlet #m_form_search').on('keyup', function (e) {
+                    {{ widgetName }}datatable.search($(this).val().toLowerCase());
                 });
 
-                $(".filterElement").on("keyup", function (e) {
-                    updateFilters();
+                $('.' + '{{ widgetName }}' + '-portlet .filterElement').on("keyup", function (e) {
+                    {{ widgetName }}updateFilters();
                 });
 
-                $(".filterElement").on("change", function (e) {
-                    updateFilters();
+                $('.' + '{{ widgetName }}' + '-portlet .filterElement').on("change", function (e) {
+                    {{ widgetName }}updateFilters();
                 });
             });
 
