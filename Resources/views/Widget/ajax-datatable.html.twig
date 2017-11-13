@@ -223,11 +223,11 @@
                 });
 
                 $('.' + '{{ widgetName }}' + '-portlet .filterElement').on("keyup", function (e) {
-                    {{ widgetName }}updateFilters();
+                    {{ widgetName }}updateFilters('{{ widgetName }}');
                 });
 
                 $('.' + '{{ widgetName }}' + '-portlet .filterElement').on("change", function (e) {
-                    {{ widgetName }}updateFilters();
+                    {{ widgetName }}updateFilters('{{ widgetName }}');
                 });
             });
 
