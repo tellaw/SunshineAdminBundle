@@ -161,7 +161,7 @@
                         {# Default template #}
                         {
                             field: "{{ key }}",
-                            title: "{{ key }}",
+                            title: "{{ field.label is defined ? field.label : key }} ",
                             sortable: "{{ field.order is defined ? field.order : null }}"
                         },
                         {% endif %}
