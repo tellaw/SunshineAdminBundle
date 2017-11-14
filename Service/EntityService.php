@@ -145,8 +145,6 @@ class EntityService
             }
         }
 
-        dump($resultData);
-
         return $resultData;
     }
 
