@@ -114,8 +114,12 @@ class EntityService
                 if (!is_array($fieldGlobalConfiguration)) {
                     $fieldGlobalConfiguration = array();
                 }
-
                 $resultData[$fieldName] = array_merge($fieldGlobalConfiguration, $fieldDetailedConfiguration);
+                foreach ($resultData[$fieldName] as $key => $value) {
+                    if (is_null($value) && isset($fieldGlobalConfiguration[$key])) {
+                        $resultData[$fieldName][$key] = $fieldGlobalConfiguration[$key];
+                    }
+                }
             } else {
                 $resultData[$fieldName] = $fieldDetailedConfiguration;
             }
@@ -144,7 +148,6 @@ class EntityService
                 $resultData[$fieldName]['label'] = $fieldName;
             }
         }
-
         return $resultData;
     }
 
