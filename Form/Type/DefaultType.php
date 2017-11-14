@@ -57,7 +57,7 @@ class DefaultType extends AbstractType
         $form = $event->getForm();
         $fieldsConfiguration = $form->getConfig()->getOptions()['fields_configuration'];
         $this->buildFormFields($form, $fieldsConfiguration);
-        $form->add('buttons', ChoiceButtonType::class, ['mapped' => false]);
+        $form->add('buttons', ChoiceButtonType::class, ['mapped' => false, 'label' => false]);
     }
 
     /**
