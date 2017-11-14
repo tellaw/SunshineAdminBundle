@@ -1,4 +1,4 @@
-{% if filtersForm is defined  %}
+{% if filtersForm is defined and filtersForm %}
     {% form_theme filtersForm 'TellawSunshineAdminBundle:Form:filterFields.html.twig'%}
 {% endif %}
 <div class="m-portlet m-portlet--mobile {{ widgetName }}-portlet">
@@ -47,7 +47,7 @@
 
         <div class="form-group m-form__group row align-items-center">
             <div class="col-md-12">
-                {% if filtersForm is defined %}
+                {% if filtersForm is defined and filtersForm %}
                     <!-- Input field for search -->
                     <div class="m-input-icon m-input-icon--left">
                         {{ form(filtersForm) }}
