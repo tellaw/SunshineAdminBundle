@@ -46,61 +46,8 @@ class EntityService
      */
     public function getFiltersConfiguration ( $entityName ) {
 
-        $fieldList =  $this->getConfigurationByViewType($entityName, "list");
-
-        // Now we have the field list, we must remove any field no relevant to the filter form.
-        $configuration = $this->getConfiguration($entityName);
-        $detailedConfiguration = $configuration["list"];
-
-        if (array_key_exists( "filters", $detailedConfiguration ) && count ($detailedConfiguration["filters"]) > 0 ) {
-            $filtersFields = $detailedConfiguration["filters"];
-            $filters = array();
-
-            foreach($filtersFields as $key => $value) {
-                if (!isset($fieldList[$key])) {
-                    $filters[$key] = $value;
-                } else {
-                    if (is_null($value)) {
-                        $filters[$key] = $value;
-                    } elseif(is_array($value) && is_array($fieldList[$key])) {
-                        $filters[$key] = $this->overrideArrayValues($fieldList[$key], $value);
-                    } else {
-                        $filters[$key] = $value;
-                    }
-                }
-            }
-
-            return $filters;
-
-        } else {
-            // Now configuration for filters, return null
-            return null;
-        }
+        return $this->getConfigurationByViewType($entityName, "list", 'filters');
     }
-
-    /**
-     *
-     * Override values of array.
-     *
-     * @param array $parent
-     * @param array $child
-     * @return array
-     */
-    private function overrideArrayValues(array $parent, array $child)
-    {
-        foreach ($parent as $key => $value) {
-            if (!isset($child[$key]) || is_null($child[$key])) {
-                $child[$key] = $value;
-            } else {
-                if (is_array($value)) {
-                    $child[$key] = $this->overrideArrayValues($value, $child[$key]);
-                }
-            }
-        }
-
-        return $child;
-    }
-
 
     /**
      * Provide the entity configuration for the list view
@@ -134,10 +81,13 @@ class EntityService
      * Provide the entity configuration for a specific view
      *
      * @param string $entityName
+     * @param $viewType
+     * @param string $viewTypeKey
      * @return array
      * @throws \Exception
+     * @internal param string $configurationKey
      */
-    protected function getConfigurationByViewType($entityName, $viewType)
+    protected function getConfigurationByViewType($entityName, $viewType, $viewTypeKey = 'fields')
     {
         // Getting the detailed configuration configuration
         $configuration = $this->getConfiguration($entityName);
@@ -146,7 +96,7 @@ class EntityService
         }
 
         $globalConfiguration = $configuration['attributes'];
-        $detailedConfiguration = $configuration[$viewType]['fields'];
+        $detailedConfiguration = isset($configuration[$viewType][$viewTypeKey]) ? (array) $configuration[$viewType][$viewTypeKey] : [];
 
         $resultData = array();
 
@@ -164,8 +114,12 @@ class EntityService
                 if (!is_array($fieldGlobalConfiguration)) {
                     $fieldGlobalConfiguration = array();
                 }
-
                 $resultData[$fieldName] = array_merge($fieldGlobalConfiguration, $fieldDetailedConfiguration);
+                foreach ($resultData[$fieldName] as $key => $value) {
+                    if (is_null($value) && isset($fieldGlobalConfiguration[$key])) {
+                        $resultData[$fieldName][$key] = $fieldGlobalConfiguration[$key];
+                    }
+                }
             } else {
                 $resultData[$fieldName] = $fieldDetailedConfiguration;
             }

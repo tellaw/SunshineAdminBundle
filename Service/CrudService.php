@@ -235,13 +235,14 @@ class CrudService
     ) {
         $listConfiguration = $this->entityService->getListConfiguration($entityName);
         $baseConfiguration = $this->entityService->getConfiguration($entityName);
+        $filtersConfiguration = $this->entityService->getFiltersConfiguration($entityName);
 
         $qb = $this->em->createQueryBuilder();
 
         $qb = $this->addSelectAndJoin($qb, $listConfiguration, $baseConfiguration);
 
         if ($filters !== null) {
-            $qb = $this->addFilters($qb, $baseConfiguration["configuration"]["class"], $filters, $listConfiguration, $entityName);
+            $qb = $this->addFilters($qb, $baseConfiguration["configuration"]["class"], $filters, $filtersConfiguration);
         }
         $qb = $this->addPagination($qb, $start, $length, $enablePagination);
         if (!empty($orderCol) && !empty($orderDir)) {
@@ -262,12 +263,12 @@ class CrudService
      * @param QueryBuilder $qb
      * @param $className
      * @param array|null $filters
-     * @param $listConfiguration
+     * @param $filterConfiguration
      * @return QueryBuilder
      */
-    protected function addFilters(QueryBuilder $qb, $className, array $filters = null, $listConfiguration = null)
+    protected function addFilters(QueryBuilder $qb, $className, array $filters = null, $filterConfiguration = null)
     {
-        if (empty($filters) || empty($listConfiguration)) {
+        if (empty($filters) || empty($filterConfiguration)) {
             return $qb;
         }
 
@@ -276,8 +277,8 @@ class CrudService
         $i = 0;
         foreach ($filters as $filter) {
             if ( array_key_exists('property', $filter) && array_key_exists('value', $filter)) {
-                if (in_array($listConfiguration[$filter['property']]["type"], [ "object",  "object-multiple"]) ) {
-                    if ($listConfiguration[$filter['property']]["type"] === 'object') {
+                if (in_array($filterConfiguration[$filter['property']]["type"], [ "object",  "object-multiple"]) ) {
+                    if ($filterConfiguration[$filter['property']]["type"] === 'object') {
                         $field = $this->alias . "." . $filter['property'];
                     } else {
                         $field = $this->getAliasForEntity($filter['property']);
@@ -524,7 +525,7 @@ class CrudService
      */
     protected function addOrderBy(QueryBuilder $qb, $listConfiguration, $orderCol, $orderDir)
     {
-        if ($this->isRelatedObject($listConfiguration[$orderCol])) {
+        if (isset($listConfiguration[$orderCol]) && $this->isRelatedObject($listConfiguration[$orderCol])) {
             $joinAlias = $this->getAliasForEntity($orderCol);
             $qb->orderBy($joinAlias . "." . $listConfiguration[$orderCol]["filterAttribute"], $orderDir);
         } else {
