@@ -126,7 +126,7 @@
                                 }
                             }
                         },
-                        pageSize: 10,
+                        pageSize: {{ pageSize is defined ? pageSize : 50 }},
                         saveState: {
                             cookie: false,
                             webstorage: true
@@ -208,7 +208,7 @@
                         }
                     }
                 });
-                console.log({{ widgetName }}datatable);
+
                 return  {{ widgetName }}datatable;
             }
 
