@@ -175,7 +175,7 @@
                             title: "Action",
                             template: function (row) {
                                 {% if widget.parameters.editRoute is defined %}
-                                return '<button onclick="openListLink(this)" data-url="{{ path(widget.parameters.editRoute, {'entityName':entityName}) }}/' + row.id + '" type="button" class="btn btn-primary btn-sm">Editer</button>&nbsp<button onclick="openListLink(this)" data-url="{{ path(widget.parameters.deleteRoute, {'entityName':entityName}) }}/' + row.id + '" type="button" class="btn btn-danger btn-sm" onClick="return confirm(\'Confirmez-vous la suppression ?\')">Supprimer</button>"';
+                                return '<button onclick="openListLink(this)" data-url="{{ path(widget.parameters.editRoute, {'entityName':entityName}) }}/' + row.id + '" type="button" class="btn btn-primary btn-sm">Editer</button>&nbsp<button onclick="openListLink(this)" data-url="{{ path(widget.parameters.deleteRoute, {'entityName':entityName}) }}/' + row.id + '" type="button" class="btn btn-danger btn-sm" onClick="return confirm(\'Confirmez-vous la suppression ?\')">Supprimer</button>';
                                 {% else %}
                                 return '<button onclick="openListLink(this)" data-url="{{ path('sunshine_page_edit', {'entityName':entityName}) }}/' + row.id + '" type="button" class="btn btn-primary btn-sm">Editer</button>&nbsp;<button onclick="openListLink(this)" data-url="{{ path('sunshine_crud_delete_js', {'entityName':entityName}) }}/' + row.id + '" type="button" class="btn btn-danger btn-sm" onClick="return confirm(\'Confirmez-vous la suppression ?\')">Supprimer</button>';
                                 {% endif %}

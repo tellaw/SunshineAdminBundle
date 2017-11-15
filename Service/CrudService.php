@@ -329,11 +329,7 @@ class CrudService
         $fieldMappings = $classMetadata->fieldMappings;
         $associationMappings = $classMetadata->associationMappings;
 
-        foreach ($listConfiguration as $key => $configuration) {
-            if ($configuration['type'] != 'custom' && $configuration['type'] != 'object' && empty($fieldMappings[$key])) {
-                $fieldMappings[$key] = $configuration;
-            }
-        }
+        $fieldMappings = array_merge($fieldMappings, $listConfiguration);
 
         $flattenDatas = array();
 
@@ -376,10 +372,12 @@ class CrudService
                 $value = call_user_func_array([$object, $getter], []);
             }
 
-            if ($value instanceof \DateTime && $fieldMapping['type'] == 'date') {
-                $value = $value->format('d-m-Y');
-            } elseif ($value instanceof \DateTime) {
-                $value = $value->format('d-m-Y H:i');
+            if ($value instanceof \DateTime) {
+                if ($fieldMapping['type'] === 'date') {
+                    $value = $value->format('d-m-Y');
+                } else {
+                    $value = $value->format('d-m-Y H:i');
+                }
             }
             $flattenObject[$fieldName] = $value;
 
