@@ -152,24 +152,24 @@
         <!-- END: Left Aside -->
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
 
-            <!-- BODY CONTENT OF PAGE -->
-            {% if app.session.flashBag.has('success') %}
-                <div class="flashBagAlert alert alert-success">
-                    {% for msg in app.session.flashBag.get('success') %}
-                        {{ msg }}
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            {% if app.session.flashBag.has('error') %}
-                <div class="flashBagAlert alert alert-danger">
-                    {% for msg in app.session.flashBag.get('error') %}
-                        {{ msg }}
-                    {% endfor %}
-                </div>
-            {% endif %}
-
             <div class="m-content">
+                <!-- BODY CONTENT OF PAGE -->
+                {% if app.session.flashBag.has('success') %}
+                    <div class="flashBagAlert alert alert-success">
+                        {% for msg in app.session.flashBag.get('success') %}
+                            {{ msg }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if app.session.flashBag.has('error') %}
+                    <div class="flashBagAlert alert alert-danger">
+                        {% for msg in app.session.flashBag.get('error') %}
+                            {{ msg }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
             {% block body %}
                 Default page
             {% endblock %}

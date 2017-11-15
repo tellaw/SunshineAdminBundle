@@ -89,6 +89,10 @@ class PageController extends AbstractPageController
             $entity = new $configuration['configuration']['class'];
         }
 
+        if (null === $entity) {
+            throw $this->createNotFoundException();
+        }
+
         $formOptions = [
             'fields_configuration' => $fieldsConfiguration,
             'crud_service' => $crudService,
@@ -105,7 +109,7 @@ class PageController extends AbstractPageController
         } else {
             $form = $this->createForm(DefaultType::class, $entity, $formOptions);
         }
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
