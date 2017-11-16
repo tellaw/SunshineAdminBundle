@@ -104,7 +104,6 @@ class MenuExtension extends \Twig_Extension
                 }
             }
         }
-
         // On vérifie si le role de l'utilisateur est autorisé
         if (!empty($security['roles'])) {
             foreach ($security['roles'] as $role) {
@@ -122,18 +121,13 @@ class MenuExtension extends \Twig_Extension
      * Vérifie les droits d'accès de l'utilisateur loggué
      *
      * @param string $role
-     * @param null $object
-     * @param null $field
+     * @param mixed $object
      * @return bool
      */
-    public function isGranted($role, $object = null, $field = null)
+    public function isGranted($role, $object = null)
     {
         if (null === $this->securityChecker) {
             return false;
-        }
-
-        if (null !== $field) {
-            $object = new FieldVote($object, $field);
         }
 
         try {
