@@ -119,7 +119,7 @@
                         type: 'remote',
                         source: {
                             read: {
-                                url: "{{ path('sunshine_ajax_datatable_callback', {'entity': entityName}) }}",
+                                url: "{{ path((datatable_ajax_path is defined ? datatable_ajax_path : 'sunshine_ajax_datatable_callback'), {'entity': entityName}) }}",
                                 params: {
                                     generalSearch: $('#m_form_search').val().toLowerCase(),
                                     filters: filters
