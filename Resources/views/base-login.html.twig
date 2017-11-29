@@ -21,7 +21,7 @@
             <div class="m-login__container">
                 <div class="m-login__logo">
                     <a href="#">
-                        <img src="{{ asset ('bundles/tellawsunshineadmin/assets/app/media/img//logos/logo-1.png') }}">
+                        <img alt="{{ getLogo().alt }}" src="{{ getLogo().external_url ? getLogo().url : asset (getLogo().url) }}"/>
                     </a>
                 </div>
                 <div class="m-login__signin">
