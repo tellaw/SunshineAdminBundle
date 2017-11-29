@@ -2,7 +2,7 @@
     <li class="m-menu__item {% if pageType == 'sunshine_page' and pageIdentifier == item.parameters.id  %}m-menu__item--active{% endif %}" aria-haspopup="true">
         <a href="{{ path('sunshine_page', {'pageId': item.parameters.id}) }}" class="m-menu__link">
             {% if item.icon is defined %}
-                <i class="m-menu__link-icon flaticon-layers {{ item.icon }}"></i>
+                <i class="m-menu__link-icon flaticon-{{ item.icon }}"></i>
             {% endif %}
             <span class="m-menu__link-text">{{ item.label | trans }}</span>
         </a>
@@ -11,7 +11,7 @@
     <li class="m-menu__item {% if pageType == 'custom_page' and pageIdentifier == item.route %}m-menu__item--active{% endif %}">
         <a href="{{ path(item.route, item.parameters) }}" class="m-menu__link">
             {% if item.icon is defined %}
-                <i class="m-menu__link-icon {{ item.icon }}"></i>
+                <i class="m-menu__link-icon flaticon-{{ item.icon }}"></i>
             {% endif %}
             <span class="m-menu__link-text">{{ item.label | trans }}</span>
         </a>
@@ -20,7 +20,7 @@
     <li class="m-menu__item {% if pageType == 'sunshine_page_list' and pageIdentifier == item.entityName %}m-menu__item--active{% endif %}">
         <a href="{{ path('sunshine_page_list', {'entityName': item.entityName}) }}" class="m-menu__link">
             {% if item.icon is defined %}
-                <i class="m-menu__link-icon {{ item.icon }}"></i>
+                <i class="m-menu__link-icon flaticon-{{ item.icon }}"></i>
             {% endif %}
             <span class="m-menu__link-text">{{ item.label | trans }}</span>
 
@@ -40,7 +40,7 @@
     <li class="m-menu__item ">
         <a href="{{ item.parameters.url }}" class="nav-link" {% if item.target is defined %}target="{{ item.target }}"{% endif %}>
             {% if item.icon is defined %}
-                <i class="m-menu__link-icon {{ item.icon }}"></i>
+                <i class="m-menu__link-icon flaticon-{{ item.icon }}"></i>
             {% endif %}
             <span class="m-menu__link-text">{{ item.label | trans }}</span>
         </a>
@@ -49,7 +49,7 @@
     <li class="m-menu__item m-menu__item--submenu {% if isActivePageIsAChildPage( item, pageType, pageIdentifier ) %}active open{%  endif %}" aria-haspopup="true"  data-menu-submenu-toggle="hover">
         <a href="#" class="m-menu__link m-menu__toggle">
             {% if item.icon is defined %}
-                <i class="m-menu__link-icon {{ item.icon }}"></i>
+                <i class="m-menu__link-icon flaticon-{{ item.icon }}"></i>
             {% endif %}
             <span class="m-menu__link-text">{{ item.label | trans}}</span>
             <i class="m-menu__ver-arrow la la-angle-right"></i>

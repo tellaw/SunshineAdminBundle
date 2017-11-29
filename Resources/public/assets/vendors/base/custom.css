@@ -56,3 +56,17 @@ b, strong {
 div#filters>div {
     min-height: 70px;
 }
+.btn.btn-default, .btn.btn-secondary {
+    border: 1px solid transparent;
+    background: buttonface;
+}
+.btn.btn-default.active, .btn.btn-default:active, .btn.btn-default:focus, .btn.btn-default:hover, .btn.btn-secondary.active, .btn.btn-secondary:active, .btn.btn-secondary:focus, .btn.btn-secondary:hover, .show>.btn.btn-default.dropdown-toggle, .show>.btn.btn-secondary.dropdown-toggle {
+    border: 1px solid transparent;
+    background: #aaa;
+}
+.btn-group-vertical>.btn:hover, .btn-group>.btn:hover {
+    z-index: 0;
+}
+.m-aside-menu.m-aside-menu--skin-dark .m-menu__nav>.m-menu__section .m-menu__section-text {
+    color: #ebebeb;
+}
