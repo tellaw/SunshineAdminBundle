@@ -1,0 +1,58 @@
+.mt-element-list .list-default.mt-list-container ul>.mt-list-item>.list-datetime {
+    width: auto;!important;
+}
+.login-form h3 {
+    display:none;
+}
+.login-form label,
+.m-login__signin div,
+.forget-password{
+    color:white;
+    margin-bottom: 0rem;
+}
+.login-form .remember_me,
+.forget-password{
+    margin-bottom: 0;
+}
+.m-login__signin div {
+    margin-bottom: 1rem;
+}
+.m-login__head {
+    margin-bottom:10px;
+}
+.mt-element-list .list-default.mt-list-container ul>.mt-list-item>.list-datetime {
+    width: auto;!important;
+}
+.form-control {
+    padding: .64rem 1.25rem;
+}
+.form-control, .form-control[readonly], .select2-container--default .select2-selection--multiple, .select2-container--default .select2-selection--single {
+    border: 1px solid #aaa;
+}
+.select2-container .select2-selection--multiple {
+    min-height: 37px;
+}
+.m-brand__logo-wrapper img {
+    height:50px;
+}
+div[id^='widget-list'] .m-datatable__cell:last-child span,
+div[id^='widget-List'] .m-datatable__cell:first-child span {
+    width: 50px!important;
+    text-align: right;
+}
+div[id^='widget-List'] .m-datatable__cell:first-child span {
+    text-align: left;
+}
+div[id^='widget-list'] th.m-datatable__cell:last-child span,
+div[id^='widget-List'] th.m-datatable__cell:first-child span {
+    width: 62px!important;
+}
+b, strong {
+    font-weight: 600;
+}
+#planning_save {
+    float: right;
+}
+div#filters>div {
+    min-height: 70px;
+}
