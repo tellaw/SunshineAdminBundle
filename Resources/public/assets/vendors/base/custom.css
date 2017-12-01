@@ -32,21 +32,6 @@
 .select2-container .select2-selection--multiple {
     min-height: 37px;
 }
-.m-brand__logo-wrapper img {
-    height:50px;
-}
-div[id^='widget-list'] .m-datatable__cell:last-child span,
-div[id^='widget-List'] .m-datatable__cell:first-child span {
-    width: 50px!important;
-    text-align: right;
-}
-div[id^='widget-List'] .m-datatable__cell:first-child span {
-    text-align: left;
-}
-div[id^='widget-list'] th.m-datatable__cell:last-child span,
-div[id^='widget-List'] th.m-datatable__cell:first-child span {
-    width: 62px!important;
-}
 b, strong {
     font-weight: 600;
 }
