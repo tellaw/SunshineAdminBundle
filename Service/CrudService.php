@@ -75,29 +75,25 @@ class CrudService
 
     /**
      * Return the total count of an entity
+     *
      * @param $entityName
+     * @param $searchValue
+     * @param array|null $filters
      */
-    public function getCountEntityElements(
-        $entityName,
-        $orderCol,
-        $orderDir,
-        $start,
-        $length,
-        $searchValue,
-        array $filters = null
-    ) {
-        $result = $this->getEntityList(
-            $entityName,
-            $orderCol,
-            $orderDir,
-            $start,
-            $length,
-            $searchValue,
-            false,
-            $filters
-        );
+    public function getCountEntityElements($entityName, $searchValue, array $filters = null)
+    {
+        $listConfiguration = $this->entityService->getListConfiguration($entityName);
+        $baseConfiguration = $this->entityService->getConfiguration($entityName);
+        $filtersConfiguration = $this->entityService->getFiltersConfiguration($entityName);
 
-        return count($result);
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('COUNT(l)')->from($baseConfiguration["configuration"]["class"], 'l');
+        if ($filters !== null) {
+            $qb = $this->addFilters($qb, $baseConfiguration["configuration"]["class"], $filters, $filtersConfiguration);
+        }
+        $qb = $this->addSearch($qb, $searchValue, $listConfiguration, $baseConfiguration);
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
     /**

@@ -116,7 +116,7 @@ class AjaxController extends Controller
         $list = $crudService->getEntityList($entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue, true, $filters );
 
         // Get the number of elements using the filter
-        $nbElementsOfFilteredEntity = $crudService->getCountEntityElements( $entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue, $filters);
+        $nbElementsOfFilteredEntity = $crudService->getCountEntityElements($entity, $searchValue, $filters);
 
         $responseArray = array (
             'infos' => array (
