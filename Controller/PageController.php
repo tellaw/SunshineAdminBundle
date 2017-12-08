@@ -120,11 +120,18 @@ class PageController extends AbstractPageController
             $event = new EntityEvent($entity);
             $this->get('event_dispatcher')->dispatch(SunshineEvents::ENTITY_PRE_FLUSHED, $event);
 
-            $em->flush($entity);
+            try {
+                $em->flush($entity);
+                $flashMsg = 'Enregistrement effectué.';
+                $flashType = 'success';
+            } catch (Exception $e) {
+                $flashMsg = "Erreur : {$e->getMessage()}";
+                $flashType = 'error';
+            }
 
             $request->getSession()
                 ->getFlashBag()
-                ->add('success', 'Enregistrement effectué.');
+                ->add($flashType, $flashMsg);
 
 
             if ($form->has('buttons') && $form->get('buttons')->get('save_and_quit')->isClicked()) {
