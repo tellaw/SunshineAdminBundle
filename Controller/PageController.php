@@ -124,7 +124,7 @@ class PageController extends AbstractPageController
                 $em->flush($entity);
                 $flashMsg = 'Enregistrement effectué.';
                 $flashType = 'success';
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $flashMsg = "Erreur : {$e->getMessage()}";
                 $flashType = 'error';
             }
