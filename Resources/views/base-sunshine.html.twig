@@ -50,71 +50,61 @@
 
                     <!-- END: Horizontal Menu -->
                     <!-- BEGIN: Topbar -->
-                    <div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general">
-                        <div class="m-stack__item m-topbar__nav-wrapper">
-                            <ul class="m-topbar__nav m-nav m-nav--inline">
-                                <li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light" data-dropdown-toggle="click">
-                                    <a href="#" class="m-nav__link m-dropdown__toggle">
+                    {% block usermenu %}
+                        <div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general">
+                            <div class="m-stack__item m-topbar__nav-wrapper">
+                                <ul class="m-topbar__nav m-nav m-nav--inline">
+                                    <li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light" data-dropdown-toggle="click">
+                                        <a href="#" class="m-nav__link m-dropdown__toggle">
 												<span class="m-topbar__userpic">
-													<img src="{{ asset ('bundles/tellawsunshineadmin/assets/app/media/img/users/user4.jpg') }}" class="m--img-rounded m--marginless m--img-centered" alt=""/>
+													<img src="{{ asset ('bundles/tellawsunshineadmin/assets/app/media/img/users/default-avatar.png') }}" class="m--img-rounded m--marginless m--img-centered" alt=""/>
 												</span>
                                         <span class="m-topbar__username m--hide">
-													Nick
+													{{ app.user.firstname }}
 												</span>
-                                    </a>
-                                    <div class="m-dropdown__wrapper">
-                                        <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
-                                        <div class="m-dropdown__inner">
-                                            <div class="m-dropdown__header m--align-center" style="background: url({{ asset ('bundles/tellawsunshineadmin/assets/app/media/img/misc/user_profile_bg.jpg') }}); background-size: cover;">
-                                                <div class="m-card-user m-card-user--skin-dark">
-                                                    <div class="m-card-user__pic">
-                                                        <img src="{{ asset ('bundles/tellawsunshineadmin/assets/app/media/img/users/user4.jpg') }}" class="m--img-rounded m--marginless" alt=""/>
-                                                    </div>
-                                                    <div class="m-card-user__details">
+                                        </a>
+                                        <div class="m-dropdown__wrapper">
+                                            <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
+                                            <div class="m-dropdown__inner">
+                                                <div class="m-dropdown__header m--align-center">
+                                                    <div class="m-card-user m-card-user--skin-dark">
+                                                        <div class="m-card-user__pic">
+                                                            <img src="{{ asset ('bundles/tellawsunshineadmin/assets/app/media/img/users/default-avatar.png') }}" class="m--img-rounded m--marginless" alt=""/>
+                                                        </div>
+                                                        <div class="m-card-user__details">
 																<span class="m-card-user__name m--font-weight-500">
-																	Mark Andre
+																	{{ app.user.fullname }}
 																</span>
-                                                        <a href="" class="m-card-user__email m--font-weight-300 m-link">
-                                                            mark.andre@gmail.com
-                                                        </a>
+                                                            <a href="" class="m-card-user__email m--font-weight-300 m-link">
+                                                                {{ app.user.email }}
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="m-dropdown__body">
-                                                <div class="m-dropdown__content">
-                                                    <ul class="m-nav m-nav--skin-light">
-                                                        <li class="m-nav__section m--hide">
+                                                <div class="m-dropdown__body">
+                                                    <div class="m-dropdown__content">
+                                                        <ul class="m-nav m-nav--skin-light">
+                                                            <li class="m-nav__section m--hide">
 																	<span class="m-nav__section-text">
 																		Section
 																	</span>
-                                                        </li>
-                                                        <li class="m-nav__item">
-                                                            <a href="header/profile.html" class="m-nav__link">
-                                                                <i class="m-nav__link-icon flaticon-profile-1"></i>
-                                                                <span class="m-nav__link-title">
-																			<span class="m-nav__link-wrap">
-																				<span class="m-nav__link-text">
-																					Mon profile
-																				</span>
-																			</span>
-																		</span>
-                                                            </a>
-                                                        </li>
-                                                        <li class="m-nav__separator m-nav__separator--fit"></li>
-                                                        <li class="m-nav__item">
-                                                            <a href="{{ path ('fos_user_security_logout') }}" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
-                                                                Se deconnecter
-                                                            </a>
-                                                        </li>
-                                                    </ul>
+                                                            </li>
+                                                            <li class="m-nav__separator m-nav__separator--fit"></li>
+                                                            <li class="m-nav__item">
+                                                                <a href="{{ path ('fos_user_security_logout') }}" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
+                                                                    Se deconnecter
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                            </ul>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
+                    {% endblock %}
                     <!-- END: Topbar -->
                 </div>
             </div>
@@ -136,14 +126,14 @@
                     data-menu-scrollable="false" data-menu-dropdown-timeout="500"
             >
                 <ul class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow " style="padding-top:0px;">
-                <!-- Insert Here the menu -->
-                {% if  app.request.attributes.get('_route') == "sunshine_page" %}
-                    {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "sunshine_page", "pageIdentifier" : pageId } )) }}
-                {% elseif app.request.attributes.get('_route') == "sunshine_page_list" %}
-                    {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "sunshine_page_list", "pageIdentifier" : entity } )) }}
-                {% else %}
-                    {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "custom_page", "pageIdentifier" : app.request.attributes.get('_route') } )) }}
-                {% endif %}
+                    <!-- Insert Here the menu -->
+                    {% if  app.request.attributes.get('_route') == "sunshine_page" %}
+                        {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "sunshine_page", "pageIdentifier" : pageId } )) }}
+                    {% elseif app.request.attributes.get('_route') == "sunshine_page_list" %}
+                        {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "sunshine_page_list", "pageIdentifier" : entity } )) }}
+                    {% else %}
+                        {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "custom_page", "pageIdentifier" : app.request.attributes.get('_route') } )) }}
+                    {% endif %}
                 </ul>
 
             </div>
@@ -170,9 +160,9 @@
                     </div>
                 {% endif %}
 
-            {% block body %}
-                Default page
-            {% endblock %}
+                {% block body %}
+                    Default page
+                {% endblock %}
             </div>
 
         </div>
