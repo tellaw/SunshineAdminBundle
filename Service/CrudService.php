@@ -60,7 +60,6 @@ class CrudService
 
     public function getTotalElementsInTable($entityName, array $filters = null)
     {
-
         $baseConfiguration = $this->entityService->getConfiguration($entityName);
 
         $qb = $this->em->createQueryBuilder();
@@ -70,7 +69,6 @@ class CrudService
         }
 
         return $qb->getQuery()->getSingleScalarResult();
-
     }
 
     /**
@@ -88,6 +86,7 @@ class CrudService
 
         $qb = $this->em->createQueryBuilder();
         $qb->select('COUNT(l)')->from($baseConfiguration["configuration"]["class"], 'l');
+        $qb = $this->addSelectAndJoin($qb, $listConfiguration, $baseConfiguration, true);
         if ($filters !== null) {
             $qb = $this->addFilters($qb, $baseConfiguration["configuration"]["class"], $filters, $filtersConfiguration);
         }
@@ -234,7 +233,8 @@ class CrudService
         $filtersConfiguration = $this->entityService->getFiltersConfiguration($entityName);
 
         $qb = $this->em->createQueryBuilder();
-
+        $qb->select($this->alias);
+        $qb->from($baseConfiguration["configuration"]["class"], $this->alias);
         $qb = $this->addSelectAndJoin($qb, $listConfiguration, $baseConfiguration);
 
         if ($filters !== null) {
@@ -287,7 +287,6 @@ class CrudService
                         ->setParameter("value$i", "%".$filter["value"]."%");
                 }
                 $i++;
-
             }
         }
 
@@ -460,13 +459,11 @@ class CrudService
      * @param QueryBuilder $qb
      * @param $listConfiguration
      * @param $baseConfiguration
+     * @param bool $isCount Si requête de type COUNT
      * @return mixed
      */
-    protected function addSelectAndJoin(QueryBuilder $qb, $listConfiguration, $baseConfiguration)
+    protected function addSelectAndJoin(QueryBuilder $qb, $listConfiguration, $baseConfiguration, $isCount = false)
     {
-        $qb->select($this->alias);
-        $qb->from($baseConfiguration["configuration"]["class"], $this->alias);
-
         // GET COLUMNS AS FIELDS
         foreach ($listConfiguration as $key => $item) {
 
@@ -477,15 +474,15 @@ class CrudService
                     $join = ['class' => $item['relatedClass'], 'name' => $key];
                     $joinAlias = $this->getAliasForEntity($join['name']);
                     $qb->leftJoin($this->alias . '.' . $join['name'], $joinAlias);
-                    $qb->addSelect($joinAlias);
-
+                    if (!$isCount) {
+                        $qb->addSelect($joinAlias);
+                    }
                 }
 
             }
         }
 
         return $qb;
-
     }
 
     /**
