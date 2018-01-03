@@ -1,6 +1,8 @@
 <?php
 
 namespace Tellaw\SunshineAdminBundle\Service;
+use Symfony\Component\Security\Core\User\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Menu Manager
@@ -38,13 +40,17 @@ class MenuService
      */
     public function getConfiguration($currentUser)
     {
+        if (!($currentUser instanceof UserInterface)) {
+            return [];
+        }
+
         $autoMenu = array();
 
         if (call_user_func_array([$currentUser, 'hasRole'], ['ROLE_ADMIN'])) {
 
             foreach ( $this->entityConfiguration as $entityName => $entityConf ) {
                 $autoMenu[] = array (
-                    "icon" => "puzzle",
+                    "icon" => "layers",
                     "label" => $entityName,
                     "entityName" => $entityName,
                     "type" => "list"

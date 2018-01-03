@@ -2,7 +2,7 @@
 {% block page %}
 
     <!-- BEGIN: Header -->
-    <header class="m-grid__item    m-header "  data-minimize-offset="200" data-minimize-mobile-offset="200" >
+    <header class="m-grid__item  m-header no-print"  data-minimize-offset="200" data-minimize-mobile-offset="200" >
         <div class="m-container m-container--fluid m-container--full-height">
             <div class="m-stack m-stack--ver m-stack--desktop">
                 <!-- BEGIN: Brand -->
@@ -60,40 +60,49 @@
 													<img src="{{ asset ('bundles/tellawsunshineadmin/assets/app/media/img/users/default-avatar.png') }}" class="m--img-rounded m--marginless m--img-centered" alt=""/>
 												</span>
                                         <span class="m-topbar__username m--hide">
-													{{ app.user.firstname }}
-												</span>
+                                                {{ app.user.firstname is defined ? app.user.firstname : ''}}
+                                            </span>
                                         </a>
                                         <div class="m-dropdown__wrapper">
                                             <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
                                             <div class="m-dropdown__inner">
                                                 <div class="m-dropdown__header m--align-center">
                                                     <div class="m-card-user m-card-user--skin-dark">
-                                                        <div class="m-card-user__pic">
-                                                            <img src="{{ asset ('bundles/tellawsunshineadmin/assets/app/media/img/users/default-avatar.png') }}" class="m--img-rounded m--marginless" alt=""/>
-                                                        </div>
-                                                        <div class="m-card-user__details">
-																<span class="m-card-user__name m--font-weight-500">
-																	{{ app.user.fullname }}
-																</span>
-                                                            <a href="" class="m-card-user__email m--font-weight-300 m-link">
-                                                                {{ app.user.email }}
-                                                            </a>
-                                                        </div>
+                                                            <div class="m-card-user__pic">
+                                                                <img src="{{ asset ('bundles/tellawsunshineadmin/assets/app/media/img/users/default-avatar.png') }}" class="m--img-rounded m--marginless" alt=""/>
+                                                            </div>
+
+                                                            <div class="m-card-user__details">
+
+                                                                <span class="m-card-user__name m--font-weight-500">
+                                                                    {{ app.user.fullname is defined ? app.user.fullname : (app.user.username is defined ? app.user.username : '') }}
+                                                                </span>
+
+                                                                <a href="" class="m-card-user__email m--font-weight-300 m-link">
+                                                                    {{ app.user.email is defined ? app.user.email : '' }}
+                                                                </a>
+                                                            </div>
                                                     </div>
                                                 </div>
                                                 <div class="m-dropdown__body">
                                                     <div class="m-dropdown__content">
                                                         <ul class="m-nav m-nav--skin-light">
                                                             <li class="m-nav__section m--hide">
-																	<span class="m-nav__section-text">
-																		Section
-																	</span>
+                                                                <span class="m-nav__section-text">
+                                                                    Section
+                                                                </span>
                                                             </li>
                                                             <li class="m-nav__separator m-nav__separator--fit"></li>
                                                             <li class="m-nav__item">
-                                                                <a href="{{ path ('fos_user_security_logout') }}" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
-                                                                    Se deconnecter
-                                                                </a>
+                                                                {% if app.user %}
+                                                                    <a href="{{ path ('fos_user_security_logout') }}" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
+                                                                        Se deconnecter
+                                                                    </a>
+                                                                {% else %}
+                                                                    <a href="{{ path ('fos_user_security_login') }}" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
+                                                                        Se connecter
+                                                                    </a>
+                                                                {% endif %}
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -114,10 +123,10 @@
     <!-- begin::Body -->
     <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
         <!-- BEGIN: Left Aside -->
-        <button class="m-aside-left-close  m-aside-left-close--skin-dark " id="m_aside_left_close_btn">
+        <button class="m-aside-left-close  m-aside-left-close--skin-dark no-print" id="m_aside_left_close_btn">
             <i class="la la-close"></i>
         </button>
-        <div id="m_aside_left" class="m-grid__item	m-aside-left  m-aside-left--skin-dark ">
+        <div id="m_aside_left" class="m-grid__item	m-aside-left  m-aside-left--skin-dark no-print">
             <!-- BEGIN: Aside Menu -->
             <div
                     id="m_ver_menu"
@@ -140,7 +149,7 @@
             <!-- END: Aside Menu -->
         </div>
         <!-- END: Left Aside -->
-        <div class="m-grid__item m-grid__item--fluid m-wrapper">
+        <div class="m-grid__item m-grid__item--fluid m-wrapper ">
 
             <div class="m-content">
                 <!-- BODY CONTENT OF PAGE -->
