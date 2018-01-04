@@ -1,9 +1,4 @@
-
-    {% for item in value %}
-    {{ item.__toString()  }}
-        {% if loop.last == false %}
-            ,
-        {% endif %}
-
-    {% endfor %}
+{% for item in value %}
+    {{ loop.last ? item.__toString() : item.__toString() ~ ', ' }}
+{% endfor %}
 

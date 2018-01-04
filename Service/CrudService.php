@@ -428,7 +428,7 @@ class CrudService
                 foreach ( $element as $collectionObject ) {
                     $results[] = $this->getToString( $collectionObject );
                 }
-                return implode( ",", $results );
+                return implode( ", ", $results );
 
             } else if (method_exists($element, "__toString")) {
 
