@@ -29,7 +29,7 @@
         "friendsofsymfony/jsrouting-bundle": "^1.6",
         "ninsuo/symfony-collection": "2.1.19",
         "symfony/security-acl": "3.0.*",
-        "vich/uploader-bundle": "1.4.*"
+        "vich/uploader-bundle": "1.6.*"
     },
     "autoload" : {
       "psr-0" : {
