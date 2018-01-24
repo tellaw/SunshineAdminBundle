@@ -580,6 +580,7 @@ class CrudService
      */
     public function buildFormFields($form, $formConfiguration, $forcedClass = "")
     {
+
         foreach ($formConfiguration as $fieldName => $field) {
             $fieldAttributes = array();
 

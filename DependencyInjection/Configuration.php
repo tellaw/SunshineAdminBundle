@@ -119,7 +119,7 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('callbackFunction')
                                 ->end()
                                 ->booleanNode('required')
-                                ->defaultValue(true)
+                                ->defaultValue(false)
                                 ->end()
                                 ->scalarNode('placeholder')
                                 ->end()

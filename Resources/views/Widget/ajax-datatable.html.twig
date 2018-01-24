@@ -228,6 +228,10 @@
                     }).val(typeof query.Type !== 'undefined' ? query.Type : '');
                 });
 
+
+                $('form[name="filters"]').submit(function() {
+                    return false;
+                });
             });
 
         </script>

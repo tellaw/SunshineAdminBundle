@@ -82,4 +82,5 @@ class FiltersType extends AbstractType
     {
         $this->crudService->buildFormFields($form, $fieldsConfiguration, 'filterElement');
     }
+
 }
