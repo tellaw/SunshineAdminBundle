@@ -99,17 +99,24 @@ class AjaxController extends Controller
         }
 
         $paginationStart =  ( $page -1 ) * $paginationLength ;
+        if ($paginationStart < 0) $paginationStart = 0;
+
         $searchValue = "";
         if (isset($request->request->get ("datatable")["query"])) {
-            $searchValue = $request->request->get ("datatable")["query"]["generalSearch"];
-        } elseif (isset($request->request->get ("datatable")["generalSearch"])) {
-            $searchValue = $request->request->get ("datatable")["generalSearch"];
+            if (isset($request->request->get ("datatable")["query"]["undefined"])) {
+                $searchValue = $request->request->get ("datatable")["query"]["undefined"];
+            }
         }
 
         $filters = null;
-        if (isset($request->request->get ("datatable")["filters"])) {
-            $filters = $request->request->get("datatable")["filters"];
+        if (isset($request->request->get ("datatable")["query"]) && is_array($request->request->get ("datatable")["query"])) {
+            foreach ( $request->request->get ("datatable")["query"] as $name => $value ) {
+                if ($name != 'undefined') {
+                    $filters[] = array ("property" => $name, "value" => $value);
+                }
+            }
         }
+
 
         /** @var CrudService $crudService */
         $crudService = $this->get("sunshine.crud_service");

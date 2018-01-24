@@ -272,7 +272,7 @@ class CrudService
 
         $i = 0;
         foreach ($filters as $filter) {
-            if ( array_key_exists('property', $filter) && array_key_exists('value', $filter)) {
+            if ( is_array($filter) && array_key_exists('property', $filter) && array_key_exists('value', $filter)) {
                 if (in_array($filterConfiguration[$filter['property']]["type"], [ "object",  "object-multiple"]) ) {
                     if ($filterConfiguration[$filter['property']]["type"] === 'object') {
                         $field = $this->alias . "." . $filter['property'];
@@ -661,7 +661,7 @@ class CrudService
                     } else {
                         $fieldAttributes["expanded"] = "true";
                     }
-
+                    $fieldAttributes['choices'] = [];
                     $fieldAttributes["multiple"] = (isset($field['multiple']) && $field['multiple']) || $field["type"] === 'object-multiple';
                     $fieldAttributes["required"] = $field["required"];
                     break;
