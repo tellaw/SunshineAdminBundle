@@ -119,7 +119,9 @@
                         class: '', // custom wrapper class
                         scroll: false, // enable/disable datatable scroll both horizontal and vertical when needed.
                         footer: false, // display/hide footer
-
+                        spinner: {
+                            opacity: 0.5
+                        }
                     },
 
                     // column based filtering (coming soon)
@@ -140,7 +142,7 @@
                         // input text for search
                         input: null,
                         // search delay in milliseconds
-                        delay: 1,
+                        delay: 500,
                     },
 
                     {# START of Column Definition #}
@@ -209,7 +211,8 @@
                 var query = datatable.getDataSourceQuery();
 
                 $('.{{ widgetName }}-portlet #m_form_search').on('keyup', function (e) {
-                    datatable.search($(this).val().toLowerCase());
+                    datatable.spinnerCallback(true);
+                    datatable.search($(this).val());
                 });
 
                 // UpdateFilters
@@ -220,6 +223,7 @@
                     name = name.replace ("]", "");
 
                     $(item).on('change', function () {
+                        datatable.spinnerCallback(true);
                         datatable.search($(this).val(), name);
                     }).val(typeof query.Type !== 'undefined' ? query.Type : '');
                 });
