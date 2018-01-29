@@ -575,12 +575,13 @@ class CrudService
      *
      * @param Form|FormBuilder $form
      * @param array $formConfiguration
+     * @param string $forcedClass CSS class
+     * @param boolean $loadChoices
      * @return mixed
      * @throws \Exception
      */
-    public function buildFormFields($form, $formConfiguration, $forcedClass = "")
+    public function buildFormFields($form, $formConfiguration, $forcedClass = '', $loadChoices = true)
     {
-
         foreach ($formConfiguration as $fieldName => $field) {
             $fieldAttributes = array();
 
@@ -662,7 +663,9 @@ class CrudService
                     } else {
                         $fieldAttributes["expanded"] = "true";
                     }
-                    $fieldAttributes['choices'] = [];
+                    if (!$loadChoices) {
+                        $fieldAttributes['choices'] = [];
+                    }
                     $fieldAttributes["multiple"] = (isset($field['multiple']) && $field['multiple']) || $field["type"] === 'object-multiple';
                     $fieldAttributes["required"] = $field["required"];
                     break;

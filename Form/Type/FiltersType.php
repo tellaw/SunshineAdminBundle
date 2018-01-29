@@ -80,7 +80,7 @@ class FiltersType extends AbstractType
      */
     protected function buildFormFields($form, array $fieldsConfiguration)
     {
-        $this->crudService->buildFormFields($form, $fieldsConfiguration, 'filterElement');
+        $this->crudService->buildFormFields($form, $fieldsConfiguration, 'filterElement', false);
     }
 
 }
