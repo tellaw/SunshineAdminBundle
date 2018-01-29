@@ -222,6 +222,11 @@
                     name = name.replace("filters[", "");
                     name = name.replace ("]", "");
 
+                    if ($(this).val() != '') {
+                        datatable.spinnerCallback(true);
+                        datatable.search($(this).val(), name);
+                    }
+
                     $(item).on('change', function () {
                         datatable.spinnerCallback(true);
                         datatable.search($(this).val(), name);
