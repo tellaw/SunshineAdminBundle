@@ -91,7 +91,7 @@
 
             $(document).ready(function () {
 
-                datatable = $('#{{ widgetName }}_datatable_ajax').mDatatable({
+                {{ widgetName }}datatable = $('#{{ widgetName }}_datatable_ajax').mDatatable({
 
                     data: {
                         type: 'remote',
@@ -208,11 +208,11 @@
 
 
                 // var query = datatable.getDataSourceQuery();
-                var query = datatable.getDataSourceQuery();
+                var query = {{ widgetName }}datatable.getDataSourceQuery();
 
                 $('.{{ widgetName }}-portlet #m_form_search').on('keyup', function (e) {
-                    datatable.spinnerCallback(true);
-                    datatable.search($(this).val());
+                    {{ widgetName }}datatable.spinnerCallback(true);
+                    {{ widgetName }}datatable.search($(this).val());
                 });
 
                 // UpdateFilters
@@ -223,13 +223,13 @@
                     name = name.replace ("]", "");
 
                     if ($(this).val() != '') {
-                        datatable.spinnerCallback(true);
-                        datatable.search($(this).val(), name);
+                        {{ widgetName }}datatable.spinnerCallback(true);
+                        {{ widgetName }}datatable.search($(this).val(), name);
                     }
 
                     $(item).on('change', function () {
-                        datatable.spinnerCallback(true);
-                        datatable.search($(this).val(), name);
+                        {{ widgetName }}datatable.spinnerCallback(true);
+                        {{ widgetName }}datatable.search($(this).val(), name);
                     }).val(typeof query.Type !== 'undefined' ? query.Type : '');
                 });
 
