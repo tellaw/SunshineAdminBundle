@@ -26,14 +26,16 @@ jQuery(document).ready(function() {
     // DELETE ONE FROM COLLECTION
     $('body').on('click', '.collection-delete', function(e) {
         e.preventDefault();
-        $.ajax({
-            type: 'delete',
-            url: Routing.generate('collection-delete', {entityName: $(this).data('entityname'), id: $(this).data('id')}),
-            data: {},
-            success: function() {
-                location.reload();
-            }
-        });
+        if (confirm("Êtes-vous sûr?")) {
+            $.ajax({
+                type: 'delete',
+                url: Routing.generate('collection-delete', {entityName: $(this).data('entityname'), id: $(this).data('id')}),
+                data: {},
+                success: function () {
+                    location.reload();
+                }
+            });
+        }
     });
 
 });
