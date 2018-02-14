@@ -28,8 +28,8 @@
 
     <div class="col-lg-4{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}" style="float:left;">
         {{- form_label(form) -}}
-            {{- form_widget(form) -}}
-            {{- form_errors(form) -}}
+        {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
     </div>
 
 
@@ -79,7 +79,7 @@
 {% endblock reset_row %}
 
 {% block form_group_class %}
-col-lg-12
+    col-lg-12
 {% endblock form_group_class %}
 
 {# Collection sunshine #}
@@ -169,7 +169,7 @@ col-lg-12
                        data-role="tagsinput" style="display: none;"
                        value="{{ value|default('') }}"/>
             </div>
-            {% else %}
+        {% else %}
             {{ block('form_widget_simple') }}
         {% endif %}
 
@@ -177,7 +177,11 @@ col-lg-12
 {%- endblock tag_widget -%}
 
 {% block select2_widget %}
-    {{ form_widget(form) }}
+    <select name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" class="form-control input-larg filterElement">
+        {% if form.vars.data %}
+            <option value="{{ form.vars.data.id }}" selected="selected">{{ form.vars.data.title }}</option>
+        {% endif %}
+    </select>
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -185,35 +189,37 @@ col-lg-12
                 language: "fr",
                 placeholder: 'Sélectionner une option',
                 allowClear: true,
-                    ajax: {
-                        url: "{{ path('sunshine_ajax_select2_callback', { "entityName" : name, "toStringField" : attr.filterAttribute,  }) }}",
-                        dataType: 'json',
-                        method: 'post',
-                        delay: 500,
+                ajax: {
 
-                        data: function (params) {
-                            return {
-                                q: params.term, // search term
-                                page: params.page,
-                                relatedClass: '{{ attr.relatedClass }}',
-                                callbackFunction: '{{ attr.callbackFunction }}'
-                            };
-                        },
+                    url: "{{ path('sunshine_ajax_select2_callback', { "entityName" : name, "toStringField" : attr.filterAttribute,  }) }}",
+                    dataType: 'json',
+                    method: 'post',
+                    delay: 500,
 
-                        processResults: function (data, params) {
-                            params.page = params.page || 1;
+                    data: function (params) {
+                        return {
+                            q: params.term, // search term
+                            page: params.page,
+                            relatedClass: '{{ attr.relatedClass }}',
+                            callbackFunction: '{{ attr.callbackFunction }}'
+                        };
+                    },
 
-                            return {
-                                results: data.items,
-                                pagination: {
-                                    more: (params.page * 10) < data.total_count
-                                }
-                            };
-                        },
-                        cache: true
-                    }
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
 
-                });
+                        return {
+                            results: data.items,
+                            pagination: {
+                                more: (params.page * 10) < data.total_count
+                            }
+                        };
+                    },
+                    cache: true
+
+                }
+
+            });
 
         });
     </script>

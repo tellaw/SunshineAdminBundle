@@ -78,18 +78,18 @@
 
             var datatable = null;
 
-            function buildArrayToObject(partials, value, index) {
-                if (index === partials.length || partials[index] === "") {
-                    return value;
-                }
-
-                var key = partials[index],
-                        result = {};
-                result[key] = buildArrayToObject(partials, value, index + 1)
-                return result;
-            }
-
             $(document).ready(function () {
+
+                // Preset of filters for first query
+                var queryFilterParams = [];
+                $("body").find(".{{ widgetName }}-portlet .filterElement").each(function (index, item) {
+                    if (item.value != "") {
+                        name = item.name;
+                        name = name.replace("filters[", "");
+                        name = name.replace ("]", "");
+                        queryFilterParams.push({property:name, value:item.value});
+                    }
+                });
 
                 {{ widgetName }}datatable = $('#{{ widgetName }}_datatable_ajax').mDatatable({
 
@@ -99,6 +99,12 @@
                             read: {
                                 method: 'post',
                                 url: "{{ path((datatable_ajax_path is defined ? datatable_ajax_path : 'sunshine_ajax_datatable_callback'), {'entity': entityName}) }}",
+                                params: {
+                                    // custom query params
+                                    query: {
+                                        filters: queryFilterParams
+                                    }
+                                }
                             }
                         },
                         pageSize: {{ pageSize is defined ? pageSize : 20 }},
@@ -225,11 +231,6 @@
                     var name = item.name;
                     name = name.replace("filters[", "");
                     name = name.replace ("]", "");
-
-                    if ($(this).val() != '') {
-                        {{ widgetName }}datatable.spinnerCallback(true);
-                        {{ widgetName }}datatable.search($(this).val(), name);
-                    }
 
                     $(item).on('change', function () {
                         {{ widgetName }}datatable.spinnerCallback(true);
