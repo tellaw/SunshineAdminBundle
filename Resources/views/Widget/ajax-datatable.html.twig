@@ -76,6 +76,40 @@
 
         <script type="text/javascript">
 
+            // UpdateFilters
+            $("body").find('.{{ widgetName }}-portlet .filterElement').each(function (index, item) {
+
+                var name = item.name;
+                name = name.replace("filters[", "");
+                name = name.replace ("]", "");
+
+                $(item).on('change', function () {
+                    {{ widgetName }}datatable.spinnerCallback(true);
+
+                    var value = $(this).val();
+
+                    // Set session informations to handle forward/back navigation
+                    sessionStorage.setItem("{{ widgetName }}_"+name+"_value", value );
+                    sessionStorage.setItem("{{ widgetName }}_"+name+"_text", $(this).find('option:selected').text());
+
+                    // Search for datatable
+                    {{ widgetName }}datatable.search($(this).val(), name);
+                });
+
+                if ( sessionStorage.getItem( "{{ widgetName }}_"+name+"_value" ) != null && sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" ) != null ) {
+
+                    // Create it if not available
+                    var opt = document.createElement('option');
+                    opt.value = sessionStorage.getItem( "{{ widgetName }}_"+name+"_value");
+                    opt.innerHTML = sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" );
+                    $(this).append(opt)
+
+                    $(this).val(sessionStorage.getItem( "{{ widgetName }}_"+name+"_value"));
+
+                }
+
+            });
+
             var datatable = null;
 
             $(document).ready(function () {
@@ -223,19 +257,6 @@
                 $('.{{ widgetName }}-portlet #m_form_search').on('keyup', function (e) {
                     {{ widgetName }}datatable.spinnerCallback(true);
                     {{ widgetName }}datatable.search($(this).val());
-                });
-
-                // UpdateFilters
-                $("body").find('.{{ widgetName }}-portlet .filterElement').each(function (index, item) {
-
-                    var name = item.name;
-                    name = name.replace("filters[", "");
-                    name = name.replace ("]", "");
-
-                    $(item).on('change', function () {
-                        {{ widgetName }}datatable.spinnerCallback(true);
-                        {{ widgetName }}datatable.search($(this).val(), name);
-                    }).val(typeof query.Type !== 'undefined' ? query.Type : '');
                 });
 
 
