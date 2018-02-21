@@ -112,13 +112,14 @@ class AjaxController extends Controller
         if (isset($request->request->get ("datatable")["query"]) && isset($request->request->get ("datatable")["query"]["filters"]) && is_array($request->request->get ("datatable")["query"]["filters"])) {
             // Preset filters in page
             foreach ( $request->request->get ("datatable")["query"]["filters"] as $filter ) {
-                $filters[] = array ("property" => $filter["property"], "value" => $filter["value"]);
+                $filters[strtolower($filter["property"])] = array ("property" => $filter["property"], "value" => $filter["value"]);
             }
-        } else if (isset($request->request->get ("datatable")["query"]) && is_array($request->request->get ("datatable")["query"])) {
+        }
+        if (isset($request->request->get ("datatable")["query"]) && is_array($request->request->get ("datatable")["query"])) {
             // Filters set with search button
             foreach ( $request->request->get ("datatable")["query"] as $name => $value ) {
-                if ($name != 'undefined') {
-                    $filters[] = array ("property" => $name, "value" => $value);
+                if ($name != 'undefined' && $name != "filters") {
+                    $filters[strtolower($name)] = array ("property" => $name, "value" => $value);
                 }
             }
         }
