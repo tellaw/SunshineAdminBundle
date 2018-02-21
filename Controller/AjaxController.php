@@ -109,17 +109,34 @@ class AjaxController extends Controller
         }
 
         $filters = null;
+
+        // Init service, takes care of prefilled filters at page init
         if (isset($request->request->get ("datatable")["query"]) && isset($request->request->get ("datatable")["query"]["filters"]) && is_array($request->request->get ("datatable")["query"]["filters"])) {
             // Preset filters in page
             foreach ( $request->request->get ("datatable")["query"]["filters"] as $filter ) {
-                $filters[strtolower($filter["property"])] = array ("property" => $filter["property"], "value" => $filter["value"]);
+                $filters[$filter["property"]] = array ("property" => $filter["property"], "value" => $filter["value"]);
             }
         }
         if (isset($request->request->get ("datatable")["query"]) && is_array($request->request->get ("datatable")["query"])) {
+
             // Filters set with search button
             foreach ( $request->request->get ("datatable")["query"] as $name => $value ) {
-                if ($name != 'undefined' && $name != "filters") {
-                    $filters[strtolower($name)] = array ("property" => $name, "value" => $value);
+
+                // If key is undefined (genberal search) of filter, then skip this step.
+                if ($name != 'undefined' && $name != 'filters')  {
+
+                    // If value is null or empty, it means filter needs to be cleared
+                    if ($value == null || trim($value) == '') {
+
+                        // Check if filter is set by init service and unset it.
+                        if (array_key_exists(strtolower($name), $filters)) {
+                            unset ($filters[strtolower($name)]);
+                        }
+                    } else {
+
+                        // Or just set a filter (maybe override init service)
+                        $filters[strtolower($name)] = array ("property" => $name, "value" => $value);
+                    }
                 }
             }
         }
