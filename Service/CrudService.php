@@ -264,6 +264,7 @@ class CrudService
      */
     protected function addFilters(QueryBuilder $qb, $className, array $filters = null, $filterConfiguration = null)
     {
+        // If no filters in the configuration, then, return QB
         if (empty($filters) || empty($filterConfiguration)) {
             return $qb;
         }
@@ -272,33 +273,53 @@ class CrudService
 
         $i = 0;
         foreach ($filters as $filter) {
+
+            // Valid that filter has a property and value attributes
             if ( is_array($filter) && array_key_exists('property', $filter) && array_key_exists('value', $filter)) {
+
+                // If filter is about an OBJECT Relation
                 if (in_array($filterConfiguration[$filter['property']]["type"], [ "object",  "object-multiple"]) ) {
+
+                    // If relation is to a 'toMany' the filter is a simple condition on attribute
                     if ($filterConfiguration[$filter['property']]["type"] === 'object') {
                         $field = $this->alias . "." . $filter['property'];
                     } else {
+
+                        // If filter is a toMany...
                         $field = $this->getAliasForEntity($filter['property']);
                     }
-                    $qbf
-                        ->andWhere($field . " IN (:value$i) ")
+
+                    // Add to the query the filter
+                    $qbf->andWhere($field . " IN (:value$i) ")
                         ->setParameter("value$i", $filter["value"]);
+
                 } else {
+
+                    // Filter is based on a simple property, just append to the request
                     $qbf->andWhere($this->alias . "." . $filter['property'] . " LIKE :value$i ")
                         ->setParameter("value$i", "%".$filter["value"]."%");
+
                 }
                 $i++;
             }
         }
 
+        // Find the identifier of the current class object
         $identifier = $this->em->getClassMetadata($className)->getSingleIdentifierFieldName();
+
+        // Find the identifier name in the request
         $identifierPath = $this->alias . '.' . $identifier;
+
+        // Load all identifiers from the database
         $ids = $qbf->select($identifierPath)->getQuery()->getResult();
+
+        // Add each data to an array
         $ids = array_map(function($item) use ($identifier){
             return $item[$identifier];
         }, $ids);
 
-        $qb
-            ->andWhere($identifierPath. " IN (:value$i)")
+        // Find objects from the first QB wich match the second one id's ????
+        $qb->andWhere($identifierPath. " IN (:value$i)")
             ->setParameter("value$i", $ids);
 
         return $qb;
