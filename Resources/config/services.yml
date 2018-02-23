@@ -15,6 +15,10 @@ services:
     class: Tellaw\SunshineAdminBundle\Service\EntityService
     arguments: ["%tellaw_sunshine_admin.entities%"]
 
+  sunshine.theme:
+    class: Tellaw\SunshineAdminBundle\Service\ThemeService
+    arguments: ["%tellaw_sunshine_admin.theme%"]
+
   sunshine.widgets:
     class: Tellaw\SunshineAdminBundle\Service\WidgetService
     arguments: [ '@router' ]

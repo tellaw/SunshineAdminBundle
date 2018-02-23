@@ -350,6 +350,17 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('name')
                     ->defaultValue('Sunshine | Dashboard')
                 ->end()
+                ->arrayNode('homePage')
+                ->children()
+                    ->scalarNode('type')
+                    ->end()
+                    ->scalarNode('pageId')
+                    ->end()
+                    ->scalarNode('entityId')
+                    ->end()
+                    ->scalarNode('url')
+                    ->end()
+                ->end()
             ->end();
 
         return $node;
