@@ -21,7 +21,7 @@ abstract class AbstractController extends Controller
      */
     protected function renderWithTheme ( $template, $params )
     {
-        return $this->render('TellawSunshineAdminBundle:'.$template.".html.twig" , $params);
+        return $this->render('@sunshine/'.$template.".html.twig" , $params);
     }
 
 }

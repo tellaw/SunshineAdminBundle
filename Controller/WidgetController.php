@@ -63,7 +63,7 @@ class WidgetController extends Controller
         }
 
         return $this->render(
-            'TellawSunshineAdminBundle:Widget:ajax-datatable.html.twig',
+            '@sunshine/Widget/ajax-datatable.html.twig',
             array(
                 "filtersForm" => is_null($filtersForm) ? null : $filtersForm->createView(),
                 "configuration" => $configuration,
@@ -114,7 +114,7 @@ class WidgetController extends Controller
         $entity = $crudService->getEntity($entityName, $id);
 
         return $this->render(
-            'TellawSunshineAdminBundle:Widget:view.html.twig',
+            '@sunshine/Widget/view.html.twig',
             [
                 "fields" => $configuration,
                 "widgetName" => $widgetName,

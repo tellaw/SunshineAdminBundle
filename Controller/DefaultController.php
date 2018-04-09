@@ -27,7 +27,7 @@ class DefaultController extends Controller
             return $this->redirectToRoute('sunshine_page_list', array('pageId' => $themeService->getHomePageAttribute() ));
         }
 
-        return $this->render("TellawSunshineAdminBundle::base-sunshine.html.twig");
+        return $this->render("@sunshine/base-sunshine.html.twig");
 
     }
 }

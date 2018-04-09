@@ -142,7 +142,7 @@ class PageController extends AbstractPageController
         }
 
         return $this->render(
-            'TellawSunshineAdminBundle:Page:edit.html.twig',
+            '@sunshine/Page/edit.html.twig',
             [
                 "form" => $form->createView(),
                 "formConfiguration" => $configuration,

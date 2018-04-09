@@ -33,7 +33,7 @@
     </li>
     {% for subItem in item.children %}
         {% if isMenuItemVisible(subItem) %}
-            {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':subItem} %}
+            {% include '@sunshine/Menu/menu_item.html.twig' with  {'item':subItem} %}
         {% endif %}
     {% endfor %}
 {% elseif item.type == 'external' %}
@@ -59,7 +59,7 @@
             <ul class="m-menu__subnav">
                 {% for subItem in item.children %}
                     {% if isMenuItemVisible(subItem) %}
-                        {% include 'TellawSunshineAdminBundle:Menu:menu_item.html.twig' with  {'item':subItem} %}
+                        {% include '@sunshine/Menu/menu_item.html.twig' with  {'item':subItem} %}
                     {% endif %}
                 {% endfor %}
             </ul>

@@ -1,5 +1,5 @@
-{% extends 'TellawSunshineAdminBundle::base-sunshine.html.twig' %}
-{% form_theme form 'TellawSunshineAdminBundle:Form:fields.html.twig'%}
+{% extends '@sunshine/base-sunshine.html.twig' %}
+{% form_theme form '@sunshine/Form/fields.html.twig'%}
 
 {% block title %}
     {% if formConfiguration.form.title is defined %}

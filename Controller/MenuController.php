@@ -24,6 +24,6 @@ class MenuController extends AbstractController
     {
         $configuration = $this->get("sunshine.menu")->getConfiguration( $this->getUser() );
 
-        return $this->renderWithTheme( "Menu:index", array("menu" => $configuration, "pageType" => $pageType, "pageIdentifier" => $pageIdentifier) );
+        return $this->renderWithTheme( "Menu/index", array("menu" => $configuration, "pageType" => $pageType, "pageIdentifier" => $pageIdentifier) );
     }
 }

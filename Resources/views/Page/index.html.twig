@@ -1,4 +1,4 @@
-{% extends 'TellawSunshineAdminBundle::base-sunshine.html.twig' %}
+{% extends '@sunshine/base-sunshine.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
     {% if  page.cssIncludes is defined %}
@@ -52,7 +52,7 @@
 
                             {% if (widget.type is defined) and (widget.type == 'list')%}
                                 {{ render(controller(
-                                    'TellawSunshineAdminBundle:Widget:widgetCrudList',
+                                    '@sunshine/Widget/widgetCrudList',
                                     { 'pageName': pageId, 'widgetName': name, 'row': rowKey }
                                 )) }}
                             {% else %}

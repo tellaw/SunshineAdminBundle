@@ -67,7 +67,7 @@ abstract class AbstractPageController extends AbstractController
         $parameters ["page"]            = $page;
         $parameters ["messageBag"]      = $messageBag;
 
-        return $this->renderWithTheme( "Page:index" , $parameters );
+        return $this->renderWithTheme( "Page/index" , $parameters );
 
     }
 
