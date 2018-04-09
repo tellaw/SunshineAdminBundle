@@ -1,54 +1,64 @@
 services:
   sunshine.crud_service:
     class: Tellaw\SunshineAdminBundle\Service\CrudService
+    public: true
     arguments: ["@doctrine.orm.entity_manager", "@sunshine.entities", "@service_container"]
 
   sunshine.menu:
     class: Tellaw\SunshineAdminBundle\Service\MenuService
+    public: true
     arguments: ["%tellaw_sunshine_admin.menu%", "%tellaw_sunshine_admin.entities%"]
 
   sunshine.pages:
     class: Tellaw\SunshineAdminBundle\Service\PageService
+    public: true
     arguments: ["%tellaw_sunshine_admin.pages%"]
 
   sunshine.entities:
     class: Tellaw\SunshineAdminBundle\Service\EntityService
+    public: true
     arguments: ["%tellaw_sunshine_admin.entities%"]
 
   sunshine.theme:
     class: Tellaw\SunshineAdminBundle\Service\ThemeService
+    public: true
     arguments: ["%tellaw_sunshine_admin.theme%"]
 
   sunshine.widgets:
     class: Tellaw\SunshineAdminBundle\Service\WidgetService
+    public: true
     arguments: [ '@router' ]
-    scope: request_stack
 
   sunshine.widget_twig_extension:
     class: Tellaw\SunshineAdminBundle\Twig\WidgetExtension
     arguments: ["%tellaw_sunshine_admin.pages%", "@sunshine.widgets"]
+    public: true
     tags:
       - { name: twig.extension }
 
   sunshine.collection_twig_extension:
     class: Tellaw\SunshineAdminBundle\Twig\CollectionExtension
+    public: true
     tags:
       - { name: twig.extension }
 
   sunshine.menu_twig_extension:
     class: Tellaw\SunshineAdminBundle\Twig\MenuExtension
+    public: true
     arguments: ["@security.authorization_checker"]
     tags:
       - { name: twig.extension }
 
   sunshine.default_form_type:
     class: Tellaw\SunshineAdminBundle\Form\Type\DefaultType
+    public: true
     arguments: ['@sunshine.crud_service', "@doctrine.orm.entity_manager" ]
     tags:
       - { name: form.type }
 
   sunshine.filtersType:
     class: Tellaw\SunshineAdminBundle\Form\Type\FiltersType
+    public: true
     arguments: ['@sunshine.crud_service', "@doctrine.orm.entity_manager" ]
     tags:
       - { name: form.type }
@@ -59,16 +69,17 @@ services:
   sunshine.widgets.abstract:
     abstract:  true
     arguments: [ '@request_stack', '@twig', "@doctrine.orm.entity_manager" ]
-    scope: request_stack
 
   sunshine.widgets.edit:
     class: Tellaw\SunshineAdminBundle\Service\Widgets\EditWidget
+    public: true
     parent: sunshine.widgets.abstract
     tags:
       - {name: sunshine.widget }
 
   sunshine.widgets.view:
     class: Tellaw\SunshineAdminBundle\Service\Widgets\ViewWidget
+    public: true
     parent: sunshine.widgets.abstract
     calls:
       - [ setEntities, ['@sunshine.entities']]
@@ -78,6 +89,7 @@ services:
 
   sunshine.widgets.list:
     class: Tellaw\SunshineAdminBundle\Service\Widgets\ListWidget
+    public: true
     parent: sunshine.widgets.abstract
     calls:
       - [ setEntities, ['@sunshine.entities']]
@@ -87,6 +99,7 @@ services:
 
   sunshine.theme_twig_extension:
     class: Tellaw\SunshineAdminBundle\Twig\ThemeExtension
+    public: true
     arguments: ["%tellaw_sunshine_admin.theme%"]
     tags:
       - { name: twig.extension }

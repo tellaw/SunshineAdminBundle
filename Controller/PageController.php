@@ -49,7 +49,7 @@ class PageController extends AbstractPageController
         $configuration = $entities->getConfiguration($entityName);
 
         return $this->render(
-            'TellawSunshineAdminBundle:Page:list.html.twig',
+            '@sunshine/Page/list.html.twig',
             [
                 "extraParameters" => array ("name" => "entityName", "value" => $entityName),
                 "widget" => array ("type" => "list"),
