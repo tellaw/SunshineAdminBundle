@@ -27,7 +27,7 @@ class ViewWidget extends AbstractWidget {
             }
 
             $entity = $this->crudService->getEntity($entityName, $id);
-            $template = isset($widgetConfiguration["template"])? $widgetConfiguration["template"] :"TellawSunshineAdminBundle:Widget:view";
+            $template = isset($widgetConfiguration["template"])? $widgetConfiguration["template"] :'@sunshine/Widget/view';
             return $this->render($template, array(
                     "fields" => $configuration,
                     "entityName" => $entityName,
