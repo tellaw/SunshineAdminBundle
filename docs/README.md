@@ -17,7 +17,7 @@ The bundle provides two different level :
 
 ### Entities Management
 
-* YAML Entity description
+* [YAML Entity description](yaml-entity-configuration.md)
 * Field types and overrides
 * Relations
 
