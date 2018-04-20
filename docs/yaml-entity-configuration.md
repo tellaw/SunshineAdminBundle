@@ -72,8 +72,11 @@ This section describes each attributes with its defaults values. This makes easy
 ### List Section
 
 | Item | Description | Required |
-| --- | --- |
+| --- | --- | --- |
 | label | Default label used for the different views | No |
+| order | Sorting order if required | No |
+
+Please, for sorting, refer to documentation : [YAML : Entity List Sort](yaml-entity-list-sort.md)
 
 ### Filters Section
 
