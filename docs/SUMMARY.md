@@ -7,4 +7,5 @@
 * [Entity Relations](entity-relations.md)
 * [Filtering : Default values](filtering-default-values.md)
 * [Filtering : Options multiple](filtering-options-multiple.md)
+* [Roles & Permissions](roles-and-permissions.md)
 
