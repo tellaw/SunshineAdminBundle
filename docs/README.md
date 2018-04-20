@@ -11,5 +11,41 @@ The bundle provides two different level :
 * Entities management : Very simple to setup, it makes possible to handle CRUD actions very easily.
 * Pages and widgets management : Makes possible for user to go a step further and customize the backoffice application.
 
+### Setup
 
+* [Setup in your project](setup.md)
+
+### Entities Management
+
+* YAML Entity description
+* Field types and overrides
+* Relations
+
+### Pages, Widget and menu
+
+* Menu Configuration
+* Theme configuration
+* Page configuration
+* Creation of a new Page with widgets
+
+### Crud Widget
+
+* Crud list widget, how to re-use
+
+### Security and Roles
+
+* Enabling Authentication
+* Filtering by user role
+  * Widgets
+  * Buttons
+  * Pages
+
+### Filtering List
+
+* Default filter value
+* Multiple filter values
+
+### Ordered list
+
+* How to order lists
 
