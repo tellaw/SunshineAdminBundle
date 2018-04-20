@@ -46,10 +46,10 @@ The bundle provides two different level :
 ### Security and Roles
 
 * Enabling Authentication
-* Filtering by user role
-  * Widgets
-  * Buttons
-  * Pages
+* [Filtering by user role](roles-and-permissions.md)
+  * [Widgets](roles-and-permissions.md#widget)
+  * [Menu](roles-and-permissions.md#menu)
+  * [Pages](roles-and-permissions.md#page)
 
 ### Filtering List
 
