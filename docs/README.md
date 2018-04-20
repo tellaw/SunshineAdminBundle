@@ -6,6 +6,11 @@ description: >-
 
 # Sunshine Admin Bundle
 
+## Documentation
+
+This documentation is available with a lot of features on :   
+[https://sunshine-team.gitbook.io/sunshineadminbundle/](https://sunshine-team.gitbook.io/sunshineadminbundle/)
+
 ### Requierements
 
 | PHP | 7.0 or later |
