@@ -4,7 +4,7 @@ description: Setup & Configuration of the bundle in your project
 
 # Setup
 
-### Enable Symfony serializer component
+### Enable Symfony cerializer component
 
 Add the namespace to be able to extend Sunshine templates:
 
