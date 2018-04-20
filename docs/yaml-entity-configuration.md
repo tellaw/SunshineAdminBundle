@@ -9,31 +9,34 @@ tellaw_sunshine_admin_entities:
        configuration:                           // Global description of the entity
            id: id
            class: AppBundle\Entity\Project
-           ROLES :
+           ROLES:
              - ROLE_DEV
 
        attributes:                              // Attribute description (global)
            name:                                // Name of the property to handle
               label: attribute-label
-              type : string
+              type: string
               sortable : true
 
        form:                                    // Description of the form view
            name:                                // Name of the property to handle
                label: form-label
-               placeholder : xxx
-               readOnly : false
+               placeholder: xxx
+               readOnly: false
 
        list:                                    // Description of the list view
-           name :                               // Name of the property to handle
+           id:
+              label: Identifier
+              order: desc
+           name:                               // Name of the property to handle
               label: list-label
 
        filters:                                 // Description of the filters
-           name :                               // Name of the property to handle
+           name:                               // Name of the property to handle
               label: filter-label
 
        search:                                  // Description of the search methods
-           name :                               // Name of the property to handle
+           name:                               // Name of the property to handle
               label: search-label
 ```
 
