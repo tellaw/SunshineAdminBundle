@@ -8,8 +8,8 @@ description: >-
 
 The bundle provides two different level :
 
-* Entities management : Very simple to setup, it makes possible to handle CRUD actions very easily.
-* Pages and widgets management : Makes possible for user to go a step further and customize the backoffice application.
+* **Entities management** : Very simple to setup, it makes possible to handle CRUD actions very easily.
+* **Pages** and **widgets **management : Makes possible for user to go a step further and customize the backoffice application.
 
 ### Setup
 
@@ -19,7 +19,7 @@ The bundle provides two different level :
 
 * [YAML Entity description](yaml-entity-configuration.md)
 * [Field types and overrides](field-type-and-overrides.md)
-* Relations
+* [Entity Relations](entity-relations.md)
 
 ### Pages, Widget and menu
 
