@@ -80,10 +80,14 @@ tellaw_sunshine_admin:
                     project : ~
 ```
 
-### The filterAttributenfiguration key
+### The filterAttribute configuration key
 
 In the YAML configuration of the project,  just add a property **'filterAttribute'** under the field.   
 This property is used by the search to find required values for the linked entity.
+
+{% hint style="danger" %}
+This property is used by doctrine DQL, to load results faster. This key is required for any relation
+{% endhint %}
 
 ### The \_\_toString method
 
@@ -115,5 +119,26 @@ class Project {
 
 The '**expanded'** configuration key expected true or false as value. It defines if the field should be displayed in an expanded state or not. By default, value is false.
 
+```yaml
+tellaw_sunshine_admin:
+    entities:
+        invoice :
+             configuration:
+                 id: id
+                 class: AppBundle\Entity\Invoice
 
+             attributes:
+                 id:
+...
+
+...
+                 project:
+                    label: Projet
+                    filterAttribute : name
+                    expanded : true
+```
+
+This option is equivalent to the Symfony configuration :
+
+* [ChoiceType Field : 'expanded'](https://symfony.com/doc/current/reference/forms/types/choice.html#expanded)
 
