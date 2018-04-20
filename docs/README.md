@@ -25,6 +25,7 @@ The bundle provides two different level :
 ### Let's play
 
 * [Setup in your project](setup.md)
+* [Theme Configuration](theme-configuration.md)
 
 ### Entities Management
 
