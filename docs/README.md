@@ -42,7 +42,7 @@ The bundle provides two different level :
 
 ### Filtering List
 
-* Default filter value
+* [Default filter value](filtering-default-values.md)
 * Multiple filter values
 
 ### Ordered list
