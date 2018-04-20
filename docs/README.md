@@ -1,31 +1,15 @@
-# Initial page
+---
+description: >-
+  SunshineAdminBundle is a bundle designed to help you to create easily a
+  backoffice tool for your application.
+---
 
-## Getting Super Powers
+# Sunshine Admin Bundle
 
-Becoming a super hero is a fairly straight forward process:
+The bundle provides two different level :
 
-[Lien](sous-page.md)
-
-**Exemple de contenu**
-
-```text
-
-```
-
-```
-$ give me super-powers
-```
-
-{% hint style="info" %}
- Super-powers are granted randomly so please submit an issue if you're not happy with yours.
-{% endhint %}
-
-Once you're strong enough, save the world:
-
-```
-// Ain't no code for that yet, sorry
-echo 'You got to trust me on this, I saved the world'
-```
+* Entities management : Very simple to setup, it makes possible to handle CRUD actions very easily.
+* Pages and widgets management : Makes possible for user to go a step further and customize the backoffice application.
 
 
 
