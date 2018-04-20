@@ -8,4 +8,5 @@
 * [Filtering : Default values](filtering-default-values.md)
 * [Filtering : Options multiple](filtering-options-multiple.md)
 * [Roles & Permissions](roles-and-permissions.md)
+* [YAML Entity List Sort](yaml-entity-list-sort.md)
 
