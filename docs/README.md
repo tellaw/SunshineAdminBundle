@@ -35,7 +35,14 @@ The bundle provides two different level :
 
 ### Pages, Widget and menu
 
-* Menu Configuration
+* [Menu Configuration](menu-configuration.md)
+  * [Type : section](menu-configuration.md#type-:-section)
+  * [Type : submenu](menu-configuration.md#type-:-submenu)
+  * [Type : list](menu-configuration.md#type-:-sunshine-list)
+  * [Type : page](menu-configuration.md)
+  * [Type : route](menu-configuration.md#type-:-route)
+  * [Type : external page](menu-configuration.md#type-:-external-page)
+  * [Roles & Permissions](menu-configuration.md#roles-and-permissions-configuration)
 * Theme configuration
 * Page configuration
 * Creation of a new Page with widgets
