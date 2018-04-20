@@ -4,7 +4,7 @@
 
 Becoming a super hero is a fairly straight forward process:
 
-Lien
+[Lien](sous-page.md)
 
 ```
 $ give me super-powers
