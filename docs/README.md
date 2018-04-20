@@ -6,6 +6,12 @@ description: >-
 
 # Sunshine Admin Bundle
 
+### Requierements
+
+| PHP | 7.0 or later |
+| --- | --- |
+| Symfony | 3.4 or later. SF4 recommended. |
+
 The bundle provides two different level :
 
 * **Entities management** : Very simple to setup, it makes possible to handle CRUD actions very easily.
