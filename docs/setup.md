@@ -10,7 +10,7 @@ Add the namespace to be able to extend Sunshine templates:
 
 {% code-tabs %}
 {% code-tabs-item title="app/config/config.yml" %}
-```text
+```yaml
 # Twig Configuration
 twig:
  [...]
