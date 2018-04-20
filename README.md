@@ -6,6 +6,12 @@ Becoming a super hero is a fairly straight forward process:
 
 [Lien](sous-page.md)
 
+**Exemple de contenu**
+
+```text
+
+```
+
 ```
 $ give me super-powers
 ```
