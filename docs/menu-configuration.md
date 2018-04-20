@@ -16,7 +16,7 @@ imports:
 
 A menu can handle the following elements:
 
-## Section
+## Type : section
 
 A section is a separator of elements in the menu.
 
@@ -49,7 +49,7 @@ A section is a separator of elements in the menu.
 | type | Type of element. Should be one of this page of documentation | Yes |
 | children | Any elements | No |
 
-## Submenu
+## Type : submenu
 
 ```yaml
 ...
@@ -84,7 +84,7 @@ It contains children, which could be any of the menu supported elements.
 | icon | The name of an icon used by your theme | Yes |
 | children | Any element | No |
 
-## Sunshine List
+## Type : Sunshine List
 
 ```yaml
 ...
@@ -103,7 +103,7 @@ It contains children, which could be any of the menu supported elements.
 | icon | The name of an icon used by your theme | Yes |
 | entityName | Name of the entity in your configuration to display | Yes |
 
-## Sunshine page
+## Type : Sunshine page
 
 ```yaml
 ...
@@ -123,7 +123,7 @@ It contains children, which could be any of the menu supported elements.
 | icon | The name of an icon used by your theme | Yes |
 | parameters/id | Id of the targeted page as it has been configured in your configuration | Yes |
 
-## route
+## Type : route
 
 ```yaml
 ...
@@ -147,7 +147,7 @@ It contains children, which could be any of the menu supported elements.
 | route | name of the route available in your application  | Yes |
 | parameters | Any parameter you need to push to the route | Yes |
 
-## External page
+## Type : External page
 
 ```yaml
 ...
