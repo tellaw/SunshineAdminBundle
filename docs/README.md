@@ -43,7 +43,7 @@ The bundle provides two different level :
   * [Type : route](menu-configuration.md#type-:-route)
   * [Type : external page](menu-configuration.md#type-:-external-page)
   * [Roles & Permissions](menu-configuration.md#roles-and-permissions-configuration)
-* Theme configuration
+* [Theme configuration](theme-configuration.md)
 * Page configuration
 * Creation of a new Page with widgets
 
