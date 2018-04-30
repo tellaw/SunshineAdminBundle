@@ -44,7 +44,18 @@ The bundle provides two different level :
   * [Type : external page](menu-configuration.md#type-:-external-page)
   * [Roles & Permissions](menu-configuration.md#roles-and-permissions-configuration)
 * [Theme configuration](theme-configuration.md)
-* Page configuration
+* [Page configuration](creating-a-page.md)
+  * [YAML Configuration](creating-a-page.md#yaml-definition)
+  * [Conventions](creating-a-page.md#conventions)
+  * [Title & Description ](creating-a-page.md#title-and-description)
+  * [Using widgets](creating-a-page.md#using-widgets)
+* [Widgets](untitled.md)
+  * [YAML Configuration](untitled.md#yaml-configuration)
+  * [Service class creation](untitled.md#service-class-creation)
+  * [The Twig view](untitled.md#view-creation)
+  * [MessageBag Bus](untitled.md#messagebag-send-informations-to-widget)
+  * [Using forms](untitled.md#forms-inside-a-widget)
+  * [Redirect and Forward response](untitled.md#redirect-to-current-route)
 * Creation of a new Page with widgets
 
 ### Crud Widget
