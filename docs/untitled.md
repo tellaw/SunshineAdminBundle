@@ -14,7 +14,7 @@ ListComments:
 
 | Item | Description | Required |
 | --- | --- | --- | --- | --- | --- | --- |
-| Identifier or Name | This is a uniq identifier of the widget on a page. | Yes |
+| Identifier or Name |  This is a uniq identifier of the widget on a page. | Yes |
 | title | Title of the widget | No |
 | description | Description of the widget | No |
 | columns | Number of columns the widget should take \(max 12\) | Yes |
