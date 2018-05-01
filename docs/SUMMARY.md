@@ -13,4 +13,6 @@
 * [Roles & Permissions](roles-and-permissions.md)
 * [Creating a page](creating-a-page.md)
 * [Widgets](untitled.md)
+* [Generic Widgets](generic-widgets.md)
+* Tuto - 1/x - Create SF4 Project
 
