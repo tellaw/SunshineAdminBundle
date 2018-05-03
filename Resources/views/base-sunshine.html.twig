@@ -95,12 +95,8 @@
                                                             <li class="m-nav__separator m-nav__separator--fit"></li>
                                                             <li class="m-nav__item">
                                                                 {% if app.user %}
-                                                                    <a href="{{ path ('fos_user_security_logout') }}" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
+                                                                    <a href="{{ path ('logout') }}" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
                                                                         Se deconnecter
-                                                                    </a>
-                                                                {% else %}
-                                                                    <a href="{{ path ('fos_user_security_login') }}" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
-                                                                        Se connecter
                                                                     </a>
                                                                 {% endif %}
                                                             </li>

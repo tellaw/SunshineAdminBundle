@@ -126,7 +126,7 @@ class AjaxController extends Controller
                 if ($name != 'undefined' && $name != 'filters')  {
 
                     // If value is null or empty, it means filter needs to be cleared
-                    if ($value == null || trim($value) == '') {
+                    if (!is_array( $value ) && ($value == null || trim($value) == '')) {
 
                         // Check if filter is set by init service and unset it.
                         if (array_key_exists(strtolower($name), $filters)) {

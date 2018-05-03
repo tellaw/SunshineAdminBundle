@@ -665,6 +665,7 @@ class CrudService
 
                 case "object":
                 case "object-multiple":
+
                     if (!isset($field["relatedClass"])) {
                         throw new \Exception(
                             "Object must define its related class, using relatedClass attribute or Doctrine relation on Annotation"

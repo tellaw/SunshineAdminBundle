@@ -76,16 +76,22 @@
 
         <script type="text/javascript">
 
-            // UpdateFilters
+            // Find every filters on the page
             $("body").find('.{{ widgetName }}-portlet .filterElement').each(function (index, item) {
 
+                // Clean the name, removing [ and ]. Also removing [] for multiple values (arrays)
                 var name = item.name;
                 name = name.replace("filters[", "");
                 name = name.replace ("]", "");
+                name = name.replace ("[]", "");
 
+                // Filter Event, Attach an onChange event on each filters to handle the value change event
                 $(item).on('change', function () {
+
+                    // Add the spinner.
                     {{ widgetName }}datatable.spinnerCallback(true);
 
+                    // Get values
                     var value = $(this).val();
 
                     // Set session informations to handle forward/back navigation
@@ -94,23 +100,32 @@
 
                     // Search for datatable
                     {{ widgetName }}datatable.search($(this).val(), name);
+
                 });
 
+                // If the local storage has a value for that name
                 if (    sessionStorage.getItem( "{{ widgetName }}_"+name+"_value" ) != "null" &&
-                    sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" ) != "null" &&
-                    sessionStorage.getItem( "{{ widgetName }}_"+name+"_value" ) != "" &&
-                    sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" ) != "" &&
-                    sessionStorage.getItem( "{{ widgetName }}_"+name+"_value" ) != null &&
-                    sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" ) != null
-                ) {
+                        sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" ) != "null" &&
+                        sessionStorage.getItem( "{{ widgetName }}_"+name+"_value" ) != "" &&
+                        sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" ) != "" &&
+                        sessionStorage.getItem( "{{ widgetName }}_"+name+"_value" ) != null &&
+                        sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" ) != null ) {
 
-                    // Create it if not available
-                    var opt = document.createElement('option');
-                    opt.value = sessionStorage.getItem( "{{ widgetName }}_"+name+"_value");
-                    opt.innerHTML = sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" );
-                    $(this).append(opt)
+                    var optionValue = sessionStorage.getItem( "{{ widgetName }}_"+name+"_value");
+                    var optionName = sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" );
 
-                    $(this).val(sessionStorage.getItem( "{{ widgetName }}_"+name+"_value"));
+                    // Test if value is already in the options.
+                    // --> If yes : select if
+                    // --> If not : Create it and select it.
+                    if ( !$(this).has('option:contains('+optionValue+')')) {
+                        // Create it if not available
+                        var opt = document.createElement('option');
+                        opt.value = optionValue;
+                        opt.innerHTML = optionName;
+                        $(this).append(opt)
+                    }
+
+                    $(this).val( optionValue );
 
                 }
 
@@ -121,16 +136,22 @@
             $(document).ready(function () {
 
                 // Preset of filters for first query
+                // Init of default values for this object
                 var queryFilterParams = [];
                 $("body").find(".{{ widgetName }}-portlet .filterElement").each(function (index, item) {
                     if (item.value != "") {
                         name = item.name;
                         name = name.replace("filters[", "");
                         name = name.replace ("]", "");
-                        queryFilterParams.push({property:name, value:item.value});
+                        name = name.replace ("[]", "");
+                        queryFilterParams.push({property:name, value:$(item).val()});
+                        console.log (name);
+                        console.log ($(item).val());
                     }
+
                 });
 
+                // Loading of the mDatatable
                 {{ widgetName }}datatable = $('#{{ widgetName }}_datatable_ajax').mDatatable({
 
                     data: {
@@ -252,20 +273,21 @@
                     }
                 });
 
-                // var query = datatable.getDataSourceQuery();
                 var query = {{ widgetName }}datatable.getDataSourceQuery();
 
+                // Attach search event for the GENERAL search field
                 if ($('.{{ widgetName }}-portlet #m_form_search').val() != '') {
                     {{ widgetName }}datatable.spinnerCallback(true);
                     {{ widgetName }}datatable.search($('.{{ widgetName }}-portlet #m_form_search').val());
                 }
 
+                // Attach event to filters inputs
                 $('.{{ widgetName }}-portlet #m_form_search').on('keyup', function (e) {
                     {{ widgetName }}datatable.spinnerCallback(true);
                     {{ widgetName }}datatable.search($(this).val());
                 });
 
-
+                // Disable submit of filters form
                 $('form[name="filters"]').submit(function() {
                     return false;
                 });
