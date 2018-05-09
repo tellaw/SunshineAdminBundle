@@ -15,4 +15,5 @@
 * [Widgets](untitled.md)
 * [Generic Widgets](generic-widgets.md)
 * Tuto - 1/x - Create SF4 Project
+* [Filtering : Custom values in Select2 lists](filtering-custom-values-in-select2-lists.md)
 
