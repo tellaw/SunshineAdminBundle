@@ -57,6 +57,24 @@ The bundle provides two different level :
   * [Using forms](untitled.md#forms-inside-a-widget)
   * [Redirect and Forward response](untitled.md#redirect-to-current-route)
 * Creation of a new Page with widgets
+  * YAML Configuration
+  * Using Widgets
+* Creating Widgets
+  * YAML Configuration
+  * Service class creation
+  * The View
+  * The messageBag
+  * Using Forms in widgets
+  * Redirect to current route
+  * Using services in widgets
+* Generic Widget : List
+  * YAML Configuration
+  * Configuration Inheritance & Overrides
+  * Preset values for Filters
+  * Add/Remove columns or filters
+  * Configure a datasource for a filter
+
+
 
 ### Crud Widget
 
