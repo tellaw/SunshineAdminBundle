@@ -3,6 +3,7 @@
 namespace Tellaw\SunshineAdminBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use League\Fractal\Manager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -10,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Tellaw\SunshineAdminBundle\Service\CrudService;
@@ -61,10 +63,9 @@ class AjaxController extends Controller
             "total_count" => $totalCount
         );
 
-
-
         // Return them with the JSON Response Serialized
         $serializedEntity = $this->container->get('serializer')->serialize($responseArray, 'json');
+
         $response = new Response();
         $response->setContent($serializedEntity);
         $response->headers->set('Content-Type', 'application/json');

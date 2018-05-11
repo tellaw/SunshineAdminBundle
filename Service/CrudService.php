@@ -2,12 +2,14 @@
 
 namespace Tellaw\SunshineAdminBundle\Service;
 
+use App\Entity\Societe;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
@@ -603,15 +605,29 @@ class CrudService
      */
     public function buildFormFields($form, $formConfiguration, $forcedClass = '', $loadChoices = true)
     {
+
         foreach ($formConfiguration as $fieldName => $field) {
+
+            if ($fieldName == "disableLoadingValues") continue;
+
             $fieldAttributes = array();
 
             if (isset($field['label'])) {
                 $fieldAttributes['label'] = $field['label'];
             }
 
-            if (isset($field['value'])) {
+            /** @var Form $form */
+
+            if (isset($field['value']) && !isset($formConfiguration['disableLoadingValues']) ) {
                 $fieldAttributes['data'] = $this->buildDefaultValueOfField($fieldName, $field, $formConfiguration);
+            } elseif (isset($field['value'])) {
+                if ($field["multiple"] == true) {
+                    $data = $field['value']['arguments'];
+                    $fieldAttributes['data'] = $data;
+                } else {
+                    $data = $field['value']['arguments'];
+                    $fieldAttributes['data'] = 31;
+                }
             }
 
             $fieldAttributes["attr"] = array('class' => $forcedClass);
@@ -673,27 +689,42 @@ class CrudService
                     }
 
                     if (!isset($field["expanded"]) || $field["expanded"] === false) {
+
                         $fieldAttributes["attr"] = array(
                             'class' => $fieldName . '-select2 '.$forcedClass,
                             'filterAttribute' => $field["filterAttribute"],
                             'callbackFunction' => (array_key_exists('callbackFunction', $field))? $field["callbackFunction"]: "",
                             'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"]),
                         );
-                        $fieldAttributes["class"] = $field["relatedClass"];
+
+                        //$fieldAttributes["class"] = $field["relatedClass"];
                         $fieldAttributes['placeholder'] = !empty($field["placeholder"]) ? $field["placeholder"] : '';
+
                         $type = Select2Type::class;
+
+                        // Used for debug options
+                        //$type = ChoiceType::class;
+
                     } else {
+
                         $fieldAttributes["expanded"] = "true";
+
                     }
-                    if (!$loadChoices) {
+
+                    if (!$loadChoices && isset($field['value'])) {
+                        $fieldAttributes['choices'] = $data;
+                    } else if (!$loadChoices) {
                         $fieldAttributes['choices'] = [];
                     }
+
                     $fieldAttributes["multiple"] = (isset($field['multiple']) && $field['multiple']) || $field["type"] === 'object-multiple';
                     $fieldAttributes["required"] = $field["required"];
+
+
                     break;
             }
-
             $form->add($fieldName, $type, $fieldAttributes);
+
         }
 
         return $form;
@@ -709,31 +740,68 @@ class CrudService
      */
     private function buildDefaultValueOfField($fieldName, $field, $formConfiguration)
     {
+        // Define a custom method to retrieve field value
         if (isset($field['value']['provider'])) {
-            $piece = explode("@", $field['value']['provider']);
 
+            $piece = explode("@", $field['value']['provider']);
             if (isset($piece[1])) {
                 $callable = [$piece[0], $piece[1]];
             } else {
                 $callable = $piece[0];
             }
+
         } else {
+
             $that = $this;
             $callable = function ($item) use ($that, $field, $fieldName, $formConfiguration) {
-                if (isset($field['type']) && in_array($field['type'], ['object', 'object-multiple']) &&  null !== $item) {
+
+                /**
+                 * If :
+                 *  - type is set
+                 *  - type is an object or object-multiple
+                 *  - item is not null
+                 *
+                 *
+                 *
+                 */
+                if (    isset($field['type']) &&
+                        in_array($field['type'], ['object', 'object-multiple']) &&
+                        !is_object($item) &&
+                        null !== $item
+                ) {
+
+                    // Find the repository of relatedClass
                     $rep = $that->em->getRepository($field['relatedClass']);
+
+                    // If object is a 'multiple' object
                     $multiple =((isset($field['multiple']) && $field['multiple']) || ($field['type'] === 'object-multiple'));
+
                     if ($multiple) {
+
+                        if (is_array($item) && is_object(array_values($item)[0])) {
+                            return $item;
+                        }
+
+                        // If multiple, find every values
                         return $rep->findBy([$formConfiguration[$fieldName]['filterAttribute'] => func_get_args()]);
+
                     } else {
+
+                        // If not multiple, find ONLY one
                         return $rep->findOneBy([$formConfiguration[$fieldName]['filterAttribute'] => $item]);
+
                     }
+
                 } else {
                     return $item;
                 }
+
             };
+
         }
 
-        return call_user_func_array($callable, isset($field['value']['arguments']) ? (array) $field['value']['arguments'] : []);
+        return call_user_func_array(    $callable,
+                                        isset($field['value']['arguments']) ? (array) $field['value']['arguments'] : []
+                                    );
     }
 }

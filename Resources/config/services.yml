@@ -93,6 +93,7 @@ services:
     parent: sunshine.widgets.abstract
     calls:
       - [ setEntities, ['@sunshine.entities']]
+      - [ setFormFactory, ['@form.factory']]
       - [ setCrudService, ['@sunshine.crud_service']]
     tags:
       - {name: sunshine.widget }

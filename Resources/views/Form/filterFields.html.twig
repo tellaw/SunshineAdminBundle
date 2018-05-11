@@ -177,11 +177,7 @@
 {%- endblock tag_widget -%}
 
 {% block select2_widget %}
-    <select name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" class="form-control input-larg filterElement">
-        {% if form.vars.data %}
-            <option value="{{ form.vars.data.id }}" selected="selected">{{ form.vars.data.title }}</option>
-        {% endif %}
-    </select>
+    {{ form_widget(form) }}
     <script type="text/javascript">
         $(document).ready(function () {
 

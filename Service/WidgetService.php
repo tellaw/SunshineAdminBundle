@@ -3,6 +3,7 @@
 namespace Tellaw\SunshineAdminBundle\Service;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Tellaw\SunshineAdminBundle\Entity\MessageBag;
 
 /**
  * Widget Manager
@@ -87,14 +88,26 @@ class WidgetService
      * @return array
      * @throws \Exception
      */
-    public function loadServicesWidgetsForPage ($pageConfiguration, $messageBag ) {
+    public function loadServicesWidgetsForPage ($pageConfiguration, MessageBag $messageBag ) {
 
         $serviceWidgets = array();
         foreach ( $pageConfiguration["rows"] as $row ) {
 
             foreach ( $row as $key => $widgetConfiguration ) {
 
+                $widgetMessages = array();
+                if (array_key_exists( "parameters", $widgetConfiguration ))
+                {
+                    foreach ( $widgetConfiguration["parameters"] as $parameterKey => $parameterValue )
+                    {
+                        $widgetMessages[$parameterKey] = $parameterValue;
+                    }
+                }
+
+                $messageBag->addMessage( "parameters", $widgetMessages );
+
                 $widget = $this->renderWidget( $widgetConfiguration, $messageBag );
+
                 if ( $widget ) {
                     $serviceWidgets[$key] = $widget;
                 }
