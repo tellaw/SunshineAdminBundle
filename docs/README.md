@@ -56,18 +56,18 @@ The bundle provides two different level :
   * [MessageBag Bus](untitled.md#messagebag-send-informations-to-widget)
   * [Using forms](untitled.md#forms-inside-a-widget)
   * [Redirect and Forward response](untitled.md#redirect-to-current-route)
-* Creation of a new Page with widgets
-  * YAML Configuration
-  * Using Widgets
-* Creating Widgets
-  * YAML Configuration
-  * Service class creation
-  * The View
-  * The messageBag
-  * Using Forms in widgets
-  * Redirect to current route
-  * Using services in widgets
-* Generic Widget : List
+* [Creation of a new Page with widgets](creating-a-page.md)
+  * [YAML Configuration](creating-a-page.md#yaml-definition)
+  * [Using Widgets](creating-a-page.md#using-widgets)
+* [Creating Widgets](untitled.md)
+  * [YAML Configuration](untitled.md#yaml-configuration)
+  * [Service class creation](untitled.md#service-class-creation)
+  * [The View](untitled.md#view-creation)
+  * [The messageBag](untitled.md#messagebag-send-informations-to-widget)
+  * [Using Forms in widgets](untitled.md#forms-inside-a-widget)
+  * [Redirect to current route](untitled.md#redirect-to-current-route)
+  * [Using services in widgets](untitled.md#how-to-inject-services-in-widget-service)
+* [Generic Widget : List](generic-widgets.md)
   * YAML Configuration
   * Configuration Inheritance & Overrides
   * Preset values for Filters
