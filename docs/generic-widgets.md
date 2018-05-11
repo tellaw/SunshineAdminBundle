@@ -1,6 +1,6 @@
 # Generic Widgets : LIST
 
-## Configuration in a page
+## YAML Configuration
 
 If you want to use a list widget inside a page, please use the following code :
 
