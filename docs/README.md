@@ -56,11 +56,26 @@ The bundle provides two different level :
   * [MessageBag Bus](untitled.md#messagebag-send-informations-to-widget)
   * [Using forms](untitled.md#forms-inside-a-widget)
   * [Redirect and Forward response](untitled.md#redirect-to-current-route)
-* Creation of a new Page with widgets
+* [Creation of a new Page with widgets](creating-a-page.md)
+  * [YAML Configuration](creating-a-page.md#yaml-definition)
+  * [Using Widgets](creating-a-page.md#using-widgets)
+* [Creating Widgets](untitled.md)
+  * [YAML Configuration](untitled.md#yaml-configuration)
+  * [Service class creation](untitled.md#service-class-creation)
+  * [The View](untitled.md#view-creation)
+  * [The messageBag](untitled.md#messagebag-send-informations-to-widget)
+  * [Using Forms in widgets](untitled.md#forms-inside-a-widget)
+  * [Redirect to current route](untitled.md#redirect-to-current-route)
+  * [Using services in widgets](untitled.md#how-to-inject-services-in-widget-service)
 
 ### Crud Widget
 
-* Crud list widget, how to re-use
+* [Generic Widget : List](generic-widgets.md)
+  * [YAML Configuration](generic-widgets.md#yaml-configuration)
+  * [Configuration Inheritance & Overrides](generic-widgets.md#configuration-inheritance)
+  * [Preset values for Filters](generic-widgets.md#override-list-and-filters)
+  * [Add/Remove columns or filters](generic-widgets.md#configuration-inheritance)
+  * [Configure a datasource for a filter](filtering-custom-values-in-select2-lists.md)
 
 ### Security and Roles
 
