@@ -207,5 +207,35 @@ tellaw_sunshine_admin:
 
 In the configuration, the list 'societe' will load its data from the callbackFunction : 'getAvailableSocietes'
 
+Implement this method in the repository of the parent entity.
+
+```php
+    /**
+     * Return companies for a user.
+     *
+     * @param User $user
+     * @return QueryBuilder
+     */
+    public function getUserAvailableSocietes( $identifier, $toString, $query )
+    {
+
+        $qb = $this->createQueryBuilder('s');
+        $qb->select(array('s.' . $identifier[0], 's.' . $toString . " AS text"));
+
+        if (!$this->user->hasRole('ROLE_ADMIN')) {
+
+            $qb ->innerJoin( 's.services', 'se'  )
+                ->innerJoin( 'se.users', 'us' )
+                ->where( 'us.id = :userId' )
+                ->setParameter( 'userId', $this->user->getId() );
+
+        }
+
+        return $qb;
+    }
+```
+
+Please read the documentation : [Filtering : Custom values in Select2 lists](filtering-custom-values-in-select2-lists.md)
+
 
 
