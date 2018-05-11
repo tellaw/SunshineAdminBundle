@@ -177,5 +177,35 @@ This directive will remove a filter or column from the widget.
 
 ## Configure the data source of the list
 
+You need also to be able to configure your datasource for the list. The configuration described previously makes possible to set defaults values, but it doesn't filter the resultset.
+
+This can be done in the entity configuration. At the relation, define a 'callback' method.
+
+```yaml
+tellaw_sunshine_admin:
+  entities:
+    InfoRequest:
+      configuration:
+         id: id
+         class: App\Entity\InfoRequest
+
+      attributes:
+        id:
+          label: Id
+        question:
+          label: Question
+          filterAttribute: label
+          relatedClass: App:Question
+        societe:
+          label: Société
+          filterAttribute: label
+          relatedClass: App:Societe
+          callbackFunction: getUserAvailableSocietes
+        lastname:
+          label: Nom
+```
+
+In the configuration, the list 'societe' will load its data from the callbackFunction : 'getAvailableSocietes'
+
 
 
