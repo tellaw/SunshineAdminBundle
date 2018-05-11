@@ -44,9 +44,9 @@ class EntityService
      * @param $entityName
      * @return array
      */
-    public function getFiltersConfiguration ( $entityName ) {
+    public function getFiltersConfiguration ( $entityName, $filtersToAdd = null, $filterToRemove = null ) {
 
-        return $this->getConfigurationByViewType($entityName, "list", 'filters');
+        return $this->getConfigurationByViewType($entityName, "list", 'filters', $filtersToAdd, $filterToRemove);
     }
 
     /**
@@ -56,9 +56,9 @@ class EntityService
      * @return array
      * @throws \Exception
      */
-    public function getListConfiguration($entityName)
+    public function getListConfiguration($entityName, $fieldToAdd = null, $fieldToRemove = null)
     {
-        return $this->getConfigurationByViewType($entityName, "list");
+        return $this->getConfigurationByViewType($entityName, "list", 'fields', $fieldToAdd, $fieldToRemove);
     }
 
     /**
@@ -87,7 +87,7 @@ class EntityService
      * @throws \Exception
      * @internal param string $configurationKey
      */
-    protected function getConfigurationByViewType($entityName, $viewType, $viewTypeKey = 'fields')
+    protected function getConfigurationByViewType($entityName, $viewType, $viewTypeKey = 'fields', $fieldsToAdd = null, $fieldsToRemove = null)
     {
         // Getting the detailed configuration configuration
         $configuration = $this->getConfiguration($entityName);
@@ -100,8 +100,23 @@ class EntityService
 
         $resultData = array();
 
+        // Add fields, user would include
+        if ($fieldsToAdd != null) {
+            foreach ($fieldsToAdd as $field) {
+                if (!array_key_exists($field, $detailedConfiguration))
+                    $detailedConfiguration[$field] = array();
+            }
+        }
+
         // For every configuration in detailled configuration
         foreach ($detailedConfiguration as $fieldName => $fieldDetailedConfiguration) {
+
+            // Remove the fields the user would like to exclude
+            if ($fieldsToRemove != null) {
+                if (in_array( $fieldName, $fieldsToRemove)) {
+                    continue;
+                }
+            }
 
             // Check if a configuration is related in global configuration and merge, overwise, just copy the detailed configuration
             // A field cannot be copyied if it is not declared in detailed configuration
@@ -148,6 +163,7 @@ class EntityService
                 $resultData[$fieldName]['label'] = $fieldName;
             }
         }
+
         return $resultData;
     }
 

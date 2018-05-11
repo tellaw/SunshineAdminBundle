@@ -621,13 +621,17 @@ class CrudService
             if (isset($field['value']) && !isset($formConfiguration['disableLoadingValues']) ) {
                 $fieldAttributes['data'] = $this->buildDefaultValueOfField($fieldName, $field, $formConfiguration);
             } elseif (isset($field['value'])) {
-                if ($field["multiple"] == true) {
+
+                if (isset($field["multiple"]) && $field["multiple"] == true) {
+
                     $data = $field['value']['arguments'];
                     $fieldAttributes['data'] = $data;
                 } else {
+                    dump($field);
                     $data = $field['value']['arguments'];
                     $fieldAttributes['data'] = 31;
                 }
+
             }
 
             $fieldAttributes["attr"] = array('class' => $forcedClass);

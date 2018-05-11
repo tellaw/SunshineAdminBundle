@@ -28,8 +28,17 @@ class ListWidget extends AbstractWidget {
             $entityName = $parameters["entityName"];
         }
 
+        $filtersToInclude = null;
+        if (isset($configuration['parameters']['override']['filters']['include'])) {
+            $filtersToInclude = $configuration['parameters']['override']['filters']['include'];
+        }
+        $filtersToExclude = null;
+        if (isset($configuration['parameters']['override']['filters']['exclude'])) {
+            $filtersToExclude = $configuration['parameters']['override']['filters']['exclude'];
+        }
+
         $entityName = $configuration['parameters']['entityName'];
-        $filtersConfiguration = $this->entities->getFiltersConfiguration($entityName);
+        $filtersConfiguration = $this->entities->getFiltersConfiguration($entityName, $filtersToInclude, $filtersToExclude);
 
         $filters= $messagebag->getMessage( "parameters" );
 
@@ -41,10 +50,14 @@ class ListWidget extends AbstractWidget {
             foreach ($filters as $filterKey => $filterDetail)
             {
 
+                if (!array_key_exists( $filterKey, $filtersConfiguration )) continue;
+
                 // Get the related class of the filter
+                // If multiple values needed, use second method
                 if (!array_key_exists("relatedClass", $filtersConfiguration[$filterKey])) {throw new \Exception("relatedClass not found while trying to preload value for filter ".$filterKey);}
                 $class = $filtersConfiguration[$filterKey]["relatedClass"];
 
+                // Simple preload using couple field / value
                 if (array_key_exists( "field", $filterDetail )) {
 
                     // Simple filter
@@ -76,6 +89,15 @@ class ListWidget extends AbstractWidget {
             }
         }
 
+        $fieldToInclude = null;
+        if (isset($configuration['parameters']['override']['list']['include'])) {
+            $fieldToInclude = $configuration['parameters']['override']['list']['include'];
+        }
+        $fieldToExclude = null;
+        if (isset($configuration['parameters']['override']['list']['exclude'])) {
+            $fieldToExclude = $configuration['parameters']['override']['list']['exclude'];
+        }
+
         $filtersConfiguration["disableLoadingValues"] = true;
 
         if ($filtersConfiguration !== null) {
@@ -95,12 +117,14 @@ class ListWidget extends AbstractWidget {
             $filtersForm = null;
         }
 
+
+
         return $this->render(
             '@sunshine/Widget/ajax-datatable',
             [
                 "filtersForm" => !empty($filtersForm) ? $filtersForm->createView() : null,
                 "configuration" => $configuration,
-                "fields" => $this->entities->getListConfiguration($entityName),
+                "fields" => $this->entities->getListConfiguration($entityName, $fieldToInclude, $fieldToExclude),
                 "row" => '12',
                 'widgetName' => "list".$entityName,
                 'entityName' => $entityName,
