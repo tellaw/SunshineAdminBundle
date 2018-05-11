@@ -67,18 +67,15 @@ The bundle provides two different level :
   * [Using Forms in widgets](untitled.md#forms-inside-a-widget)
   * [Redirect to current route](untitled.md#redirect-to-current-route)
   * [Using services in widgets](untitled.md#how-to-inject-services-in-widget-service)
-* [Generic Widget : List](generic-widgets.md)
-  * YAML Configuration
-  * Configuration Inheritance & Overrides
-  * Preset values for Filters
-  * Add/Remove columns or filters
-  * Configure a datasource for a filter
-
-
 
 ### Crud Widget
 
-* Crud list widget, how to re-use
+* [Generic Widget : List](generic-widgets.md)
+  * [YAML Configuration](generic-widgets.md#yaml-configuration)
+  * [Configuration Inheritance & Overrides](generic-widgets.md#configuration-inheritance)
+  * [Preset values for Filters](generic-widgets.md#override-list-and-filters)
+  * [Add/Remove columns or filters](generic-widgets.md#configuration-inheritance)
+  * [Configure a datasource for a filter](filtering-custom-values-in-select2-lists.md)
 
 ### Security and Roles
 
