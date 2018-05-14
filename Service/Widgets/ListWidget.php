@@ -21,7 +21,7 @@ class ListWidget extends AbstractWidget {
     protected $crudService;
 
     public function create ( $configuration, MessageBag $messagebag ) {
-
+dump($messagebag);
         $entityName = $messagebag->getMessage("entityName");
         $parameters = $messagebag->getMessage("parameters");
         if ($entityName == null) {

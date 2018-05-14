@@ -15,6 +15,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Tellaw\SunshineAdminBundle\Form\Type\AttachmentType;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
+use Tellaw\SunshineAdminBundle\Form\Type\Select2FilterType;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
 
 class CrudService
@@ -700,10 +701,14 @@ class CrudService
                             'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"]),
                         );
 
-                        //$fieldAttributes["class"] = $field["relatedClass"];
                         $fieldAttributes['placeholder'] = !empty($field["placeholder"]) ? $field["placeholder"] : '';
 
-                        $type = Select2Type::class;
+                        if ($forcedClass == 'filterElement') {
+                            $type = Select2FilterType::class;
+                        } else {
+                            $fieldAttributes["class"] = $field["relatedClass"];
+                            $type = Select2Type::class;
+                        }
 
                         // Used for debug options
                         //$type = ChoiceType::class;
