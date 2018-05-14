@@ -109,9 +109,8 @@ class PageController extends AbstractPageController
         } else {
             $form = $this->createForm(DefaultType::class, $entity, $formOptions);
         }
-dump($request);
+
         $form->handleRequest($request);
-        dump($form);
         if ($form->isSubmitted() && $form->isValid()) {
 
             $entity = $form->getData();
