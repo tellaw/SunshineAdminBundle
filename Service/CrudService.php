@@ -627,7 +627,6 @@ class CrudService
                     $data = $field['value']['arguments'];
                     $fieldAttributes['data'] = $data;
                 } else {
-                    dump($field);
                     $data = $field['value']['arguments'];
                     $fieldAttributes['data'] = 31;
                 }
