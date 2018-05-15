@@ -628,8 +628,18 @@ class CrudService
                     $data = $field['value']['arguments'];
                     $fieldAttributes['data'] = $data;
                 } else {
+                    /* filed[‘value’]
+                    * array:1 [▼
+                         “arguments” => array:1 [▼
+                           “Terminé” => 32
+                         ]
+                       ]
+                    */
                     $data = $field['value']['arguments'];
-                    $fieldAttributes['data'] = 31;
+                    $values = array_values($field['value']['arguments']);
+                    if (count ($values) > 0) {
+                        $fieldAttributes['data'] = $values[0];
+                    }
                 }
 
             }
