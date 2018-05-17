@@ -13,4 +13,11 @@ final class SunshineEvents
      * @Event("AppBundle\Event\EntityEvent")
      */
     const ENTITY_PRE_FLUSHED = 'entity.pre_flushed';
+
+    /**
+     * Triggered on entity edit
+     *
+     * @Event("AppBundle\Event\EntityEvent")
+     */
+    const ENTITY_PRE_EDIT = 'entity.pre_edit';
 }

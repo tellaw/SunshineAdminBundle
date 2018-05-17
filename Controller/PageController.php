@@ -93,6 +93,9 @@ class PageController extends AbstractPageController
             throw $this->createNotFoundException();
         }
 
+        $event = new EntityEvent($entity);
+        $this->get('event_dispatcher')->dispatch(SunshineEvents::ENTITY_PRE_EDIT, $event);
+
         $formOptions = [
             'fields_configuration' => $fieldsConfiguration,
             'crud_service' => $crudService,
