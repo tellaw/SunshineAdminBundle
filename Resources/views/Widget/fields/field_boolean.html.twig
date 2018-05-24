@@ -1,5 +1,1 @@
-{% if value == true %}
-    <span class="label label-success">{{ 'label.true' }}</span>
-{% else %}
-    <span class="label label-danger">{{ 'label.false' }}</span>
-{% endif %}
+<span class="label label-{{ value ? 'success' : 'danger' }}success">{{ value ? 'oui' : 'non' }}</span>
