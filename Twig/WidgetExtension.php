@@ -2,7 +2,9 @@
 
 namespace Tellaw\SunshineAdminBundle\Twig;
 
+use ReflectionClass;
 use Tellaw\SunshineAdminBundle\Service\WidgetService;
+use Twig\TwigFunction;
 
 class WidgetExtension extends \Twig_Extension
 {
@@ -43,6 +45,7 @@ class WidgetExtension extends \Twig_Extension
                 array($this, 'renderEntityField'),
                 array('needs_environment' => true)
             ),
+            new TwigFunction('getEntityName', [$this, 'getEntityName']),
         );
     }
 
@@ -126,4 +129,14 @@ class WidgetExtension extends \Twig_Extension
         return $twig->render($template, $parameters);
     }
 
+    /**
+     * Get Object class short name
+     *
+     * @param $object
+     * @return string
+     */
+    public function getEntityName($object)
+    {
+        return (new ReflectionClass($object))->getShortName();
+    }
 }

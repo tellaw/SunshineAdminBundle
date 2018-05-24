@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
-use Tellaw\SunshineAdminBundle\Form\Type\AttachmentType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2FilterType;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
@@ -664,9 +664,8 @@ class CrudService
                     $fieldAttributes["attr"] = array('class' => 'datetime-picker '.$forcedClass);
                     break;
 
-                case "file":
-                    $fieldAttributes["file_property"] = $field["webPath"];
-                    $type = AttachmentType::class;
+                case 'file':
+                    $type = FileType::class;
                     break;
 
                 case "embedded":
