@@ -1,6 +1,16 @@
 {% extends '@sunshine/base-sunshine.html.twig' %}
 {% form_theme form '@sunshine/Form/fields.html.twig'%}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {% if formConfiguration.form.cssIncludes is defined %}
+        {% for include in formConfiguration.form.cssIncludes %}
+            <link href="{{ asset(include) }}" rel="stylesheet"
+                  id="style_components" type="text/css"/>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
 {% block title %}
     {% if formConfiguration.form.title is defined %}
         {{ formConfiguration.form.title }}
