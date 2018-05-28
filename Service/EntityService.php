@@ -154,7 +154,7 @@ class EntityService
                 }
 
             } else {
-                if ($fieldConfiguration['type'] == "embedded") {
+                if ($fieldConfiguration['type'] == 'embedded' && empty($fieldConfiguration['relatedClass'])) {
                     $relatedClass = $this->guessEntityFieldLinkedClass($configuration['configuration']['class'], $fieldName);
                     $resultData[$fieldName]['relatedClass'] = $relatedClass;
                 }

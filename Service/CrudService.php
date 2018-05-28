@@ -668,20 +668,20 @@ class CrudService
                     $type = FileType::class;
                     break;
 
-                case "embedded":
+                case 'embedded':
 
                     $type = CollectionType::class;
 
-                    $prototypeConfiguration = $this->entityService->getFormConfiguration($field["configuration"]);
+                    $prototypeConfiguration = $this->entityService->getFormConfiguration($field['configuration']);
                     $fieldAttributes['entry_options'] = array(
-                        "fields_configuration" => $prototypeConfiguration,
-                        "data_class" => $field["relatedClass"],
+                        'fields_configuration' => $prototypeConfiguration,
+                        'data_class' => $field['relatedClass'],
                     );
 
                     $fieldAttributes['entry_type'] = DefaultType::class;
 
-                    $fieldAttributes['allow_add'] =  $field["allow_add"];
-                    $fieldAttributes['allow_delete'] =  $field["allow_delete"];
+                    $fieldAttributes['allow_add'] =  $field['allow_add'];
+                    $fieldAttributes['allow_delete'] =  $field['allow_delete'];
                     $fieldAttributes['by_reference'] =  false; // By Reference to false ensure setter of parent must be called in all case
                     $fieldAttributes['prototype'] =  true;
 

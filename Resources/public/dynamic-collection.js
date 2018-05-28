@@ -1,8 +1,9 @@
 jQuery(document).ready(function() {
-    var form = $("form");
+
     var collections = $(".dynamic-collection");
     collections.each(function () {
 
+        var form = $(this).parents('form');
         var collectionId =  form.attr('name') +'_'+ $(this).data('for');
         var collectionHolder = $('#'+collectionId);
 
@@ -17,7 +18,7 @@ jQuery(document).ready(function() {
 
             addButton.on('click', function(e) {
                 e.preventDefault();
-                addAttachmentForm(collectionHolder, addButton, collectionId);
+                addEmbeddedForm(collectionHolder, addButton, collectionId);
             });
 
         }
@@ -40,8 +41,15 @@ jQuery(document).ready(function() {
 
 });
 
-function addAttachmentForm(collectionHolder, addButtonObj, collectionId) {
-
+/**
+ * Display subform
+ *
+ * @param collectionHolder
+ * @param addButtonObj
+ * @param collectionId
+ */
+function addEmbeddedForm(collectionHolder, addButtonObj, collectionId)
+{
     // Get the data-prototype explained earlier
     var prototype = collectionHolder.data('prototype');
 
