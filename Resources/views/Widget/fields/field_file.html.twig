@@ -1,1 +1,3 @@
-<a href="{{ path('sunshine_download_attachment', {entityName: getEntityName(value), id: value.id}) }}">{{ value.originalName}} {% if value.length %}({{ value.length }} octets){% endif %}</a>
+{% if value %}
+    <a href="{{ path('sunshine_download_attachment', {entityName: getEntityName(value), id: value.id}) }}">{{ value.originalName}} {% if value.length %}({{ value.length }} octets){% endif %}</a>
+{% endif %}
