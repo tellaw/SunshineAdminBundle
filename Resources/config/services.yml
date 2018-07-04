@@ -63,6 +63,10 @@ services:
     tags:
       - { name: form.type }
 
+  sunshine.utils:
+    class: Tellaw\SunshineAdminBundle\Service\UtilsService
+    public: true
+
   ##
   ## WIDGETS DEFINITION
   ##

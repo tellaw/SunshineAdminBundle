@@ -35,6 +35,8 @@ class AttachmentController extends Controller
             $this->createNotFoundException();
         }
 
+        $utilsService = $this->get('sunshine.utils');
+
         $fileContent = file_get_contents($file);
 
         $response = new Response($fileContent);
@@ -42,7 +44,7 @@ class AttachmentController extends Controller
 
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $attachment->getOriginalName()
+            $utilsService->cleanFileName($attachment->getOriginalName())
         );
 
         $response->headers->set('Content-Disposition', $disposition);
