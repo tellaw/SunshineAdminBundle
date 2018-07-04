@@ -29,14 +29,15 @@ class AjaxController extends Controller
      * @Method({"POST"})
      *
      * @param Request $request
-     * @param $entity
-     * @param $page
+     * @param $toStringField
+     * @return Response
      */
-    public function ajaxSelect2CallbackAction ( Request $request, $entityName, $toStringField ) {
-
+    public function ajaxSelect2CallbackAction(Request $request, $toStringField)
+    {
         $q = $request->request->get ("q");
         $page = $request->request->get ("page");
         $callbackFunction = $request->request->get ("callbackFunction");
+        $callbackParams = json_decode($request->request->get('callbackParams', []), true);
 
         if (!$page) {
             $page = 1;
@@ -55,8 +56,8 @@ class AjaxController extends Controller
 
         /** @var CrudService $crudService */
         $crudService = $this->get("sunshine.crud_service");
-        $list = $crudService->getEntityListByClassMetadata($relatedClass, $toStringField, $q, $metadata, $page, $itemPerPage,$callbackFunction);
-        $totalCount = $crudService->getCountEntityListByClassMetadata($relatedClass, $toStringField, $q, $metadata,$callbackFunction);
+        $list = $crudService->getEntityListByClassMetadata($relatedClass, $toStringField, $q, $metadata, $page, $itemPerPage, $callbackFunction, $callbackParams);
+        $totalCount = $crudService->getCountEntityListByClassMetadata($relatedClass, $toStringField, $q, $metadata,$callbackFunction, $callbackParams);
 
         $responseArray = array (
             "items" => $list,

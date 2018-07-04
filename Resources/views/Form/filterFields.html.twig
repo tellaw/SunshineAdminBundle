@@ -197,7 +197,8 @@
                             q: params.term, // search term
                             page: params.page,
                             relatedClass: '{{ attr.relatedClass }}',
-                            callbackFunction: '{{ attr.callbackFunction }}'
+                            callbackFunction: '{{ attr.callbackFunction }}',
+                            callbackParams: '{{ attr.callbackParams|raw }}'
                         };
                     },
 

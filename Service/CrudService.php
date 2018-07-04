@@ -153,15 +153,19 @@ class CrudService
      * @param $toString
      * @param $query
      * @param \Doctrine\ORM\Mapping\ClassMetadata $metadata
+     * @param $page
+     * @param $itemPerPage
+     * @param null $callbackFunction
+     * @param array $callbackParams
      * @return mixed
      */
-    public function getEntityListByClassMetadata($entityClass, $toString, $query, ClassMetadata $metadata, $page, $itemPerPage, $callbackFunction = null)
+    public function getEntityListByClassMetadata($entityClass, $toString, $query, ClassMetadata $metadata, $page,
+                                                 $itemPerPage, $callbackFunction = null, array $callbackParams = [])
     {
-
         $identifier = $metadata->identifier;
         if ($callbackFunction !== null && $callbackFunction != '' )
         {
-            $qb =$this->em->getRepository($entityClass)->$callbackFunction($identifier, $toString, $query);
+            $qb =$this->em->getRepository($entityClass)->$callbackFunction($identifier, $toString, $query, $callbackParams);
         } else {
 
             $qb = $this->em->createQueryBuilder();
@@ -185,15 +189,17 @@ class CrudService
      * @param $toString
      * @param $query
      * @param \Doctrine\ORM\Mapping\ClassMetadata $metadata
+     * @param $callbackFunction
+     * @param array $callbackParams
      * @return mixed
      */
-    public function getCountEntityListByClassMetadata($entityClass, $toString, $query, ClassMetadata $metadata, $callbackFunction)
+    public function getCountEntityListByClassMetadata($entityClass, $toString, $query, ClassMetadata $metadata, $callbackFunction, array $callbackParams = [])
     {
         $identifier = $metadata->identifier;
         if ($callbackFunction !== null  && $callbackFunction != '')
         {
             /** @var QueryBuilder $qb */
-            $qb = $this->em->getRepository($entityClass)->$callbackFunction($identifier, $toString, $query);
+            $qb = $this->em->getRepository($entityClass)->$callbackFunction($identifier, $toString, $query, $callbackParams);
             $alias = $qb->getRootAliases()[0];
             return $qb->select("COUNT($alias)")->getQuery()->getSingleScalarResult();
         } else {
@@ -707,6 +713,7 @@ class CrudService
                             'class' => $fieldName . '-select2 '.$forcedClass,
                             'filterAttribute' => $field["filterAttribute"],
                             'callbackFunction' => (array_key_exists('callbackFunction', $field))? $field["callbackFunction"]: "",
+                            'callbackParams' => !empty($field['callbackParams']) ? json_encode($field['callbackParams']) : '{}',
                             'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"]),
                         );
 
