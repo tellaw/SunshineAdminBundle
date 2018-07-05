@@ -2,7 +2,7 @@
 
 ![Filters at the top of a list.](.gitbook/assets/2018-05-09_14-36-01.png)
 
-Sometimes, it'll be very usefull to filter datas in lists, for the current user, or simply set a custom list of values in a list.
+Sometimes, it'll be very usefull to filter data in lists, for the current user, or simply set a custom list of values in a list.
 
 You can configure a custom list of datas in each filters using a method in the repository avec YAML configuration.
 
@@ -12,14 +12,42 @@ The dropdown list we want to filter target the company \(societe\). It is in its
 
 ## 1/ Add method to the 'company' repository.
 
-```text
-/** * Return all companies related to a user. * * @param User $user * @return QueryBuilder */public function getUserAvailableSocietes( $identifier, $toString, $query ){    $qb = $this->createQueryBuilder('s');    $qb->select(array('s.' . $identifier[0], 's.' . $toString . " AS text"));    if (!$this->user->hasRole('ROLE_ADMIN')) {        $qb ->innerJoin( 's.departments', 'se'  )            ->innerJoin( 'se.users', 'us' )            ->where( 'us.id = :userId' )            ->setParameter( 'userId', $this->user->getId() );    }    return $qb;}
+```php
+/** 
+* Return all companies related to a user. 
+* 
+* @param array $identifier 
+* @param string $toString
+* @param $query
+* @param array $callbackParams Parameters set in entity configuration yaml file
+* @return QueryBuilder
+*/
+public function getUserAvailableSocietes( $identifier, $toString, $query, array $callbackParams = [])
+{    
+    $qb = $this->createQueryBuilder('s');    
+    $qb->select(array('s.' . $identifier[0], 's.' . $toString . " AS text"));    
+    if (!$this->user->hasRole('ROLE_ADMIN')) {        
+        $qb ->innerJoin( 's.departments', 'se'  )            
+            ->innerJoin( 'se.users', 'us' )            
+            ->where( 'us.id = :userId' )            
+            ->setParameter( 'userId', $this->user->getId() );    
+    }    
+    
+    return $qb;
+}
 ```
 
 Note the signature of the method, you must respect it.
 
 ```php
-public function getUserAvailableSocietes( $identifier, $toString, $query )
+/**
+* @param array $identifier 
+* @param string $toString
+* @param $query
+* @param array $callbackParams Parameters set in entity configuration yaml file
+* @return QueryBuilder
+*/
+public function getUserAvailableSocietes( $identifier, $toString, $query, array $callbackParams = [] )
 ```
 
 * $**identifier** : Is an array, where first index is the indentifier of the class. It should be used as 'value'.
@@ -40,7 +68,26 @@ If you do not respect that, you may have slow performances, and maybe errors ret
 In the Entity YAML, configure your custom data set.tellaw\_sunshine\_admin:
 
 ```yaml
-  entities:    InfoRequest:      configuration:         id: id         class: App\Entity\InfoRequest      attributes:        id:          label: Id        question:          label: Question          filterAttribute: label          relatedClass: App:Question        societe:          label: Société          filterAttribute: label          relatedClass: App:Societe          callbackFunction: getUserAvailableSocietes                    ...
+  entities:    
+    InfoRequest:      
+      configuration:
+        id: id
+        class: App\Entity\InfoRequest
+      attributes:
+        id:
+          label: Id
+        question:
+          label: Question          
+          filterAttribute: label          
+          relatedClass: App:Question        
+        societe:          
+          label: Société          
+          filterAttribute: label          
+          relatedClass: App:Societe          
+          callbackFunction: getUserAvailableSocietes
+          callbackParams: 
+            param1: value1
+            param2: value2                    ...
 ```
 
 Note the usage of **getUserAvailableSociete** in the configuration. This will be used by the framework to be used as the callback when loading list datas.
