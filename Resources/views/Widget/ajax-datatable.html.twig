@@ -181,6 +181,16 @@
                         serverSorting: true,
 
                     },
+
+                    // Initialisation de la popin de confirmation (boutons de suppressions)
+                    rows: {
+                        callback: function() {
+                            $('[data-toggle=confirmation]').confirmation({
+                                rootSelector: '[data-toggle=confirmation]',
+                            });
+                        },
+                    },
+
                     // layout definition
                     layout: {
                         theme: 'default', // datatable theme
