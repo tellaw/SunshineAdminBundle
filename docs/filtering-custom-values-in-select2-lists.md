@@ -90,7 +90,9 @@ In the Entity YAML, configure your custom data set.tellaw\_sunshine\_admin:
             param2: value2                    ...
 ```
 
-Note the usage of **getUserAvailableSociete** in the configuration. This will be used by the framework to be used as the callback when loading list datas.
+Note the usage of **getUserAvailableSociete** in the configuration. This will be used by the framework to be used as the callback when loading list datas. 
+
+_callbackParams_  is an array of optional parameters that will be passed to the callback function _getUserAvailableSociete._
 
 This is it :-\)
 
