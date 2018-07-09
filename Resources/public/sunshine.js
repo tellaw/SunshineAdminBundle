@@ -30,7 +30,12 @@ $(document).ready(function () {
         $($input).attr('value', $inputValue);
     });
 
-
+    /**
+     * Initialisation du plugin bootstrap confirmation (popover de confirmation Oui|Non)
+     */
+    $('[data-toggle=confirmation]').confirmation({
+        rootSelector: '[data-toggle=confirmation]',
+    });
 });
 
 
