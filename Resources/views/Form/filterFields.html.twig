@@ -198,7 +198,7 @@
                             page: params.page,
                             relatedClass: '{{ attr.relatedClass }}',
                             callbackFunction: '{{ attr.callbackFunction }}',
-                            callbackParams: '{{ attr.callbackParams|raw }}'
+                            callbackParams: '{% if attr.callbackParams is defined %} {{ attr.callbackParams|raw }} {% else %} [] {% endif %}'
                         };
                     },
 

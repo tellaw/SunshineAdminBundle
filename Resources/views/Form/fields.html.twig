@@ -72,9 +72,9 @@
         <div class="form-group m-form__group">
             <div class="{{ block('form_label_class') }}"></div>
             <div class="{{ block('form_group_class') }} btn-group">
-                 {% for child in form %}
-                     {{ form_widget(child) }}
-                 {% endfor %}
+                {% for child in form %}
+                    {{ form_widget(child) }}
+                {% endfor %}
             </div>
         </div>
     {% endspaceless %}
@@ -182,7 +182,7 @@
                        data-role="tagsinput" style="display: none;"
                        value="{{ value|default('') }}"/>
             </div>
-            {% else %}
+        {% else %}
             {{ block('form_widget_simple') }}
         {% endif %}
 
@@ -200,36 +200,36 @@
                 language: "fr",
                 placeholder: 'Sélectionner une option',
                 allowClear: true,
-                    ajax: {
-                        url: "{{ path('sunshine_ajax_select2_callback', { "entityName" : name, "toStringField" : attr.filterAttribute,  }) }}",
-                        dataType: 'json',
-                        method: 'post',
-                        delay: 500,
+                ajax: {
+                    url: "{{ path('sunshine_ajax_select2_callback', { "entityName" : name, "toStringField" : attr.filterAttribute,  }) }}",
+                    dataType: 'json',
+                    method: 'post',
+                    delay: 500,
 
-                        data: function (params) {
-                            return {
-                                q: params.term, // search term
-                                page: params.page,
-                                relatedClass: '{{ attr.relatedClass }}',
-                                callbackFunction: '{{ attr.callbackFunction }}',
-                                callbackParams: '{{ attr.callbackParams|raw }}'
-                            };
-                        },
+                    data: function (params) {
+                        return {
+                            q: params.term, // search term
+                            page: params.page,
+                            relatedClass: '{{ attr.relatedClass }}',
+                            callbackFunction: '{{ attr.callbackFunction }}',
+                            callbackParams: '{% if attr.callbackParams is defined %} {{ attr.callbackParams|raw }} {% else %} [] {% endif %}'
+                        };
+                    },
 
-                        processResults: function (data, params) {
-                            params.page = params.page || 1;
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
 
-                            return {
-                                results: data.items,
-                                pagination: {
-                                    more: (params.page * 10) < data.total_count
-                                }
-                            };
-                        },
-                        cache: true
-                    }
+                        return {
+                            results: data.items,
+                            pagination: {
+                                more: (params.page * 10) < data.total_count
+                            }
+                        };
+                    },
+                    cache: true
+                }
 
-                });
+            });
         });
     </script>
 {% endblock %}

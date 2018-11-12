@@ -85,7 +85,6 @@
                 name = name.replace("filters[", "");
                 name = name.replace ("]", "");
                 name = name.replace ("[]", "");
-
                 // Filter Event, Attach an onChange event on each filters to handle the value change event
                 $(item).on('change', function () {
 
@@ -106,11 +105,11 @@
 
                 // If the local storage has a value for that name
                 if (    sessionStorage.getItem( "{{ widgetName }}_"+name+"_value" ) != "null" &&
-                        sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" ) != "null" &&
-                        sessionStorage.getItem( "{{ widgetName }}_"+name+"_value" ) != "" &&
-                        sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" ) != "" &&
-                        sessionStorage.getItem( "{{ widgetName }}_"+name+"_value" ) != null &&
-                        sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" ) != null ) {
+                    sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" ) != "null" &&
+                    sessionStorage.getItem( "{{ widgetName }}_"+name+"_value" ) != "" &&
+                    sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" ) != "" &&
+                    sessionStorage.getItem( "{{ widgetName }}_"+name+"_value" ) != null &&
+                    sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" ) != null ) {
 
                     var optionValue = sessionStorage.getItem( "{{ widgetName }}_"+name+"_value");
                     var optionName = sessionStorage.getItem( "{{ widgetName }}_"+name+"_text" );
@@ -145,6 +144,7 @@
                         name = name.replace("filters[", "");
                         name = name.replace ("]", "");
                         name = name.replace ("[]", "");
+
                         queryFilterParams.push({property:name, value:$(item).val()});
                         console.log (name);
                         console.log ($(item).val());
