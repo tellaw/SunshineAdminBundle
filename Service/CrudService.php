@@ -623,6 +623,10 @@ class CrudService
                 $fieldAttributes['label'] = $field['label'];
             }
 
+            if (isset($field['required'])) {
+                $fieldAttributes["required"] = $field["required"];
+            }
+
             /** @var Form $form */
 
             if (isset($field['value']) && !isset($formConfiguration['disableLoadingValues']) ) {
