@@ -25,6 +25,23 @@ class EntityService
     }
 
     /**
+     * Attributs sunshine d'une entité
+     *
+     * @param string $entityName Nom de l'entité
+     * @return array|null
+     */
+    public function getEntityAttributes(string $entityName)
+    {
+        $entityConfiguration = $this->getConfiguration($entityName);
+
+        if (!$entityConfiguration) {
+            return null;
+        }
+
+        return $entityConfiguration['attributes'];
+    }
+
+    /**
      * Provide the entity configuration for the form view
      *
      * @param string $entityName

@@ -12,7 +12,7 @@
       {"name": "Ismail Mezrani"}
     ],
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7",
         "tetranz/select2entity-bundle": "2.*",
         "ninsuo/symfony-collection": "2.1.19",
         "symfony/security-acl": "3.0.*",
