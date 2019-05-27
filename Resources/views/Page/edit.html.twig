@@ -35,15 +35,42 @@
         <div class="m-portlet m-portlet--mobile">
 
             <div class="m-portlet__body">
-
-                {{ form_start(form) }}
-                {% for row in form %}
-                    <div class="form-group m-form__group">
+                {% set isGroups = 'group_1' in form.children|keys ? true : false %}
+                {% set groups = form.children %}
+                {% if isGroups %}
+                    {{ form_start(form) }}
+                    {% if form.children.none is defined %}
+                        {% for row in form.children.none %}
+                            <div class="form-group m-form__group">
+                                {{ form_row(row) }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <ul class="nav nav-tabs">
+                        {% for group in groups %}
+                            {% set isGroupInName = group.vars.name|split("", 6) %}
+                            {% if isGroupInName.0 == 'group_' %}
+                                <li class="nav-item">
+                                    <a class="nav-link{% if group.vars.name == 'group_1' %} active{% endif %}" data-toggle="tab" href="#{{ group.vars.name }}">{{ group.vars.label }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    <div class="tab-content">
+                        {% for row in form %}
                             {{ form_row(row) }}
+                        {% endfor %}
                     </div>
-                {% endfor %}
-                {{ form_end(form) }}
-
+                    {{ form_end(form) }}
+                {% else %}
+                    {{ form_start(form) }}
+                    {% for row in form %}
+                        <div class="form-group m-form__group">
+                            {{ form_row(row) }}
+                        </div>
+                    {% endfor %}
+                    {{ form_end(form) }}
+                {% endif %}
             </div>
 
         </div>
@@ -55,4 +82,10 @@
     {% for include in formConfiguration.form.jsIncludes %}
         <script type="application/javascript" src="{{ asset(include) }}"></script>
     {% endfor %}
+    <script>
+        $('a.nav-link').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    </script>
 {% endblock %}

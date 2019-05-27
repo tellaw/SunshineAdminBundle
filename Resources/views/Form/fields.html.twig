@@ -25,14 +25,24 @@
 {# Rows #}
 
 {% block form_row %}
-
-    <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
-        {{- form_label(form) -}}
-        <div class="{{ block('form_group_class') }}">
-            {{- form_widget(form) -}}
-            {{- form_errors(form) -}}
+    {% if form.children is not empty %}
+        <div class="tab-pane{% if form.vars.name == 'group_1' %} active{% endif %}" id="{{ form.vars.name }}">
+            <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+                <div class="{{ block('form_group_class') }}">
+                    {{- form_widget(form) -}}
+                    {{- form_errors(form) -}}
+                </div>
+            </div>
         </div>
-    </div>
+    {% else %}
+        <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+            {{- form_label(form) -}}
+            <div class="{{ block('form_group_class') }}">
+                {{- form_widget(form) -}}
+                {{- form_errors(form) -}}
+            </div>
+        </div>
+    {% endif %}
 
 {% endblock form_row %}
 
@@ -232,4 +242,8 @@
             });
         });
     </script>
+{% endblock %}
+
+{% block fieldset_widget %}
+    {{ form_widget(form) }}
 {% endblock %}

@@ -15,6 +15,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
+use Tellaw\SunshineAdminBundle\Form\Type\FieldsetType;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2FilterType;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2Type;
 
@@ -612,7 +613,51 @@ class CrudService
      */
     public function buildFormFields($form, $formConfiguration, $forcedClass = '', $loadChoices = true)
     {
+        $groups = [];
+        foreach ($formConfiguration as $fieldName => $field) {
+            if (isset($field['group'])) {
+                $groups[$field['group']][$fieldName] = $field;
+                continue;
+            }
+        }
+        if (empty($groups)) {
+            $this->_buildFormFields($form, $formConfiguration, $forcedClass = '', $loadChoices = true);
+        } else {
+            foreach ($formConfiguration as $fieldName => $field) {
+                if (!isset($field['group'])) {
+                    $groups['none'][$fieldName] = $field;
+                    continue;
+                }
+            }
 
+            $i = 0;
+            foreach ($groups as $groupName => $fields) {
+                if ($groupName != 'none') {
+                    $i++;
+                }
+                $child = ($groupName == 'none') ? 'none' : 'group_' . $i;
+                $form->add($child, FieldsetType::class, [
+                    'label' => $groupName,
+                    'fields' => function(FormBuilder $form) use ($fields) {
+                        $this->_buildFormFields($form, $fields, $forcedClass = '', $loadChoices = true);
+                    }
+                ]);
+            }
+        }
+
+        return $form;
+    }
+
+    /**
+     * @param $form
+     * @param $formConfiguration
+     * @param string $forcedClass
+     * @param bool $loadChoices
+     * @return Form
+     * @throws \Exception
+     */
+    public function _buildFormFields($form, $formConfiguration, $forcedClass = '', $loadChoices = true)
+    {
         foreach ($formConfiguration as $fieldName => $field) {
 
             if ($fieldName == "disableLoadingValues") continue;
