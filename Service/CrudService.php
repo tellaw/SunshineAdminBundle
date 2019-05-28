@@ -9,8 +9,15 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -208,6 +215,7 @@ class CrudService
 
             $qb = $this->em->createQueryBuilder();
             $qb->select('COUNT(l)');
+
             $qb->from($entityClass, 'l');
             $qb->orWhere('l.' . $toString . ' LIKE :search');
             $qb->setParameter('search', "%{$query}%");
@@ -705,7 +713,28 @@ class CrudService
             $type = null;
 
             switch ($field["type"]) {
+                case 'string':
+                    $type = TextType::class;
+                    break;
+
+                case 'text':
+                    $type = TextareaType::class;
+                    break;
+
+                case 'boolean':
+                    $type = CheckboxType::class;
+                    break;
+
+                case 'integer':
+                    $type = IntegerType::class;
+                    break;
+
+                case 'float':
+                    $type = NumberType::class;
+                    break;
+
                 case "date":
+                    $type = DateType::class;
                     $fieldAttributes["widget"] = 'single_text';
                     $fieldAttributes["input"] = 'datetime';
                     $fieldAttributes["format"] = 'dd/MM/yyyy';
@@ -713,6 +742,7 @@ class CrudService
                     break;
 
                 case "datetime":
+                    $type = DateTimeType::class;
                     $fieldAttributes["widget"] = 'single_text';
                     $fieldAttributes["input"] = 'datetime';
                     $fieldAttributes["format"] = 'dd/MM/yyyy hh:mm';
