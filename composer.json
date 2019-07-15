@@ -16,7 +16,8 @@
         "tetranz/select2entity-bundle": "2.*",
         "ninsuo/symfony-collection": "2.1.19",
         "symfony/security-acl": "3.0.*",
-        "vich/uploader-bundle": "^1.9.0"
+        "vich/uploader-bundle": "^1.9.0",
+        "stfalcon/tinymce-bundle": "^2.4"
     },
     "autoload" : {
       "psr-0" : {

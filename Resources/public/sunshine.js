@@ -50,3 +50,13 @@ function openWidgetEdit(pageName, row, widgetName, itemId) {
 function openListLink ( obj ) {
     location.href = obj.getAttribute('data-url');
 }
+
+/**
+ * Trigger changes on editor's target element
+ * @param editor
+ */
+function callback_tinymce_init(editor) {
+    editor.on('change', function () {
+        $(editor.targetElm).trigger('change');
+    });
+}
