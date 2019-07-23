@@ -3,14 +3,14 @@ tinymce.PluginManager.add('datalink', function (editor) {
         isDatalink: function (node) {
             return node.tagName == 'A' && editor.dom.getAttrib(node, 'data-link-id');
         },
-        createLink: function (dataId) {
+        createLink: function (dataId, family) {
             var node = editor.selection.getNode();
             if (this.isDatalink(node)) {
-                $(node)
-                    .attr('data-link-id', dataId);
+                $(node).attr('data-link-id', dataId);
+                $(node).attr('data-entity-name', family);
             } else {
                 editor.editorCommands.execCommand('unlink');
-                editor.insertContent('<a href="#data_' + dataId + '" data-link-id="' + dataId + '">' +
+                editor.insertContent('<a href="#data_' + dataId + '" data-link-id="' + dataId + '" data-entity-name="' + family + '">' +
                     editor.selection.getContent() +
                     '</a>');
             }
@@ -18,7 +18,7 @@ tinymce.PluginManager.add('datalink', function (editor) {
     };
 
     function showDialog() {
-        var selectedNode = editor.selection.getNode(), dataId = null;
+        var selectedNode = editor.selection.getNode(), dataId = null, family = '';
 
         if (utilities.isDatalink(selectedNode)) {
             dataId = editor.dom.getAttrib(selectedNode, 'data-link-id');
@@ -28,7 +28,8 @@ tinymce.PluginManager.add('datalink', function (editor) {
             title: 'Sélection d\'une donnée',
             url: Routing.generate('sunshine_tinymce_data_selector', {
                 configName: 'datalink',
-                dataId: dataId
+                dataId: dataId,
+                family: family
             }),
             width: 500,
             height: 300

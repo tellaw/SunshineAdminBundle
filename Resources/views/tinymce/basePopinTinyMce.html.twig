@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    {{ form(form, {'attr': {class: 'form-goup combo-entity-selector'}}) }}
+    <div class="btn-group pull-right">
+        <button class="btn btn-default tinymce-close">Fermer</button>
+        <button class="btn btn-primary tinymce-submit">Valider</button>
+    </div>
+    <div class="clear"></div>
+
+    <link type="text/css" href="{{ asset('bundles/tellawsunshineadmin/assets/select2/select2.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ asset('bundles/tellawsunshineadmin/assets/select2/select2-bootstrap.css') }}" rel="stylesheet">
+
+    <script type="text/javascript" src="{{ asset('/bundles/tellawsunshineadmin/assets/vendors/base/vendors.bundle.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/bundles/tellawsunshineadmin/assets/app/js/autocomplete.combo.selector.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/tellawsunshineadmin/assets/select2/select2.full.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+
+    <script>
+        var editor = parent.tinymce.activeEditor;
+
+        $('.tinymce-close').on('click', function (e) {
+            editor.windowManager.close();
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    </script>
+
+    {% block tinymce_javascript %}{% endblock %}
+</div>

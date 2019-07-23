@@ -1,0 +1,14 @@
+{% extends '@sunshine/tinymce/basePopinTinyMce.html.twig' %}
+{% block tinymce_javascript %}
+    <script>
+        $('.tinymce-submit').on('click', function (e) {
+            var dataId = $('#form_comboEntitySelector_entity').val();
+            var family = $('#form_comboEntitySelector_family').val();
+            var plugin = parent.tinymce.PluginManager.get('datalink')(editor);
+            plugin.createLink(dataId, family);
+            editor.windowManager.close();
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    </script>
+{% endblock %}

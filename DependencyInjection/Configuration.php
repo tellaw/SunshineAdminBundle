@@ -26,6 +26,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->addMenuNode())
                 ->append($this->addPagesNode())
                 ->append($this->addThemeNode())
+                ->append($this->addTinyMceNode())
             ->end();
 
         return $treeBuilder;
@@ -388,6 +389,30 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('entityId')
                     ->end()
                     ->scalarNode('url')
+                    ->end()
+                ->end()
+            ->end();
+
+        return $node;
+    }
+
+    /**
+     * Définition du bloc de configuration "tinymce"
+     * @return \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition|\Symfony\Component\Config\Definition\Builder\NodeDefinition
+     */
+    public function addTinyMceNode()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('tinymce')
+            ->children()
+                ->arrayNode('datalink')
+                    ->children()
+                        ->variableNode('families')->end()
+                    ->end()
+                ->end()
+                ->arrayNode('dataobject')
+                    ->children()
+                        ->variableNode('families')->end()
                     ->end()
                 ->end()
             ->end();
