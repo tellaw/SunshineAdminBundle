@@ -5,7 +5,7 @@ namespace Tellaw\SunshineAdminBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Tellaw\SunshineAdminBundle\Form\Type\ComboEntitySelectorType;
-use Tellaw\SunshineAdminBundle\Service\EntityService;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TinyMceController extends AbstractController
 {
@@ -42,44 +42,30 @@ class TinyMceController extends AbstractController
         );
     }
 
-//    /**
-//     * @Template()
-//     * @param Request $request
-//     * @return array
-//     * @throws \Exception
-//     */
-//    public function selectMediaAction(Request $request)
-//    {
-//        $formData = [
-//            'data' => $this->getData($request),
-//            'filter' => $request->get('dataFilter'),
-//            'responsive' => $request->get('dataResponsive') == 1,
-//        ];
-//        $builder = $this->createFormBuilder($formData, [
-//            'show_legend' => false,
-//        ]);
-//        $builder->add('data', 'eavmanager_media_browser', [
-//            'family' => 'Image',
-//        ]);
-//
-//        $filterConfig = $this->get('liip_imagine.filter.manager')->getFilterConfiguration()->all();
-//        $choices = array_combine(array_keys($filterConfig), array_keys($filterConfig));
-//        $builder->add('filter', 'choice', [
-//            'choices' => $choices,
-//        ]);
-//
-//        $builder->add('responsive', 'sidus_switch', [
-//            'label' => 'Reponsive',
-//            'required' => false,
-//        ]);
-//
-//        $form = $builder->getForm();
-//        $form->handleRequest($request);
-//
-//        return [
-//            'form' => $form->createView(),
-//        ];
-//    }
-//
+    /**
+     * @Route("/tinymce/select-form", name="sunshine_tinymce_leadsfactory_form_selector", options={"expose"= true})
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function selectLeadsfactoryFormAction(Request $request)
+    {
+        $builder = $this->createFormBuilder(null, ['show_legend' => false]);
+        $builder->add(
+            'leadsfactory-form-id-input',
+            TextType::class,
+            [
+                'label' => 'Identifiant formulaire'
+            ]
+        );
 
+        $form = $builder->getForm();
+
+        return $this->render(
+            '@sunshine/tinymce/selectForm.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
+    }
 }

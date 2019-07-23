@@ -1,0 +1,14 @@
+{% extends '@sunshine/tinymce/basePopinTinyMce.html.twig' %}
+
+{% block tinymce_javascript %}
+    <script>
+        $('.tinymce-submit').on('click', function (e) {
+            var dataId = $('#form_leadsfactory-form-id-input').val();
+            var plugin = parent.tinymce.PluginManager.get('leadsfactory')(editor);
+            plugin.createObject(dataId);
+            editor.windowManager.close();
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    </script>
+{% endblock %}
