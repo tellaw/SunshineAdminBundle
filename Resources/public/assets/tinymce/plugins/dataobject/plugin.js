@@ -9,7 +9,7 @@ tinymce.PluginManager.add('dataobject', function (editor) {
                 $(node)
                     .attr('data-object-id', dataId);
             } else {
-                editor.insertContent('<div><img class="dataobject" title="' + dataName + '" data-family="' + family + '" data-object-id="' + dataId + '" src="/bundles/cleverageeavmanagerlayout/img/dataobject.png" /></div>');
+                editor.insertContent('<div><img class="dataobject" title="' + dataName + '" data-family="' + family + '" data-object-id="' + dataId + '" src="/build/img/dataobject.png" /></div>');
             }
         }
     };
@@ -23,7 +23,7 @@ tinymce.PluginManager.add('dataobject', function (editor) {
 
         editor.windowManager.open({
             title: 'Sélection d\'un objet',
-            url: Routing.generate('eavmanager_admin.wysiwyg.data_selector', {
+            url: Routing.generate('sunshine_tinymce_data_selector', {
                 configName: 'dataobject',
                 dataId: dataId
             }),

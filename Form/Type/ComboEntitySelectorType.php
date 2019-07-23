@@ -56,7 +56,7 @@ class ComboEntitySelectorType extends AbstractType
         $form->add('entity', Select2EntityType::class, [
             'label' => 'Entité',
             'multiple' => false,
-            'remote_route' => 'page_standard_list',
+            'remote_route' => 'select2_list',
             'remote_params' => ['entityClass' => 'App\Entity\\' . $data['family']],
             'class' => 'App\Entity\\' . $data['family'],
             'primary_key' => 'id',

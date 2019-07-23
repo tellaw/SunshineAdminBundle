@@ -1,11 +1,11 @@
-{% extends '@CleverAgeEAVManagerAdmin/Wysiwyg/basePopinTinyMce.html.twig' %}
+{% extends '@sunshine/tinymce/basePopinTinyMce.html.twig' %}
 
 {% block tinymce_javascript %}
     <script>
         $('.tinymce-submit').on('click', function (e) {
-            var dataId = $('.sidus-combo-selector input.select2').val();
-            var dataName = $('#form_data_family option:selected').text() + ' - ' + $('.sidus-combo-selector .select2-chosen').text();
-            var family = $('.sidus-combo-selector select[name="form[data][family]"]').val();
+            var dataId = $('#form_comboEntitySelector_entity').val();
+            var dataName = $('#form_comboEntitySelector_family option:selected').text() + ' - ' + $('#form_comboEntitySelector_entity option:selected').text();
+            var family = $('#form_comboEntitySelector_family').val();
             var plugin = parent.tinymce.PluginManager.get('dataobject')(editor);
             plugin.createObject(dataId, family, dataName);
             editor.windowManager.close();
