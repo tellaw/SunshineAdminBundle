@@ -87,23 +87,32 @@
             e.preventDefault()
             $(this).tab('show')
         })
-        $(document).on('click', "[name$='[save]'], [name$='[save_and_quit]']", function (e) {
-            var inputs  = $('form').find('input').filter('[required]');
-            inputs.each(function() {
-                var id = $(this).attr('id');
-                var error = document.getElementById(id).checkValidity();
-                var group = $(this).closest('.tab-pane').attr('id');
-                if (group !== undefined) {
-                    var index = parseInt(group.substring(6)) - 1;
-                    if (!error) {
-                        $('ul.nav-tabs li').eq(index).find('.nav-link').addClass('text-danger');
-                        $('label[for="' + id + '"]').addClass('text-danger');
+        {% set isGroups = 'group_1' in form.children|keys ? true : false %}
+        {% if isGroups %}
+            $(document).on('click', "[name$='[save]'], [name$='[save_and_quit]']", function (e) {
+                var inputs  = $('form').find(':input').filter('[required]');
+                inputs.each(function() {
+                    var id = $(this).attr('id');
+                    var error = document.getElementById(id).checkValidity();
+                    var group = $(this).closest('.tab-pane').attr('id');
+                    if (group !== undefined) {
+                        var index = parseInt(group.substring(6)) - 1;
+                        if (!error) {
+                            $('ul.nav-tabs li').eq(index).find('.nav-link').addClass('text-danger');
+                            $('label[for="' + id + '"]').addClass('text-danger');
+                        } else {
+                            $('ul.nav-tabs li').eq(index).find('.nav-link').removeClass('text-danger');
+                            $('label[for="' + id + '"]').removeClass('text-danger');
+                        }
                     } else {
-                        $('ul.nav-tabs li').eq(index).find('.nav-link').removeClass('text-danger');
-                        $('label[for="' + id + '"]').removeClass('text-danger');
+                        if (!error) {
+                            $('label[for="' + id + '"]').addClass('text-danger');
+                        } else {
+                            $('label[for="' + id + '"]').removeClass('text-danger');
+                        }
                     }
-                }
+                });
             });
-        });
+        {% endif %}
     </script>
 {% endblock %}
