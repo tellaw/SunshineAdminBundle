@@ -629,7 +629,7 @@ class CrudService
             }
         }
         if (empty($groups)) {
-            $this->_buildFormFields($form, $formConfiguration, $forcedClass = '', $loadChoices = true);
+            $this->_buildFormFields($form, $formConfiguration, $forcedClass, $loadChoices);
         } else {
             foreach ($formConfiguration as $fieldName => $field) {
                 if (!isset($field['group'])) {
@@ -646,8 +646,8 @@ class CrudService
                 $child = ($groupName == 'none') ? 'none' : 'group_' . $i;
                 $form->add($child, FieldsetType::class, [
                     'label' => $groupName,
-                    'fields' => function(FormBuilder $form) use ($fields) {
-                        $this->_buildFormFields($form, $fields, $forcedClass = '', $loadChoices = true);
+                    'fields' => function(FormBuilder $form) use ($fields, $forcedClass, $loadChoices) {
+                        $this->_buildFormFields($form, $fields, $forcedClass, $loadChoices);
                     }
                 ]);
             }

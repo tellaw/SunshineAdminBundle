@@ -141,7 +141,7 @@ class PageController extends AbstractPageController
                 return $this->redirectToRoute('sunshine_page_list', ['entityName' => $entityName]);
             }
 
-            return $this->redirectToRoute('sunshine_page_edit', ['entityName' => $entityName, 'id' => $id]);
+            return $this->redirectToRoute('sunshine_page_edit', ['entityName' => $entityName, 'id' => $entity->getId()]);
         }
 
         return $this->render(

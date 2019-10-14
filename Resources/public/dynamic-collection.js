@@ -5,6 +5,10 @@ jQuery(document).ready(function() {
 
         var form = $(this).parents('form');
         var collectionId =  form.attr('name') +'_'+ $(this).data('for');
+        var tabPane = $(this).parents().eq(3).closest('.tab-pane').attr('id');
+        if (tabPane !== undefined) {
+          collectionId =  form.attr('name') +'_'+ tabPane +'_'+ $(this).data('for');
+        }
         var collectionHolder = $('#'+collectionId);
 
         var index = collectionHolder.children().length;
