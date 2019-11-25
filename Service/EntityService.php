@@ -264,15 +264,20 @@ class EntityService
      * @param $class
      * @param $property
      * @return array
+     * @throws \ReflectionException
      */
     private function getAnnotationsForAttribute($class, $property)
     {
-        if (!property_exists($class, $property)) {
+        if (property_exists($class, $property)) {
+            $reflectionProperty = new \ReflectionProperty($class, $property);
+        } else if (property_exists(get_parent_class($class), $property)) {
+            $reflectionProperty = new \ReflectionProperty(get_parent_class($class), $property);
+        } else {
             return [];
         }
 
         $annotationReader = new AnnotationReader();
-        $reflectionProperty = new \ReflectionProperty($class, $property);
+
         return $annotationReader->getPropertyAnnotations($reflectionProperty);
     }
 
