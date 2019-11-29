@@ -11,7 +11,7 @@ tinymce.PluginManager.add('datamedia', function (editor) {
             } else {
                 media = $('<img>');
             }
-            var url = Routing.generate('eavmanager_asset.media.url', {
+            let url = Routing.generate('sunshine_attachment_url', {
                 id: dataId,
                 filter: filter
             });
@@ -34,10 +34,10 @@ tinymce.PluginManager.add('datamedia', function (editor) {
     };
 
     function showDialog() {
-        var selectedNode = editor.selection.getNode(), dataId = null, dataFilter = null, dataResponsive = null;
+        var selectedNode = editor.selection.getNode(), attachmentId = null, dataFilter = null, dataResponsive = null;
 
         if (utilities.isDatamedia(selectedNode)) {
-            dataId = editor.dom.getAttrib(selectedNode, 'data-media-id');
+            attachmentId = editor.dom.getAttrib(selectedNode, 'data-media-id');
             dataFilter = editor.dom.getAttrib(selectedNode, 'data-media-filter');
             if (editor.dom.getAttrib(selectedNode, 'class').indexOf("img-responsive") >= 0) {
                 dataResponsive = 1;
@@ -48,12 +48,12 @@ tinymce.PluginManager.add('datamedia', function (editor) {
 
         editor.windowManager.open({
             title: 'Sélection d\'un média',
-            url: Routing.generate('eavmanager_admin.wysiwyg.data_selector.media', {
-                dataId: dataId,
+            url: Routing.generate('sunshine_tinymce_media_form_selector', {
+                dataId: attachmentId,
                 dataFilter: dataFilter,
                 dataResponsive: dataResponsive
             }),
-            width: 800,
+            width: 995,
             height: 600
         });
     }
