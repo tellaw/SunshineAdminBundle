@@ -2,16 +2,17 @@
 
 namespace Tellaw\SunshineAdminBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 use Tellaw\SunshineAdminBundle\Service\ThemeService;
 
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
 
     /**
      * @return mixed
      *
+     * @throws \Exception
      * @Route(" /", name="sunshine_admin_homepage")
      */
     public function indexAction(  )

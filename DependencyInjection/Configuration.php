@@ -403,8 +403,8 @@ class Configuration implements ConfigurationInterface
     public function addTinyMceNode()
     {
         $builder = new TreeBuilder();
-        $node = $builder->root('tinymce')
-            ->children()
+        $node = $builder->root('tinymce')->addDefaultsIfNotSet();
+        $node->children()
                 ->arrayNode('datalink')
                     ->children()
                         ->variableNode('families')->end()

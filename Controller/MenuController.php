@@ -2,10 +2,8 @@
 
 namespace Tellaw\SunshineAdminBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Menu management
@@ -15,10 +13,11 @@ class MenuController extends AbstractController
     /**
      * Expose menu configuration
      *
-     * @Route("/menu/{pageType}/{pageIdentifier}", name="sunshine_menu")
-     * @Method({"GET"})
-     *
-     * @return \HttpResponse
+     * @Route("/menu/{pageType}/{pageIdentifier}", name="sunshine_menu", methods={"GET"})
+    *
+     * @param $pageType
+     * @param $pageIdentifier
+     * @return Response
      */
     public function indexAction( $pageType, $pageIdentifier )
     {

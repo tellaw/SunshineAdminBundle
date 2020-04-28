@@ -4,29 +4,25 @@ namespace Tellaw\SunshineAdminBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use League\Fractal\Manager;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Tellaw\SunshineAdminBundle\Service\CrudService;
-use Tellaw\SunshineAdminBundle\Service\EntityService;
 use Symfony\Component\HttpFoundation\Response;
 
-class AjaxController extends Controller
+class AjaxController extends AbstractController
 {
 
     /**
      *
      * Callback for the SELECT2 Ajax plugin
      *
-     * @Route("/ajax/select2/{entityName}/{toStringField}", name="sunshine_ajax_select2_callback")
-     * @Method({"POST"})
+     * @Route("/ajax/select2/{entityName}/{toStringField}", name="sunshine_ajax_select2_callback", methods={"POST"})
      *
      * @param Request $request
      * @param $toStringField
@@ -78,8 +74,7 @@ class AjaxController extends Controller
      *
      * CallBack for the Datatable LIST AJAX plugin
      *
-     * @Route("/ajax/datatable/{entity}", name="sunshine_ajax_datatable_callback")
-     * @Method({"GET", "POST"})
+     * @Route("/ajax/datatable/{entity}", name="sunshine_ajax_datatable_callback", methods={"GET", "POST"})
      */
     public function ajaxListCallBackAction ( Request $request, $entity ) {
 
@@ -191,8 +186,7 @@ class AjaxController extends Controller
     }
 
     /**
-     * @Route("collection/{entityName}/delete/{id}", name="collection-delete", options={"expose"=true})
-     * @Method("DELETE")
+     * @Route("collection/{entityName}/delete/{id}", name="collection-delete", methods={"DELETE"}, options={"expose"=true})
      * @param $entityName
      * @param $id
      * @return JsonResponse

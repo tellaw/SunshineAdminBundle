@@ -2,12 +2,10 @@
 
 namespace Tellaw\SunshineAdminBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyAbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
-abstract class AbstractController extends Controller
+abstract class AbstractController extends SymfonyAbstractController
 {
     /**
      *
@@ -16,10 +14,9 @@ abstract class AbstractController extends Controller
      *
      * @param $template
      * @param $params
-     * @return mixed
-     *
+     * @return Response
      */
-    protected function renderWithTheme ( $template, $params )
+    protected function renderWithTheme($template, $params)
     {
         return $this->render('@sunshine/'.$template.".html.twig" , $params);
     }

@@ -3,7 +3,8 @@
 namespace Tellaw\SunshineAdminBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Tellaw\SunshineAdminBundle\Form\Type\ComboEntitySelectorType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -12,9 +13,8 @@ class TinyMceController extends AbstractController
     /**
      * @Route("/tinymce/select-data/{configName}", name="sunshine_tinymce_data_selector", options={"expose"= true})
      * @param Request $request
-     * @param string  $configName
-     * @return array
-     * @throws \InvalidArgumentException
+     * @param string $configName
+     * @return Response
      */
     public function selectDataAction(Request $request, string $configName = '')
     {
@@ -44,11 +44,10 @@ class TinyMceController extends AbstractController
 
     /**
      * @Route("/tinymce/select-form", name="sunshine_tinymce_leadsfactory_form_selector", options={"expose"= true})
-     * @param Request $request
      *
-     * @return array
+     * @return Response
      */
-    public function selectLeadsfactoryFormAction(Request $request)
+    public function selectLeadsfactoryFormAction()
     {
         $builder = $this->createFormBuilder(null, ['show_legend' => false]);
         $builder->add(

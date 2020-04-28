@@ -2,9 +2,9 @@
 
 namespace Tellaw\SunshineAdminBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Tellaw\SunshineAdminBundle\Form\Type\FiltersType;
 use Tellaw\SunshineAdminBundle\Service\CrudService;
@@ -12,18 +12,18 @@ use Tellaw\SunshineAdminBundle\Service\EntityService;
 use Tellaw\SunshineAdminBundle\Service\PageService;
 use Tellaw\SunshineAdminBundle\Service\WidgetService;
 
-class WidgetController extends Controller
+class WidgetController extends AbstractController
 {
     /**
      * List entity in a dataTable ajax loaded bloc
      *
-     * @Route("/app/widget/crudlist/{pageName}/{row}/{widgetName}", name="sunshine_widget_crudlist")
-     * @Route("/app/widget/crudlist/{pageName}/{row}/{widgetName}/{entityName}", name="sunshine_widget_crudlist")
-     * @Method({"GET"})
+     * @Route("/app/widget/crudlist/{pageName}/{row}/{widgetName}", name="sunshine_widget_crudlist", methods={"GET"})
+     * @Route("/app/widget/crudlist/{pageName}/{row}/{widgetName}/{entityName}", name="sunshine_widget_crudlist", methods={"GET"})
      * @param $pageName
      * @param $row
      * @param $widgetName
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param null $entityName
+     * @return Response
      * @throws \Exception
      */
     public function widgetCrudListAction($pageName, $row, $widgetName, $entityName = null)
@@ -81,8 +81,7 @@ class WidgetController extends Controller
     /**
      * Shows entity
      *
-     * @Route("/app/widget/show/{pageName}/{row}/{widgetName}", name="sunshine_widget_view")
-     * @Method("GET")
+     * @Route("/app/widget/show/{pageName}/{row}/{widgetName}", name="sunshine_widget_view", methods={"GET"})
      * @param $pageName
      * @param $row
      * @param $widgetName
@@ -129,8 +128,7 @@ class WidgetController extends Controller
     /**
      * Widget Content
      *
-     * @Route("/app/widget/content/{pageId}", name="sunshine_widget_content" , options={"expose":true})
-     * @Method("GET")
+     * @Route("/app/widget/content/{pageId}", name="sunshine_widget_content", methods={"GET"}, options={"expose":true})
      * @param $pageId
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
