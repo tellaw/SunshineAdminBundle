@@ -5,19 +5,40 @@ namespace Tellaw\SunshineAdminBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Tellaw\SunshineAdminBundle\Entity\MessageBag;
+use Tellaw\SunshineAdminBundle\Service\PageService;
 use Tellaw\SunshineAdminBundle\Service\WidgetService;
 
 abstract class AbstractPageController extends AbstractController
 {
+    /**
+     * @var PageService
+     */
+    private $pageService;
+
+    /**
+     * @var WidgetService
+     */
+    private $widgetService;
+
+    /**
+     * AbstractPageController constructor.
+     * @param PageService $pageService
+     * @param WidgetService $widgetService
+     */
+    public function __construct(PageService $pageService, WidgetService $widgetService)
+    {
+        $this->pageService = $pageService;
+        $this->widgetService = $widgetService;
+    }
+
 
     /**
      *
      * Method called in controlleur who wants to render a sunshine page.
      * This method reads the page configuration, and render it.
      *
-     * @param $template
-     * @param $parameters
      * @param null $pageId
+     * @param null $messageBag
      * @return mixed
      * @throws \Exception
      */
@@ -30,7 +51,7 @@ abstract class AbstractPageController extends AbstractController
         }
 
         /** @var array $page */
-        $page = $this->get("sunshine.pages")->getPageConfiguration($pageId);
+        $page = $this->pageService->getPageConfiguration($pageId);
 
         if (false === $page) {
             throw new \Exception("Page not found : ".$pageId);
@@ -40,7 +61,7 @@ abstract class AbstractPageController extends AbstractController
         $isVisible = false;
         if (array_key_exists( "roles", $page )) {
             foreach ( $page["roles"] as $role ) {
-                if ( $this->get('security.authorization_checker')->isGranted($role) ) {
+                if ( $this->isGranted($role) ) {
                     $isVisible = true;
                 }
             }
@@ -52,10 +73,7 @@ abstract class AbstractPageController extends AbstractController
             throw new AccessDeniedException();
         }
 
-
-        /** @var WidgetService $widgetService */
-        $widgetService = $this->get("sunshine.widgets");
-        $serviceWidgets = $widgetService->loadServicesWidgetsForPage( $page, $messageBag );
+        $serviceWidgets = $this->widgetService->loadServicesWidgetsForPage( $page, $messageBag );
 
         $parameters = array();
         $parameters ["serviceWidgets"]  = $serviceWidgets;
@@ -95,7 +113,7 @@ abstract class AbstractPageController extends AbstractController
         }
 
         /** @var array $page */
-        $pageConfiguration = $this->get("sunshine.pages")->getPageConfiguration($pageId);
+        $pageConfiguration = $this->pageService->getPageConfiguration($pageId);
         if ( $pageId === null ) {
             throw new \Exception("Page not found : ".$pageId);
         }
@@ -114,8 +132,7 @@ abstract class AbstractPageController extends AbstractController
         }
 
         /** @var WidgetService $widgetService */
-        $widgetService = $this->get("sunshine.widgets");
-        $widgetContent = $widgetService->renderWidget( $widgetConfiguration, $messageBag );
+        $widgetContent = $this->widgetService->renderWidget( $widgetConfiguration, $messageBag );
 
         return new Response( $widgetContent );
 
