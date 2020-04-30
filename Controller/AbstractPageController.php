@@ -31,7 +31,6 @@ abstract class AbstractPageController extends AbstractController
         $this->widgetService = $widgetService;
     }
 
-
     /**
      *
      * Method called in controlleur who wants to render a sunshine page.

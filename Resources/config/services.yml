@@ -1,4 +1,11 @@
 services:
+
+  # Alias pour régler problème d'autowiring du service
+  Tellaw\SunshineAdminBundle\Service\CrudService: '@sunshine.crud_service'
+  Tellaw\SunshineAdminBundle\Service\EntityService: '@sunshine.entities'
+  Tellaw\SunshineAdminBundle\Service\PageService: '@sunshine.pages'
+  Tellaw\SunshineAdminBundle\Service\WidgetService: '@sunshine.widgets'
+
   sunshine.crud_service:
     class: Tellaw\SunshineAdminBundle\Service\CrudService
     public: true
@@ -108,3 +115,14 @@ services:
     arguments: ["%tellaw_sunshine_admin.theme%"]
     tags:
       - { name: twig.extension }
+
+  sunshine.page.abstract:
+    abstract: true
+    class: Tellaw\SunshineAdminBundle\Controller\AbstractPageController
+    arguments:
+      $pageService: "@sunshine.pages"
+      $widgetService: "@sunshine.widgets"
+
+  Tellaw\SunshineAdminBundle\Controller\PageController:
+    parent: sunshine.page.abstract
+    public: true
