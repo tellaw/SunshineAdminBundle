@@ -34,5 +34,10 @@
       "post-update-cmd": [
         "Fuz\\Symfony\\Collection\\ScriptHandler::postUpdate"
       ]
+    },
+    "extra": {
+      "branch-alias": {
+        "dev-master": "0.x-dev"
+      }
     }
 }
