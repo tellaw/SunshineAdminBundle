@@ -9,7 +9,8 @@
       {"name": "Nicolas Robelin"},
       {"name": "Eric Wallet"},
       {"name": "Seth Amegavie"},
-      {"name": "Ismail Mezrani"}
+      {"name": "Ismail Mezrani"},
+      {"name": "Badredine KALLALI"}
     ],
     "require": {
         "php": ">=7",
