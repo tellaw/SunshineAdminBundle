@@ -133,11 +133,11 @@
                 <ul class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow " style="padding-top:0px;">
                     <!-- Insert Here the menu -->
                     {% if  app.request.attributes.get('_route') == "sunshine_page" %}
-                        {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "sunshine_page", "pageIdentifier" : pageId } )) }}
+                        {{ render(controller('Tellaw\SunshineAdminBundle\Controller\MenuController::indexAction',{ "pageType" : "sunshine_page", "pageIdentifier" : pageId } )) }}
                     {% elseif app.request.attributes.get('_route') == "sunshine_page_list" %}
-                        {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "sunshine_page_list", "pageIdentifier" : entity } )) }}
+                        {{ render(controller('Tellaw\SunshineAdminBundle\Controller\MenuController::indexAction',{ "pageType" : "sunshine_page_list", "pageIdentifier" : entity } )) }}
                     {% else %}
-                        {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "custom_page", "pageIdentifier" : app.request.attributes.get('_route') } )) }}
+                        {{ render(controller('Tellaw\SunshineAdminBundle\Controller\MenuController::indexAction',{ "pageType" : "custom_page", "pageIdentifier" : app.request.attributes.get('_route') } )) }}
                     {% endif %}
                 </ul>
 
