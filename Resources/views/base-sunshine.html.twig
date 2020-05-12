@@ -136,6 +136,8 @@
                         {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "sunshine_page", "pageIdentifier" : pageId } )) }}
                     {% elseif app.request.attributes.get('_route') == "sunshine_page_list" %}
                         {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "sunshine_page_list", "pageIdentifier" : entity } )) }}
+                    {% elseif app.request.attributes.get('_route') == "sunshine_page_edit" %}
+                        {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "sunshine_page_edit", "pageIdentifier" : getClass(entity) } )) }}
                     {% else %}
                         {{ render(controller('TellawSunshineAdminBundle:Menu:index',{ "pageType" : "custom_page", "pageIdentifier" : app.request.attributes.get('_route') } )) }}
                     {% endif %}

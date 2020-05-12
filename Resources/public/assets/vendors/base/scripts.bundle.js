@@ -8662,4 +8662,8 @@ var mQuickSidebar = function() {
 
 $(document).ready(function() {
     mQuickSidebar.init();
+
+    $('.m-menu__item--active').parents('.m-menu__item--submenu').each(function() {
+        $(this).addClass('m-menu__item--open');
+    });
 });

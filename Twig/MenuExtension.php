@@ -29,7 +29,8 @@ class MenuExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFunction('isThisActivePage', array($this, 'isThisActivePage'), array()),
             new \Twig_SimpleFunction('isActivePageIsAChildPage', array($this, 'isActivePageIsAChildPage'), array()),
-            new \Twig_SimpleFunction('isMenuItemVisible', array($this, 'isMenuItemVisible'), array())
+            new \Twig_SimpleFunction('isMenuItemVisible', array($this, 'isMenuItemVisible'), array()),
+            new \Twig_SimpleFunction('getClass', array($this, 'getClass'), array())
         );
     }
 
@@ -137,4 +138,15 @@ class MenuExtension extends \Twig_Extension
         }
     }
 
+    /**
+     * Retourne le nom de la classe
+     *
+     * @param $object
+     * @return string
+     * @throws \ReflectionException
+     */
+    public function getClass($object)
+    {
+        return (new \ReflectionClass($object))->getShortName();
+    }
 }

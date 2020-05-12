@@ -17,7 +17,7 @@
         </a>
     </li>
 {% elseif item.type == 'list' %}
-    <li class="m-menu__item {% if pageType == 'sunshine_page_list' and pageIdentifier == item.entityName %}m-menu__item--active{% endif %}">
+    <li class="m-menu__item {% if (pageType == 'sunshine_page_list' or pageType == 'sunshine_page_edit') and pageIdentifier == item.entityName %}m-menu__item--active{% endif %}">
         <a href="{{ path('sunshine_page_list', {'entityName': item.entityName}) }}" class="m-menu__link">
             {% if item.icon is defined %}
                 <i class="m-menu__link-icon flaticon-{{ item.icon }}"></i>
