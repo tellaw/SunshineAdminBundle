@@ -10,6 +10,7 @@
       {"name": "Eric Wallet"},
       {"name": "Seth Amegavie"},
       {"name": "Ismail Mezrani"},
+      {"name": "Audrey Estiveau"},
       {"name": "Badredine KALLALI"}
     ],
     "require": {
@@ -34,10 +35,5 @@
       "post-update-cmd": [
         "Fuz\\Symfony\\Collection\\ScriptHandler::postUpdate"
       ]
-    },
-    "extra": {
-      "branch-alias": {
-        "dev-master": "0.x-dev"
-      }
     }
 }
