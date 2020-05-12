@@ -4,6 +4,7 @@ namespace Tellaw\SunshineAdminBundle\Twig;
 
 use ReflectionClass;
 use Tellaw\SunshineAdminBundle\Service\WidgetService;
+use Twig\Environment;
 use Twig\TwigFunction;
 
 class WidgetExtension extends \Twig_Extension
@@ -113,13 +114,16 @@ class WidgetExtension extends \Twig_Extension
 
     /**
      *
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      * @param $fieldValue
      * @param array $parameters
      * @param bool $view
      * @return string
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
-    public function renderEntityField(\Twig_Environment $twig, $fieldValue, array $parameters, $view = true)
+    public function renderEntityField(Environment $twig, $fieldValue, array $parameters, $view = true)
     {
         $this->twig = $twig;
         $template = "@TellawSunshineAdmin/Widget/fields/field_".$parameters['type'].".html.twig";
@@ -134,6 +138,7 @@ class WidgetExtension extends \Twig_Extension
      *
      * @param $object
      * @return string
+     * @throws \ReflectionException
      */
     public function getEntityName($object)
     {

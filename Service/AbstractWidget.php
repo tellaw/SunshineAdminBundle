@@ -5,7 +5,7 @@ namespace Tellaw\SunshineAdminBundle\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Tellaw\SunshineAdminBundle\Entity\MessageBag;
-use Twig_Environment;
+use Twig\Environment;
 
 abstract class AbstractWidget {
 
@@ -15,7 +15,7 @@ abstract class AbstractWidget {
     protected $requestStack = null;
 
     /**
-     * @var Twig_Environment|null
+     * @var Environment|null
      */
     protected $twig = null;
 
@@ -27,10 +27,10 @@ abstract class AbstractWidget {
     /**
      * AbstractWidget constructor.
      * @param RequestStack $requestStack
-     * @param Twig_Environment $twig
+     * @param Environment $twig
      * @param EntityManagerInterface $em
      */
-    public function __construct(RequestStack $requestStack, Twig_Environment $twig, EntityManagerInterface $em )
+    public function __construct(RequestStack $requestStack, Environment $twig, EntityManagerInterface $em )
     {
         $this->requestStack = $requestStack;
         $this->twig = $twig;
