@@ -63,7 +63,7 @@ class WidgetController extends AbstractController
         }
 
         return $this->render(
-            '@sunshine/Widget/ajax-datatable.html.twig',
+            '@TellawSunshineAdmin/Widget/ajax-datatable.html.twig',
             array(
                 "filtersForm" => is_null($filtersForm) ? null : $filtersForm->createView(),
                 "configuration" => $configuration,

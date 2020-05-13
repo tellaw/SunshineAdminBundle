@@ -120,7 +120,7 @@ class ListWidget extends AbstractWidget {
 
 
         return $this->render(
-            '@sunshine/Widget/ajax-datatable',
+            '@TellawSunshineAdmin/Widget/ajax-datatable',
             [
                 "filtersForm" => !empty($filtersForm) ? $filtersForm->createView() : null,
                 "configuration" => $configuration,
