@@ -61,7 +61,11 @@ class AjaxController extends AbstractController
         );
 
         // Return them with the JSON Response Serialized
-        $serializedEntity = $this->container->get('serializer')->serialize($responseArray, 'json');
+        $serializedEntity = $this->container->get('serializer')->serialize($responseArray, 'json', [
+            'circular_reference_handler' => function ($object) {
+                return (method_exists( $object, "__toString" ))? $object->__toString() : null;
+            },
+        ]);
 
         $response = new Response();
         $response->setContent($serializedEntity);
