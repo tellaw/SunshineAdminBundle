@@ -29,6 +29,7 @@ class MenuExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFunction('isThisActivePage', array($this, 'isThisActivePage'), array()),
             new \Twig_SimpleFunction('isActivePageIsAChildPage', array($this, 'isActivePageIsAChildPage'), array()),
+            new \Twig_SimpleFunction('isCustomPageEdit', array($this, 'isCustomPageEdit'), array()),
             new \Twig_SimpleFunction('isMenuItemVisible', array($this, 'isMenuItemVisible'), array()),
             new \Twig_SimpleFunction('getClass', array($this, 'getClass'), array())
         );
@@ -80,6 +81,24 @@ class MenuExtension extends \Twig_Extension
 
         return false;
 
+    }
+
+    /**
+     * @param $item
+     * @param $pageType
+     * @param $pageIdentifier
+     * @return bool
+     */
+    public function isCustomPageEdit ($item, $pageType, $pageIdentifier)
+    {
+        $pageIdentifier = substr($pageIdentifier, strrpos($pageIdentifier, "_") + 1);
+        $pageId = isset ($item["parameters"]["id"]) ? $item["parameters"]["id"] : null;
+
+        if ($pageType === 'custom_page' && !is_null($pageId) && strcasecmp($pageId, $pageIdentifier) === 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

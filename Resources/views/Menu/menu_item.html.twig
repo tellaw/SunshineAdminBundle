@@ -1,5 +1,5 @@
 {% if item.type == 'page' %}
-    <li class="m-menu__item {% if pageType == 'sunshine_page' and pageIdentifier == item.parameters.id  %}m-menu__item--active{% endif %}" aria-haspopup="true">
+    <li class="m-menu__item {% if ((pageType == 'sunshine_page' or pageType == 'sunshine_page_edit') and pageIdentifier == item.parameters.id) or isCustomPageEdit( item, pageType, pageIdentifier ) %}m-menu__item--active{% endif %}" aria-haspopup="true">
         <a href="{{ path('sunshine_page', {'pageId': item.parameters.id}) }}" class="m-menu__link">
             {% if item.icon is defined %}
                 <i class="m-menu__link-icon flaticon-{{ item.icon }}"></i>
@@ -37,7 +37,7 @@
         {% endif %}
     {% endfor %}
 {% elseif item.type == 'external' %}
-    <li class="m-menu__item ">
+    <li class="m-menu__item {% if '/admin/' ~ pageIdentifier == item.parameters.url %}m-menu__item--active{% endif %}">
         <a href="{{ item.parameters.url }}" class="nav-link" {% if item.target is defined %}target="{{ item.target }}"{% endif %}>
             {% if item.icon is defined %}
                 <i class="m-menu__link-icon flaticon-{{ item.icon }}"></i>

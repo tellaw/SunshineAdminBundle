@@ -38,7 +38,7 @@ services:
 
   sunshine.widget_twig_extension:
     class: Tellaw\SunshineAdminBundle\Twig\WidgetExtension
-    arguments: ["%tellaw_sunshine_admin.pages%", "@sunshine.widgets"]
+    arguments: ["%tellaw_sunshine_admin.pages%", "@sunshine.widgets", "@router"]
     public: true
     tags:
       - { name: twig.extension }

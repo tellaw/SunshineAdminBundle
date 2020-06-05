@@ -3,6 +3,7 @@
 namespace Tellaw\SunshineAdminBundle\Twig;
 
 use ReflectionClass;
+use Symfony\Component\Routing\RouterInterface;
 use Tellaw\SunshineAdminBundle\Service\WidgetService;
 use Twig\Environment;
 use Twig\TwigFunction;
@@ -23,15 +24,21 @@ class WidgetExtension extends \Twig_Extension
     private $widgetService;
 
     /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * Constructor
      *
      * @param array $configuration
      * @param WidgetService $widgetService
      */
-    public function __construct(array $configuration, WidgetService $widgetService)
+    public function __construct(array $configuration, WidgetService $widgetService, RouterInterface $router)
     {
         $this->configuration = $configuration;
         $this->widgetService = $widgetService;
+        $this->router = $router;
     }
 
     /**
@@ -47,6 +54,7 @@ class WidgetExtension extends \Twig_Extension
                 array('needs_environment' => true)
             ),
             new TwigFunction('getEntityName', [$this, 'getEntityName']),
+            new TwigFunction('routeExists', [$this, 'routeExists']),
         );
     }
 
@@ -143,5 +151,14 @@ class WidgetExtension extends \Twig_Extension
     public function getEntityName($object)
     {
         return (new ReflectionClass($object))->getShortName();
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function routeExists($name)
+    {
+        return (null === $this->router->getRouteCollection()->get($name)) ? false : true;
     }
 }

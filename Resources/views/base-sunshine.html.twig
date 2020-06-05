@@ -78,9 +78,15 @@
                                                                     {{ app.user.fullname is defined ? app.user.fullname : (app.user.username is defined ? app.user.username : '') }}
                                                                 </span>
 
-                                                                <a href="" class="m-card-user__email m--font-weight-300 m-link">
-                                                                    {{ app.user.email is defined ? app.user.email : '' }}
-                                                                </a>
+                                                                {% if routeExists('profile') %}
+                                                                    <a href="{{ path ('profile') }}" class="m-card-user__email m--font-weight-300 m-link">
+                                                                        Mon profil
+                                                                    </a>
+                                                                {% else %}
+                                                                    <a href="" class="m-card-user__email m--font-weight-300 m-link">
+                                                                        {{ app.user.email is defined ? app.user.email : '' }}
+                                                                    </a>
+                                                                {% endif %}
                                                             </div>
                                                     </div>
                                                 </div>
