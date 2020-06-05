@@ -19,7 +19,7 @@ class TinyMceController extends AbstractController
     public function selectDataAction(Request $request, string $configName = '')
     {
         $formOptions = [];
-        $selectorConfig = $this->getParameter('tellaw_sunshine_admin.tinymce');
+        $selectorConfig = $this->container->getParameter('tellaw_sunshine_admin.tinymce');
         if (array_key_exists($configName, $selectorConfig)) {
             $formOptions = $selectorConfig[$configName];
         }
