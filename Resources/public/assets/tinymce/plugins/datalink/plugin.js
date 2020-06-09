@@ -22,6 +22,7 @@ tinymce.PluginManager.add('datalink', function (editor) {
 
         if (utilities.isDatalink(selectedNode)) {
             dataId = editor.dom.getAttrib(selectedNode, 'data-link-id');
+            family = editor.dom.getAttrib(selectedNode, 'data-entity-name');
         }
 
         editor.windowManager.open({

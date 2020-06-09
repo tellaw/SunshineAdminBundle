@@ -24,6 +24,14 @@ class TinyMceController extends AbstractController
             $formOptions = $selectorConfig[$configName];
         }
 
+        if ($request->query->has('family') && $request->query->has('dataId')) {
+            $family = $request->query->get('family');
+            $formOptions['data'] = [
+                'family' => $family,
+                'entity' => $this->getEntity($request, $family),
+            ];
+        }
+
         $formData = $request->request->get('form');
 
         $builder = $this->createFormBuilder($formData, ['show_legend' => false]);
@@ -45,16 +53,20 @@ class TinyMceController extends AbstractController
     /**
      * @Route("/tinymce/select-form", name="sunshine_tinymce_leadsfactory_form_selector", options={"expose"= true})
      *
+     * @param Request $request
      * @return Response
      */
-    public function selectLeadsfactoryFormAction()
+    public function selectLeadsfactoryFormAction(Request $request)
     {
+        $dataId = $request->query->get('dataId', null);
+
         $builder = $this->createFormBuilder(null, ['show_legend' => false]);
         $builder->add(
             'leadsfactory-form-id-input',
             TextType::class,
             [
-                'label' => 'Identifiant formulaire'
+                'label' => 'Identifiant formulaire',
+                'data' => $dataId
             ]
         );
 
@@ -66,5 +78,21 @@ class TinyMceController extends AbstractController
                 'form' => $form->createView(),
             ]
         );
+    }
+
+    /**
+     * @param Request $request
+     * @return DataInterface|null
+     * @throws \InvalidArgumentException
+     */
+    protected function getEntity(Request $request, $family)
+    {
+        $data = null;
+        if ($request->query->has('dataId')) {
+            $data = $this->getDoctrine()->getRepository('App:' . $family)
+                ->getByDataId($request->query->get('dataId'));
+        }
+
+        return $data;
     }
 }
