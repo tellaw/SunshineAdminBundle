@@ -1,0 +1,416 @@
+<!doctype html>
+<!--[if IE 6 ]><html lang="en-us" class="ie6"> <![endif]-->
+<!--[if IE 7 ]><html lang="en-us" class="ie7"> <![endif]-->
+<!--[if IE 8 ]><html lang="en-us" class="ie8"> <![endif]-->
+<!--[if (gt IE 7)|!(IE)]><!-->
+<html lang="en-us"><!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+
+    <title>tinyMce Bootstrap Plugin - Extend tinyMce using Any Bootstrap Element / Any Custom Code Snippet</title>
+
+    <meta name="description" content="Add Bootstrap toolbar to tinyMce">
+    <meta name="author" content="Gilles Migliori">
+    <meta name="copyright" content="Gilles Migliori">
+    <meta name="generator" content="Documenter v2.0 http://rxa.li/documenter">
+    <meta name="date" content="2015-01-12T00:00:00+01:00">
+
+    <link rel="stylesheet" href="assets/css/documenter_style.css" media="all">
+    <link href="assets/google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <script src="assets/js/jquery.js"></script>
+
+    <script src="assets/js/jquery.scrollTo.js"></script>
+    <script src="assets/js/jquery.easing.js"></script>
+    <script type="text/javascript" src="assets/google-code-prettify/prettify.js"></script>
+
+    <script>document.createElement('section');var duration='500',easing='swing';</script>
+    <script src="assets/js/script.js"></script>
+
+    <style>
+        html{background-color:#EEEEEE;color:#383838;}
+        ::-moz-selection{background:#333636;color:#00DFFC;}
+        ::selection{background:#333636;color:#00DFFC;}
+        #documenter_sidebar #documenter_logo{background-image:url(assets/images/tinymce-bootstrap-plugin-small-preview-transparent.png);}
+        a{color:#008C9E;}
+        .btn {
+            border-radius:3px;
+        }
+        .btn-primary {
+              background-image: -moz-linear-gradient(top, #008C9E, #006673);
+              background-image: -ms-linear-gradient(top, #008C9E, #006673);
+              background-image: -webkit-gradient(linear, 0 0, 0 008C9E%, from(#343838), to(#006673));
+              background-image: -webkit-linear-gradient(top, #008C9E, #006673);
+              background-image: -o-linear-gradient(top, #008C9E, #006673);
+              background-image: linear-gradient(top, #008C9E, #006673);
+              filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#008C9E', endColorstr='#006673', GradientType=0);
+              border-color: #006673 #006673 #bfbfbf;
+              color:#FFFFFF;
+        }
+        .btn-primary:hover,
+        .btn-primary:active,
+        .btn-primary.active,
+        .btn-primary.disabled,
+        .btn-primary[disabled] {
+          border-color: #008C9E #008C9E #bfbfbf;
+          background-color: #006673;
+        }
+        hr{border-top:1px solid #D4D4D4;border-bottom:1px solid #FFFFFF;}
+        #documenter_sidebar, #documenter_sidebar ul a{background-color:#343838;color:#FFFFFF;}
+        #documenter_sidebar ul a{-webkit-text-shadow:1px 1px 0px #494F4F;-moz-text-shadow:1px 1px 0px #494F4F;text-shadow:1px 1px 0px #494F4F;}
+        #documenter_sidebar ul{border-top:1px solid #212424;}
+        #documenter_sidebar ul a{border-top:1px solid #494F4F;border-bottom:1px solid #212424;color:#FFFFFF;}
+        #documenter_sidebar ul a:hover{background:#333636;color:#00DFFC;border-top:1px solid #333636;}
+        #documenter_sidebar ul a.current{background:#333636;color:#00DFFC;border-top:1px solid #333636;}
+        #documenter_copyright{display:block !important;visibility:visible !important;}
+        div.cut {
+            min-height: 600px;
+        }
+    </style>
+
+</head>
+<body class="documenter-project-tinymce-bootstrap-plugin">
+    <div id="documenter_sidebar">
+        <a href="#documenter_cover" id="documenter_logo"></a>
+        <ul id="documenter_nav">
+            <li><a class="current" href="#documenter_cover">Start</a></li>
+            <li><a href="#requirements" title="requirements">Requirements</a></li>
+            <li><a href="#quick_start_guide" title="quick-start-guide">quick-start-guide</a></li>
+            <li><a href="#examples-with-code" title="examples with code">examples with code</a></li>
+            <li><a href="#use-your-own-bootstrap-css" title="use your own bootstrap css">use your own bootstrap css</a></li>
+            <li><a href="#snippet-tool" title="snippet tool">snippet-tool</a></li>
+            <li><a href="#select-toolbar-elements" title="select toolbar elements">select toolbar elements</a></li>
+            <li><a href="#change-language" title="change language">change language</a></li>
+            <li><a href="#joomla-integration" title="change language">Joomla integration</a></li>
+            <li><a href="http://tinymce-bootstrap-plugin.creation-site.org/tinymce-bootstrap-plugin/index.html" title="online demo">online demo</a></li>
+            <li><a href="#changelog" title="changelog">changelog</a></li>
+            <li><a href="#sources-and-credits" title="sources and credits">sources &amp; credits</a></li>
+
+        </ul>
+        <div id="documenter_copyright">Copyright Gilles Migliori 2015<br>
+        made with the <a href="http://rxa.li/documenter">Documenter v2.0</a>
+        </div>
+    </div>
+    <div id="documenter_content">
+    <section id="documenter_cover">
+    <h1>tinyMce Bootstrap Plugin</h1>
+    <p></p>
+    <h2><small>Extend tinyMce using</small> <strong>Any Bootstrap Element</strong> &amp; <strong>Any Custom Code Snippet</strong></h2>
+    <div id="documenter_buttons">
+
+    </div>
+    <hr>
+    <ul>
+    <li>created: 12/01/2015</li>
+    <li>latest update: 19/10/2015</li>
+    <li>by: Gilles Migliori</li>
+    <li>email: <a href="mailto:&#103;&#105;&#108;&#108;&#101;&#115;&#46;&#109;&#105;&#103;&#108;&#105;&#111;&#114;&#105;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#103;&#105;&#108;&#108;&#101;&#115;&#46;&#109;&#105;&#103;&#108;&#105;&#111;&#114;&#105;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></li>
+    </ul>
+    <p>TinyMce Bootstrap plugin adds a Bootstrap toolbar to tinyMce<br>with which you can access to visual editors to create/edit the following Bootstrap elements :</p>
+    <ul class="column">
+        <li>Buttons (+ icons)</li>
+        <li>Icons</li>
+        <li>Images</li>
+        <li>Tables</li>
+        <li>Templates (create only)</li>
+        <li>Breadcrumbs</li>
+    </ul>
+    <ul class="column">
+        <li>Paginations</li>
+        <li>Pagers</li>
+        <li>Labels</li>
+        <li>Badges</li>
+        <li>Alerts</li>
+        <li>Panels</li>
+    </ul>
+    <hr class="clear">
+    <p>Each element is customizable with usual Bootstrap options</p>
+    <p><strong>You can use your own Bootstrap css, wich will be directly rendered either in tinyMce editor and plugin visual editors.</strong></p>
+    <p>The new <strong>Snippet</strong> tool allows to create and store / recall <strong>any custom code snippet</strong>, Bootstrap or not.</p>
+    <p>You can for example easily store and reuse in one click :<br>Bootstrap Modal, Carousel, Navbar, Navbar Tabs, Nav Tabs, Accordion, Popover, ... </p>
+    <p>Create <strong>your own snippets</strong> easily in just a few clicks.</p>
+    </section>
+<section id="requirements">
+    <div class="page-header"><h3>requirements</h3><hr class="notop"></div>
+    <p>TinyMce Bootstrap plugin uses php, so you need to run php to test on localhost.</p>
+    <p><a href="http://www.tinymce.com/download/download.php" target="_blank">tinyMce</a></p>
+    <p><a href="http://jquery.com/download/">jQuery</a></p>
+</section>
+<div class="cut"></div>
+<section id="quick_start_guide">
+    <div class="page-header"><h3>quick start guide</h3><hr class="notop"></div>
+    <ol>
+        <li>Download and unzip latest tinyMce at <a href="http://www.tinymce.com/download/download.php" target="_blank">http://www.tinymce.com/download/download.php</a></li>
+        <li>Copy <strong>plugin/bootstrap</strong> dir to your tinyMce <strong>plugins</strong> dir</li>
+        <li>include <a href="http://jquery.com/download/">jQuery</a> to your page </li>
+        <li>
+            Add Bootstrap plugin to tinyMce plugins &amp; toolbar :
+<pre class="prettyprint">
+&lt;script type=&quot;text/javascript&quot;&gt;
+tinymce.init({
+    selector: &quot;textarea&quot;,
+    plugins: [
+        &quot;bootstrap&quot;
+    ],
+    bootstrapConfig: {
+        &#039;imagesPath&#039;: &#039;/tinymce-bootstrap-plugin/examples/img/&#039; // replace with your images folder path
+    },
+    toolbar: &quot;bootstrap&quot;
+});
+&lt;/script&gt;
+</pre>
+        </li>
+        <li>To <a href="#use-your-own-bootstrap-css">use your own Bootstrap css</a>, <a href="#select-toolbar-elements">select toolbar elements</a> or <a href="#change-language">change language</a>, see corresponding sections in this doc.</li>
+    </ol>
+</section>
+<div class="cut"></div>
+<section id="examples-with-code">
+    <div class="page-header"><h3>examples</h3><hr class="notop"></div>
+<p><a href="examples/example-full.html" target="_blank">Full Example</a></p>
+<p><a href="examples/custom-bootstrap-css.html" target="_blank">Custom Bootstrap css</a></p>
+<p><a href="examples/select-toolbar-elements.html" target="_blank">Select toolbar elements</a></p>
+<p><a href="examples/custom-language.html" target="_blank">Custom language</a></p>
+</section>
+<div class="cut"></div>
+<section id="use-your-own-bootstrap-css">
+    <div class="page-header"><h3>use your own bootstrap css</h3><hr class="notop"></div>
+<pre class="prettyprint">
+&lt;script type=&quot;text/javascript&quot;&gt;
+tinymce.init({
+    selector: &quot;textarea&quot;,
+    plugins: [
+        &quot;bootstrap&quot;
+    ],
+    toolbar: &quot;bootstrap&quot;,
+    bootstrapConfig: {
+        &#039;bootstrapCssPath&#039;: base_url + &#039;css/bootstrap.min.css&#039;, // &lt;= replace with your custom bootstrap path
+        &#039;imagesPath&#039;: &#039;/tinymce-bootstrap-plugin/examples/img/&#039; // replace with your images folder path
+    }
+});
+&lt;/script&gt;
+</pre>
+<h4>To use different background-color than body's in tinyMce</h4>
+<p><strong>Sometimes we need to change tinyMce's background-color : </strong></p>
+<pre class="prettyprint">
+&lt;script type=&quot;text/javascript&quot;&gt;
+tinymce.init({
+    selector: &quot;textarea&quot;,
+    plugins: [
+        &quot;bootstrap&quot;
+    ],
+    toolbar: &quot;bootstrap&quot;,
+    bootstrapConfig: {
+        &#039;bootstrapCssPath&#039;: base_url + &#039;css/bootstrap.min.css&#039;, // &lt;= replace with your custom bootstrap path
+        &#039;imagesPath&#039;: &#039;/tinymce-bootstrap-plugin/examples/img/&#039;, // replace with your images folder path
+        &#039;tinymceBackgroundColor&#039;: &#039;#fff&#039; // replaces editor background-color with custom
+    }
+});
+&lt;/script&gt;
+</pre>
+</section>
+<div class="cut"></div>
+<section id="snippet-tool">
+    <div class="page-header"><h3>snippet tool</h3><hr class="notop"></div>
+    <p>Snippet tool uses the following options :</p>
+    <dl class="inline">
+        <dt>allowSnippetManagement</dt>
+        <dd>true / false ; default : true</dd>
+        <dt>allow_php (php object attribute)</dt>
+        <dd>true / false ; default : false</dd>
+        <dt>allow_script (php object attribute)</dt>
+        <dd>true / false ; default : false</dd>
+    </dl>
+    <h4>The allowSnippetManagement option</h4>
+    <p>If set to true, the snippet window displays the add / edit / delete buttons</p>
+    <p>You can for example create your snippets, then turn the option off so the future user cannot edit : </p>
+<pre class="prettyprint">
+&lt;script type=&quot;text/javascript&quot;&gt;
+tinymce.init({
+    selector: &quot;textarea&quot;,
+    plugins: [
+        &quot;bootstrap&quot;
+    ],
+    toolbar: &quot;bootstrap&quot;,
+    bootstrapConfig: {
+        &#039;allowSnippetManagement&#039;: false,
+        &#039;imagesPath&#039;: &#039;/tinymce-bootstrap-plugin/examples/img/&#039; // replace with your images folder path
+    }
+});
+&lt;/script&gt;
+</pre>
+<h4>The allow_php / allow_script options</h4>
+<p>These options allow / disallow user to include javascript / php code into snippets.</p>
+<p>For security reasons, they're not configured using tinyMce's bootstrapConfig, but hard-coded in php.</p>
+<p>To turn on / off :</p>
+<ul>
+    <li>open <code class="prettyprint">/tinymce-bootstrap-plugin/examples/tinymce/plugins/bootstrap/snippets/Snippets.php</code></li>
+    <li>find the following lines (near the beginning of file) :<br><code class="prettyprint">private $allow_script = false;</code><br>
+    <code class="prettyprint">private $allow_php    = false;</code></li>
+    <li>set values to <code class="prettyprint">true</code> or <code class="prettyprint">false</code> as you need.</li>
+</ul>
+</section>
+<div class="cut"></div>
+<section id="select-toolbar-elements">
+    <div class="page-header"><h3>select toolbar elements</h3><hr class="notop"></div>
+    <p>Just list the elements you want to add : </p>
+<pre class="prettyprint">
+&lt;script type=&quot;text/javascript&quot;&gt;
+tinymce.init({
+    selector: &quot;textarea&quot;,
+    plugins: [
+        &quot;bootstrap&quot;
+    ],
+    toolbar: &quot;bootstrap&quot;,
+    bootstrapConfig: {
+        &#039;bootstrapElements&#039;: {
+            &#039;btn&#039;: true,
+            &#039;icon&#039;: true,
+            &#039;alert&#039;: true
+        },
+        &#039;imagesPath&#039;: &#039;/tinymce-bootstrap-plugin/examples/img/&#039; // replace with your images folder path
+    }
+});
+&lt;/script&gt;
+</pre>
+<p>List of available elements : btn, icon, table, template, breadcrumb, pagination, pager, label, badge, alert, panel</p>
+</section>
+<div class="cut"></div>
+<section id="change-language">
+    <div class="page-header"><h3>change language</h3><hr class="notop"></div>
+<p>Translations are in <em>tinymce/plugins/bootstrap/langs/</em> directory.</p>
+<ol>
+    <li>Copy the 2 files named <em>fr_FR.js</em> and <em>fr_FR.php</em> (adapt their name to your language)</li>
+    <li>Change the translations into these files</li>
+    <li>Just init tinyMce with your language :
+<pre class="prettyprint">
+&lt;script type=&quot;text/javascript&quot;&gt;
+tinymce.init({
+    selector: &quot;textarea&quot;,
+    plugins: [
+        &quot;bootstrap&quot;
+    ],
+    bootstrapConfig: {
+        &#039;imagesPath&#039;: &#039;/tinymce-bootstrap-plugin/examples/img/&#039; // replace with your images folder path
+    },
+    toolbar: &quot;bootstrap&quot;,
+    language: &quot;fr_FR&quot;
+});
+&lt;/script&gt;
+</pre>
+    </li>
+</ol>
+</section>
+<div class="cut"></div>
+<section id="joomla-integration">
+    <div class="page-header"><h3>Joomla integration</h3><hr class="notop"></div>
+    <ol>
+        <li>Copy <code class="prettyprint">tinymce-bootstrap-plugin/plugin/bootstrap</code> into your Joomla tinyMce plugins dir<br>(usually <code class="prettyprint">/media/editors/tinymce/plugins/</code></li>
+        <li>Make a backup of your <code class="prettyprint">/plugins/editors/tinymce/</code> folder and replace it with <code class="prettyprint">/tinymce-bootstrap-plugin/joomla/tinymce/</code> folder</li>
+        <li>Make a backup of your <code class="prettyprint">/administrator/language/en-GB/en-GB.plg_editors_tinymce.ini</code> file and replace it with <code class="prettyprint">/tinymce-bootstrap-plugin/joomla/en-GB.plg_editors_tinymce.ini</code> file <strong style="color:#f00;">*</strong></li>
+        <li>Go to Extensions -> Plugin manager in Joomla admin and open <code class="prettyprint">Editor - TinyMCE</code> to access to tinyMce config.<br>Next to "Plugin" and "Advanced", you'll find the new "Tinymce Bootstrap Plugin" tab, in which you can configure plugin options.</li>
+    </ol>
+    <p><strong style="color:#f00;">*</strong> If you need a different language, replace translations in <code class="prettyprint">/tinymce-bootstrap-plugin/joomla/en-GB.plg_editors_tinymce.ini</code> and place it into the corresponding folder instead.</p>
+</section>
+<section id="demo">
+    <div class="page-header"><h3>demo</h3><hr class="notop"></div>
+<p>
+    <a href="http://tinymce-bootstrap-plugin.creation-site.org/tinymce-bootstrap-plugin/index.html" target="_blank">Online Demo</a></p>
+</section>
+<div class="cut"></div>
+<section id="changelog">
+<!--  A publier :
+    Improvement :
+        - prevent from stripping empty <p>
+        - add uppercase extensions image support
+    Bug Fix :
+        - fix issue with absolute images paths in some particular cases
+-->
+    <div class="page-header"><h3>Changelog</h3><hr class="notop"></div>
+    <h4>Version 2.2.5 (09/05/2016)</h4>
+    <pre class="prettyprint lang-plain linenums">
+    Improvement :
+        - prevent from stripping empty <p>
+        - add uppercase extensions image support
+    Bug Fix :
+        - fix issue with absolute images paths in some particular cases
+        - fix cursor focus in Bootstrap tables (2nd fix)
+    </pre>
+    <h4>Version 2.2.4 (07/12/2015)</h4>
+    <pre class="prettyprint lang-plain linenums">
+    Bug Fix :
+        - fix cursor focus in Bootstrap tables
+    </pre>
+    <h4>Version 2.2.3 (03/12/2015)</h4>
+    <pre class="prettyprint lang-plain linenums">
+    Improvements :
+        - prevent from stripping empty <p>
+        - add codemirror to Snippets add/edit forms
+    Bug Fix :
+        - fix snippets preg_match_all php warning with php < 5.4.0
+    </pre>
+    <h4>Version 2.2.2 (27/10/2015)</h4>
+    <pre class="prettyprint lang-plain linenums">
+    Improvement :
+        - improved templates usage
+    Bug Fix :
+		- fix error using very big snippets
+    </pre>
+    <h4>Version 2.2.1 (09/08/2015)</h4>
+    <pre class="prettyprint lang-plain linenums">
+    Bug Fix :
+        - fix Uncaught SecurityError when used with external iframe on same page
+    </pre>
+    <h4>Version 2.2 (09/08/2015)</h4>
+    <pre class="prettyprint lang-plain linenums">
+    New Features :
+        - add Joomla integration
+    Improvements :
+        - prevent plugin form jQuery conflicts
+    </pre>
+    <h4>Version 2.1 (25/07/2015)</h4>
+    <pre class="prettyprint lang-plain linenums">
+    Improvements :
+        - update to latest tinyMce 4.2.2
+        - add templates visual aid
+    </pre>
+    <h4>Version 2.0 (13/05/2015)</h4>
+    <pre class="prettyprint lang-plain linenums">
+    New Features :
+        - add snippet tool
+    Improvements :
+        - jshint javascript code
+    </pre>
+    <h4>Version 1.1.2 (29/03/2015)</h4>
+    <pre class="prettyprint lang-plain linenums">
+    New Features :
+        - add tinymce inline full support
+    Bug Fix :
+        - fix alert edit
+    </pre>
+    <h4>Version 1.1.1 (30/02/2015)</h4>
+    <pre class="prettyprint lang-plain linenums">
+    New Features :
+        - add tinymceBackgroundColor option
+    </pre>
+    <h4>Version 1.1.0 (16/02/2015)</h4>
+    <pre class="prettyprint lang-plain linenums">
+    New Features :
+        - add Bootstrap images plugin with Filebrowser
+        - all plugins are fully responsive
+    </pre>
+    <h4>Version 1.0.0 (19/01/2015)</h4>
+    <pre class="prettyprint lang-plain linenums">
+        Initial Release
+    </pre>
+    <p>&nbsp;</p>
+</section>
+<div class="cut"></div>
+<section id="sources-and-credits">
+    <div class="page-header"><h3>sources &amp; credits</h3><hr class="notop"></div>
+    <p>Thanks to :</p>
+<p><a href="http://www.tinymce.com/" target="_blank">tinyMce</a></p>
+    <p><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a></p>
+    <p><a href="http://jquery.com/">jQuery</a></p>
+</section>
+    </div>
+</body>
+</html>
