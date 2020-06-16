@@ -52,7 +52,7 @@ class EditWidget extends AbstractWidget {
             $entity = $form->getData();
             $em = $this->getDoctrine();
             $em->persist($entity);
-            $em->flush($entity);
+            $em->flush();
 
             $request->getSession()
                 ->getFlashBag()
