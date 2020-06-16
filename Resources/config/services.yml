@@ -126,3 +126,8 @@ services:
   Tellaw\SunshineAdminBundle\Controller\PageController:
     parent: sunshine.page.abstract
     public: true
+
+  Tellaw\SunshineAdminBundle\Form\Type\Select2Type:
+    arguments: ["@doctrine.orm.entity_manager"]
+    tags:
+      - form.type
