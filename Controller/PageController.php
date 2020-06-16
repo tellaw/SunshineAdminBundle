@@ -127,7 +127,7 @@ class PageController extends AbstractPageController
             $this->get('event_dispatcher')->dispatch(SunshineEvents::ENTITY_PRE_FLUSHED, $event);
 
             try {
-                $em->flush($entity);
+                $em->flush();
                 $flashMsg = 'Enregistrement effectué.';
                 $flashType = 'success';
             } catch (\Exception $e) {
