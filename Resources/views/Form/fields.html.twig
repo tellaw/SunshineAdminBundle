@@ -78,11 +78,16 @@
     {% spaceless %}
         <div class="form-group m-form__group">
             <div class="{{ block('form_label_class') }}"></div>
-            <div class="{{ block('form_group_class') }} btn-group">
+            <div class="btn-group">
                 {% for child in form %}
                     {{ form_widget(child) }}
                 {% endfor %}
             </div>
+            <a class="btn-back btn btn-default text-dark float-right d-none" href="#">Annuler</a>
+            <script>
+                $(document).ready(function () {if (document.referrer.indexOf(window.location.host) !== -1) {$('.btn-back').removeClass('d-none');}});
+                $('.btn-back').on('click', function(e) {e.preventDefault(); if (document.referrer.indexOf(window.location.host) !== -1) {window.history.back();}});
+            </script>
         </div>
     {% endspaceless %}
 {% endblock choice_button_row %}
