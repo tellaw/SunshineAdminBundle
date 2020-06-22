@@ -57,19 +57,17 @@ class IdToEntityTransformer implements DataTransformerInterface
      */
     public function transform($entity)
     {
-        if (null === $entity) {
-            return '';
-        }
-
-        if (is_string($entity)) {
+        if (!$entity) {
             return $entity;
         }
 
         if ($entity instanceof ArrayCollection || $entity instanceof PersistentCollection) {
             $ids =  [];
+
             foreach($entity as $item) {
                 $ids[]  = (string) $item->getId();
             }
+
             return $ids ;
         }
 
@@ -85,11 +83,11 @@ class IdToEntityTransformer implements DataTransformerInterface
      */
     public function reverseTransform($id)
     {
-        if (!$id) {
-            return null;
+        if(!$id) {
+            return $id;
         }
 
-        if (is_array($id) && $this->method == 'find') {
+        if (is_array($id)) {
             $method = 'getWhereIn';
         } else {
             $method = $this->method;
