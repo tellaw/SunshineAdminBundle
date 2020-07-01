@@ -2,12 +2,13 @@
 
 namespace Tellaw\SunshineAdminBundle\Twig;
 
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
  * @author Ismail mezrani <ismailmezrani@gmail.com>
  */
-class CollectionExtension extends \Twig_Extension
+class CollectionExtension extends AbstractExtension
 {
     public function getFunctions()
     {

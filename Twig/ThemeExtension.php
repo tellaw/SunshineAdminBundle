@@ -2,11 +2,13 @@
 
 namespace Tellaw\SunshineAdminBundle\Twig;
 
+use Twig\Extension\AbstractExtension;
+
 /**
  * Class ThemeExtension
  * @package Tellaw\SunshineAdminBundle\Twig
  */
-class ThemeExtension extends \Twig_Extension
+class ThemeExtension extends AbstractExtension
 {
 
     /**

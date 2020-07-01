@@ -4,8 +4,9 @@ namespace Tellaw\SunshineAdminBundle\Twig;
 
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Twig\Extension\AbstractExtension;
 
-class MenuExtension extends \Twig_Extension
+class MenuExtension extends AbstractExtension
 {
     /**
      * @var AuthorizationCheckerInterface
