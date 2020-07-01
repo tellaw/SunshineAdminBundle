@@ -6,9 +6,10 @@ use ReflectionClass;
 use Symfony\Component\Routing\RouterInterface;
 use Tellaw\SunshineAdminBundle\Service\WidgetService;
 use Twig\Environment;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class WidgetExtension extends \Twig_Extension
+class WidgetExtension extends AbstractExtension
 {
 
     /**
