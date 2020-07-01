@@ -17,8 +17,9 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('tellaw_sunshine_admin');
+        $treeBuilder = new TreeBuilder("tellaw_sunshine_admin");
+        //$rootNode = $treeBuilder->root('tellaw_sunshine_admin');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
@@ -38,9 +39,10 @@ class Configuration implements ConfigurationInterface
      */
     public function addEntitiesNode()
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('entities');
+        $builder = new TreeBuilder('entities');
+        //$node = $builder->root('entities');
 
+        $node = $builder->getRootNode();
         $node
             ->useAttributeAsKey('name')
             ->prototype('array')
@@ -285,9 +287,9 @@ class Configuration implements ConfigurationInterface
      */
     public function addMenuNode()
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('menu');
-
+        $builder = new TreeBuilder("menu");
+        //$node = $builder->root('menu');
+        $node = $builder->getRootNode();
         $node
             ->prototype('array')
                 ->children()
@@ -327,9 +329,10 @@ class Configuration implements ConfigurationInterface
      */
     public function addPagesNode()
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('pages');
+        $builder = new TreeBuilder('pages');
+        //$node = $builder->root('pages');
 
+        $node = $builder->getRootNode();
         $node
             ->useAttributeAsKey('name')
             ->prototype('array')
@@ -365,8 +368,9 @@ class Configuration implements ConfigurationInterface
      */
     public function addThemeNode()
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('theme')->addDefaultsIfNotSet();
+        $builder = new TreeBuilder('theme');
+        //$node = $builder->root('theme')->addDefaultsIfNotSet();
+        $node=$builder->getRootNode()->addDefaultsIfNotSet();
         $node
             ->children()
                 ->arrayNode('logo')
@@ -402,8 +406,10 @@ class Configuration implements ConfigurationInterface
      */
     public function addTinyMceNode()
     {
-        $builder = new TreeBuilder();
-        $node = $builder->root('tinymce')->addDefaultsIfNotSet();
+        $builder = new TreeBuilder("tinymce");
+        $node = $builder->getRootNode()->addDefaultsIfNotSet();
+
+        //$node = $builder->root('tinymce')->addDefaultsIfNotSet();
         $node->children()
                 ->arrayNode('datalink')
                     ->children()
