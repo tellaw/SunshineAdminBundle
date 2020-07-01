@@ -7,6 +7,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Tellaw\SunshineAdminBundle\Service\WidgetService;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class WidgetExtension extends AbstractExtension
@@ -65,8 +66,8 @@ class WidgetExtension extends AbstractExtension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('truncate', array($this, 'truncateText'), array('needs_environment' => true)),
-            new \Twig_SimpleFilter('urldecode', 'urldecode'),
+            new TwigFilter('truncate', array($this, 'truncateText'), array('needs_environment' => true)),
+            new TwigFilter('urldecode', 'urldecode'),
         );
     }
 
