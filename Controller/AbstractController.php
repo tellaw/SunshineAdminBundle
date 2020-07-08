@@ -18,7 +18,7 @@ abstract class AbstractController extends SymfonyAbstractController
      */
     protected function renderWithTheme($template, $params)
     {
-        return $this->render('@sunshine/'.$template.".html.twig" , $params);
+        return $this->render('@TellawSunshineAdmin/'.$template.".html.twig" , $params);
     }
 
 }

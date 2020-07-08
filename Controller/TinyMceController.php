@@ -43,7 +43,7 @@ class TinyMceController extends AbstractController
         $form->handleRequest($request);
 
         return $this->render(
-            '@sunshine/tinymce/select'.ucfirst($configName).'.html.twig',
+            '@TellawSunshineAdmin/tinymce/select'.ucfirst($configName).'.html.twig',
             [
                 'form' => $form->createView()
             ]
@@ -73,7 +73,7 @@ class TinyMceController extends AbstractController
         $form = $builder->getForm();
 
         return $this->render(
-            '@sunshine/tinymce/selectForm.html.twig',
+            '@TellawSunshineAdmin/tinymce/selectForm.html.twig',
             [
                 'form' => $form->createView(),
             ]

@@ -113,7 +113,7 @@ class WidgetController extends AbstractController
         $entity = $crudService->getEntity($entityName, $id);
 
         return $this->render(
-            '@sunshine/Widget/view.html.twig',
+            '@TellawSunshineAdmin/Widget/view.html.twig',
             [
                 "fields" => $configuration,
                 "widgetName" => $widgetName,

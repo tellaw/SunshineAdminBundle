@@ -50,7 +50,7 @@ class PageController extends AbstractPageController
         $configuration = $entities->getConfiguration($entityName);
 
         return $this->render(
-            '@sunshine/Page/list.html.twig',
+            '@TellawSunshineAdmin/Page/list.html.twig',
             [
                 "extraParameters" => array ("name" => "entityName", "value" => $entityName),
                 "widget" => array ("type" => "list"),
@@ -148,7 +148,7 @@ class PageController extends AbstractPageController
         }
 
         return $this->render(
-            '@sunshine/Page/edit.html.twig',
+            '@TellawSunshineAdmin/Page/edit.html.twig',
             [
                 "form" => $form->createView(),
                 "formConfiguration" => $configuration,
