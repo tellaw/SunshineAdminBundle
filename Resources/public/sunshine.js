@@ -17,7 +17,7 @@ $(document).ready(function () {
     $('.select-picker').selectpicker();
 
     // Alert auto hide
-    $(".flashBagAlert").fadeTo(5000, 500).slideUp(500, function () {
+    $(".flashBagAlert").fadeTo(30000, 500).slideUp(500, function () {
         $(this).slideUp(500);
     });
 
