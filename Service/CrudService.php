@@ -745,7 +745,7 @@ class CrudService
                     $type = DateTimeType::class;
                     $fieldAttributes["widget"] = 'single_text';
                     $fieldAttributes["input"] = 'datetime';
-                    $fieldAttributes["format"] = 'dd/MM/yyyy hh:mm';
+                    $fieldAttributes["format"] = 'dd/MM/yyyy HH:mm';
                     $fieldAttributes["attr"] = array('class' => 'datetime-picker '.$forcedClass);
                     break;
 
