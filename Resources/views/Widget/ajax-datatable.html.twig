@@ -146,8 +146,6 @@
                         name = name.replace ("[]", "");
 
                         queryFilterParams.push({property:name, value:$(item).val()});
-                        console.log (name);
-                        console.log ($(item).val());
                     }
 
                 });
@@ -237,7 +235,8 @@
                         {
                             field: "{{ key }}",
                             title: "{{ field.label is defined ? field.label : key }} ",
-                            sortable: "{{ field.order is defined and field.order is not iterable ? field.order : null }}"
+                            sortable: "{{ field.order is defined and field.order is not iterable ? field.order : null }}",
+                            width: {{ field.width is defined ? field.width : 'false' }}
                         },
                         {% endif %}
 
