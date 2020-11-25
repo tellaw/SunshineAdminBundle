@@ -74,7 +74,11 @@ function addEmbeddedForm(collectionHolder, addButtonObj, collectionId)
 
     prototype = prototype.replace ('<div id="'+divId+'">','<div id="'+divId+'" class="collectionForm col-lg-11">');
 
-    $("#"+collectionId).append( '<div class="prototype list-group list-group-item row">'+prototype+'</div>' );
+    if (addButtonObj.data('new-item-position') === 'before') {
+        $("#"+collectionId).prepend( '<div class="prototype list-group list-group-item row">'+prototype+'</div>' );
+    } else {
+        $("#"+collectionId).append( '<div class="prototype list-group list-group-item row">'+prototype+'</div>' );
+    }
     $('<div class="collectionDeleteButton col-lg-1"><a href="#" class="remove-tag btn btn-danger">x</a></div>').insertBefore ('#'+divId);
 
     $('#'+divId).parent().wrapInner("<div class='row'></div>");
