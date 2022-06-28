@@ -3,6 +3,7 @@
 namespace Tellaw\SunshineAdminBundle\Twig;
 
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Class ThemeExtension
@@ -33,8 +34,8 @@ class ThemeExtension extends AbstractExtension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('getLogo', array($this, 'getLogo'), array()),
-            new \Twig_SimpleFunction('getApplicationName', array($this, 'getApplicationName'), array()),
+            new TwigFunction('getLogo', array($this, 'getLogo'), array()),
+            new TwigFunction('getApplicationName', array($this, 'getApplicationName'), array()),
         );
     }
 

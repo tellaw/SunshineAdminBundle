@@ -49,8 +49,8 @@ class WidgetExtension extends AbstractExtension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('getWidgetUrl', array($this, 'getWidgetUrl'), array()),
-            new \Twig_SimpleFunction(
+            new TwigFunction('getWidgetUrl', array($this, 'getWidgetUrl'), array()),
+            new TwigFunction(
                 'sunshine_render_entity_field',
                 array($this, 'renderEntityField'),
                 array('needs_environment' => true)

@@ -5,6 +5,7 @@ namespace Tellaw\SunshineAdminBundle\Twig;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 class MenuExtension extends AbstractExtension
 {
@@ -28,11 +29,11 @@ class MenuExtension extends AbstractExtension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('isThisActivePage', array($this, 'isThisActivePage'), array()),
-            new \Twig_SimpleFunction('isActivePageIsAChildPage', array($this, 'isActivePageIsAChildPage'), array()),
-            new \Twig_SimpleFunction('isCustomPageEdit', array($this, 'isCustomPageEdit'), array()),
-            new \Twig_SimpleFunction('isMenuItemVisible', array($this, 'isMenuItemVisible'), array()),
-            new \Twig_SimpleFunction('getClass', array($this, 'getClass'), array())
+            new TwigFunction('isThisActivePage', array($this, 'isThisActivePage'), array()),
+            new TwigFunction('isActivePageIsAChildPage', array($this, 'isActivePageIsAChildPage'), array()),
+            new TwigFunction('isCustomPageEdit', array($this, 'isCustomPageEdit'), array()),
+            new TwigFunction('isMenuItemVisible', array($this, 'isMenuItemVisible'), array()),
+            new TwigFunction('getClass', array($this, 'getClass'), array())
         );
     }
 
