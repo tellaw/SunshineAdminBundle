@@ -6,34 +6,42 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Tellaw\SunshineAdminBundle\Service\EntityService;
+use Doctrine\ORM\EntityManagerInterface;
+use Tellaw\SunshineAdminBundle\Service\UtilsService;
 
 /**
  * Attachment operations
  */
 class AttachmentController extends AbstractController
 {
+    protected EntityService $entityService;
+    protected EntityManagerInterface $em;
+    protected UtilsService $utilsService;
+
+    public function __construct(EntityService $entityService, EntityManagerInterface $em, UtilsService $utilsService)
+    {
+        $this->entityService = $entityService;
+        $this->em = $em;
+        $this->utilsService = $utilsService;
+    }
+
     /**
      * File download
      *
      * @Route("/download/{entityName}/{id}", name="sunshine_download_attachment", methods={"GET"})
-     * @param string $entityName
-     * @param int $id
      * @return Response
-     * @throws \LogicException
-     * @throws \InvalidArgumentException
      */
     public function downloadAction(string $entityName, int $id)
     {
-        $config = $this->get('sunshine.entities')->getConfiguration($entityName);
+        $config = $this->entityService->getConfiguration($entityName);
         $className = $config['configuration']['class'];
-        $attachment = $this->getDoctrine()->getRepository($className)->find($id);
+        $attachment = $this->em->getRepository($className)->find($id);
 
         $file = $this->getParameter('kernel.project_dir') . '/' . $attachment->getPath() . '/' . $attachment->getName();
         if (!file_exists($file)){
             $this->createNotFoundException();
         }
-
-        $utilsService = $this->get('sunshine.utils');
 
         $fileContent = file_get_contents($file);
 
@@ -42,7 +50,7 @@ class AttachmentController extends AbstractController
 
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $utilsService->cleanFileName($attachment->getOriginalName())
+            $this->utilsService->cleanFileName($attachment->getOriginalName())
         );
 
         $response->headers->set('Content-Disposition', $disposition);

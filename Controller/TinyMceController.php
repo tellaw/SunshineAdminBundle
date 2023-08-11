@@ -7,13 +7,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Tellaw\SunshineAdminBundle\Form\Type\ComboEntitySelectorType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Doctrine\ORM\EntityManagerInterface;
 
 class TinyMceController extends AbstractController
 {
+    protected EntityManagerInterface $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     /**
      * @Route("/tinymce/select-data/{configName}", name="sunshine_tinymce_data_selector", options={"expose"= true})
-     * @param Request $request
-     * @param string $configName
      * @return Response
      */
     public function selectDataAction(Request $request, string $configName = '')
@@ -52,8 +58,6 @@ class TinyMceController extends AbstractController
 
     /**
      * @Route("/tinymce/select-form", name="sunshine_tinymce_leadsfactory_form_selector", options={"expose"= true})
-     *
-     * @param Request $request
      * @return Response
      */
     public function selectLeadsfactoryFormAction(Request $request)
@@ -81,7 +85,6 @@ class TinyMceController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @return DataInterface|null
      * @throws \InvalidArgumentException
      */
@@ -89,7 +92,7 @@ class TinyMceController extends AbstractController
     {
         $data = null;
         if ($request->query->has('dataId')) {
-            $data = $this->getDoctrine()->getRepository('App:' . $family)
+            $data = $this->em->getRepository('App:' . $family)
                 ->getByDataId($request->query->get('dataId'));
         }
 

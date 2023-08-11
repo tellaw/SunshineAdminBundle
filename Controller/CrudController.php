@@ -8,6 +8,13 @@ use Tellaw\SunshineAdminBundle\Service\CrudService;
 
 class CrudController extends AbstractController
 {
+    protected CrudService $crudService;
+
+    public function __construct(CrudService $crudService)
+    {
+        $this->crudService = $crudService;
+    }
+
     /**
      * Remove an entity
      *
@@ -17,10 +24,7 @@ class CrudController extends AbstractController
      */
     public function deleteAction($entityName, $targetId, Request $request)
     {
-        /* @var $crudService CrudService */
-        $crudService = $this->get("sunshine.crud_service");
-
-        if ($crudService->deleteEntity($entityName, $targetId)) {
+        if ($this->crudService->deleteEntity($entityName, $targetId)) {
             $request->getSession()
                 ->getFlashBag()
                 ->add('success', 'Element "'.$targetId.'" supprimé.');

@@ -5,30 +5,24 @@ namespace Tellaw\SunshineAdminBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Tellaw\SunshineAdminBundle\Entity\MessageBag;
+use Tellaw\SunshineAdminBundle\Service\CrudService;
+use Tellaw\SunshineAdminBundle\Service\EntityService;
 use Tellaw\SunshineAdminBundle\Service\PageService;
 use Tellaw\SunshineAdminBundle\Service\WidgetService;
 
 abstract class AbstractPageController extends AbstractController
 {
-    /**
-     * @var PageService
-     */
-    private $pageService;
+    protected PageService $pageService;
+    protected WidgetService $widgetService;
+    protected EntityService $entityService;
+    protected CrudService $crudService;
 
-    /**
-     * @var WidgetService
-     */
-    private $widgetService;
-
-    /**
-     * AbstractPageController constructor.
-     * @param PageService $pageService
-     * @param WidgetService $widgetService
-     */
-    public function __construct(PageService $pageService, WidgetService $widgetService)
+    public function __construct(PageService $pageService, WidgetService $widgetService, EntityService $entityService, CrudService $crudService)
     {
         $this->pageService = $pageService;
         $this->widgetService = $widgetService;
+        $this->entityService = $entityService;
+        $this->crudService = $crudService;
     }
 
     /**

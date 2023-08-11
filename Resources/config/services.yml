@@ -116,17 +116,6 @@ services:
     tags:
       - { name: twig.extension }
 
-  sunshine.page.abstract:
-    abstract: true
-    class: Tellaw\SunshineAdminBundle\Controller\AbstractPageController
-    arguments:
-      $pageService: "@sunshine.pages"
-      $widgetService: "@sunshine.widgets"
-
-  Tellaw\SunshineAdminBundle\Controller\PageController:
-    parent: sunshine.page.abstract
-    public: true
-
   Tellaw\SunshineAdminBundle\Form\Type\Select2Type:
     arguments: ["@doctrine.orm.entity_manager"]
     tags:

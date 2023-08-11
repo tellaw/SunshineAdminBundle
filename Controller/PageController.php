@@ -3,6 +3,7 @@
 namespace Tellaw\SunshineAdminBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,12 +15,30 @@ use Tellaw\SunshineAdminBundle\Event\SunshineEvents;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
 use Tellaw\SunshineAdminBundle\Service\CrudService;
 use Tellaw\SunshineAdminBundle\Service\EntityService;
+use Tellaw\SunshineAdminBundle\Service\PageService;
+use Tellaw\SunshineAdminBundle\Service\WidgetService;
 
 /**
  * Content pages management
  */
 class PageController extends AbstractPageController
 {
+    protected EventDispatcherInterface $eventDispatcher;
+    protected EntityManagerInterface $em;
+
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        EntityManagerInterface $em,
+        PageService $pageService,
+        WidgetService $widgetService,
+        EntityService $entityService,
+        CrudService $crudService
+    ) {
+        $this->eventDispatcher = $eventDispatcher;
+        $this->em = $em;
+        parent::__construct($pageService, $widgetService, $entityService, $crudService);
+    }
+
     /**
      * Expose Page by default for the sunshine bundle
      *
@@ -37,17 +56,13 @@ class PageController extends AbstractPageController
      * Show a list for an entity
      *
      * @Route("/page/list/{entityName}", name="sunshine_page_list")
-     *
-     * @param $entityName
      * @return Response
      * @throws \Exception
      */
-    public function listAction ($entityName) {
-
-        /** @var EntityService $entities */
-        $entities = $this->get("sunshine.entities");
-        $listConfiguration = $entities->getListConfiguration($entityName);
-        $configuration = $entities->getConfiguration($entityName);
+    public function listAction($entityName)
+    {
+        $listConfiguration = $this->entityService->getListConfiguration($entityName);
+        $configuration = $this->entityService->getConfiguration($entityName);
 
         return $this->render(
             '@TellawSunshineAdmin/Page/list.html.twig',
@@ -61,7 +76,6 @@ class PageController extends AbstractPageController
                 "pageId" => null,
             ]
         );
-
     }
 
     /**
@@ -69,23 +83,16 @@ class PageController extends AbstractPageController
      *
      * @Route("/page/edit/{entityName}/{id}", name="sunshine_page_edit", options={"expose"=true}, methods={"GET", "POST"})
      * @Route("/page/edit/{entityName}", name="sunshine_page_new", options={"expose"=true}, methods={"GET", "POST"})
-     * @param Request $request
-     * @param $entityName
-     * @param $id
      * @return Response
      * @throws \Exception
      */
     public function editAction(Request $request, $entityName, $id = null)
     {
-        /** @var EntityService $entities */
-        $entities = $this->get("sunshine.entities");
-        $fieldsConfiguration = $entities->getFormConfiguration($entityName);
-        $configuration = $entities->getConfiguration($entityName);
+        $fieldsConfiguration = $this->entityService->getFormConfiguration($entityName);
+        $configuration = $this->entityService->getConfiguration($entityName);
 
-        /** @var CrudService $crudService */
-        $crudService = $this->get("sunshine.crud_service");
         if ($id) {
-            $entity = $crudService->getEntity($entityName, $id);
+            $entity = $this->crudService->getEntity($entityName, $id);
         } else {
             $entity = new $configuration['configuration']['class'];
         }
@@ -95,12 +102,12 @@ class PageController extends AbstractPageController
         }
 
         $event = new EntityEvent($entity);
-        $this->get('event_dispatcher')->dispatch(SunshineEvents::ENTITY_PRE_EDIT, $event);
+        $this->eventDispatcher->dispatch(SunshineEvents::ENTITY_PRE_EDIT, $event);
 
         $formOptions = [
             'fields_configuration' => $fieldsConfiguration,
-            'crud_service' => $crudService,
-            'em' => $this->get('doctrine')->getManager()
+            'crud_service' => $this->crudService,
+            'em' => $this->em
         ];
 
         if (!empty($configuration['form']['formType'])) {
@@ -119,15 +126,13 @@ class PageController extends AbstractPageController
 
             $entity = $form->getData();
 
-            /* @var $em EntityManagerInterface */
-            $em = $this->get('doctrine')->getManager();
-            $em->persist($entity);
+            $this->em->persist($entity);
 
             $event = new EntityEvent($entity);
             $this->get('event_dispatcher')->dispatch(SunshineEvents::ENTITY_PRE_FLUSHED, $event);
 
             try {
-                $em->flush();
+                $this->em->flush();
                 $flashMsg = 'Enregistrement effectué.';
                 $flashType = 'success';
             } catch (\Exception $e) {
@@ -176,5 +181,4 @@ class PageController extends AbstractPageController
 
         return $this->renderPage(strtolower($entityName) . 'View', $messageBag, $messageBag);
     }
-
 }

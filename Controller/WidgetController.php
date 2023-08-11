@@ -14,24 +14,33 @@ use Tellaw\SunshineAdminBundle\Service\WidgetService;
 
 class WidgetController extends AbstractController
 {
+    protected PageService $pageService;
+    protected WidgetService $widgetService;
+    protected EntityService $entityService;
+    protected CrudService $crudService;
+
+    public function __construct(
+        PageService $pageService,
+        WidgetService $widgetService,
+        EntityService $entityService,
+        CrudService $crudService
+    ) {
+        $this->pageService = $pageService;
+        $this->widgetService = $widgetService;
+        $this->entityService = $entityService;
+        $this->crudService = $crudService;
+    }
+
     /**
      * List entity in a dataTable ajax loaded bloc
      *
      * @Route("/app/widget/crudlist/{pageName}/{row}/{widgetName}", name="sunshine_widget_crudlist", methods={"GET"})
      * @Route("/app/widget/crudlist/{pageName}/{row}/{widgetName}/{entityName}", name="sunshine_widget_crudlist", methods={"GET"})
-     * @param $pageName
-     * @param $row
-     * @param $widgetName
-     * @param null $entityName
      * @return Response
-     * @throws \Exception
      */
     public function widgetCrudListAction($pageName, $row, $widgetName, $entityName = null)
     {
-        /** @var PageService $pageService */
-        $pageService = $this->get("sunshine.pages");
-        $crudService = $this->get("sunshine.crud_service");
-        $pageConfiguration = $pageService->getPageConfiguration($pageName);
+        $pageConfiguration = $this->pageService->getPageConfiguration($pageName);
 
         if (!$entityName) {
             if (!isset($pageConfiguration["rows"][$row][$widgetName]["parameters"]["entityName"])) {
@@ -43,11 +52,10 @@ class WidgetController extends AbstractController
         }
 
         /** @var EntityService $entities */
-        $entities = $this->get("sunshine.entities");
-        $listConfiguration = $entities->getListConfiguration($entityName);
+        $listConfiguration = $this->entityService->getListConfiguration($entityName);
 
-        $filtersConfiguration = $entities->getFiltersConfiguration( $entityName );
-        $configuration = $entities->getConfiguration($entityName);
+        $filtersConfiguration = $this->entityService->getFiltersConfiguration( $entityName );
+        $configuration = $this->entityService->getConfiguration($entityName);
 
         // Instantiate filters
         // Get Filters Definition
@@ -55,7 +63,7 @@ class WidgetController extends AbstractController
         if ($filtersConfiguration !== null) {
             $formOptions = [
                 'fields_configuration' => $filtersConfiguration,
-                'crud_service' => $crudService
+                'crud_service' => $this->crudService
             ];
             $filtersForm = $formFactory->create(FiltersType::class, null, $formOptions);
         } else {
@@ -72,8 +80,8 @@ class WidgetController extends AbstractController
                 "widgetName" => $widgetName,
                 "pageName" => $pageName,
                 "entityName" => $entityName,
-                "widget" => $pageConfiguration["rows"][$row][$widgetName],
-                "generalSearch" => isset($configuration['list']['general_search']) ? $configuration['list']['general_search'] : null
+                "widget" => $pageConfiguration["rows"][$row][$widgetName] ?? null,
+                "generalSearch" => $configuration['list']['general_search'] ?? null
             )
         );
     }
@@ -82,18 +90,11 @@ class WidgetController extends AbstractController
      * Shows entity
      *
      * @Route("/app/widget/show/{pageName}/{row}/{widgetName}", name="sunshine_widget_view", methods={"GET"})
-     * @param $pageName
-     * @param $row
-     * @param $widgetName
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
-     * @internal param Request $request
      */
     public function viewAction($pageName, $row, $widgetName)
     {
-        /** @var PageService $pageService */
-        $pageService = $this->get("sunshine.pages");
-        $pageConfiguration = $pageService->getPageConfiguration($pageName);
+        $pageConfiguration = $this->pageService->getPageConfiguration($pageName);
 
         if (!isset($pageConfiguration["rows"][$row][$widgetName]["parameters"]["entityName"])) {
             throw new \Exception(
@@ -104,13 +105,9 @@ class WidgetController extends AbstractController
         $entityName = $pageConfiguration["rows"][$row][$widgetName]["parameters"]["entityName"];
         $id = $pageConfiguration["rows"][$row][$widgetName]["parameters"]["id"];
 
-        /** @var EntityService $entities */
-        $entities = $this->get("sunshine.entities");
-        $configuration = $entities->getFormConfiguration($entityName);
+        $configuration = $this->entityService->getFormConfiguration($entityName);
 
-        /** @var CrudService $entities */
-        $crudService = $this->get("sunshine.crud_service");
-        $entity = $crudService->getEntity($entityName, $id);
+        $entity = $this->crudService->getEntity($entityName, $id);
 
         return $this->render(
             '@TellawSunshineAdmin/Widget/view.html.twig',
@@ -129,9 +126,7 @@ class WidgetController extends AbstractController
      * Widget Content
      *
      * @Route("/app/widget/content/{pageId}", name="sunshine_widget_content", methods={"GET"}, options={"expose":true})
-     * @param $pageId
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
      */
     public function widgetContentAction($pageId)
     {
@@ -140,15 +135,13 @@ class WidgetController extends AbstractController
         }
 
         /** @var array $page */
-        $page = $this->get("sunshine.pages")->getPageConfiguration($pageId);
+        $page = $this->pageService->getPageConfiguration($pageId);
 
         if ($page === null) {
             throw new \Exception("Page not found : " . $pageId);
         }
 
-        /** @var WidgetService $widgetService */
-        $widgetService = $this->get("sunshine.widgets");
-        $widgetContent = $widgetService->loadServicesWidgetsForPage($page, []);
+        $widgetContent = $this->widgetService->loadServicesWidgetsForPage($page, []);
 
         return new JsonResponse(json_encode($widgetContent));
     }

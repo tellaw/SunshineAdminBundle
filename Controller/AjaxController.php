@@ -12,14 +12,24 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 use Tellaw\SunshineAdminBundle\Service\CrudService;
 use Symfony\Component\HttpFoundation\Response;
 
 class AjaxController extends AbstractController
 {
+    protected EntityManagerInterface $em;
+    protected CrudService $crudService;
+    protected SerializerInterface $serializer;
+
+    public function __construct(EntityManagerInterface $em, CrudService $crudService, SerializerInterface $serializer)
+    {
+        $this->em = $em;
+        $this->crudService = $crudService;
+        $this->serializer = $serializer;
+    }
 
     /**
-     *
      * Callback for the SELECT2 Ajax plugin
      *
      * @Route("/ajax/select2/{entityName}/{toStringField}", name="sunshine_ajax_select2_callback", methods={"POST"})
@@ -42,18 +52,10 @@ class AjaxController extends AbstractController
         $itemPerPage = 10;
         $relatedClass = $request->request->get ("relatedClass");
 
-        // Get class metadata
-        $doctrine = $this->get("doctrine");
-        /**
-         * @var EntityManagerInterface $em
-         */
-        $em = $doctrine->getManager();
-        $metadata = $em->getClassMetadata($relatedClass);
+        $metadata = $this->em->getClassMetadata($relatedClass);
 
-        /** @var CrudService $crudService */
-        $crudService = $this->get("sunshine.crud_service");
-        $list = $crudService->getEntityListByClassMetadata($relatedClass, $toStringField, $q, $metadata, $page, $itemPerPage, $callbackFunction, $callbackParams);
-        $totalCount = $crudService->getCountEntityListByClassMetadata($relatedClass, $toStringField, $q, $metadata,$callbackFunction, $callbackParams);
+        $list = $this->crudService->getEntityListByClassMetadata($relatedClass, $toStringField, $q, $metadata, $page, $itemPerPage, $callbackFunction, $callbackParams);
+        $totalCount = $this->crudService->getCountEntityListByClassMetadata($relatedClass, $toStringField, $q, $metadata,$callbackFunction, $callbackParams);
 
         $responseArray = array (
             "items" => $list,
@@ -61,7 +63,7 @@ class AjaxController extends AbstractController
         );
 
         // Return them with the JSON Response Serialized
-        $serializedEntity = $this->container->get('serializer')->serialize($responseArray, 'json', [
+        $serializedEntity = $this->serializer->serialize($responseArray, 'json', [
             'circular_reference_handler' => function ($object) {
                 return (method_exists( $object, "__toString" ))? $object->__toString() : null;
             },
@@ -142,12 +144,10 @@ class AjaxController extends AbstractController
             }
         }
 
-        /** @var CrudService $crudService */
-        $crudService = $this->get("sunshine.crud_service");
-        $list = $crudService->getEntityList($entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue, true, $filters );
+        $list = $this->crudService->getEntityList($entity, $orderCol, $orderDir, $paginationStart, $paginationLength, $searchValue, true, $filters );
 
         // Get the number of elements using the filter
-        $nbElementsOfFilteredEntity = $crudService->getCountEntityElements($entity, $searchValue, $filters);
+        $nbElementsOfFilteredEntity = $this->crudService->getCountEntityElements($entity, $searchValue, $filters);
 
         $responseArray = array (
             'infos' => array (
@@ -202,13 +202,12 @@ class AjaxController extends AbstractController
         }
 
         $status = 404;
-        $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository($entityName);
+        $repository = $this->em->getRepository($entityName);
         $entity = $repository->find($id);
         if ($entity)
         {
-            $em->remove($entity);
-            $em->flush();
+            $this->em->remove($entity);
+            $this->em->flush();
             $status = 200;
         }
 
