@@ -3,6 +3,7 @@
 namespace Tellaw\SunshineAdminBundle\Service;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Tellaw\SunshineAdminBundle\Entity\MessageBag;
 
 /**
@@ -24,7 +25,7 @@ class WidgetService
      * @param $router
      * @internal param array $configuration
      */
-    public function __construct($router)
+    public function __construct(RouterInterface $router)
     {
         $this->router = $router;
     }

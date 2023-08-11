@@ -1,122 +1,75 @@
 services:
+  _defaults:
+    autowire: true
 
-  # Alias pour régler problème d'autowiring du service
-  Tellaw\SunshineAdminBundle\Service\CrudService: '@sunshine.crud_service'
-  Tellaw\SunshineAdminBundle\Service\EntityService: '@sunshine.entities'
-  Tellaw\SunshineAdminBundle\Service\PageService: '@sunshine.pages'
-  Tellaw\SunshineAdminBundle\Service\WidgetService: '@sunshine.widgets'
+  Tellaw\SunshineAdminBundle\Service\:
+    resource: '../../Service'
+    exclude: '../../Service/AbstractWidget.php'
 
-  sunshine.crud_service:
-    class: Tellaw\SunshineAdminBundle\Service\CrudService
-    public: true
-    arguments: ["@doctrine.orm.entity_manager", "@sunshine.entities", "@service_container"]
+  Tellaw\SunshineAdminBundle\Controller\:
+    resource: '../../Controller'
+    tags: [ 'controller.service_arguments' ]
 
-  sunshine.menu:
-    class: Tellaw\SunshineAdminBundle\Service\MenuService
-    public: true
-    arguments: ["%tellaw_sunshine_admin.menu%", "%tellaw_sunshine_admin.entities%"]
+  Tellaw\SunshineAdminBundle\Service\MenuService:
+    arguments:
+      $configuration: "%tellaw_sunshine_admin.menu%"
+      $entityConfiguration: "%tellaw_sunshine_admin.entities%"
 
-  sunshine.pages:
-    class: Tellaw\SunshineAdminBundle\Service\PageService
-    public: true
-    arguments: ["%tellaw_sunshine_admin.pages%"]
+  Tellaw\SunshineAdminBundle\Service\PageService:
+    arguments:
+      $configuration: "%tellaw_sunshine_admin.pages%"
 
-  sunshine.entities:
-    class: Tellaw\SunshineAdminBundle\Service\EntityService
-    public: true
-    arguments: ["%tellaw_sunshine_admin.entities%"]
+  Tellaw\SunshineAdminBundle\Service\EntityService:
+    arguments:
+      $configuration: "%tellaw_sunshine_admin.entities%"
 
-  sunshine.theme:
-    class: Tellaw\SunshineAdminBundle\Service\ThemeService
-    public: true
-    arguments: ["%tellaw_sunshine_admin.theme%"]
+  Tellaw\SunshineAdminBundle\Service\ThemeService:
+    arguments:
+      $configuration: "%tellaw_sunshine_admin.theme%"
 
-  sunshine.widgets:
-    class: Tellaw\SunshineAdminBundle\Service\WidgetService
-    public: true
-    arguments: [ '@router' ]
-
-  sunshine.widget_twig_extension:
-    class: Tellaw\SunshineAdminBundle\Twig\WidgetExtension
-    arguments: ["%tellaw_sunshine_admin.pages%", "@sunshine.widgets", "@router"]
-    public: true
+  Tellaw\SunshineAdminBundle\Twig\WidgetExtension:
+    arguments:
+      $configuration: "%tellaw_sunshine_admin.pages%"
     tags:
       - { name: twig.extension }
 
-  sunshine.collection_twig_extension:
-    class: Tellaw\SunshineAdminBundle\Twig\CollectionExtension
-    public: true
+  Tellaw\SunshineAdminBundle\Twig\CollectionExtension:
     tags:
       - { name: twig.extension }
 
-  sunshine.menu_twig_extension:
-    class: Tellaw\SunshineAdminBundle\Twig\MenuExtension
-    public: true
-    arguments: ["@security.authorization_checker"]
+  Tellaw\SunshineAdminBundle\Twig\MenuExtension:
     tags:
       - { name: twig.extension }
 
-  sunshine.default_form_type:
-    class: Tellaw\SunshineAdminBundle\Form\Type\DefaultType
-    public: true
-    arguments: ['@sunshine.crud_service', "@doctrine.orm.entity_manager" ]
+  Tellaw\SunshineAdminBundle\Form\Type\DefaultType:
     tags:
       - { name: form.type }
 
-  sunshine.filtersType:
-    class: Tellaw\SunshineAdminBundle\Form\Type\FiltersType
-    public: true
-    arguments: ['@sunshine.crud_service', "@doctrine.orm.entity_manager" ]
+  Tellaw\SunshineAdminBundle\Form\Type\FiltersType:
     tags:
       - { name: form.type }
-
-  sunshine.utils:
-    class: Tellaw\SunshineAdminBundle\Service\UtilsService
-    public: true
 
   ##
   ## WIDGETS DEFINITION
   ##
-  sunshine.widgets.abstract:
-    abstract:  true
-    arguments: [ '@request_stack', '@twig', "@doctrine.orm.entity_manager" ]
-
-  sunshine.widgets.edit:
-    class: Tellaw\SunshineAdminBundle\Service\Widgets\EditWidget
-    public: true
-    parent: sunshine.widgets.abstract
+  Tellaw\SunshineAdminBundle\Service\Widgets\EditWidget:
     tags:
       - {name: sunshine.widget }
 
-  sunshine.widgets.view:
-    class: Tellaw\SunshineAdminBundle\Service\Widgets\ViewWidget
-    public: true
-    parent: sunshine.widgets.abstract
-    calls:
-      - [ setEntities, ['@sunshine.entities']]
-      - [ setCrudService, ['@sunshine.crud_service']]
+  Tellaw\SunshineAdminBundle\Service\Widgets\ViewWidget:
     tags:
       - {name: sunshine.widget }
 
-  sunshine.widgets.list:
-    class: Tellaw\SunshineAdminBundle\Service\Widgets\ListWidget
-    public: true
-    parent: sunshine.widgets.abstract
-    calls:
-      - [ setEntities, ['@sunshine.entities']]
-      - [ setFormFactory, ['@form.factory']]
-      - [ setCrudService, ['@sunshine.crud_service']]
+  Tellaw\SunshineAdminBundle\Service\Widgets\ListWidget:
     tags:
       - {name: sunshine.widget }
 
-  sunshine.theme_twig_extension:
-    class: Tellaw\SunshineAdminBundle\Twig\ThemeExtension
+  Tellaw\SunshineAdminBundle\Twig\ThemeExtension:
     public: true
     arguments: ["%tellaw_sunshine_admin.theme%"]
     tags:
       - { name: twig.extension }
 
   Tellaw\SunshineAdminBundle\Form\Type\Select2Type:
-    arguments: ["@doctrine.orm.entity_manager"]
     tags:
       - form.type

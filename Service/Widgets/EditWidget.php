@@ -9,25 +9,16 @@ use Tellaw\SunshineAdminBundle\Service\AbstractWidget;
 use Tellaw\SunshineAdminBundle\Service\CrudService;
 use Tellaw\SunshineAdminBundle\Service\EntityService;
 
-class EditWidget extends AbstractWidget {
-
-    /** @var CrudService */
-    private $crudService;
-
-    /** @var  EntityService */
-    private $entitiesService;
-
-    /** @var FormFactory $formFactory */
-    private $formFactory = null;
-
-    public function create ( $configuration, MessageBag $messagebag ) {
-
+class EditWidget extends AbstractWidget
+{
+    public function create( $configuration, MessageBag $messagebag)
+    {
         $request = $this->getCurrentRequest();
 
         $entityName = $messagebag['entityName'];
         $id = $messagebag['id'];
-        $fieldsConfiguration = $this->entitiesService->getFormConfiguration($entityName);
-        $entityConfiguration = $this->entitiesService->getConfiguration($entityName);
+        $fieldsConfiguration = $this->entityService->getFormConfiguration($entityName);
+        $entityConfiguration = $this->entityService->getConfiguration($entityName);
 
         if ($id) {
             $entity = $this->crudService->getEntity($entityName, $id);
@@ -73,33 +64,5 @@ class EditWidget extends AbstractWidget {
                 "pageId" => null,
             ]
         );
-
     }
-
-    /**
-     * @param CrudService $crudService
-     */
-    public function setCrudService(CrudService $crudService)
-    {
-        $this->crudService = $crudService;
-    }
-
-    /**
-     * @param EntityService $entitiesService
-     */
-    public function setEntitiesService(EntityService $entitiesService)
-    {
-        $this->entitiesService = $entitiesService;
-    }
-
-    /**
-     * @param FormFactory $formFactory
-     */
-    public function setFormFactory(FormFactory $formFactory)
-    {
-        $this->formFactory = $formFactory;
-    }
-
-
-
 }

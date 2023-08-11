@@ -4,23 +4,10 @@ namespace Tellaw\SunshineAdminBundle\Service\Widgets;
 use Symfony\Component\Form\FormFactory;
 use Tellaw\SunshineAdminBundle\Entity\MessageBag;
 use Tellaw\SunshineAdminBundle\Service\AbstractWidget;
-use Tellaw\SunshineAdminBundle\Service\CrudService;
-use Tellaw\SunshineAdminBundle\Service\EntityService;
 
-class ListWidget extends AbstractWidget {
-
-    /** @var  EntityService */
-    private $entities;
-
-    /** @var  FormFactory */
-    private $formFactory;
-
-    /**
-     * @var CrudService
-     */
-    protected $crudService;
-
-    public function create ( $configuration, MessageBag $messagebag )
+class ListWidget extends AbstractWidget
+{
+    public function create($configuration, MessageBag $messagebag)
     {
         $entityName = $messagebag->getMessage("entityName");
         $parameters = $messagebag->getMessage("parameters");
@@ -38,7 +25,7 @@ class ListWidget extends AbstractWidget {
         }
 
         $entityName = $configuration['parameters']['entityName'];
-        $filtersConfiguration = $this->entities->getFiltersConfiguration($entityName, $filtersToInclude, $filtersToExclude);
+        $filtersConfiguration = $this->entityService->getFiltersConfiguration($entityName, $filtersToInclude, $filtersToExclude);
 
         $filters= $messagebag->getMessage( "parameters" );
 
@@ -124,7 +111,7 @@ class ListWidget extends AbstractWidget {
             [
                 "filtersForm" => !empty($filtersForm) ? $filtersForm->createView() : null,
                 "configuration" => $configuration,
-                "fields" => $this->entities->getListConfiguration($entityName, $fieldToInclude, $fieldToExclude),
+                "fields" => $this->entityService->getListConfiguration($entityName, $fieldToInclude, $fieldToExclude),
                 "row" => '12',
                 'widgetName' => "list".$entityName,
                 'entityName' => $entityName,
@@ -134,28 +121,4 @@ class ListWidget extends AbstractWidget {
         );
 
     }
-
-    /**
-     * @param mixed $entities
-     */
-    public function setEntities($entities)
-    {
-        $this->entities = $entities;
-    }
-
-    /**
-     * @param mixed $crudService
-     */
-    public function setCrudService(CrudService $crudService) {
-        $this->crudService = $crudService;
-    }
-
-    /**
-     * @param FormFactory $formFactory
-     */
-    public function setFormFactory(FormFactory $formFactory)
-    {
-        $this->formFactory = $formFactory;
-    }
-
 }

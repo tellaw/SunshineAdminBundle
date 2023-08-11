@@ -3,71 +3,56 @@
 namespace Tellaw\SunshineAdminBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Tellaw\SunshineAdminBundle\Entity\MessageBag;
 use Twig\Environment;
 
-abstract class AbstractWidget {
+abstract class AbstractWidget
+{
+    protected CrudService $crudService;
+    protected EntityService $entityService;
+    protected FormFactoryInterface $formFactory;
+    protected RequestStack $requestStack;
+    protected Environment $twig;
+    protected EntityManagerInterface $em;
 
-    /**
-     * @var RequestStack|null
-     */
-    protected $requestStack = null;
-
-    /**
-     * @var Environment|null
-     */
-    protected $twig = null;
-
-    /**
-     * @var EntityManagerInterface|null
-     */
-    protected $em = null;
-
-    /**
-     * AbstractWidget constructor.
-     * @param RequestStack $requestStack
-     * @param Environment $twig
-     * @param EntityManagerInterface $em
-     */
-    public function __construct(RequestStack $requestStack, Environment $twig, EntityManagerInterface $em )
-    {
+    public function __construct(
+        CrudService $crudService,
+        EntityService $entityService,
+        FormFactoryInterface $formFactory,
+        RequestStack $requestStack,
+        Environment $twig,
+        EntityManagerInterface $em
+    ) {
+        $this->crudService = $crudService;
+        $this->entityService = $entityService;
+        $this->formFactory = $formFactory;
         $this->requestStack = $requestStack;
         $this->twig = $twig;
         $this->em = $em;
     }
 
-    /**
-     * @return EntityManagerInterface|null
-     */
-    protected function getDoctrine () {
+    protected function getDoctrine()
+    {
         return $this->em;
     }
 
-    /**
-     * @return \Symfony\Component\HttpFoundation\Request|null
-     */
     protected function getCurrentRequest()
     {
         return $this->requestStack->getCurrentRequest();
     }
 
     /**
-     * @param $template
-     * @param $parameters
      * @return string
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
      */
-    protected function render ($template, $parameters ) {
+    protected function render($template, $parameters )
+    {
         return $this->twig->render($template.".html.twig" , $parameters);
     }
 
     /**
-     * @param $configuration
-     * @param MessageBag $messageBag
      * @return mixed
      */
-    public abstract function create ($configuration, MessageBag $messageBag);
+    public abstract function create($configuration, MessageBag $messageBag);
 }
