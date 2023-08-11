@@ -167,26 +167,13 @@ class AjaxController extends AbstractController
             "data" => $list
         );
 
-        // Return them with the JSON Response Serialized
-        return $this->getSerializedResponse( $responseArray );
-    }
+        $json = $this->serializer->serialize($responseArray, 'json', [
+            'circular_reference_handler' => function ($object) {
+                return (method_exists( $object, "__toString" ))? $object->__toString() : null;
+            },
+        ]);
 
-    private function getSerializedResponse ( $responseArray  ) {
-
-        $encoder = new JsonEncoder();
-        $normalizer = new ObjectNormalizer();
-
-        $normalizer->setCircularReferenceHandler(function ($object) {
-            return (method_exists( $object, "__toString" ))? $object->__toString() : null;
-        });
-
-        $serializer = new Serializer(array($normalizer), array($encoder));
-        $serializedEntity = $serializer->serialize($responseArray, 'json');
-        $response = new Response();
-        $response->setContent($serializedEntity);
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 
     /**
