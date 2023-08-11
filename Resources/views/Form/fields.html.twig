@@ -8,14 +8,12 @@
 {# Labels #}
 
 {% block form_label -%}
-    {% spaceless %}
-        {% if label is same as(false) %}
-            <div class="{{ block('form_label_class') }}"></div>
-        {% else %}
-            {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' ' ~ block('form_label_class'))|trim}) %}
-            {{- parent() -}}
-        {% endif %}
-    {% endspaceless %}
+    {% if label is same as(false) %}
+        <div class="{{ block('form_label_class') }}"></div>
+    {% else %}
+        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' ' ~ block('form_label_class'))|trim}) %}
+        {{- parent() -}}
+    {% endif %}
 {%- endblock form_label %}
 
 {% block form_label_class -%}
@@ -54,55 +52,47 @@
 
 {% block checkbox_radio_row -%}
     {% set row_attr_class = (row_attr is defined and row_attr.class is defined) ? ' ' ~ row_attr.class : '' %}
-    {% spaceless %}
-        <div class="form-group{{ row_attr_class }}{% if not valid %} has-error{% endif %}">
-            <div class="{{ block('form_label_class') }}"></div>
-            <div class="{{ block('form_group_class') }}">
-                {{ form_widget(form) }}
-                {{ form_errors(form) }}
-            </div>
+    <div class="form-group{{ row_attr_class }}{% if not valid %} has-error{% endif %}">
+        <div class="{{ block('form_label_class') }}"></div>
+        <div class="{{ block('form_group_class') }}">
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
         </div>
-    {% endspaceless %}
+    </div>
 {%- endblock checkbox_radio_row %}
 
 {% block submit_row -%}
-    {% spaceless %}
-        <div class="form-group m-form__group">
-            <div class="{{ block('form_label_class') }}"></div>
-            <div class="{{ block('form_group_class') }}">
-                {{ form_widget(form) }}
-            </div>
+    <div class="form-group m-form__group">
+        <div class="{{ block('form_label_class') }}"></div>
+        <div class="{{ block('form_group_class') }}">
+            {{ form_widget(form) }}
         </div>
-    {% endspaceless %}
+    </div>
 {% endblock submit_row %}
 
 {% block choice_button_row -%}
-    {% spaceless %}
-        <div class="form-group m-form__group">
-            <div class="{{ block('form_label_class') }}"></div>
-            <div class="btn-group">
-                {% for child in form %}
-                    {{ form_widget(child) }}
-                {% endfor %}
-            </div>
-            <a class="btn-back btn btn-default text-dark float-right d-none" href="#">Annuler</a>
-            <script>
-                $(document).ready(function () {if (document.referrer.indexOf(window.location.host) !== -1) {$('.btn-back').removeClass('d-none');}});
-                $('.btn-back').on('click', function(e) {e.preventDefault(); if (document.referrer.indexOf(window.location.host) !== -1) {window.history.back();}});
-            </script>
+    <div class="form-group m-form__group">
+        <div class="{{ block('form_label_class') }}"></div>
+        <div class="btn-group">
+            {% for child in form %}
+                {{ form_widget(child) }}
+            {% endfor %}
         </div>
-    {% endspaceless %}
+        <a class="btn-back btn btn-default text-dark float-right d-none" href="#">Annuler</a>
+        <script>
+            $(document).ready(function () {if (document.referrer.indexOf(window.location.host) !== -1) {$('.btn-back').removeClass('d-none');}});
+            $('.btn-back').on('click', function(e) {e.preventDefault(); if (document.referrer.indexOf(window.location.host) !== -1) {window.history.back();}});
+        </script>
+    </div>
 {% endblock choice_button_row %}
 
 {% block reset_row -%}
-    {% spaceless %}
-        <div class="form-group m-form__group">
-            <div class="{{ block('form_label_class') }}"></div>
-            <div class="{{ block('form_group_class') }}">
-                {{ form_widget(form) }}
-            </div>
+    <div class="form-group m-form__group">
+        <div class="{{ block('form_label_class') }}"></div>
+        <div class="{{ block('form_group_class') }}">
+            {{ form_widget(form) }}
         </div>
-    {% endspaceless %}
+    </div>
 {% endblock reset_row %}
 
 {% block form_group_class -%}
@@ -188,19 +178,16 @@
 {#Tags #}
 
 {%- block tag_widget -%}
-    {% spaceless %}
-        {% if value is not empty %}
-            {%- set type = type|default('text') -%}
-            <div>
-                <input type="{{ type }}" {{ block('widget_attributes') }} class="form-control input-larg"
-                       data-role="tagsinput" style="display: none;"
-                       value="{{ value|default('') }}"/>
-            </div>
-        {% else %}
-            {{ block('form_widget_simple') }}
-        {% endif %}
-
-    {% endspaceless %}
+    {% if value is not empty %}
+        {%- set type = type|default('text') -%}
+        <div>
+            <input type="{{ type }}" {{ block('widget_attributes') }} class="form-control input-larg"
+                   data-role="tagsinput" style="display: none;"
+                   value="{{ value|default('') }}"/>
+        </div>
+    {% else %}
+        {{ block('form_widget_simple') }}
+    {% endif %}
 {%- endblock tag_widget -%}
 
 {% block select2_widget %}
