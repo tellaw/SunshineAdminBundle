@@ -102,7 +102,7 @@ class PageController extends AbstractPageController
         }
 
         $event = new EntityEvent($entity);
-        $this->eventDispatcher->dispatch(SunshineEvents::ENTITY_PRE_EDIT, $event);
+        $this->eventDispatcher->dispatch($event, SunshineEvents::ENTITY_PRE_EDIT);
 
         $formOptions = [
             'fields_configuration' => $fieldsConfiguration,
@@ -129,7 +129,7 @@ class PageController extends AbstractPageController
             $this->em->persist($entity);
 
             $event = new EntityEvent($entity);
-            $this->get('event_dispatcher')->dispatch(SunshineEvents::ENTITY_PRE_FLUSHED, $event);
+            $this->eventDispatcher->dispatch($event, SunshineEvents::ENTITY_PRE_FLUSHED);
 
             try {
                 $this->em->flush();
