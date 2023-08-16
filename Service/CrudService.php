@@ -736,6 +736,7 @@ class CrudService
                 case "date":
                     $type = DateType::class;
                     $fieldAttributes["widget"] = 'single_text';
+                    $fieldAttributes['html5'] = false;
                     $fieldAttributes["input"] = 'datetime';
                     $fieldAttributes["format"] = 'dd/MM/yyyy';
                     $fieldAttributes["attr"] = array('class' => 'date-picker '.$forcedClass);
@@ -744,6 +745,7 @@ class CrudService
                 case "datetime":
                     $type = DateTimeType::class;
                     $fieldAttributes["widget"] = 'single_text';
+                    $fieldAttributes['html5'] = false;
                     $fieldAttributes["input"] = 'datetime';
                     $fieldAttributes["format"] = 'dd/MM/yyyy HH:mm';
                     $fieldAttributes["attr"] = array('class' => 'datetime-picker '.$forcedClass);
