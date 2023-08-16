@@ -1,6 +1,7 @@
 services:
   _defaults:
     autowire: true
+    public: false
 
   Tellaw\SunshineAdminBundle\Service\:
     resource: '../../Service'
@@ -8,7 +9,7 @@ services:
 
   Tellaw\SunshineAdminBundle\Controller\:
     resource: '../../Controller'
-    tags: [ 'controller.service_arguments' ]
+    tags: ['controller.service_arguments']
 
   Tellaw\SunshineAdminBundle\Service\MenuService:
     arguments:
