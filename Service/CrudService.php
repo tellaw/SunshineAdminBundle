@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -48,25 +47,18 @@ class CrudService
      * @var EntityService
      */
     protected $entityService;
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
 
     /**
      * CrudService constructor.
      * @param EntityManagerInterface $em
      * @param EntityService $entityService
-     * @param ContainerInterface $container
      */
     public function __construct(
         EntityManagerInterface $em,
-        EntityService $entityService,
-        ContainerInterface $container
+        EntityService $entityService
     ) {
         $this->em = $em;
         $this->entityService = $entityService;
-        $this->container = $container;
     }
 
     public function getTotalElementsInTable($entityName, array $filters = null)
