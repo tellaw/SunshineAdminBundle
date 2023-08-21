@@ -14,12 +14,18 @@
       {"name": "Badredine KALLALI"}
     ],
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "tetranz/select2entity-bundle": "^3.0",
         "ninsuo/symfony-collection": "2.1.*",
         "vich/uploader-bundle": "^2.0",
-        "stfalcon/tinymce-bundle": "^3.0.2"
+        "stfalcon/tinymce-bundle": "dev-master"
     },
+    "repositories": [
+      {
+        "type": "git",
+        "url": "https://github.com/MonsieurV/TinymceBundle"
+      }
+    ],
     "autoload" : {
       "psr-0" : {
         "Tellaw\\SunshineAdminBundle" : ""
