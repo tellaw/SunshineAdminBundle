@@ -2,6 +2,7 @@
 
 namespace Tellaw\SunshineAdminBundle\Controller;
 
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,6 +21,7 @@ class WidgetController extends AbstractController
     protected CrudService $crudService;
 
     public function __construct(
+        protected FormFactoryInterface $formFactory,
         PageService $pageService,
         WidgetService $widgetService,
         EntityService $entityService,
@@ -59,13 +61,12 @@ class WidgetController extends AbstractController
 
         // Instantiate filters
         // Get Filters Definition
-        $formFactory = $this->get("form.factory");
         if ($filtersConfiguration !== null) {
             $formOptions = [
                 'fields_configuration' => $filtersConfiguration,
                 'crud_service' => $this->crudService
             ];
-            $filtersForm = $formFactory->create(FiltersType::class, null, $formOptions);
+            $filtersForm = $this->formFactory->create(FiltersType::class, null, $formOptions);
         } else {
             $filtersForm = null;
         }
