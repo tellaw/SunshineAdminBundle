@@ -43,7 +43,7 @@ class AjaxController extends AbstractController
         $q = $request->request->get ("q");
         $page = $request->request->get ("page");
         $callbackFunction = $request->request->get ("callbackFunction");
-        $callbackParams = json_decode($request->request->get('callbackParams', []), true);
+        $callbackParams = json_decode($request->request->get('callbackParams', '{}'), true);
 
         if (!$page) {
             $page = 1;
@@ -86,44 +86,44 @@ class AjaxController extends AbstractController
 
         $orderCol = "id";
         $orderDir = "asc";
-        if (isset($request->request->get ("datatable")["sort"]["field"]) && $request->request->get ("datatable")["sort"]["field"] != "") {
-            $orderCol = $request->request->get("datatable")["sort"]["field"];
-            $orderDir = $request->request->get("datatable")["sort"]["sort"];
+        if (isset($request->request->all("datatable")["sort"]["field"]) && $request->request->all("datatable")["sort"]["field"] != "") {
+            $orderCol = $request->request->all("datatable")["sort"]["field"];
+            $orderDir = $request->request->all("datatable")["sort"]["sort"];
         }
 
         $paginationLength = 10;
-        if (isset($request->request->get ("datatable")["pagination"]["perpage"]) && $request->request->get ("datatable")["pagination"]["perpage"] != "") {
-            $paginationLength = $request->request->get ("datatable")["pagination"]["perpage"];
+        if (isset($request->request->all("datatable")["pagination"]["perpage"]) && $request->request->all("datatable")["pagination"]["perpage"] != "") {
+            $paginationLength = $request->request->all("datatable")["pagination"]["perpage"];
         }
 
         $page = 0;
-        if (isset($request->request->get ("datatable")["pagination"]["page"])) {
-            $page = $request->request->get ("datatable")["pagination"]["page"];
+        if (isset($request->request->all("datatable")["pagination"]["page"])) {
+            $page = $request->request->all("datatable")["pagination"]["page"];
         }
 
         $paginationStart =  ( $page -1 ) * $paginationLength ;
         if ($paginationStart < 0) $paginationStart = 0;
 
         $searchValue = "";
-        if (isset($request->request->get ("datatable")["query"])) {
-            if (isset($request->request->get ("datatable")["query"]["undefined"])) {
-                $searchValue = $request->request->get ("datatable")["query"]["undefined"];
+        if (isset($request->request->all("datatable")["query"])) {
+            if (isset($request->request->all("datatable")["query"]["undefined"])) {
+                $searchValue = $request->request->all("datatable")["query"]["undefined"];
             }
         }
 
         $filters = null;
 
         // Init service, takes care of prefilled filters at page init
-        if (isset($request->request->get ("datatable")["query"]) && isset($request->request->get ("datatable")["query"]["filters"]) && is_array($request->request->get ("datatable")["query"]["filters"])) {
+        if (isset($request->request->all("datatable")["query"]) && isset($request->request->all("datatable")["query"]["filters"]) && is_array($request->request->all("datatable")["query"]["filters"])) {
             // Preset filters in page
-            foreach ( $request->request->get ("datatable")["query"]["filters"] as $filter ) {
+            foreach ( $request->request->all("datatable")["query"]["filters"] as $filter ) {
                 $filters[$filter["property"]] = array ("property" => $filter["property"], "value" => $filter["value"]);
             }
         }
-        if (isset($request->request->get ("datatable")["query"]) && is_array($request->request->get ("datatable")["query"])) {
+        if (isset($request->request->all("datatable")["query"]) && is_array($request->request->all("datatable")["query"])) {
 
             // Filters set with search button
-            foreach ( $request->request->get ("datatable")["query"] as $name => $value ) {
+            foreach ( $request->request->all("datatable")["query"] as $name => $value ) {
 
                 // If key is undefined (genberal search) of filter, then skip this step.
                 if ($name != 'undefined' && $name != 'filters')  {
