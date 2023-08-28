@@ -91,14 +91,13 @@ class WidgetExtension extends AbstractExtension
      * author: Henrik Bjornskov <hb@peytz.dk>
      * copyright holder: (c) 2009 Fabien Potencier
      *
-     * @param \Twig_Environment $env
      * @param $value
      * @param int $length
      * @param bool $preserve
      * @param string $separator
      * @return string
      */
-    public function truncateText(\Twig_Environment $env, $value, $length = 64, $preserve = false, $separator = '...')
+    public function truncateText(Environment $env, $value, $length = 64, $preserve = false, $separator = '...')
     {
         try {
             $value = (string)$value;
