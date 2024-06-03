@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class Select2FilterType extends AbstractType
 {
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }

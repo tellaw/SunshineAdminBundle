@@ -41,7 +41,7 @@ class DefaultType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
@@ -52,7 +52,7 @@ class DefaultType extends AbstractType
      *
      * @param FormEvent $event
      */
-    public function onPreSetData(FormEvent $event)
+    public function onPreSetData(FormEvent $event): void
     {
         $form = $event->getForm();
         $fieldsConfiguration = $form->getConfig()->getOptions()['fields_configuration'];
@@ -63,7 +63,7 @@ class DefaultType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['fields_configuration' => [], 'configuration' => [], 'crud_service' => $this->crudService, 'em' => $this->em ]);
         $resolver->setRequired('fields_configuration');
@@ -78,7 +78,7 @@ class DefaultType extends AbstractType
      * @param array $fieldsConfiguration
      * @throws \Exception
      */
-    protected function buildFormFields($form, array $fieldsConfiguration)
+    protected function buildFormFields($form, array $fieldsConfiguration): void
     {
         $this->crudService->buildFormFields($form, $fieldsConfiguration);
     }

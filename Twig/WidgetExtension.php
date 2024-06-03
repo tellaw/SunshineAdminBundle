@@ -46,7 +46,7 @@ class WidgetExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new TwigFunction('getWidgetUrl', array($this, 'getWidgetUrl'), array()),
@@ -63,7 +63,7 @@ class WidgetExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return array(
             new TwigFilter('truncate', array($this, 'truncateText'), array('needs_environment' => true)),

@@ -95,6 +95,8 @@ class Configuration implements ConfigurationInterface
                                     ->defaultNull()
                                     ->values(['string', 'integer', 'date', 'datetime', 'object', 'text', 'file', 'embedded', 'custom', 'boolean', 'float', 'raw'])
                                 ->end()
+                                ->scalarNode('typeClass')
+                                ->end()
                                 ->booleanNode('expanded')
                                 ->end()
                                 ->scalarNode('allow_add')

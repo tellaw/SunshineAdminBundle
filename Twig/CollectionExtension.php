@@ -10,7 +10,7 @@ use Twig\TwigFunction;
  */
 class CollectionExtension extends AbstractExtension
 {
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new TwigFunction(
@@ -35,7 +35,7 @@ class CollectionExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'form_collection';
     }

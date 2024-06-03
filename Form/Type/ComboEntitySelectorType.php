@@ -20,7 +20,7 @@ class ComboEntitySelectorType extends AbstractType
      * @inheritDoc
      * @throws \Exception
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             'family',
@@ -39,7 +39,7 @@ class ComboEntitySelectorType extends AbstractType
     /**
      * @param FormEvent $event
      */
-    public function onPreSetData(FormEvent $event)
+    public function onPreSetData(FormEvent $event): void
     {
         $form = $event->getForm();
         $formOptions = $form->getConfig()->getOptions();
@@ -78,7 +78,7 @@ class ComboEntitySelectorType extends AbstractType
      *
      * @throws \Exception
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['families' => []]);
     }

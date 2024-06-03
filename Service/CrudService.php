@@ -819,6 +819,13 @@ class CrudService
 
 
                     break;
+
+                case "custom":
+                    if (isset($field["typeClass"])) {
+                        $type = $field["typeClass"];
+                    }
+                    break;
+
             }
             $form->add($fieldName, $type, $fieldAttributes);
 

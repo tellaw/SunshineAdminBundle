@@ -31,7 +31,7 @@ class ThemeExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new TwigFunction('getLogo', array($this, 'getLogo'), array()),

@@ -24,7 +24,7 @@ class Select2Type extends AbstractType
         $this->em = $entityManager;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (isset($options['class'])) {
             $builder->resetModelTransformers();
@@ -33,7 +33,7 @@ class Select2Type extends AbstractType
         }
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return EntityType::class;
     }

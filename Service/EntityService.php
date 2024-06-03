@@ -224,6 +224,8 @@ class EntityService
             }
         }
 
+        $typeDoctrine = $this->getTypeForAttribute($class, $property);
+
         // first look in asserts
         if ($typeAssert !== null) {
             return $typeAssert;
@@ -248,6 +250,10 @@ class EntityService
 
         // Get Annotations for attribute
         $propertyAnnotations = $this->getAnnotationsForAttribute( $class, $property );
+        $relatedClass = $this->getRelatedClassForAttribute($class, $property);
+        if ($relatedClass) {
+            return $relatedClass;
+        }
 
         foreach ($propertyAnnotations AS $annot) {
             if (in_array(get_class($annot), ["Doctrine\\ORM\\Mapping\\ManyToOne", "Doctrine\\ORM\\Mapping\\OneToOne", "Doctrine\\ORM\\Mapping\\OneToMany", "Doctrine\\ORM\\Mapping\\ManyToMany"])  ) {
@@ -281,6 +287,77 @@ class EntityService
         return $annotationReader->getPropertyAnnotations($reflectionProperty);
     }
 
+    private function getReflectionProperty($class, $property): ?\ReflectionProperty
+    {
+        $parents[$class] = $class;
+        $parents = array_merge($parents, class_parents($class));
+        foreach ($parents as $parent) {
+            if (property_exists($parent, $property)) {
+                return new \ReflectionProperty($parent, $property);
+            }
+        }
+
+        return null;
+    }
+
+    private function getReflectionPropertyAttributes($class, $property)
+    {
+        $reflectionProperty = $this->getReflectionProperty($class, $property);
+        if (is_null($reflectionProperty)) {
+            return null;
+        }
+
+        foreach ($reflectionProperty->getAttributes() as $attribute) {
+            if (in_array($attribute->getName(), [
+                "Doctrine\\ORM\\Mapping\\Id",
+                "Doctrine\\ORM\\Mapping\\Column",
+                "Doctrine\\ORM\\Mapping\\ManyToMany",
+                "Doctrine\\ORM\\Mapping\\ManyToOne",
+                "Doctrine\\ORM\\Mapping\\OneToMany",
+                "Doctrine\\ORM\\Mapping\\OneToOne",
+                "Vich\\UploaderBundle\\Mapping\\Annotation\\UploadableField",
+            ])) {
+                return $attribute;
+            }
+        }
+    }
+
+    private function getTypeForAttribute($class, $property): ?string
+    {
+        $reflectionProperty = $this->getReflectionProperty($class, $property);
+        $attribute = $this->getReflectionPropertyAttributes($class, $property);
+
+        return match ($attribute->getName()) {
+            "Doctrine\\ORM\\Mapping\\Id" => "integer",
+            "Doctrine\\ORM\\Mapping\\Column" => $this->getMapping($reflectionProperty->getType()?->getName()),
+            "Doctrine\\ORM\\Mapping\\ManyToOne", "Doctrine\\ORM\\Mapping\\OneToOne" => "object",
+            "Doctrine\\ORM\\Mapping\\ManyToMany", "Doctrine\\ORM\\Mapping\\OneToMany" => "object-multiple",
+            "Vich\\UploaderBundle\\Mapping\\Annotation\\UploadableField" => "file",
+            default => null,
+        };
+    }
+
+    private function getMapping(string $name): string
+    {
+        $mapping = [
+            'bool' => 'boolean',
+        ];
+
+        return $mapping[$name] ?? $name;
+    }
+
+    private function getRelatedClassForAttribute($class, $property)
+    {
+        $attribute = $this->getReflectionPropertyAttributes($class, $property);
+
+        return match ($attribute->getName()) {
+            "Doctrine\\ORM\\Mapping\\ManyToMany",
+                "Doctrine\\ORM\\Mapping\\ManyToOne",
+                "Doctrine\\ORM\\Mapping\\OneToMany",
+                "Doctrine\\ORM\\Mapping\\OneToOne" => $attribute->getArguments()['targetEntity'],
+            default => null,
+        };
+    }
 
     public function getFiltersForm ( $entityName ) {
 
