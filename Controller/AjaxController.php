@@ -40,7 +40,7 @@ class AjaxController extends AbstractController
      */
     public function ajaxSelect2CallbackAction(Request $request, $toStringField)
     {
-        $q = $request->request->get ("q");
+        $q = $request->request->get ("q") ?? '';
         $page = $request->request->get ("page");
         $callbackFunction = $request->request->get ("callbackFunction");
         $callbackParams = json_decode($request->request->get('callbackParams', '{}'), true);
@@ -132,7 +132,7 @@ class AjaxController extends AbstractController
                     if (!is_array( $value ) && ($value == null || trim($value) == '')) {
 
                         // Check if filter is set by init service and unset it.
-                        if (array_key_exists(strtolower($name), $filters)) {
+                        if (null !== $filters && array_key_exists(strtolower($name), $filters)) {
                             unset ($filters[strtolower($name)]);
                         }
                     } else {

@@ -2,6 +2,7 @@
 
 namespace Tellaw\SunshineAdminBundle\Controller;
 
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,9 +14,10 @@ class TinyMceController extends AbstractController
 {
     protected EntityManagerInterface $em;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, ParameterBagInterface $parameterBag)
     {
         $this->em = $em;
+        $this->parameterBag = $parameterBag;
     }
 
     /**
@@ -25,7 +27,7 @@ class TinyMceController extends AbstractController
     public function selectDataAction(Request $request, string $configName = '')
     {
         $formOptions = [];
-        $selectorConfig = $this->container->getParameter('tellaw_sunshine_admin.tinymce');
+        $selectorConfig = $this->parameterBag->get('tellaw_sunshine_admin.tinymce');
         if (array_key_exists($configName, $selectorConfig)) {
             $formOptions = $selectorConfig[$configName];
         }
@@ -64,7 +66,7 @@ class TinyMceController extends AbstractController
     {
         $dataId = $request->query->get('dataId', null);
 
-        $builder = $this->createFormBuilder(null, ['show_legend' => false]);
+        $builder = $this->createFormBuilder();
         $builder->add(
             'leadsfactory-form-id-input',
             TextType::class,
