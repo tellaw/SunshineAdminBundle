@@ -303,6 +303,16 @@ class CrudService
                     $qbf->andWhere($field . " IN (:value$i) ")
                         ->setParameter("value$i", $filter["value"]);
 
+                } elseif (true === $filterConfiguration[$filter['property']]["multipleOrLike"]) {
+                    $values = array_map(fn($value) => trim($value), explode(',', $filter["value"]));
+
+                    if(1 === count($values)){
+                        $qbf->andWhere($this->alias.".".$filter['property']." LIKE :value$i ")
+                            ->setParameter("value$i", "%".$filter["value"]."%");
+                    } else{
+                        $qbf->andWhere($this->alias.".".$filter['property']." IN (:value$i) ")
+                            ->setParameter("value$i", $values);
+                    }
                 } else {
 
                     // Filter is based on a simple property, just append to the request

@@ -251,6 +251,8 @@ class Configuration implements ConfigurationInterface
                                         ->end()
                                         ->booleanNode('multiple')->defaultNull()
                                         ->end()
+                                        ->booleanNode('multipleOrLike')->defaultNull()
+                                        ->end()
                                         ->arrayNode('value')
                                                 ->children()
                                                     ->scalarNode('provider')->defaultNull()->end()
