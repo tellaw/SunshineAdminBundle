@@ -123,7 +123,8 @@ class CrudService
      * @return bool
      * @throws \Exception
      */
-    public function deleteEntity ($entityName, $entityId) {
+    public function deleteEntity($entityName, $entityId)
+    {
 
         $baseConfiguration = $this->entityService->getConfiguration($entityName);
         $repository = $this->em->getRepository($baseConfiguration["configuration"]["class"]);
@@ -139,6 +140,7 @@ class CrudService
         // On teste si l'objet n'a pas été détaché via un événement preRemove
         if ($this->em->getUnitOfWork()->isScheduledForDelete($object)) {
             $this->em->flush();
+
             return true;
         } else {
             return false;
@@ -159,19 +161,30 @@ class CrudService
      * @param array $callbackParams
      * @return mixed
      */
-    public function getEntityListByClassMetadata($entityClass, $toString, $query, ClassMetadata $metadata, $page,
-                                                 $itemPerPage, $callbackFunction = null, array $callbackParams = [])
-    {
+    public function getEntityListByClassMetadata(
+        $entityClass,
+        $toString,
+        $query,
+        ClassMetadata $metadata,
+        $page,
+        $itemPerPage,
+        $callbackFunction = null,
+        array $callbackParams = []
+    ) {
         $identifier = $metadata->identifier;
-        if ($callbackFunction !== null && $callbackFunction != '' )
-        {
-            $qb =$this->em->getRepository($entityClass)->$callbackFunction($identifier, $toString, $query, $callbackParams);
+        if ($callbackFunction !== null && $callbackFunction != '') {
+            $qb = $this->em->getRepository($entityClass)->$callbackFunction(
+                $identifier,
+                $toString,
+                $query,
+                $callbackParams
+            );
         } else {
 
             $qb = $this->em->createQueryBuilder();
-            $qb->select(array('l.' . $identifier[0], 'l.' . $toString . " AS text"));
+            $qb->select(array('l.'.$identifier[0], 'l.'.$toString." AS text"));
             $qb->from($entityClass, 'l');
-            $qb->orWhere('l.' . $toString . ' LIKE :search');
+            $qb->orWhere('l.'.$toString.' LIKE :search');
             $qb->setParameter('search', "%{$query}%");
         }
 
@@ -193,14 +206,25 @@ class CrudService
      * @param array $callbackParams
      * @return mixed
      */
-    public function getCountEntityListByClassMetadata($entityClass, $toString, $query, ClassMetadata $metadata, $callbackFunction, array $callbackParams = [])
-    {
+    public function getCountEntityListByClassMetadata(
+        $entityClass,
+        $toString,
+        $query,
+        ClassMetadata $metadata,
+        $callbackFunction,
+        array $callbackParams = []
+    ) {
         $identifier = $metadata->identifier;
-        if ($callbackFunction !== null  && $callbackFunction != '')
-        {
+        if ($callbackFunction !== null && $callbackFunction != '') {
             /** @var QueryBuilder $qb */
-            $qb = $this->em->getRepository($entityClass)->$callbackFunction($identifier, $toString, $query, $callbackParams);
+            $qb = $this->em->getRepository($entityClass)->$callbackFunction(
+                $identifier,
+                $toString,
+                $query,
+                $callbackParams
+            );
             $alias = $qb->getRootAliases()[0];
+
             return $qb->select("COUNT($alias)")->getQuery()->getSingleScalarResult();
         } else {
 
@@ -209,7 +233,7 @@ class CrudService
             $qb->select('COUNT(l)');
 
             $qb->from($entityClass, 'l');
-            $qb->orWhere('l.' . $toString . ' LIKE :search');
+            $qb->orWhere('l.'.$toString.' LIKE :search');
             $qb->setParameter('search', "%{$query}%");
         }
 
@@ -259,7 +283,7 @@ class CrudService
 
         $data = $qb->getQuery()->getResult(Query::HYDRATE_OBJECT);
 
-        return $this->flattenObjects($entityName, $data );
+        return $this->flattenObjects($entityName, $data);
     }
 
     /**
@@ -283,42 +307,41 @@ class CrudService
 
         $i = 0;
         foreach ($filters as $filter) {
-
             // Valid that filter has a property and value attributes
-            if ( is_array($filter) && array_key_exists('property', $filter) && array_key_exists('value', $filter)) {
+            if (is_array($filter) && array_key_exists('property', $filter) && array_key_exists('value', $filter)) {
+                $fieldConfig = $filterConfiguration[$filter['property']];
+                $field = $this->alias.".".$filter['property'];
+                $isObject = in_array($fieldConfig["type"], ["object", "object-multiple"]);
 
-                // If filter is about an OBJECT Relation
-                if (in_array($filterConfiguration[$filter['property']]["type"], [ "object",  "object-multiple"]) ) {
+                // Check for manyToMany or filtering on relatedAttribute
+                if ($fieldConfig["type"] === 'object-multiple' || null !== $fieldConfig['filterField']) {
+                    $field = $this->getAliasForEntity($filter['property']);
 
-                    // If relation is to a 'toMany' the filter is a simple condition on attribute
-                    if ($filterConfiguration[$filter['property']]["type"] === 'object') {
-                        $field = $this->alias . "." . $filter['property'];
-                    } else {
-
-                        // If filter is a toMany...
-                        $field = $this->getAliasForEntity($filter['property']);
+                    if (!in_array($field, $qbf->getAllAliases())) {
+                        $qbf->leftJoin($this->alias.'.'.$filter['property'], $field);
                     }
 
-                    // Add to the query the filter
-                    $qbf->andWhere($field . " IN (:value$i) ")
-                        ->setParameter("value$i", $filter["value"]);
+                    if (null !== $fieldConfig['filterField']) {
+                        $field .= '.'.$fieldConfig['filterField'];
+                    }
+                }
 
-                } elseif (true === $filterConfiguration[$filter['property']]["multipleOrLike"]) {
+                if (true === $fieldConfig["multipleOrLike"]) {
                     $values = array_map(fn($value) => trim($value), explode(',', $filter["value"]));
 
-                    if(1 === count($values)){
-                        $qbf->andWhere($this->alias.".".$filter['property']." LIKE :value$i ")
+                    if (1 === count($values)) {
+                        $qbf->andWhere($field." LIKE :value$i ")
                             ->setParameter("value$i", "%".$filter["value"]."%");
-                    } else{
-                        $qbf->andWhere($this->alias.".".$filter['property']." IN (:value$i) ")
+                    } else {
+                        $qbf->andWhere($field." IN (:value$i) ")
                             ->setParameter("value$i", $values);
                     }
-                } else {
-
-                    // Filter is based on a simple property, just append to the request
-                    $qbf->andWhere($this->alias . "." . $filter['property'] . " LIKE :value$i ")
+                } elseif (true === $fieldConfig["like"] || false === $isObject) {
+                    $qbf->andWhere($field." LIKE :value$i ")
                         ->setParameter("value$i", "%".$filter["value"]."%");
-
+                } else {
+                    $qbf->andWhere($field." IN (:value$i) ")
+                        ->setParameter("value$i", $filter["value"]);
                 }
                 $i++;
             }
@@ -328,18 +351,18 @@ class CrudService
         $identifier = $this->em->getClassMetadata($className)->getSingleIdentifierFieldName();
 
         // Find the identifier name in the request
-        $identifierPath = $this->alias . '.' . $identifier;
+        $identifierPath = $this->alias.'.'.$identifier;
 
         // Load all identifiers from the database
         $ids = $qbf->select($identifierPath)->getQuery()->getResult();
 
         // Add each data to an array
-        $ids = array_map(function($item) use ($identifier){
+        $ids = array_map(function ($item) use ($identifier) {
             return $item[$identifier];
         }, $ids);
 
         // Find objects from the first QB wich match the second one id's ????
-        $qb->andWhere($identifierPath. " IN (:value$i)")
+        $qb->andWhere($identifierPath." IN (:value$i)")
             ->setParameter("value$i", $ids);
 
         return $qb;
@@ -401,7 +424,7 @@ class CrudService
         // Loop over attributes
         foreach ($fieldMappings as $fieldName => $fieldMapping) {
 
-            $getter = "get" . ucfirst($fieldName);
+            $getter = "get".ucfirst($fieldName);
             $value = null;
 
             if (method_exists($object, $getter)) {
@@ -437,7 +460,7 @@ class CrudService
         // Loop over associations
         foreach ($associationMappings as $associationKey => $associationMapping) {
 
-            $getter = "get" . ucfirst($associationKey);
+            $getter = "get".ucfirst($associationKey);
 
             if (method_exists($object, $getter)) {
                 $linkedObject = call_user_func_array([$object, $getter], []);
@@ -460,23 +483,26 @@ class CrudService
      * @param $element
      * @return string
      */
-    protected function getToString ( $element )
+    protected function getToString($element)
     {
         if ($element !== null) {
-            if (  $element instanceof \iterable  || $element instanceof Collection) {
+            if ($element instanceof \iterable || $element instanceof Collection) {
 
                 $results = array();
-                foreach ( $element as $collectionObject ) {
-                    $results[] = $this->getToString( $collectionObject );
+                foreach ($element as $collectionObject) {
+                    $results[] = $this->getToString($collectionObject);
                 }
-                return implode( ", ", $results );
 
-            } else if (method_exists($element, "__toString")) {
-
-                return $element->__toString();
+                return implode(", ", $results);
 
             } else {
-                return get_class($element). " has no toString method";
+                if (method_exists($element, "__toString")) {
+
+                    return $element->__toString();
+
+                } else {
+                    return get_class($element)." has no toString method";
+                }
             }
         } else {
             return "";
@@ -491,7 +517,7 @@ class CrudService
      */
     protected function getAliasForEntity($property)
     {
-        return strtolower($property . "_");
+        return strtolower($property."_");
     }
 
     /**
@@ -514,7 +540,7 @@ class CrudService
 
                     $join = ['class' => $item['relatedClass'], 'name' => $key];
                     $joinAlias = $this->getAliasForEntity($join['name']);
-                    $qb->leftJoin($this->alias . '.' . $join['name'], $joinAlias);
+                    $qb->leftJoin($this->alias.'.'.$join['name'], $joinAlias);
                     if (!$isCount) {
                         $qb->addSelect($joinAlias);
                     }
@@ -559,9 +585,9 @@ class CrudService
     {
         if (isset($listConfiguration[$orderCol]) && $this->isRelatedObject($listConfiguration[$orderCol])) {
             $joinAlias = $this->getAliasForEntity($orderCol);
-            $qb->orderBy($joinAlias . "." . $listConfiguration[$orderCol]["filterAttribute"], $orderDir);
+            $qb->orderBy($joinAlias.".".$listConfiguration[$orderCol]["filterAttribute"], $orderDir);
         } else {
-            $qb->orderBy($this->alias . "." . $orderCol, $orderDir);
+            $qb->orderBy($this->alias.".".$orderCol, $orderDir);
         }
 
         return $qb;
@@ -595,9 +621,9 @@ class CrudService
             foreach ($searchConfig as $key => $item) {
                 if ($this->isRelatedObject($listConfiguration[$key])) {
                     $joinAlias = $this->getAliasForEntity($key);
-                    $searchQuery[] = ' ' . $joinAlias . '.' . $listConfiguration[$key]["filterAttribute"] . ' LIKE :search';
+                    $searchQuery[] = ' '.$joinAlias.'.'.$listConfiguration[$key]["filterAttribute"].' LIKE :search';
                 } else {
-                    $searchQuery[] = $this->alias . '.' . $key . ' LIKE :search';
+                    $searchQuery[] = $this->alias.'.'.$key.' LIKE :search';
                 }
             }
 
@@ -645,12 +671,12 @@ class CrudService
                 if ($groupName != 'none') {
                     $i++;
                 }
-                $child = ($groupName == 'none') ? 'none' : 'group_' . $i;
+                $child = ($groupName == 'none') ? 'none' : 'group_'.$i;
                 $form->add($child, FieldsetType::class, [
                     'label' => $groupName,
-                    'fields' => function(FormBuilder $form) use ($fields, $forcedClass, $loadChoices) {
+                    'fields' => function (FormBuilder $form) use ($fields, $forcedClass, $loadChoices) {
                         $this->_buildFormFields($form, $fields, $forcedClass, $loadChoices);
-                    }
+                    },
                 ]);
             }
         }
@@ -670,7 +696,9 @@ class CrudService
     {
         foreach ($formConfiguration as $fieldName => $field) {
 
-            if ($fieldName == "disableLoadingValues") continue;
+            if ($fieldName == "disableLoadingValues") {
+                continue;
+            }
 
             $fieldAttributes = array();
 
@@ -684,7 +712,7 @@ class CrudService
 
             /** @var Form $form */
 
-            if (isset($field['value']) && !isset($formConfiguration['disableLoadingValues']) ) {
+            if (isset($field['value']) && !isset($formConfiguration['disableLoadingValues'])) {
                 $fieldAttributes['data'] = $this->buildDefaultValueOfField($fieldName, $field, $formConfiguration);
             } elseif (isset($field['value'])) {
 
@@ -702,7 +730,7 @@ class CrudService
                     */
                     $data = $field['value']['arguments'];
                     $values = array_values($field['value']['arguments']);
-                    if (count ($values) > 0) {
+                    if (count($values) > 0) {
                         $fieldAttributes['data'] = $values[0];
                     }
                 }
@@ -710,6 +738,10 @@ class CrudService
             }
 
             $fieldAttributes["attr"] = array('class' => $forcedClass);
+
+            if (isset($field['optional']) && true === $field['optional']) {
+                $fieldAttributes["attr"]['data-filters-optional'] = true;
+            }
 
             // Default, let the framework decide
             $type = null;
@@ -741,7 +773,7 @@ class CrudService
                     $fieldAttributes['html5'] = false;
                     $fieldAttributes["input"] = 'datetime';
                     $fieldAttributes["format"] = 'dd/MM/yyyy';
-                    $fieldAttributes["attr"] = array('class' => 'date-picker '.$forcedClass);
+                    $fieldAttributes["attr"]['class'] = 'date-picker '.$forcedClass;
                     break;
 
                 case "datetime":
@@ -750,7 +782,7 @@ class CrudService
                     $fieldAttributes['html5'] = false;
                     $fieldAttributes["input"] = 'datetime';
                     $fieldAttributes["format"] = 'dd/MM/yyyy HH:mm';
-                    $fieldAttributes["attr"] = array('class' => 'datetime-picker '.$forcedClass);
+                    $fieldAttributes["attr"]['class'] = 'date-picker '.$forcedClass;
                     break;
 
                 case 'file':
@@ -769,15 +801,12 @@ class CrudService
 
                     $fieldAttributes['entry_type'] = DefaultType::class;
 
-                    $fieldAttributes['allow_add'] =  $field['allow_add'];
-                    $fieldAttributes['allow_delete'] =  $field['allow_delete'];
-                    $fieldAttributes['by_reference'] =  false; // By Reference to false ensure setter of parent must be called in all case
-                    $fieldAttributes['prototype'] =  true;
-
-                    $fieldAttributes['attr'] =  array(
-                        'class' => 'dynamic-collection '.$forcedClass,
-                        'data-for' => $fieldName
-                    );
+                    $fieldAttributes['allow_add'] = $field['allow_add'];
+                    $fieldAttributes['allow_delete'] = $field['allow_delete'];
+                    $fieldAttributes['by_reference'] = false; // By Reference to false ensure setter of parent must be called in all case
+                    $fieldAttributes['prototype'] = true;
+                    $fieldAttributes["attr"]['class'] = 'dynamic-collection '.$forcedClass;
+                    $fieldAttributes["attr"]['data-for'] = $fieldName;
 
                     break;
 
@@ -792,13 +821,16 @@ class CrudService
 
                     if (!isset($field["expanded"]) || $field["expanded"] === false) {
 
-                        $fieldAttributes["attr"] = array(
-                            'class' => $fieldName . '-select2 '.$forcedClass,
-                            'filterAttribute' => $field["filterAttribute"],
-                            'callbackFunction' => (array_key_exists('callbackFunction', $field))? $field["callbackFunction"]: "",
-                            'callbackParams' => !empty($field['callbackParams']) ? json_encode($field['callbackParams']) : '{}',
-                            'relatedClass' => str_replace("\\", "\\\\", $field["relatedClass"]),
-                        );
+                        $fieldAttributes["attr"]['class'] = $fieldName.'-select2 '.$forcedClass;
+                        $fieldAttributes["attr"]['filterAttribute'] = $field["filterAttribute"];
+                        $fieldAttributes["attr"]['callbackFunction'] = (array_key_exists(
+                            'callbackFunction',
+                            $field
+                        )) ? $field["callbackFunction"] : "";
+                        $fieldAttributes["attr"]['callbackParams'] = !empty($field['callbackParams']) ? json_encode(
+                            $field['callbackParams']
+                        ) : '{}';
+                        $fieldAttributes["attr"]['relatedClass'] = str_replace("\\", "\\\\", $field["relatedClass"]);
 
                         $fieldAttributes['placeholder'] = !empty($field["placeholder"]) ? $field["placeholder"] : '';
 
@@ -820,8 +852,10 @@ class CrudService
 
                     if (!$loadChoices && isset($field['value'])) {
                         $fieldAttributes['choices'] = $data;
-                    } else if (!$loadChoices) {
-                        $fieldAttributes['choices'] = [];
+                    } else {
+                        if (!$loadChoices) {
+                            $fieldAttributes['choices'] = [];
+                        }
                     }
 
                     $fieldAttributes["multiple"] = (isset($field['multiple']) && $field['multiple']) || $field["type"] === 'object-multiple';
@@ -878,17 +912,17 @@ class CrudService
                  *
                  *
                  */
-                if (    isset($field['type']) &&
-                        in_array($field['type'], ['object', 'object-multiple']) &&
-                        !is_object($item) &&
-                        null !== $item
+                if (isset($field['type']) &&
+                    in_array($field['type'], ['object', 'object-multiple']) &&
+                    !is_object($item) &&
+                    null !== $item
                 ) {
 
                     // Find the repository of relatedClass
                     $rep = $that->em->getRepository($field['relatedClass']);
 
                     // If object is a 'multiple' object
-                    $multiple =((isset($field['multiple']) && $field['multiple']) || ($field['type'] === 'object-multiple'));
+                    $multiple = ((isset($field['multiple']) && $field['multiple']) || ($field['type'] === 'object-multiple'));
 
                     if ($multiple) {
 
@@ -914,8 +948,9 @@ class CrudService
 
         }
 
-        return call_user_func_array(    $callable,
-                                        isset($field['value']['arguments']) ? (array) $field['value']['arguments'] : []
-                                    );
+        return call_user_func_array(
+            $callable,
+            isset($field['value']['arguments']) ? (array)$field['value']['arguments'] : []
+        );
     }
 }
