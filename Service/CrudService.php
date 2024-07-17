@@ -745,6 +745,10 @@ class CrudService
                 $fieldAttributes["attr"]['data-filters-optional'] = true;
             }
 
+            if (isset($field['scope'])) {
+                $fieldAttributes["attr"]['data-scope'] = $field['scope'];
+            }
+
             // Default, let the framework decide
             $type = null;
 
