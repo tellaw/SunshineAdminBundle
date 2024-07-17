@@ -653,7 +653,6 @@ class CrudService
         foreach ($formConfiguration as $fieldName => $field) {
             if (isset($field['group'])) {
                 $groups[$field['group']][$fieldName] = $field;
-                continue;
             }
         }
         if (empty($groups)) {
@@ -662,7 +661,6 @@ class CrudService
             foreach ($formConfiguration as $fieldName => $field) {
                 if (!isset($field['group'])) {
                     $groups['none'][$fieldName] = $field;
-                    continue;
                 }
             }
 
@@ -708,6 +706,10 @@ class CrudService
 
             if (isset($field['required'])) {
                 $fieldAttributes["required"] = $field["required"];
+            }
+
+            if (isset($field['readonly']) && $field['readonly'] === true) {
+                $fieldAttributes["disabled"] = $field["readonly"];
             }
 
             /** @var Form $form */
