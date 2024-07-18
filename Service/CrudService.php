@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\FormRegistryInterface;
 use Tellaw\SunshineAdminBundle\Form\Type\DefaultType;
 use Tellaw\SunshineAdminBundle\Form\Type\FieldsetType;
 use Tellaw\SunshineAdminBundle\Form\Type\Select2FilterType;
@@ -55,7 +56,8 @@ class CrudService
      */
     public function __construct(
         EntityManagerInterface $em,
-        EntityService $entityService
+        EntityService $entityService,
+        protected FormRegistryInterface $formRegistry,
     ) {
         $this->em = $em;
         $this->entityService = $entityService;
@@ -873,6 +875,9 @@ class CrudService
                 case "custom":
                     if (isset($field["typeClass"])) {
                         $type = $field["typeClass"];
+                        $option = $this->getDefaultsOptionsOfType($type);
+                        // Nécessaire pour éviter que le fait d'ajouter des data-* dans les attr puisse écraser les classes par défaults
+                        $fieldAttributes['attr'] = array_merge($fieldAttributes['attr'], $option['attr']);
                     }
                     break;
 
@@ -882,6 +887,11 @@ class CrudService
         }
 
         return $form;
+    }
+
+    private function getDefaultsOptionsOfType(string $formType): array
+    {
+        return $this->formRegistry->getType($formType)->getOptionsResolver()->resolve();
     }
 
     /**
