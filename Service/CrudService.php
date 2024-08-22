@@ -289,6 +289,33 @@ class CrudService
     }
 
     /**
+     * Get all entity id list matching filters and searchValue
+     */
+    public function getAllEntityIdList(
+        string $entityName,
+        ?string $searchValue = null,
+        ?array $filters = null
+    ): array {
+        $listConfiguration = $this->entityService->getListConfiguration($entityName);
+        $baseConfiguration = $this->entityService->getConfiguration($entityName);
+        $filtersConfiguration = $this->entityService->getFiltersConfiguration($entityName);
+
+        $qb = $this->em->createQueryBuilder();
+        $qb->select($this->alias.'.id');
+        $qb->from($baseConfiguration["configuration"]["class"], $this->alias);
+        $qb = $this->addSelectAndJoin($qb, $listConfiguration, $baseConfiguration, true);
+
+        if ($filters !== null) {
+            $qb = $this->addFilters($qb, $baseConfiguration["configuration"]["class"], $filters, $filtersConfiguration);
+        }
+        if ($searchValue !== null) {
+            $qb = $this->addSearch($qb, $searchValue, $listConfiguration, $baseConfiguration);
+        }
+
+        return $qb->getQuery()->getSingleColumnResult();
+    }
+
+    /**
      *
      * Method used to filter the query
      *
