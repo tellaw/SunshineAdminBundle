@@ -40,7 +40,15 @@ class TinyMceController extends AbstractController
             ];
         }
 
-        $formData = $request->request->get('form');
+        $formData = $request->request->all('form');
+
+        if (is_array($formData)) {
+            array_walk_recursive($formData, function (&$value) {
+                if (is_array($value)) {
+                    $value = json_encode($value); 
+                }
+            });
+        }
 
         $builder = $this->createFormBuilder($formData, ['show_legend' => false]);
         $builder->setAction($this->generateUrl('sunshine_tinymce_data_selector', ['configName' => $configName]));
