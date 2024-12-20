@@ -61,39 +61,54 @@ jQuery(document).ready(function() {
  * @param addButtonObj
  * @param collectionId
  */
-function addEmbeddedForm(collectionHolder, addButtonObj, collectionId)
-{
+function addEmbeddedForm(collectionHolder, addButtonObj, collectionId) {
 
-    // Vérifications des données nécessaires
+    // Vérification des données nécessaires
     if (!collectionHolder.data('prototype')) {
         return;
     }
-    if (collectionHolder.data('index') === undefined) {
-        return;
-    }
 
-    // Get the data-prototype explained earlier
     var prototype = collectionHolder.data('prototype');
+    var index = collectionHolder.data('index') || 0;
 
-    // get the new index
-    var index = collectionHolder.data('index');
-
-    // increase the index with one for the next item
     collectionHolder.data('index', index + 1);
-
-    var divId = collectionId + '_' + (index + 1);
-
-    // Remove the first label
-    prototype = prototype.replace(/<label(.*)__name__label__<\/label>/i, '');
-
-    // Replace __name__ by the correct index
-    prototype = prototype.replace(/__name__/g, index + 1);
-
-    prototype = prototype.replace('<div id="' + divId + '">', '<div id="' + divId + '" class="collectionForm col-lg-11">');
+    var divId = `${collectionId}_${index}`;
+    prototype = prototype.replace(/__name__/g, index);
 
     if (addButtonObj.data('new-item-position') === 'before') {
-        $("#" + collectionId).prepend('<div class="prototype list-group list-group-item row">' + prototype + '</div>');
+        collectionHolder.prepend(`<div>${prototype}</div>`);
     } else {
-        $("#" + collectionId).append('<div class="prototype list-group list-group-item row">' + prototype + '</div>');
+        collectionHolder.append(`<div>${prototype}</div>`);
     }
+
+    // Activer TinyMCE sur le nouvel élément
+    var newTextarea = document.querySelector(`#${divId} .tinymce`);
+    if (newTextarea) {
+        activateTinyMCEIfNeeded(newTextarea);
+    } 
+    initializeCollections();
 }
+
+
+/**
+ * Active TinyMCE sur un élément si ce n'est pas déjà activé.
+ * @param {HTMLElement} element - L'élément cible (textarea).
+ */
+function activateTinyMCEIfNeeded(element) {
+    if (!tinymce.get(element.id)) {
+        tinymce.init({
+            selector: `#${element.id}`,
+            plugins: 'lists link code preview',
+            toolbar: 'bold italic underline strikethrough | bullist numlist | outdent indent | link | removeformat preview code', // Boutons dans l'ordre demandé
+            menubar: false,
+            statusbar: true,
+            skin: element.dataset.theme || 'default',
+            height: 100, 
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }', 
+        });
+       
+    } 
+}
+
+
+
