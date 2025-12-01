@@ -37,7 +37,7 @@ jQuery(document).ready(function() {
                 url: Routing.generate('collection-delete', {entityName: $(this).data('entityname'), id: $(this).data('id')}),
                 data: {},
                 success: function () {
-                    location.reload();
+                    location.reload(true);
                 }
             });
         }
